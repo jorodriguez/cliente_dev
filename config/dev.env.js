@@ -7,4 +7,4 @@ module.exports = merge(prodEnv, {
   ROOT_API : 'https://app-restexpres.herokuapp.com/',
   API_LOGIN : 'https://app-restexpres.herokuapp.com/login'
   
-})
+});
