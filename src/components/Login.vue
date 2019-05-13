@@ -1,5 +1,6 @@
 <template>
-<div class="hello ">
+<div class="login">
+    <img src="../assets/logo.png">
     <form class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>        
         <input type="email" v-model="input.correo" class="form-control" placeholder="Correo" required autofocus />
@@ -13,7 +14,9 @@
 </template>
 
 <script>
-import axios from "axios";
+
+//import axios from "axios";
+
 export default {
     name: 'Login',
     data() {
@@ -22,7 +25,9 @@ export default {
                 correo: "",
                 password: ""
             },
-            response: ""
+            response: "",
+            uriTemp:'https://app-restexpres.herokuapp.com/login'
+            //uriTemp:'http://localhost:5000/login'            
         }
     },
     mounted() {
@@ -32,20 +37,28 @@ export default {
     methods: {
         login() {
             console.log("login con rest ");                                            
-            //this.$http.get("https://develop1.herokuapp.com/api/login?usuario=" + this.input.correo + "&password=" + this.input.password)
+            
             var data = {'correo': this.input.correo,
                         "password": this.input.password};
 
-            this.$http.get(process.env.API_LOGIN,data,{emulateJSON:true})
+            //this.$http.get(process.env.LOGIN_API,data,{emulateJSON:true})
+            //this.$http.get('https://app-restexpres.herokuapp.com/login',data,{emulateJSON:true})
+            this.$http.post(this.uriTemp,data,{emulateJSON:true})
                 .then(result => {
+                    console.log("En el login");
                     this.response = result.data;
                     
+                    //if(this.response.id != null){
                     if(this.response != null){
-                      this.$session.set('usuario_sesion', this.response); 
                       
+                      this.$session.set('usuario_sesion', this.response);                       
                       //de esta forma se enruta parecido a angular
                       console.log("==> "+this.response);
-                      this.$router.push({name:'PaginaPrincipal'})
+                      //this.$router.push({name:'PaginaPrincipal'})
+                      this.$router.push({name:'CatAlumno'});
+
+                    }else {
+                        this.response = "No se encuentra el usuario..";
                     }                    
                 }, error => {
                     console.error(error);
@@ -60,27 +73,5 @@ export default {
 </script>
 
 <style scoped>
-h1,
-h2 {
-    font-weight: normal;
-}
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
-
-a {
-    color: #42b983;
-}
-
-textarea {
-    width: 600px;
-    height: 200px;
-}
 </style>
