@@ -1,5 +1,5 @@
 <template>
-  <div class="cat_alumno">
+  <div class="cat_alumno container">
     <h1>Alumnos ({{usuarioSesion}})</h1>
     <div class="text-left">
       <button
@@ -170,50 +170,57 @@
       </div>
     </div>
 
-    <table class="table table-hover">
+    <table class="table table-striped">
       <thead>
+        <th></th>
         <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>F. Nacimiento</th>
-        <th>Alergias</th>
-        <th>Nota</th>
+        <th>Apellidos</th>      
         <th>Hora de Entrada</th>
-        <th>Hora de Salida</th>
-        <th>Costo Inscripción</th>
-        <th>Costo Colegiatura</th>
-        <th>Min. Gracia</th>
-        <th>Fecha de Reinscripción</th>
+        <th>Hora de Salida</th>        
         <th></th>
         <th></th>
       </thead>
       <tr v-for="row in lista" :key="row.id">
-        <td>{{ row.nombre }}</td>
-        <td>{{ row.apellidos }}</td>
-        <td>{{ row.fecha_nacimiento }}</td>
-        <td>{{ row.alergias }}</td>
-        <td>{{ row.nota }}</td>
-        <td>{{ row.hora_entrada }}</td>
-        <td>{{ row.hora_salida }}</td>
-        <td>{{ row.costo_inscripcion }}</td>
-        <td>{{ row.costo_colegiatura }}</td>
-        <td>{{ row.minutos_gracia}}</td>
-        <td>{{ row.fecha_reinscripcion }}</td>
+        <td class="text-right">
+          <img src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg" 
+            width="50"           
+            height="50"
+            v-on:click="verPerfil(row)"
+           alt="..." class="rounded-circle">
+        </td>
+        <td>           
+           <button type="button"
+                class="btn btn-link" 
+                v-on:click="verPerfil(row)" >
+             {{ row.nombre }}</button>
+         <!--
+         <router-link :to="{ name: 'PerfilAlumno', params: { id: row.id } }">{{ row.nombre }}</router-link>          
+        -->
+        </td>
         <td>
+           <button type="button"
+                class="btn btn-link" 
+                v-on:click="verPerfil(row)" >
+             {{ row.apellidos }}</button>          
+          </td>        
+        <td>{{ row.hora_entrada }}</td>
+        <td>{{ row.hora_salida }}</td>        
+        <!--<td>
           <button
             class="btn btn-link"
             data-toggle="modal"
             data-target="#modal_alumno"
             v-on:click="select(row,'UPDATE')"
           >Editar</button>
-        </td>
-        <td>
+        </td>-->
+        <!--<td>
           <button
             class="btn btn-link red"
             data-toggle="modal"
             data-target="#modal_eliminar_alumno"
             v-on:click="select(row,'DELETE')"
           >Remover</button>
-        </td>
+        </td>-->
       </tr>
     </table>
     <!--<div>{{response}}</div>-->
@@ -244,29 +251,16 @@
 </template>
 
 <script>
+
+import AlumnoModel from '../models/AlumnoModel';
+
 export default {
   name: "Alumno",
   data() {
     return {
-      input: {
-        id: 0,
-        nombre: "",
-        apellidos: "",
-        fecha_nacimiento: "",
-        alergias: "",
-        nota: "",
-        hora_entrada: "",
-        hora_salida: "",
-        costo_inscripcion: "",
-        costo_colegiatura: "",
-        minutos_gracia: "",
-        fecha_reinscripcion: "",
-        foto: "",
-        genero: 1
-      },
+      input:AlumnoModel,
       response: "",
-      usuarioSesion: {},
-      //alumnoSeleccion:{},
+      usuarioSesion: {},      
       operacion: "INSERT",
       lista: [],
       loadFunction: null,
@@ -280,7 +274,7 @@ export default {
     console.log("Cargando lista alumno");
 
     //this.uriTemp = 'http://localhost:5000/alumnos';
-
+    //process.env.ROOT_API
     this.loadFunction = function() {
       this.$http.get(this.uriTemp).then(
         result => {
@@ -372,6 +366,10 @@ export default {
       console.log("fila seleccionada " + rowSelect.nombre);
       this.operacion = operacion;
       this.input = rowSelect;
+    },
+    verPerfil(rowSelect){
+        console.log("fila seleccionada " + rowSelect.nombre);
+        this.$router.push({name:'PerfilAlumno',params:{id:rowSelect.id}});
     }
   }
 };

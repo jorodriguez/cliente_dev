@@ -1,0 +1,277 @@
+<template>
+  <div class="perfil container">           
+     <div class="alert alert-info">{{mensaje}}</div>
+    <div v-if="display==true" class="text-left">
+         <router-link :to="{ name: 'CatAlumno', params: {} }">Regresar</router-link>    
+         <!--<h2 class="center" >Perfil</h2>-->         
+      <div class="row center">
+        <div class="col text-left">
+            <img src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg" alt="" class="rounded-circle"
+            width="75" height="75">
+            <p>{{alumno.nombre}} 
+            {{alumno.apellidos}}
+            </p>
+        </div>
+        <div class="col text-right">DATA</div>
+        <div class="w-100"></div>
+      </div>    
+      <div class="row">
+        <div class="col">
+          <!-- CONTENIDO -->
+          <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="pills-home-tab"
+                data-toggle="pill"
+                href="#pills-home"
+                role="tab"
+                aria-controls="pills-home"
+                aria-selected="true"
+              >Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="pills-profile-tab"
+                data-toggle="pill"
+                href="#pills-profile"
+                role="tab"
+                aria-controls="pills-profile"
+                aria-selected="false"
+              >Datos</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="pills-contact-tab"
+                data-toggle="pill"
+                href="#pills-contact"
+                role="tab"
+                aria-controls="pills-contact"
+                aria-selected="false"
+              >Contacto</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane fade show active"
+              id="pills-home"
+              role="tabpanel"
+              aria-labelledby="pills-home-tab"
+            >              
+              <form>
+                <div class="form-group">
+                  <label for="inputNombre">Nombre</label>
+                  <input
+                    id="inputNombre"
+                    type="text"
+                    v-model="alumno.nombre"
+                    class="form-control"
+                    placeholder="Nombre"
+                    required
+                    autofocus
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputApellidos">Apellidos</label>
+                  <input
+                    id="inputApellidos"
+                    type="text"
+                    v-model="alumno.apellidos"
+                    class="form-control"
+                    placeholder="Apellidos"
+                    required
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimiento">Fecha de Nacimiento</label>
+                  <input
+                    id="inputFechaNacimiento"
+                    type="date"
+                    v-model="alumno.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="F. Nacimiento"
+                    required
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAlergias">Alergias</label>
+                  <input
+                    id="inputAlergias"
+                    type="textarea"
+                    class="form-control"
+                    v-model="alumno.alergias"
+                    placeholder="Alergias"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputNota">Nota</label>
+                  <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
+                </div>
+                <div class="row">
+                  <div class="col col-md-6">
+                    <div class="form-group">
+                      <label for="inputHoraEntrada">Hora Entrada</label>
+                      <input
+                        id="inputHoraEntrada"
+                        type="time"
+                        v-model="alumno.hora_entrada"
+                        class="form-control"
+                        placeholder="H. Entrada"
+                        required
+                      >
+                    </div>
+                  </div>
+                  <div class="col col-md-6">
+                    <div class="form-group">
+                      <label for="inputHoraSalida">Hora Salida</label>
+                      <input
+                        id="inputHoraSalida"
+                        type="time"
+                        v-model="alumno.hora_salida"
+                        class="form-control"
+                        placeholder="H. Salida"
+                        required
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputCostoInscripcion">Costo Inscripción</label>
+                  <input
+                    id="inputCostoInscripcion"
+                    type="number"
+                    v-model="alumno.costo_inscripcion"
+                    class="form-control"
+                    placeholder="Costo Inscripcion"
+                    required
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputCostoColegiatura">Costo Colegiatura</label>
+                  <input
+                    id="inputCostoColegiatura"
+                    type="number"
+                    v-model="alumno.costo_colegiatura"
+                    class="form-control"
+                    placeholder="Costo Colegiatura"
+                    required
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputMinutosGracia">Minutos de Gracia</label>
+                  <input
+                    id="inputMinutosGracia"
+                    type="number"
+                    v-model="alumno.minutos_gracia"
+                    class="form-control"
+                    placeholder="Min. Gracia"
+                    required
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputFReinscripcion">Fecha de Reinscripción</label>
+                  <input
+                    id="inputFReinscripcion"
+                    type="date"
+                    v-model="alumno.fecha_reinscripcion"
+                    class="form-control"
+                    placeholder="F. Reinscripcion"
+                    required
+                  >
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  v-on:click="modificar()"
+                >Guardar</button>
+              </form>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-profile"
+              role="tabpanel"
+              aria-labelledby="pills-profile-tab"
+            >DATOS GENERALES</div>
+            <div
+              class="tab-pane fade"
+              id="pills-contact"
+              role="tabpanel"
+              aria-labelledby="pills-contact-tab"
+            >CONTACTO</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info">{{mensaje}}</div>
+    </div>
+    
+
+    <!-- EN CASO DE NO ENVIAR EL ID -->
+    <div class="alert alert-warning" v-else-if="display==false">Es necesario seleccionar un alumno</div>
+  </div>
+</template>
+
+
+<script>
+import router from "@/router/index";
+import AlumnoModel from "../models/AlumnoModel";
+
+export default {
+  name: "PerfilAlumno",
+  data() {
+    return {
+      id: 0,
+      alumno: AlumnoModel,
+      display: true,
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTemp: "http://localhost:5000/alumnos",
+      response: "",
+      mensaje: ""
+    };
+  },
+  mounted() {
+    console.log("iniciando el componente Perfil alumno");
+    this.id = this.$route.params.id;
+
+    if (this.id == undefined) {
+      this.display = false;
+      console.log("No se recibe ningun id de alumno ");
+    } else {
+      //this.usuarioSesion = this.$session.get("usuario_sesion");
+      this.$http.get(this.uriTemp + "/" + this.id).then(
+        result => {
+          this.alumno = result.data;
+          console.log(" === " + result.data.nombre);
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    }
+  },
+  methods: {
+    //FIXME : pasar al servicio
+    modificar() {
+      console.log("Modificar el id " + this.alumno.id);
+      this.$http.put(this.uriTemp + "/" + this.alumno.id, this.alumno).then(
+        result => {
+          this.response = result.data;
+
+          if (this.response != null) {
+            console.log("" + this.response);
+            this.mensaje = "Se actualizaron los datos del alumno.";
+          }
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>
