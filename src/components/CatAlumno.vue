@@ -1,5 +1,8 @@
 <template>
   <div class="cat_alumno container">
+     <router-link to="/principal" class="btn btn-lg btn-link">
+      Regresar
+     </router-link>         
     <h1>Alumnos ({{usuarioSesion}})</h1>
     <div class="text-left">
       <button
@@ -192,35 +195,21 @@
            <button type="button"
                 class="btn btn-link" 
                 v-on:click="verPerfil(row)" >
-             {{ row.nombre }}</button>
-         <!--
-         <router-link :to="{ name: 'PerfilAlumno', params: { id: row.id } }">{{ row.nombre }}</router-link>          
-        -->
+             {{ row.nombre }}</button>      
         </td>
-        <td>
-           <button type="button"
-                class="btn btn-link" 
-                v-on:click="verPerfil(row)" >
-             {{ row.apellidos }}</button>          
+        <td>          
+             {{ row.apellidos }}
           </td>        
         <td>{{ row.hora_entrada }}</td>
-        <td>{{ row.hora_salida }}</td>        
-        <!--<td>
-          <button
-            class="btn btn-link"
-            data-toggle="modal"
-            data-target="#modal_alumno"
-            v-on:click="select(row,'UPDATE')"
-          >Editar</button>
-        </td>-->
-        <!--<td>
+        <td>{{ row.hora_salida }}</td>      
+        <td>
           <button
             class="btn btn-link red"
             data-toggle="modal"
             data-target="#modal_eliminar_alumno"
             v-on:click="select(row,'DELETE')"
-          >Remover</button>
-        </td>-->
+          >Eliminar</button>
+        </td>
       </tr>
     </table>
     <!--<div>{{response}}</div>-->

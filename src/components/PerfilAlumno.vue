@@ -225,7 +225,7 @@ export default {
       id: 0,
       alumno: AlumnoModel,
       display: true,
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+     uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
       //uriTemp: "http://localhost:5000/alumnos",
       response: "",
       mensaje: ""
