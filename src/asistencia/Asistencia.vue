@@ -167,6 +167,7 @@ export default {
       //uriTemp: "http://localhost:5000/asistencia",
       uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
       usuarioSesion: {},
+      sesion:{},
       item: AlumnoModel,
       lista: [],
       listaSeleccion: [],
@@ -178,6 +179,15 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de asistencia ");
+    this.sesion = this.$session.get("usuario_sesion");
+    
+    if (!this.sesion || !this.sesion.usuario) {
+      console.log("No tiene sesion");
+      this.$router.push("/");
+      return;
+    }    
+    this.usuarioSesion = this.sesion.usuario;
+
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function() {
       this.$http.get(this.uriTemp + "/alumnos_por_recibidos").then(

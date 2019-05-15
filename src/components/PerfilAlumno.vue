@@ -1,20 +1,26 @@
 <template>
-  <div class="perfil container">           
-     <div class="alert alert-info">{{mensaje}}</div>
+  <div class="perfil container">
+    <div class="alert alert-info">{{mensaje}}</div>
     <div v-if="display==true" class="text-left">
-         <router-link :to="{ name: 'CatAlumno', params: {} }">Regresar</router-link>    
-         <!--<h2 class="center" >Perfil</h2>-->         
+      <router-link :to="{ name: 'CatAlumno', params: {} }">Regresar</router-link>
+      <!--<h2 class="center" >Perfil</h2>-->
       <div class="row center">
         <div class="col text-left">
-            <img src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg" alt="" class="rounded-circle"
-            width="75" height="75">
-            <p>{{alumno.nombre}} 
+          <img
+            src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+            alt
+            class="rounded-circle"
+            width="75"
+            height="75"
+          >
+          <p>
+            {{alumno.nombre}}
             {{alumno.apellidos}}
-            </p>
+          </p>
         </div>
         <div class="col text-right">DATA</div>
         <div class="w-100"></div>
-      </div>    
+      </div>
       <div class="row">
         <div class="col">
           <!-- CONTENIDO -->
@@ -59,8 +65,26 @@
               id="pills-home"
               role="tabpanel"
               aria-labelledby="pills-home-tab"
-            >              
+            >
               <form>
+                <div class="form-group">
+                  <label for="selectGrupo">Grupo</label>
+                  <select
+                    v-model="alumno.co_grupo"
+                    class="form-control"
+                    placeholder="Grupo"
+                    required
+                    autofocus
+                  >
+                    <option
+                      id="selectGrupo"
+                      v-for="grupo in listaGrupos"
+                      v-bind:value="grupo.id"
+                      v-bind:key="grupo.id"
+                    >{{ grupo.nombre }}</option>
+                  </select>
+                </div>
+
                 <div class="form-group">
                   <label for="inputNombre">Nombre</label>
                   <input
@@ -206,7 +230,6 @@
       </div>
       <div class="alert alert-info">{{mensaje}}</div>
     </div>
-    
 
     <!-- EN CASO DE NO ENVIAR EL ID -->
     <div class="alert alert-warning" v-else-if="display==false">Es necesario seleccionar un alumno</div>
@@ -224,50 +247,96 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
+      listaGrupos: [],
       display: true,
-     uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
       //uriTemp: "http://localhost:5000/alumnos",
+      //uriTempGrupos: "http://localhost:5000/grupos",
       response: "",
-      mensaje: ""
+      mensaje: "",
+      sesion: {},
+      usuarioSesion: {}
     };
   },
   mounted() {
     console.log("iniciando el componente Perfil alumno");
+
+    this.sesion = this.$session.get("usuario_sesion");
+
+    if (!this.sesion || !this.sesion.usuario) {
+      console.log("No tiene sesion");
+      this.$router.push("/");
+      return;
+    }
+
+    this.usuarioSesion = this.sesion.usuario;
+
     this.id = this.$route.params.id;
 
     if (this.id == undefined) {
       this.display = false;
       console.log("No se recibe ningun id de alumno ");
     } else {
-      //this.usuarioSesion = this.$session.get("usuario_sesion");
-      this.$http.get(this.uriTemp + "/" + this.id).then(
-        result => {
-          this.alumno = result.data;
-          console.log(" === " + result.data.nombre);
-        },
-        error => {
-          console.error(error);
-        }
-      );
+      this.$http
+        .get(this.uriTemp + "/id/" + this.id, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.alumno = result.data;
+          },
+          error => {
+            console.error(error);
+          }
+        );
+      //grupos
+      //traer grupos
+
+      this.$http
+        .get(this.uriTempGrupos, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.listaGrupos = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     }
   },
   methods: {
     //FIXME : pasar al servicio
     modificar() {
       console.log("Modificar el id " + this.alumno.id);
-      this.$http.put(this.uriTemp + "/" + this.alumno.id, this.alumno).then(
-        result => {
-          this.response = result.data;
-
-          if (this.response != null) {
-            console.log("" + this.response);
-            this.mensaje = "Se actualizaron los datos del alumno.";
+      this.$http
+        .put(this.uriTemp + "/" + this.alumno.id, this.alumno, {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              this.mensaje = "Se actualizaron los datos del alumno.";
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     }
   }
 };

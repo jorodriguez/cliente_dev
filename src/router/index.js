@@ -5,8 +5,11 @@ import Principal from '@/components/Principal'
 import CatAlumno from '@/components/CatAlumno'
 import PerfilAlumno from '@/components/PerfilAlumno'
 import Asistencia from '@/asistencia/Asistencia'
+import VueSession from 'vue-session'
 
-Vue.use(Router)
+Vue.use(Router);
+Vue.use(VueSession);
+
 
 export default new Router({
   routes: [
