@@ -27,7 +27,7 @@ export default {
             },
             response: "",
             uriTemp:'https://app-restexpres.herokuapp.com/login'
-            //uriTemp:'http://localhost:5000/login'            
+           // uriTemp:'http://localhost:5000/login'            
         }
     },
     mounted() {
@@ -54,8 +54,9 @@ export default {
                       this.$session.set('usuario_sesion', this.response);                       
                       //de esta forma se enruta parecido a angular
                       console.log("==> "+this.response);
-                      //this.$router.push({name:'PaginaPrincipal'})
-                      this.$router.push({name:'CatAlumno'});
+                      this.$router.push({name:'PaginaPrincipal'})
+                      //this.$router.push({name:'CatAlumno'});
+                      //this.$router.push({name:'Asistencia'});
 
                     }else {
                         this.response = "No se encuentra el usuario..";
