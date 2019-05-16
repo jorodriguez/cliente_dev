@@ -26,7 +26,7 @@ export default {
                 password: ""
             },
             response: "",
-            uriTemp:'https://app-restexpres.herokuapp.com/login'
+            uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
            // uriTemp:'http://localhost:5000/login'            
         }
     },
