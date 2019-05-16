@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno container">
     <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
-    <h1>A</h1>(
+    <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
       <button
@@ -263,10 +263,10 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-        uriTemp: "http://localhost:5000/alumnos",
-        uriTempGrupos: "http://localhost:5000/grupos"
-     // uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      //  uriTemp: "http://localhost:5000/alumnos",
+      //  uriTempGrupos: "http://localhost:5000/grupos"
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {
