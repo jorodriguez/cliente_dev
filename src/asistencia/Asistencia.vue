@@ -2,6 +2,7 @@
   <div class="asistencia container">
     <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
     <h1>Asistencias</h1>
+    <span>{{this.mensaje}}</span>
     <nav>
       <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
         <a
@@ -189,62 +190,7 @@
             v-on:click="registrarSalida()"
           >Confirmar Salida</button>
         </div>
-        <!--
-        <div class="container">
-          <div class="row">
-            <h5>Seleccionados para registrar salida</h5>
-          </div>
-          <div class="row">
-            <div class="row jumbotron">
-              <div
-                v-for="item in listaSeleccionSalida"
-                v-bind:key="item.id"
-                class="d-flex align-content-center flex-wrap"
-              >
-                <span class="label label-default">
-                  {{item.nombre_alumno}}
-                  <span class="badge badge-primary">
-                    <button
-                      type="button"
-                      class="btn btn-link btn-sm text-white"
-                      v-on:click="removeToListSalida(item)"
-                    >X</button>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <h5>Seleccionar para dar salida:</h5>
-          </div>
-          <div class="row jumbotron">
-            <div
-              v-for="item in listaRecibidos"
-              v-bind:key="item.id"
-              class="d-flex align-content-center flex-wrap"
-            >
-              <div class="card" style="width: 10rem;">
-                <div class="card-body">
-                  <h5 class="card-title">{{ item.nombre_alumno }}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{item.apellidos}} {{item.hora_entrada}}</h6>
-                  <button
-                    type="button"
-                    class="btn btn-link"
-                    v-on:click="addToListSalida(item)"
-                  >Seleccionar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row center">
-            <button
-              type="button"
-              class="btn btn-lg btn-primary"
-              v-on:click="registrarSalida()"
-            >Confirmar Salida</button>
-          </div>
-        </div>-->
+        
       </div>
     </div>
   </div>
@@ -285,12 +231,11 @@ export default {
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function() {
       this.$http
-        .get(this.uriTemp + "/alumnos_por_recibidos", {
+        .get(this.uriTemp + "/alumnos_por_recibidos"+ "/" + this.usuarioSesion.co_sucursal, {
           headers: {
             "x-access-token": this.sesion.token
           }
-        })
-        .then(
+        }).then(
           result => {
             this.response = result.data;
             console.log("Consulta " + this.response);
@@ -308,7 +253,7 @@ export default {
     this.loadFunctionAlumnosSalida = function() {
       this.listaRecibidos = [];
       this.$http
-        .get(this.uriTemp + "/alumnos_recibidos", {
+        .get(this.uriTemp + "/alumnos_recibidos"+ "/" + this.usuarioSesion.co_sucursal, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -326,7 +271,6 @@ export default {
           }
         );
     };
-
     this.loadFunction();
     this.loadFunctionAlumnosSalida();
   },
@@ -427,8 +371,7 @@ export default {
                 "x-access-token": this.sesion.token
               }
             }
-          )
-          .then(
+          ).then(
             result => {
               this.response = result.data;
               if (this.response != null) {
