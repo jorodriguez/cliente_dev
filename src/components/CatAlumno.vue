@@ -27,20 +27,7 @@
           <div class="modal-body text-left">
             <form>
               
-              <label>Grupo</label>
-              <div class="form-row">
-                <select v-model="input.co_grupo"
-                class="form-control"
-                placeholder="Grupo"
-                required
-                autofocus
-                >                  
-                <option v-for="grupo in listaGrupos"
-                          v-bind:value="grupo.id"
-                          v-bind:key="grupo.id"
-                          >{{ grupo.nombre }}</option>
-                </select>
-
+              
                 <label>Nombre</label>
                 <input
                   type="text"
@@ -74,8 +61,19 @@
                   placeholder="Alergias"
                 >
 
-                <label>Nota</label>
-                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
+                <label>Grupo</label>
+                <div class="form-row">
+                <select v-model="input.co_grupo"
+                class="form-control"
+                placeholder="Grupo"
+                required
+                autofocus
+                >                  
+                <option v-for="grupo in listaGrupos"
+                          v-bind:value="grupo.id"
+                          v-bind:key="grupo.id"
+                          >{{ grupo.nombre }}</option>
+                </select>
                 <div class="row">
                   <div class="col col-md-6">
                     <label>Hora Entrada</label>
@@ -98,6 +96,25 @@
                     >
                   </div>
                 </div>
+                <label>Minutos de Gracia</label>
+                <input
+                  type="number"
+                  v-model="input.minutos_gracia"
+                  class="form-control"
+                  placeholder="Min. Gracia"
+                  required
+                >
+                <div class="col col-md-6">
+                    <label>Costo Colegiatura</label>
+                    <input
+                      type="number"
+                      v-model="input.costo_colegiatura"
+                      class="form-control"
+                      placeholder="Costo Colegiatura"
+                      required
+                    >
+                  </div>                               
+                
                 <div class="row">
                   <div class="col col-md-6">
                     <label>Costo Inscripción</label>
@@ -109,25 +126,9 @@
                       required
                     >
                   </div>
-                  <div class="col col-md-6">
-                    <label>Costo Colegiatura</label>
-                    <input
-                      type="number"
-                      v-model="input.costo_colegiatura"
-                      class="form-control"
-                      placeholder="Costo Colegiatura"
-                      required
-                    >
-                  </div>
+                  
                 </div>
-                <label>Minutos de Gracia</label>
-                <input
-                  type="number"
-                  v-model="input.minutos_gracia"
-                  class="form-control"
-                  placeholder="Min. Gracia"
-                  required
-                >
+                
                 <label>F. de Reinscripción</label>
                 <input
                   type="date"
@@ -136,6 +137,8 @@
                   placeholder="F. Reinscripcion"
                   required
                 >
+                <label>Nota</label>
+                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
               </div>
             </form>
           </div>
