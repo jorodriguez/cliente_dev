@@ -1,9 +1,8 @@
 <template>
   <div class="cat_alumno container">
-     <router-link to="/principal" class="btn btn-lg btn-link">
-      Regresar
-     </router-link>         
-    <h1>Alumnos ({{usuarioSesion}})</h1>
+    <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
+    <h1>A</h1>(
+    <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
       <button
         type="button"
@@ -27,15 +26,28 @@
 
           <div class="modal-body text-left">
             <form>
+              
+              <label>Grupo</label>
               <div class="form-row">
+                <select v-model="input.co_grupo"
+                class="form-control"
+                placeholder="Grupo"
+                required
+                autofocus
+                >                  
+                <option v-for="grupo in listaGrupos"
+                          v-bind:value="grupo.id"
+                          v-bind:key="grupo.id"
+                          >{{ grupo.nombre }}</option>
+                </select>
+
                 <label>Nombre</label>
                 <input
                   type="text"
                   v-model="input.nombre"
                   class="form-control"
                   placeholder="Nombre"
-                  required
-                  autofocus
+                  required                  
                 >
                 <label>Apellidos</label>
                 <input
@@ -45,9 +57,10 @@
                   placeholder="Apellidos"
                   required
                 >
-                <label>Fecha de nacimiento</label>
+                <label>Fecha de nacimiento </label>
                 <input
                   type="date"
+                  pattern="yyyy-MM-dd"
                   v-model="input.fecha_nacimiento"
                   class="form-control"
                   placeholder="F. Nacimiento"
@@ -128,12 +141,18 @@
           </div>
           <div class="modal-footer">
             <div v-if="operacion == 'INSERT'">
-              <button class="btn btn-lg btn-primary" v-on:click="guardar()"
-              data-dismiss="modal">Guardar</button>
+              <button
+                class="btn btn-lg btn-primary"
+                v-on:click="guardar()"
+                data-dismiss="modal"
+              >Guardar</button>
             </div>
             <div v-else-if="operacion == 'UPDATE'">
-              <button class="btn btn-lg btn-primary" v-on:click="modificar()"
-              data-dismiss="modal">Modificar</button>
+              <button
+                class="btn btn-lg btn-primary"
+                v-on:click="modificar()"
+                data-dismiss="modal"
+              >Modificar</button>
             </div>
             <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
@@ -166,7 +185,12 @@
             </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" v-on:click="eliminar()" data-dismiss="modal">Eliminar</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              v-on:click="eliminar()"
+              data-dismiss="modal"
+            >Eliminar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           </div>
         </div>
@@ -177,31 +201,31 @@
       <thead>
         <th></th>
         <th>Nombre</th>
-        <th>Apellidos</th>      
+        <th>Apellidos</th>
+        <th>Grupo/Suc</th>
         <th>Hora de Entrada</th>
-        <th>Hora de Salida</th>        
+        <th>Hora de Salida</th>
         <th></th>
         <th></th>
       </thead>
       <tr v-for="row in lista" :key="row.id">
         <td class="text-right">
-          <img src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg" 
-            width="50"           
+          <img
+            src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+            width="50"
             height="50"
             v-on:click="verPerfil(row)"
-           alt="..." class="rounded-circle">
+            alt="..."
+            class="rounded-circle"
+          >
         </td>
-        <td>           
-           <button type="button"
-                class="btn btn-link" 
-                v-on:click="verPerfil(row)" >
-             {{ row.nombre }}</button>      
+        <td>
+          <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}</button>
         </td>
-        <td>          
-             {{ row.apellidos }}
-          </td>        
+        <td>{{ row.apellidos }} </td>
+        <td><small>{{ row.nombre_grupo }} / {{ row.nombre_sucursal }}</small></td>
         <td>{{ row.hora_entrada }}</td>
-        <td>{{ row.hora_salida }}</td>      
+        <td>{{ row.hora_salida }}</td>
         <td>
           <button
             class="btn btn-link red"
@@ -240,46 +264,85 @@
 </template>
 
 <script>
-
-import AlumnoModel from '../models/AlumnoModel';
+import AlumnoModel from "../models/AlumnoModel";
 
 export default {
   name: "Alumno",
   data() {
     return {
-      input:AlumnoModel,
+      input: AlumnoModel,
       response: "",
-      usuarioSesion: {},      
+      usuarioSesion: {},
+      sesion: {},
       operacion: "INSERT",
       lista: [],
+      listaGrupos:[],
       loadFunction: null,
-      //uriTemp: "http://localhost:5000/alumnos"
-      uriTemp:'https://app-restexpres.herokuapp.com/alumnos'
+      loadFunctionGrupos: null,
+      //uriTemp: "http://localhost:5000/alumnos",
+      //uriTempGrupos: "http://localhost:5000/grupos"
+      uriTemp:'https://app-restexpres.herokuapp.com/alumnos',
+      uriTempGrupos:'https://app-restexpres.herokuapp.com/grupos'
     };
   },
   mounted() {
     console.log("iniciando el componente alumno ");
-    this.usuarioSesion = this.$session.get("usuario_sesion");
+    this.sesion = this.$session.get("usuario_sesion");
+
+    if (!this.sesion || !this.sesion.usuario) {
+      console.log("No tiene sesion");
+      this.$router.push("/");
+      return;
+    }
+    this.usuarioSesion = this.sesion.usuario;
+
     console.log("Cargando lista alumno");
 
-    //this.uriTemp = 'http://localhost:5000/alumnos';
     //process.env.ROOT_API
     this.loadFunction = function() {
-      this.$http.get(this.uriTemp).then(
-        result => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;
+      this.$http
+        .get(this.uriTemp + "/" + this.usuarioSesion.co_sucursal, {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            console.log("Consulta " + this.response);
+            if (this.response != null) {
+              this.lista = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     };
 
+    //traer grupos
+    this.loadFunctionGrupos = function() {
+      this.$http
+        .get(this.uriTempGrupos, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        }).then(
+          result => {
+            this.response = result.data;
+            console.log("Grupos " + this.response);
+            if (this.response != null) {
+              this.listaGrupos = this.response;              
+             // this.input.co_grupo =  (this.listaGrupos[0] || -1 );
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
     this.loadFunction();
+    this.loadFunctionGrupos();
   },
   methods: {
     nuevo() {
@@ -287,6 +350,8 @@ export default {
       this.operacion = "INSERT";
       this.input = {
         id: 0,
+        co_sucursal: 0,
+        co_grupo:-1,
         nombre: "",
         apellidos: "",
         fecha_nacimiento: "",
@@ -299,25 +364,33 @@ export default {
         minutos_gracia: "",
         fecha_reinscripcion: "",
         foto: "",
-        genero: 1
+        genero: 0
       };
     },
     guardar() {
       //this.$http.get(process.env.ROOT_API+'/alumnos')
       console.log("Insertar");
-      this.$http.post(this.uriTemp, this.input).then(
-        result => {
-          this.response = result.data;
+      this.input.co_sucursal = this.usuarioSesion.co_sucursal;
+      this.input.genero = this.usuarioSesion.id;
 
-          if (this.response != null) {
-            console.log("" + this.response);
-            this.loadFunction();
+      this.$http
+        .post(this.uriTemp, this.input, {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        }).then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("===" + this.response);
+              this.loadFunction();
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     },
     modificar() {
       console.log("Modificar el id " + this.input.id);
@@ -356,9 +429,9 @@ export default {
       this.operacion = operacion;
       this.input = rowSelect;
     },
-    verPerfil(rowSelect){
-        console.log("fila seleccionada " + rowSelect.nombre);
-        this.$router.push({name:'PerfilAlumno',params:{id:rowSelect.id}});
+    verPerfil(rowSelect) {
+      console.log("fila seleccionada " + rowSelect.nombre);
+      this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
     }
   }
 };
