@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno container">
     <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
-    <h1>Alumnos</h1>(
+    <h1>A</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
       <button
@@ -202,7 +202,7 @@
           <th></th>
           <th>Nombre</th>
           <th class="hidden-xs">Apellidos</th>
-          <th>Grupo</th>
+        <!--  <th>Grupo</th>-->
           <th>Hora de Entrada</th>
           <th>Hora de Salida</th>
           <th></th>
@@ -220,12 +220,15 @@
             >
           </td>
           <td>
-            <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}</button>
+            <button type="button" class="btn btn-link" 
+            v-on:click="verPerfil(row)">{{ row.nombre }}
+                <span class="badge badge-info">{{ row.nombre_grupo }}</span>
+            </button>
           </td>
           <td class="hidden-xs"> {{ row.apellidos }}</td>
-          <td>
+          <!--<td>
             <small>{{ row.nombre_grupo }}</small>
-          </td>
+          </td>-->
           <td>{{ row.hora_entrada }}</td>
           <td>{{ row.hora_salida }}</td>
           <td>
@@ -238,38 +241,16 @@
           </td>
         </tr>
       </table>
-    </div>
-    <!--<div>{{response}}</div>-->
-    <!--  <v-table :data="lista">
-    <thead slot="head">
-        <th>Nombre</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Address</th>
-    </thead>
-    <tbody slot="body" slot-scope="{lista}">
-        <tr v-for="row in lista" :key="row.id">
-          <td>{{ row.nombre }}</td>
-          <td>{{ row.apellidos }}</td>
-          <td>{{ row.fecha_nacimiento }}</td>
-          <td>{{ row.alergias }}</td>
-          <td>{{ row.nota }}</td>
-          <td>{{ row.hora_entrada }}</td>
-          <td>{{ row.hora_salida }}</td>
-          <td>{{ row.costo_inscripcion }}</td>
-          <td>{{ row.costo_colegiatura }}</td>
-          <td>{{ row.minutos_gracia}}</td>
-          <td>{{ row.fecha_reinscripcion }}</td>
-        </tr>
-    </tbody>
-    </v-table>-->
+    </div>  
   </div>
 </template>
 
 <script>
 import AlumnoModel from "../models/AlumnoModel";
 
-export default {
+//import SesionHelper from "../helpers/SesionHelper"
+
+export default {  
   name: "Alumno",
   data() {
     return {
@@ -282,14 +263,17 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      //uriTemp: "http://localhost:5000/alumnos",
-      //uriTempGrupos: "http://localhost:5000/grupos"
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+        uriTemp: "http://localhost:5000/alumnos",
+        uriTempGrupos: "http://localhost:5000/grupos"
+     // uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {
     console.log("iniciando el componente alumno ");
+
+    //console.log("SesionHelper.getSesion() "+JSON.stringify(SesionHelper)) ;
+
     this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
@@ -302,9 +286,10 @@ export default {
     console.log("Cargando lista alumno");
 
     //process.env.ROOT_API
+    
     this.loadFunction = function() {
       this.$http
-        .get(this.uriTemp + "/" + this.usuarioSesion.co_sucursal, {
+        .get(this.uriTemp+ "/" + this.usuarioSesion.co_sucursal, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -324,6 +309,7 @@ export default {
     };
 
     //traer grupos
+    console.log("process.env.URL_GRUPOS "+process.env.URL_GRUPOS);
     this.loadFunctionGrupos = function() {
       this.$http
         .get(this.uriTempGrupos, {

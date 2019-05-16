@@ -1,12 +1,9 @@
 <template>
   <div class="asistencia container">
-       <router-link to="/principal" class="btn btn-lg btn-link">
-      Regresar
-     </router-link>  
-     <h1>AsistenciaS </h1>
-
+    <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
+    <h1>Asistencias</h1>
     <nav>
-      <div class="nav nav-pills center" id="nav-tab" role="tablist">
+      <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
         <a
           class="nav-item nav-link active"
           id="nav-home-tab"
@@ -34,67 +31,165 @@
         role="tabpanel"
         aria-labelledby="nav-home-tab"
       >
-        <h2>ENTRADA</h2>
-        <div class="container">
-          <div class="row">
-            <h5>Seleccionados para registrar entrada</h5>
-          </div>
-          <div class="row">
-            <div class="row jumbotron">
+        <!--<h3>ENTRADA</h3>-->
+        <div class="row m-1">
+          <button
+            type="button"
+            class="btn btn-success btn-block"
+            v-on:click="registrarEntrada()"
+          >Confirmar</button>
+        </div>
+        <div class="container jumbotron m-1">
+          <p>Alumnos seleccionados</p>
+          <div class="media">
+            <div class="row">
               <div
                 v-for="item in listaSeleccion"
                 v-bind:key="item.id"
+                class="d-flex flex-wrap align-content-center bg-light"
+              >
+                <small class="badge badge-pill badge-info">
+                  <img
+                    src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                    width="35"
+                    height="35"
+                    alt="..."
+                    class="rounded-circle"
+                  >
+                  <i>{{item.nombre}}</i>
+                  <button
+                    type="button"
+                    class="btn btn-link btn-xs text-white"
+                    v-on:click="removeToList(item)"
+                  >
+                    <span class="badge badge-pill badge-danger">x</span>
+                  </button>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container jumbotron m-1">
+          <p>Seleccione para registrar entrada</p>
+          <div class="row">
+            <div
+              v-for="item in lista"
+              v-bind:key="item.id"
+              class="d-flex align-content-center flex-wrap"
+            >
+              <small class="badge badge-pill badge-warning" v-on:click="addToList(item)">
+                <img
+                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                  width="35"
+                  height="35"
+                  alt="..."
+                  class="rounded-circle"
+                >
+                <i>{{item.nombre}}</i>
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row m-1">
+          <button
+            type="button"
+            class="btn btn-success btn-block"
+            v-on:click="registrarEntrada()"
+          >Confirmar</button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <!--<h3>SALIDA</h3>-->
+        <div class="row m-1">
+          <button
+            type="button"
+            class="btn btn-block btn-danger"
+            v-on:click="registrarSalida()"
+          >Confirmar Salida</button>
+        </div>
+        <div class="container jumbotron m-1">
+          <p>Alumnos seleccionados</p>
+          <div class="media">
+            <div class="row">
+              <div
+                v-for="item in listaSeleccionSalida"
+                v-bind:key="item.id"
                 class="d-flex align-content-center flex-wrap"
               >
-                <span class="label label-default">
-                  {{item.nombre}}
+                <small class="badge badge-pill badge-info">
+                  <img
+                    src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                    width="35"
+                    height="35"
+                    alt="..."
+                    class="rounded-circle"
+                  >
+                  <i>{{item.nombre_alumno}}</i>
+                  <button
+                    type="button"
+                    class="btn btn-link btn-xs text-white"
+                    v-on:click="removeToListSalida(item)"
+                  >
+                    <span class="badge badge-pill badge-danger">x</span>
+                  </button>
+                </small>
+
+                <!--<span class="label label-default">
+                  {{item.nombre_alumno}}
                   <span class="badge badge-primary">
                     <button
                       type="button"
                       class="btn btn-link btn-sm text-white"
-                      v-on:click="removeToList(item)"
+                      v-on:click="removeToListSalida(item)"
                     >X</button>
                   </span>
-                </span>
+                </span>-->
               </div>
             </div>
-          </div>
-
-          <div class="row">
-            <h5>Seleccionar para registrar entrada</h5>
-          </div>
-          <div class="row">
-            <div class="row jumbotron">
-              <div
-                v-for="item in lista"
-                v-bind:key="item.id"
-                class="d-flex align-content-center flex-wrap"
-              >
-                <div class="card" style="width: 10rem;">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ item.nombre }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{item.apellidos}}</h6>
-                    <button
-                      type="button"
-                      class="btn btn-link"
-                      v-on:click="addToList(item)"
-                    >Seleccionar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row center">
-            <button
-              type="button"
-              class="btn btn-lg btn-primary"
-              v-on:click="registrarEntrada()"
-            >Confirmar</button>
           </div>
         </div>
-      </div>
-      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-        <h2>SALIDA</h2>
+
+        <div class="container jumbotron m-1">
+          <p>Seleccione para registrar salida</p>
+          <div class="row">
+            <div
+              v-for="item in listaRecibidos"
+              v-bind:key="item.id"
+              class="d-flex align-content-center flex-wrap"
+            >
+              <small  v-on:click="addToListSalida(item)" class="badge badge-pill badge-info">
+                <img
+                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                  width="35"
+                  height="35"
+                  alt="..."
+                  class="rounded-circle"
+                >
+                <i>{{item.nombre_alumno}}</i>              
+              </small>
+
+              <!--<span class="label label-default">
+                {{item.nombre_alumno}}
+                <span class="badge badge-primary">
+                  <button
+                    type="button"
+                    class="btn btn-link btn-sm text-white"
+                    v-on:click="addToListSalida(item)"
+                  >X</button>
+                </span>
+              </span>-->
+            </div>
+          </div>
+        </div>
+        <div class="row m-1">
+          <button
+            type="button"
+            class="btn btn-block btn-danger"
+            v-on:click="registrarSalida()"
+          >Confirmar Salida</button>
+        </div>
+        <!--
         <div class="container">
           <div class="row">
             <h5>Seleccionados para registrar salida</h5>
@@ -106,8 +201,7 @@
                 v-bind:key="item.id"
                 class="d-flex align-content-center flex-wrap"
               >
-
-               <span class="label label-default">
+                <span class="label label-default">
                   {{item.nombre_alumno}}
                   <span class="badge badge-primary">
                     <button
@@ -116,7 +210,7 @@
                       v-on:click="removeToListSalida(item)"
                     >X</button>
                   </span>
-                </span>                
+                </span>
               </div>
             </div>
           </div>
@@ -150,7 +244,7 @@
               v-on:click="registrarSalida()"
             >Confirmar Salida</button>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -164,10 +258,10 @@ export default {
   name: "Asistencia",
   data() {
     return {
-      //uriTemp: "http://localhost:5000/asistencia",
-      uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
+      uriTemp: "http://localhost:5000/asistencia",
+      //uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
       usuarioSesion: {},
-      sesion:{},
+      sesion: {},
       item: AlumnoModel,
       lista: [],
       listaSeleccion: [],
@@ -180,45 +274,57 @@ export default {
   mounted() {
     console.log("iniciando el componente de asistencia ");
     this.sesion = this.$session.get("usuario_sesion");
-    
+
     if (!this.sesion || !this.sesion.usuario) {
       console.log("No tiene sesion");
       this.$router.push("/");
       return;
-    }    
+    }
     this.usuarioSesion = this.sesion.usuario;
 
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function() {
-      this.$http.get(this.uriTemp + "/alumnos_por_recibidos").then(
-        result => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;
+      this.$http
+        .get(this.uriTemp + "/alumnos_por_recibidos", {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            console.log("Consulta " + this.response);
+            if (this.response != null) {
+              this.lista = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     };
 
     //Funcion get alumnos salida
     this.loadFunctionAlumnosSalida = function() {
       this.listaRecibidos = [];
-      this.$http.get(this.uriTemp + "/alumnos_recibidos").then(
-        result => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.listaRecibidos = this.response;
+      this.$http
+        .get(this.uriTemp + "/alumnos_recibidos", {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            console.log("Consulta " + this.response);
+            if (this.response != null) {
+              this.listaRecibidos = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     };
 
     this.loadFunction();
@@ -257,7 +363,11 @@ export default {
           .post(
             this.uriTemp + "/entradaAlumnos",
             { ids: ids },
-            { emulateJSON: true }
+            {
+              headers: {
+                "x-access-token": this.sesion.token
+              }
+            }
           )
           .then(
             result => {
@@ -269,7 +379,7 @@ export default {
                 this.loadFunction();
                 this.loadFunctionAlumnosSalida();
                 this.listaSeleccion = [];
-                this.listaSeleccionSalida=[];
+                this.listaSeleccionSalida = [];
               }
             },
             error => {
@@ -312,7 +422,11 @@ export default {
           .post(
             this.uriTemp + "/salidaAlumnos",
             { ids: ids },
-            { emulateJSON: true }
+            {
+              headers: {
+                "x-access-token": this.sesion.token
+              }
+            }
           )
           .then(
             result => {

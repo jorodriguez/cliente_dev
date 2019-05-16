@@ -1,6 +1,6 @@
 <template>
   <div class="login container">
-    <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100">
+    <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100">-->    
     <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal"></h1>
       <input
@@ -39,8 +39,8 @@ export default {
         password: ""
       },
       response: "",
-      uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
-      //uriTemp: "http://localhost:5000/auth/login"
+     // uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
+      uriTemp: "http://localhost:5000/auth/login"
     };
   },
   mounted() {
@@ -50,24 +50,18 @@ export default {
   },
   methods: {
     login() {
-      console.log("login con rest ");
-
+      console.log("login con rest ");      
       var data = { correo: this.input.correo, password: this.input.password };
-
+    
       this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(
+      //this.$http.post(process.env.API_LOGIN, data, { emulateJSON: true }).then(
         result => {
           console.log("En el login");
           this.response = result.data;
 
-          if (this.response.auth) {
-            
+          if (this.response.auth) {            
             this.$session.set("usuario_sesion", this.response);
-            this.$session.set("jwt", this.response.token);
-            console.log("HExADERS "+this.$http.headers.common["x-access-token"]);
-            console.log("HEADERS "+this.$http.headers.common["Authorization"]);
-
-            console.log("==> " + this.response);
-
+            this.$session.set("jwt", this.response.token);            
             this.$router.push({ name: "PaginaPrincipal" });
           } else {
             this.response = "No se encuentra el usuario..";
@@ -88,3 +82,4 @@ export default {
 
 <style scoped>
 </style>
+
