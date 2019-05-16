@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno container">
     <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
-    <h1>A</h1>(
+    <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
       <button
@@ -26,15 +26,14 @@
 
           <div class="modal-body text-left">
             <form>
-              
-              
+              <div>
                 <label>Nombre</label>
                 <input
                   type="text"
                   v-model="input.nombre"
                   class="form-control"
                   placeholder="Nombre"
-                  required                  
+                  required
                 >
                 <label>Apellidos</label>
                 <input
@@ -44,7 +43,7 @@
                   placeholder="Apellidos"
                   required
                 >
-                <label>Fecha de nacimiento </label>
+                <label>Fecha de nacimiento</label>
                 <input
                   type="date"
                   pattern="yyyy-MM-dd"
@@ -62,20 +61,22 @@
                 >
 
                 <label>Grupo</label>
-                <div class="form-row">
-                <select v-model="input.co_grupo"
-                class="form-control"
-                placeholder="Grupo"
-                required
-                autofocus
-                >                  
-                <option v-for="grupo in listaGrupos"
-                          v-bind:value="grupo.id"
-                          v-bind:key="grupo.id"
-                          >{{ grupo.nombre }}</option>
+                <select
+                  v-model="input.co_grupo"
+                  class="form-control"
+                  placeholder="Grupo"
+                  required
+                  autofocus
+                >
+                  <option
+                    v-for="grupo in listaGrupos"
+                    v-bind:value="grupo.id"
+                    v-bind:key="grupo.id"
+                  >{{ grupo.nombre }}</option>
                 </select>
+
                 <div class="row">
-                  <div class="col col-md-6">
+                  <div class="col-sm-6">
                     <label>Hora Entrada</label>
                     <input
                       type="time"
@@ -85,7 +86,7 @@
                       required
                     >
                   </div>
-                  <div class="col col-md-6">
+                  <div class="col-sm-6">
                     <label>Hora Salida</label>
                     <input
                       type="time"
@@ -96,6 +97,7 @@
                     >
                   </div>
                 </div>
+
                 <label>Minutos de Gracia</label>
                 <input
                   type="number"
@@ -104,31 +106,25 @@
                   placeholder="Min. Gracia"
                   required
                 >
-                <div class="col col-md-6">
-                    <label>Costo Colegiatura</label>
-                    <input
-                      type="number"
-                      v-model="input.costo_colegiatura"
-                      class="form-control"
-                      placeholder="Costo Colegiatura"
-                      required
-                    >
-                  </div>                               
-                
-                <div class="row">
-                  <div class="col col-md-6">
-                    <label>Costo Inscripción</label>
-                    <input
-                      type="number"
-                      v-model="input.costo_inscripcion"
-                      class="form-control"
-                      placeholder="Costo Inscripcion"
-                      required
-                    >
-                  </div>
-                  
-                </div>
-                
+
+                <label>Costo Colegiatura</label>
+                <input
+                  type="number"
+                  v-model="input.costo_colegiatura"
+                  class="form-control"
+                  placeholder="Costo Colegiatura"
+                  required
+                >
+
+                <label>Costo Inscripción</label>
+                <input
+                  type="number"
+                  v-model="input.costo_inscripcion"
+                  class="form-control"
+                  placeholder="Costo Inscripcion"
+                  required
+                >
+
                 <label>F. de Reinscripción</label>
                 <input
                   type="date"
@@ -200,45 +196,49 @@
       </div>
     </div>
 
-    <table class="table table-striped">
-      <thead>
-        <th></th>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Grupo/Suc</th>
-        <th>Hora de Entrada</th>
-        <th>Hora de Salida</th>
-        <th></th>
-        <th></th>
-      </thead>
-      <tr v-for="row in lista" :key="row.id">
-        <td class="text-right">
-          <img
-            src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-            width="50"
-            height="50"
-            v-on:click="verPerfil(row)"
-            alt="..."
-            class="rounded-circle"
-          >
-        </td>
-        <td>
-          <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}</button>
-        </td>
-        <td>{{ row.apellidos }} </td>
-        <td><small>{{ row.nombre_grupo }} / {{ row.nombre_sucursal }}</small></td>
-        <td>{{ row.hora_entrada }}</td>
-        <td>{{ row.hora_salida }}</td>
-        <td>
-          <button
-            class="btn btn-link red"
-            data-toggle="modal"
-            data-target="#modal_eliminar_alumno"
-            v-on:click="select(row,'DELETE')"
-          >Eliminar</button>
-        </td>
-      </tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th></th>
+          <th>Nombre</th>
+          <th class="hidden-xs">Apellidos</th>
+          <th>Grupo</th>
+          <th>Hora de Entrada</th>
+          <th>Hora de Salida</th>
+          <th></th>
+          <th></th>
+        </thead>
+        <tr v-for="row in lista" :key="row.id">
+          <td class="text-right">
+            <img
+              src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+              width="50"
+              height="50"
+              v-on:click="verPerfil(row)"
+              alt="..."
+              class="rounded-circle"
+            >
+          </td>
+          <td>
+            <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}</button>
+          </td>
+          <td class="hidden-xs"> {{ row.apellidos }}</td>
+          <td>
+            <small>{{ row.nombre_grupo }}</small>
+          </td>
+          <td>{{ row.hora_entrada }}</td>
+          <td>{{ row.hora_salida }}</td>
+          <td>
+            <button
+              class="btn btn-link red"
+              data-toggle="modal"
+              data-target="#modal_eliminar_alumno"
+              v-on:click="select(row,'DELETE')"
+            >Eliminar</button>
+          </td>
+        </tr>
+      </table>
+    </div>
     <!--<div>{{response}}</div>-->
     <!--  <v-table :data="lista">
     <thead slot="head">
@@ -279,13 +279,13 @@ export default {
       sesion: {},
       operacion: "INSERT",
       lista: [],
-      listaGrupos:[],
+      listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
       //uriTemp: "http://localhost:5000/alumnos",
       //uriTempGrupos: "http://localhost:5000/grupos"
-      uriTemp:'https://app-restexpres.herokuapp.com/alumnos',
-      uriTempGrupos:'https://app-restexpres.herokuapp.com/grupos'
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {
@@ -330,13 +330,14 @@ export default {
           headers: {
             "x-access-token": this.sesion.token
           }
-        }).then(
+        })
+        .then(
           result => {
             this.response = result.data;
             console.log("Grupos " + this.response);
             if (this.response != null) {
-              this.listaGrupos = this.response;              
-             // this.input.co_grupo =  (this.listaGrupos[0] || -1 );
+              this.listaGrupos = this.response;
+              // this.input.co_grupo =  (this.listaGrupos[0] || -1 );
             }
           },
           error => {
@@ -354,7 +355,7 @@ export default {
       this.input = {
         id: 0,
         co_sucursal: 0,
-        co_grupo:-1,
+        co_grupo: -1,
         nombre: "",
         apellidos: "",
         fecha_nacimiento: "",
@@ -381,7 +382,8 @@ export default {
           headers: {
             "x-access-token": this.sesion.token
           }
-        }).then(
+        })
+        .then(
           result => {
             this.response = result.data;
 
@@ -397,35 +399,47 @@ export default {
     },
     modificar() {
       console.log("Modificar el id " + this.input.id);
-      this.$http.put(this.uriTemp + "/" + this.input.id, this.input).then(
-        result => {
-          this.response = result.data;
-
-          if (this.response != null) {
-            console.log("" + this.response);
-            this.loadFunction();
+      this.$http
+        .put(this.uriTemp + "/" + this.input.id, this.input, {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              this.loadFunction();
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
-      this.$http.delete(this.uriTemp + "/" + this.input.id).then(
-        result => {
-          this.response = result.data;
-
-          if (this.response != null) {
-            console.log("" + this.response);
-            this.loadFunction();
+      this.$http
+        .delete(this.uriTemp + "/" + this.input.id, {
+          headers: {
+            "x-access-token": this.sesion.token
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              this.loadFunction();
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
     },
     select(rowSelect, operacion) {
       console.log("fila seleccionada " + rowSelect.nombre);

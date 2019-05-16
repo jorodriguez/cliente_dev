@@ -68,24 +68,6 @@
             >
               <form>
                 <div class="form-group">
-                  <label for="selectGrupo">Grupo</label>
-                  <select
-                    v-model="alumno.co_grupo"
-                    class="form-control"
-                    placeholder="Grupo"
-                    required
-                    autofocus
-                  >
-                    <option
-                      id="selectGrupo"
-                      v-for="grupo in listaGrupos"
-                      v-bind:value="grupo.id"
-                      v-bind:key="grupo.id"
-                    >{{ grupo.nombre }}</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
                   <label for="inputNombre">Nombre</label>
                   <input
                     id="inputNombre"
@@ -97,6 +79,7 @@
                     autofocus
                   >
                 </div>
+
                 <div class="form-group">
                   <label for="inputApellidos">Apellidos</label>
                   <input
@@ -130,10 +113,25 @@
                     placeholder="Alergias"
                   >
                 </div>
+
                 <div class="form-group">
-                  <label for="inputNota">Nota</label>
-                  <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
+                  <label for="selectGrupo">Grupo</label>
+                  <select
+                    v-model="alumno.co_grupo"
+                    class="form-control"
+                    placeholder="Grupo"
+                    required
+                    autofocus
+                  >
+                    <option
+                      id="selectGrupo"
+                      v-for="grupo in listaGrupos"
+                      v-bind:value="grupo.id"
+                      v-bind:key="grupo.id"
+                    >{{ grupo.nombre }}</option>
+                  </select>
                 </div>
+
                 <div class="row">
                   <div class="col col-md-6">
                     <div class="form-group">
@@ -162,14 +160,15 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group">
-                  <label for="inputCostoInscripcion">Costo Inscripción</label>
+                  <label for="inputMinutosGracia">Minutos de Gracia</label>
                   <input
-                    id="inputCostoInscripcion"
+                    id="inputMinutosGracia"
                     type="number"
-                    v-model="alumno.costo_inscripcion"
+                    v-model="alumno.minutos_gracia"
                     class="form-control"
-                    placeholder="Costo Inscripcion"
+                    placeholder="Min. Gracia"
                     required
                   >
                 </div>
@@ -184,17 +183,19 @@
                     required
                   >
                 </div>
+
                 <div class="form-group">
-                  <label for="inputMinutosGracia">Minutos de Gracia</label>
+                  <label for="inputCostoInscripcion">Costo Inscripción</label>
                   <input
-                    id="inputMinutosGracia"
+                    id="inputCostoInscripcion"
                     type="number"
-                    v-model="alumno.minutos_gracia"
+                    v-model="alumno.costo_inscripcion"
                     class="form-control"
-                    placeholder="Min. Gracia"
+                    placeholder="Costo Inscripcion"
                     required
                   >
                 </div>
+
                 <div class="form-group">
                   <label for="inputFReinscripcion">Fecha de Reinscripción</label>
                   <input
@@ -206,6 +207,12 @@
                     required
                   >
                 </div>
+
+                <div class="form-group">
+                  <label for="inputNota">Nota</label>
+                  <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
+                </div>
+
                 <button
                   type="button"
                   class="btn btn-lg btn-primary"

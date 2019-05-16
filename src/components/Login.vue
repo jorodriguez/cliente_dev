@@ -1,8 +1,8 @@
 <template>
-  <div class="login">
-    <img src="../assets/logo.png">
+  <div class="login container">
+    <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100">
     <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+      <h1 class="h3 mb-3 font-weight-normal"></h1>
       <input
         type="email"
         v-model="input.correo"
