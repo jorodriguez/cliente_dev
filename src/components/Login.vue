@@ -46,16 +46,7 @@ export default {
   mounted() {
     console.log("iniciando ");
     this.$session.clear();
-/*
-    var sesion = this.$session.get("usuario_sesion");
-    console.log("== " + sesion);
 
-    if (sesion && sesion.usuario) {
-      console.log("redirect principal");
-      this.$router.push({ name: "PaginaPrincipal" });
-    } else {
-      this.$session.clear();
-    }*/
   },
   methods: {
     login() {
