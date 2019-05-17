@@ -204,7 +204,7 @@ export default {
   name: "Asistencia",
   data() {
     return {
-     // uriTemp: "http://localhost:5000/asistencia",
+      //uriTemp: "http://localhost:5000/asistencia",
       uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
       usuarioSesion: {},
       sesion: {},
@@ -306,7 +306,7 @@ export default {
         this.$http
           .post(
             this.uriTemp + "/entradaAlumnos",
-            { ids: ids },
+            { ids: ids, genero :this.usuarioSesion.id },
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -365,7 +365,7 @@ export default {
         this.$http
           .post(
             this.uriTemp + "/salidaAlumnos",
-            { ids: ids },
+            { ids: ids , genero :this.usuarioSesion.id},
             {
               headers: {
                 "x-access-token": this.sesion.token
