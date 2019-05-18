@@ -1,6 +1,11 @@
 <template>
   <div class="cat_alumno container">
-    <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
+     <div class="text-left">
+      <router-link to="/principal">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+      </router-link>
+    </div>
+    
     <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
@@ -202,7 +207,7 @@
           <th></th>
           <th>Nombre</th>
           <th class="hidden-xs">Apellidos</th>
-        <!--  <th>Grupo</th>-->
+          <th>Grupo</th>
           <th>Hora de Entrada</th>
           <th>Hora de Salida</th>
           <th></th>
@@ -221,14 +226,13 @@
           </td>
           <td>
             <button type="button" class="btn btn-link" 
-            v-on:click="verPerfil(row)">{{ row.nombre }}
-                <span class="badge badge-info">{{ row.nombre_grupo }}</span>
+            v-on:click="verPerfil(row)">{{ row.nombre }}                
             </button>
           </td>
           <td class="hidden-xs"> {{ row.apellidos }}</td>
-          <!--<td>
-            <small>{{ row.nombre_grupo }}</small>
-          </td>-->
+          <td>
+            <span class="badge badge-info">{{ row.nombre_grupo }}</span>
+          </td>
           <td>{{ row.hora_entrada }}</td>
           <td>{{ row.hora_salida }}</td>
           <td>
@@ -263,10 +267,10 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      //uriTemp: "http://localhost:5000/alumnos",
-      //uriTempGrupos: "http://localhost:5000/grupos"
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"
+      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {

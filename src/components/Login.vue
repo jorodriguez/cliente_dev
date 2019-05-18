@@ -39,12 +39,12 @@ export default {
         password: ""
       },
       response: "",
-      uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
-      //uriTemp: "http://localhost:5000/auth/login"
+      //uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
+      uriTemp: "http://localhost:5000/auth/login"
     };
   },
   mounted() {
-    console.log("iniciando ");
+    console.log("iniciando login ");
     this.$session.clear();
 
   },

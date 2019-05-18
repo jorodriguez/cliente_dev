@@ -1,6 +1,11 @@
 <template>
   <div class="asistencia container">
-    <router-link to="/principal" class="btn btn-lg btn-link">Regresar</router-link>
+    <div class="text-left">
+      <router-link to="/principal">
+        <i class="fas fa-arrow-circle-left text-gray"  style="font-size:20px;"></i>
+      </router-link>
+    </div>
+
     <h1>Asistencias</h1>
     <span>{{this.mensaje}}</span>
     <nav>
@@ -79,7 +84,7 @@
               v-bind:key="item.id"
               class="d-flex align-content-center flex-wrap"
             >
-              <small class="badge badge-pill badge-warning" v-on:click="addToList(item)">
+              <small class="badge badge-pill badge-warning border border-primary" v-on:click="addToList(item)">
                 <img
                   src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                   width="35"
@@ -159,7 +164,7 @@
               v-bind:key="item.id"
               class="d-flex align-content-center flex-wrap"
             >
-              <small  v-on:click="addToListSalida(item)" class="badge badge-pill badge-info">
+              <small v-on:click="addToListSalida(item)" class="badge badge-pill badge-info">
                 <img
                   src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                   width="35"
@@ -167,7 +172,7 @@
                   alt="..."
                   class="rounded-circle"
                 >
-                <i>{{item.nombre_alumno}}</i>              
+                <i>{{item.nombre_alumno}}</i>
               </small>
 
               <!--<span class="label label-default">
@@ -190,7 +195,6 @@
             v-on:click="registrarSalida()"
           >Confirmar Salida</button>
         </div>
-        
       </div>
     </div>
   </div>
@@ -204,8 +208,8 @@ export default {
   name: "Asistencia",
   data() {
     return {
-      //uriTemp: "http://localhost:5000/asistencia",
-      uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
+      uriTemp: "http://localhost:5000/asistencia",
+      //uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -231,11 +235,18 @@ export default {
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function() {
       this.$http
-        .get(this.uriTemp + "/alumnos_por_recibidos"+ "/" + this.usuarioSesion.co_sucursal, {
-          headers: {
-            "x-access-token": this.sesion.token
+        .get(
+          this.uriTemp +
+            "/alumnos_por_recibidos" +
+            "/" +
+            this.usuarioSesion.co_sucursal,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
           }
-        }).then(
+        )
+        .then(
           result => {
             this.response = result.data;
             console.log("Consulta " + this.response);
@@ -253,11 +264,17 @@ export default {
     this.loadFunctionAlumnosSalida = function() {
       this.listaRecibidos = [];
       this.$http
-        .get(this.uriTemp + "/alumnos_recibidos"+ "/" + this.usuarioSesion.co_sucursal, {
-          headers: {
-            "x-access-token": this.sesion.token
+        .get(
+          this.uriTemp +
+            "/alumnos_recibidos" +
+            "/" +
+            this.usuarioSesion.co_sucursal,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
           }
-        })
+        )
         .then(
           result => {
             this.response = result.data;
@@ -306,7 +323,7 @@ export default {
         this.$http
           .post(
             this.uriTemp + "/entradaAlumnos",
-            { ids: ids, genero :this.usuarioSesion.id },
+            { ids: ids, genero: this.usuarioSesion.id },
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -365,13 +382,14 @@ export default {
         this.$http
           .post(
             this.uriTemp + "/salidaAlumnos",
-            { ids: ids , genero :this.usuarioSesion.id},
+            { ids: ids, genero: this.usuarioSesion.id },
             {
               headers: {
                 "x-access-token": this.sesion.token
               }
             }
-          ).then(
+          )
+          .then(
             result => {
               this.response = result.data;
               if (this.response != null) {

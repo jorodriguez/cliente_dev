@@ -2,8 +2,12 @@
   <div class="perfil container">
     <div class="alert alert-info">{{mensaje}}</div>
     <div v-if="display==true" class="text-left">
-      <router-link :to="{ name: 'CatAlumno', params: {} }">Regresar</router-link>
-      <!--<h2 class="center" >Perfil</h2>-->
+      <div class="text-left">
+        <router-link :to="{ name: 'CatAlumno', params: {} }">
+          <i class="fas fa-arrow-circle-left text-gray"></i>
+        </router-link>
+      </div>
+
       <div class="row center">
         <div class="col text-left">
           <img
@@ -256,10 +260,10 @@ export default {
       alumno: AlumnoModel,
       listaGrupos: [],
       display: true,
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-      //uriTemp: "http://localhost:5000/alumnos",
-      //uriTempGrupos: "http://localhost:5000/grupos",
+      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos",
       response: "",
       mensaje: "",
       sesion: {},
