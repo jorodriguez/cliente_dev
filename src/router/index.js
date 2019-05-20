@@ -13,6 +13,7 @@ Vue.use(VueSession);
 
 //{ path: '/', name: 'Login', component: Login },
 export default new Router({
+  mode: 'history',
   routes: [
     { path: '/', name:'Login', component: Login },
     { path: '/principal', name: 'PaginaPrincipal', component: Principal },
