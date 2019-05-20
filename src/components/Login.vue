@@ -1,7 +1,7 @@
 <template>
   <div class="login container">
-    <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
-    -->
+    <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
+    
     <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal"></h1>
       <input
@@ -40,8 +40,8 @@ export default {
         password: ""
       },
       response: "",
-      //uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
-      uriTemp: "http://localhost:5000/auth/login"
+      uriTemp:'https://app-restexpres.herokuapp.com/auth/login'
+      //uriTemp: "http://localhost:5000/auth/login"
     };
   },
   mounted() {

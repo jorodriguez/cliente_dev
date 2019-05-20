@@ -208,8 +208,8 @@ export default {
   name: "Asistencia",
   data() {
     return {
-      uriTemp: "http://localhost:5000/asistencia",
-      //uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
+      //uriTemp: "http://localhost:5000/asistencia",
+      uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
