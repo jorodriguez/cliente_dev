@@ -3,9 +3,11 @@ import Vue from 'vue';
 var Actividad = new Vue({
     data : {
         id: 0,
-        nombre :"",        
-        tipo_actividad:{},
-        sub_actividad:{},
+        alumnosIds:[],
+        nombre :"",    
+        cat_actividad:-1,    
+        tipo_actividad:-1,
+        sub_actividad:-1,        
         nota:""
         url_foto: "",
         genero: 0

@@ -7,7 +7,7 @@
     </div>
 
     <div class="panel">
-      <h2>Actividades</h2>(
+      <h2>Registrar Actividad</h2>(
       <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     </div>
     <div class="panel">
@@ -176,9 +176,12 @@ export default {
       listaGrupos:[],
       loadFunction: null,
       loadFunctionAlumnos: null,
-      uriTemp: "http://localhost:5000/actividad/catalogo_actividad",
-      uriTempAlumnos: "http://localhost:5000/alumnos",
-      uriTempAsistencia: "http://localhost:5000/asistencia",
+      //uriTemp: "http://localhost:5000/actividad/catalogo_actividad",
+      uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
+      //uriTempAlumnos: "http://localhost:5000/alumnos",
+      uriTempAlumnos: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempAsistencia: "http://localhost:5000/asistencia",
+      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
       
     };
   },
