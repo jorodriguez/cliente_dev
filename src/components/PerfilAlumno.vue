@@ -49,7 +49,7 @@
                 role="tab"
                 aria-controls="pills-profile"
                 aria-selected="false"
-              >Datos</a>
+              >Inscripción</a>
             </li>
             <li class="nav-item">
               <a
@@ -60,7 +60,7 @@
                 role="tab"
                 aria-controls="pills-contact"
                 aria-selected="false"
-              >Contacto</a>
+              >Familia</a>
             </li>
           </ul>
           <div class="tab-content" id="pills-tabContent">
@@ -229,7 +229,132 @@
               id="pills-profile"
               role="tabpanel"
               aria-labelledby="pills-profile-tab"
-            >DATOS GENERALES</div>
+            >
+              <!-- DATOS DE INSCRIPCION  -->
+              <div class="form-group">
+                <label for="inputInscripcion">Fecha de Inscripción</label>
+                <input
+                  id="inputInscripcion"
+                  type="date"
+                  v-model="alumno.fecha_inscripcion"
+                  class="form-control"
+                  placeholder="Fecha de inscripción"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="inputInscripcion">Nombre de cariño</label>
+                <input
+                  id="inputNombreCarino"
+                  type="text"
+                  v-model="alumno.nombre_carino"
+                  class="form-control"
+                  placeholder="Nombre de cariño"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="inputHermanos">Hermanos</label>
+                <input
+                  id="inputHermanos"
+                  type="text"
+                  v-model="alumno.formato_inscripcion.hermanos"
+                  class="form-control"
+                  placeholder="Hermanos"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="inputPadres">Padres</label>
+
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input
+                    type="radio"
+                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                    id="customRadioInline1"
+                    name="radio_estado_conviencia"
+                    class="custom-control-input"
+                    value="Juntos"
+                  >
+                  <label class="custom-control-label" for="customRadioInline1">Juntos</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input
+                    type="radio"
+                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                    id="customRadioInline2"
+                    name="radio_estado_conviencia"
+                    class="custom-control-input"
+                    value="Separados"
+                  >
+                  <label class="custom-control-label" for="customRadioInline2">Separados</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input
+                    type="radio"
+                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                    id="customRadioInline2"
+                    name="radio_estado_conviencia"
+                    class="custom-control-input"
+                    value="Viudoo(o)"
+                  >
+                  <label class="custom-control-label" for="customRadioInline2">Viudo(a)</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input
+                    type="radio"
+                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                    id="customRadioInline2"
+                    name="radio_estado_conviencia"
+                    class="custom-control-input"
+                    value="Soltero"
+                  >
+                  <label class="custom-control-label" for="customRadioInline2">Soltero(a)</label>
+                </div>
+                {{alumno.formato_inscripcion.estado_convivencia_padres}}
+              </div>
+
+              <div class="form-group">
+                <label for="inputServicioContratar">Servicio a contratar</label>
+                <select
+                  id="inputServicioContratar"
+                  v-model="alumno.formato_inscripcion.servicio_contratar"
+                  class="form-control"
+                  placeholder="Servicio"
+                  required
+                  autofocus
+                >
+                  <option value="Guarderia" selected>Guardería</option>
+                  <option value="Estancia">Estancia</option>
+                  <option value="Kinder">Kinder</option>
+                  <option value="Curso">Curso / Taller</option>
+                  <option value="Curso">Taller</option>
+                  <option value="Kinder">Kinder</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="inputHorario">Horario</label>
+                <input
+                  id="inputHorario"
+                  type="text"
+                  v-model="alumno.formato_inscripcion.horario_servicio"
+                  class="form-control"
+                  placeholder="Nombre de cariño"
+                  required
+                >
+              </div>
+
+              <div class="container">
+                <h5 class="text-center text-muted">Datos de Domicilio</h5>
+                <div class="card">
+                  <div class="card-header">Header</div>
+                  <div class="card-body">Content</div>
+                </div>
+              </div>
+
+              <!-- DATOS DE INSCRIPCION  -->
+            </div>
             <div
               class="tab-pane fade"
               id="pills-contact"
@@ -247,10 +372,10 @@
   </div>
 </template>
 
-
 <script>
 import router from "@/router/index";
 import AlumnoModel from "../models/AlumnoModel";
+import FormatoModel from "../models/FormatoModel";
 
 export default {
   name: "PerfilAlumno",
@@ -260,10 +385,10 @@ export default {
       alumno: AlumnoModel,
       listaGrupos: [],
       display: true,
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-      //uriTemp: "http://localhost:5000/alumnos",
-      //uriTempGrupos: "http://localhost:5000/grupos",
+      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos",
       response: "",
       mensaje: "",
       sesion: {},
@@ -329,6 +454,10 @@ export default {
     //FIXME : pasar al servicio
     modificar() {
       console.log("Modificar el id " + this.alumno.id);
+      this.mensaje = JSON.stringify(this.alumno);
+
+      this.alumno.genero = this.usuarioSesion.id;
+
       this.$http
         .put(this.uriTemp + "/" + this.alumno.id, this.alumno, {
           headers: {

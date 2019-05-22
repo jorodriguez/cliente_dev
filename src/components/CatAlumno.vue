@@ -257,8 +257,8 @@ import AlumnoModel from "../models/AlumnoModel";
 export default {  
   name: "Alumno",
   data() {
-    return {
-      input: AlumnoModel,
+    return {      
+      input: AlumnoModel,    
       response: "",
       usuarioSesion: {},
       sesion: {},
@@ -267,10 +267,10 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      //uriTemp: "http://localhost:5000/alumnos",
-      //uriTempGrupos: "http://localhost:5000/grupos"
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"
+      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {
@@ -344,10 +344,15 @@ export default {
       this.operacion = "INSERT";
       this.input = {
         id: 0,
-        co_sucursal: 0,
-        co_grupo: -1,
-        nombre: "",
+        //formato_inscripcion:FormatoModel,        
+        co_sucursal:0,
+        co_grupo:0,
+        nombre: "",        
         apellidos: "",
+        nombre_carino:"",
+        sexo:"",        
+        nombre_grupo:"",
+        nombre_sucursal:"",
         fecha_nacimiento: "",
         alergias: "",
         nota: "",
@@ -355,11 +360,11 @@ export default {
         hora_salida: "",
         costo_inscripcion: "",
         costo_colegiatura: "",
-        minutos_gracia: "",
+        minutos_gracia: "",        
         fecha_reinscripcion: "",
         foto: "",
-        genero: 0
-      };
+        genero: 1
+      };       
     },
     guardar() {
       //this.$http.get(process.env.ROOT_API+'/alumnos')
@@ -390,7 +395,7 @@ export default {
     modificar() {
       console.log("Modificar el id " + this.input.id);
       this.$http
-        .put(this.uriTemp + "/" + this.input.id, this.input, {
+        .put(this.uriTemp + "/" + this.input.id,this.input, {
           headers: {
             "x-access-token": this.sesion.token
           }
