@@ -264,7 +264,7 @@
                 <label for="inputHermanos">No. Hermanos</label>
                 <input
                   id="inputHermanos"
-                  type="text"
+                  type="number"
                   v-model="alumno.formato_inscripcion.hermanos"
                   class="form-control"
                   placeholder="Hermanos"
@@ -360,8 +360,7 @@
                   <div class="card-body">Content</div>
                 </div>
               </div>-->
-              <fieldset class="form-group">
-                <legend>Datos de Domicilio</legend>
+             
                 <div class="form-group">
                   <label for="inputDireccion">Dirección</label>
                   <input
@@ -372,10 +371,8 @@
                     placeholder="Dirección, No. de Calle "
                     required
                   >
-                </div>
-              </fieldset>
-              <!-- DATOS DE DOMICILIO -->
-
+                </div>            
+             
               <!-- DATOS DE INSCRIPCION  -->
             </div>
             <div
@@ -383,7 +380,139 @@
               id="pills-contact"
               role="tabpanel"
               aria-labelledby="pills-contact-tab"
-            >CONTACTO</div>
+            >
+
+            <!-- DATOS DE FAMILIA -->
+            <div class="form-group">
+                  <label for="inputNombreMadre">Nombre de la Madre</label>
+                  <input
+                    id="inputNombreMadre"
+                    type="text"
+                    v-model="alumno.madre.nombre"
+                    class="form-control"
+                    placeholder="Nombre de la Madre"
+                    required
+                  >
+              </div>   
+
+               <div class="form-group">
+                  <label for="inputCelular">Celular </label>
+                  <input
+                    id="inputCelular"
+                    type="text"
+                    v-model="alumno.madre.celular"
+                    class="form-control"
+                    placeholder="Numero de celular"                    
+                  >
+              </div> 
+               <div class="form-group">
+                  <label for="inputFechaNacimiento">Fecha Nacimiento </label>
+                  <input
+                    id="inputFechaNacimiento"
+                    type="date"
+                    v-model="alumno.madre.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="Fecha de Nacimiento"                    
+                  >
+              </div> 
+              <div class="form-group">
+                  <label for="inputCorreoMadre">Correo </label>
+                  <input
+                    id="inputCorreoMadre"
+                    type="email"
+                    v-model="alumno.madre.correo"
+                    class="form-control"
+                    placeholder="Correo electronico"                    
+                  >
+              </div> 
+               <div class="form-group hidden">
+                  <label for="inputCorreo">Password</label>
+                  <input
+                    id="inputCorreo"
+                    type="password"
+                    v-model="alumno.madre.correo"
+                    class="form-control"
+                    placeholder="Password"                    
+                  >
+              </div> 
+              <div class="form-group hidden">
+                  <label for="inputReligion">Réligion</label>
+                  <input
+                    id="inputReligion"
+                    type="text"
+                    v-model="alumno.madre.religion"
+                    class="form-control"
+                    placeholder="Religion"                    
+                  >
+              </div>               
+
+              <!-- PADRE -->
+              <div class="form-group">
+                  <label for="inputNombrePadre">Nombre del Padre</label>
+                  <input
+                    id="inputNombrePadre"
+                    type="text"
+                    v-model="alumno.padre.nombre"
+                    class="form-control"
+                    placeholder="Nombre del padre"
+                    required
+                  >
+              </div>   
+
+               <div class="form-group">
+                  <label for="inputCelularPadre">Celular </label>
+                  <input
+                    id="inputCelularPadre"
+                    type="text"
+                    v-model="alumno.padre.celular"
+                    class="form-control"
+                    placeholder="Celular"                    
+                  >
+              </div> 
+               <div class="form-group">
+                  <label for="inputFechaNacimientoPadre">Fecha Nacimiento </label>
+                  <input
+                    id="inputFechaNacimientoPadre"
+                    type="date"
+                    v-model="alumno.padre.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="Fecha de Nacimiento"                    
+                  >
+              </div> 
+              <div class="form-group">
+                  <label for="inputCorreoPadre">Correo </label>
+                  <input
+                    id="inputCorreoPadre"
+                    type="email"
+                    v-model="alumno.padre.correo"
+                    class="form-control"
+                    placeholder="Correo"                    
+                  >
+              </div> 
+               <div class="form-group hidden">
+                  <label for="inputPasswordPadre">Password</label>
+                  <input
+                    id="inputPasswordPadre"
+                    type="email"
+                    v-model="alumno.padre.correo"
+                    class="form-control"
+                    placeholder="Password"                    
+                  >
+              </div> 
+              <div class="form-group hidden">
+                  <label for="inputReligionPadre">Religion</label>
+                  <input
+                    id="inputReligionPadre"
+                    type="text"
+                    v-model="alumno.padre.religion"
+                    class="form-control"
+                    placeholder="Religion"                    
+                  >
+              </div>      
+
+            <!-- DATOS DE FAMILIA -->
+
+            </div>
           </div>
           <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
         </div>
@@ -447,6 +576,12 @@ export default {
         .then(
           result => {
             this.alumno = result.data;
+            if(this.alumno.padre == null)
+                this.alumno.padre={};
+
+            if(this.alumno.madre == null)
+                this.alumno.madre={};
+
           },
           error => {
             console.error(error);
