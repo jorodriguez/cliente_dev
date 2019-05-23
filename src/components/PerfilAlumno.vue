@@ -106,6 +106,19 @@
                     required
                   >
                 </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimiento">Sexo</label>
+                  <select
+                    id="inputServicioContratar"
+                    v-model="alumno.sexo"
+                    class="form-control"
+                    placeholder="Servicio"
+                    required
+                  >
+                    <option value="Niño" selected>Niño</option>
+                    <option value="Niña">Niña</option>
+                  </select>
+                </div>
 
                 <div class="form-group">
                   <label for="inputAlergias">Alergias</label>
@@ -216,12 +229,6 @@
                   <label for="inputNota">Nota</label>
                   <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
                 </div>
-
-                <button
-                  type="button"
-                  class="btn btn-lg btn-primary"
-                  v-on:click="modificar()"
-                >Guardar</button>
               </form>
             </div>
             <div
@@ -254,7 +261,7 @@
                 >
               </div>
               <div class="form-group">
-                <label for="inputHermanos">Hermanos</label>
+                <label for="inputHermanos">No. Hermanos</label>
                 <input
                   id="inputHermanos"
                   type="text"
@@ -266,7 +273,8 @@
               </div>
               <div class="form-group">
                 <label for="inputPadres">Padres</label>
-
+              </div>
+              <div class="form-group">
                 <div class="custom-control custom-radio custom-control-inline">
                   <input
                     type="radio"
@@ -274,9 +282,9 @@
                     id="customRadioInline1"
                     name="radio_estado_conviencia"
                     class="custom-control-input"
-                    value="Juntos"
+                    value="Viven Juntos"
                   >
-                  <label class="custom-control-label" for="customRadioInline1">Juntos</label>
+                  <label class="custom-control-label" for="customRadioInline1">Viven Juntos</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input
@@ -293,25 +301,24 @@
                   <input
                     type="radio"
                     v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline2"
+                    id="customRadioInline3"
                     name="radio_estado_conviencia"
                     class="custom-control-input"
-                    value="Viudoo(o)"
+                    value="Viudo"
                   >
-                  <label class="custom-control-label" for="customRadioInline2">Viudo(a)</label>
+                  <label class="custom-control-label" for="customRadioInline3">Viudo</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input
                     type="radio"
                     v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline2"
+                    id="customRadioInline4"
                     name="radio_estado_conviencia"
                     class="custom-control-input"
                     value="Soltero"
                   >
-                  <label class="custom-control-label" for="customRadioInline2">Soltero(a)</label>
+                  <label class="custom-control-label" for="customRadioInline4">Soltero</label>
                 </div>
-                {{alumno.formato_inscripcion.estado_convivencia_padres}}
               </div>
 
               <div class="form-group">
@@ -340,18 +347,34 @@
                   type="text"
                   v-model="alumno.formato_inscripcion.horario_servicio"
                   class="form-control"
-                  placeholder="Nombre de cariño"
+                  placeholder="Horario"
                   required
                 >
               </div>
 
-              <div class="container">
+              <!-- DATOS DE DOMICILIO -->
+              <!--<div >
                 <h5 class="text-center text-muted">Datos de Domicilio</h5>
                 <div class="card">
                   <div class="card-header">Header</div>
                   <div class="card-body">Content</div>
                 </div>
-              </div>
+              </div>-->
+              <fieldset class="form-group">
+                <legend>Datos de Domicilio</legend>
+                <div class="form-group">
+                  <label for="inputDireccion">Dirección</label>
+                  <input
+                    id="inputDireccion"
+                    type="text"
+                    v-model="alumno.formato_inscripcion.direccion"
+                    class="form-control"
+                    placeholder="Dirección, No. de Calle "
+                    required
+                  >
+                </div>
+              </fieldset>
+              <!-- DATOS DE DOMICILIO -->
 
               <!-- DATOS DE INSCRIPCION  -->
             </div>
@@ -362,6 +385,7 @@
               aria-labelledby="pills-contact-tab"
             >CONTACTO</div>
           </div>
+          <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
         </div>
       </div>
       <div class="alert alert-info">{{mensaje}}</div>

@@ -57,6 +57,18 @@
                   placeholder="F. Nacimiento"
                   required
                 >
+               <label>Sexo</label>
+                 <select
+                  id="inputServicioContratar"
+                  v-model="input.sexo"
+                  class="form-control"
+                  placeholder="Servicio"
+                  required                  
+                >
+                  <option value="Niño" selected>Niño</option> 
+                  <option value="Niña">Niña</option> 
+                </select>
+
                 <label>Alergias</label>
                 <input
                   type="textarea"
