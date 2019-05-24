@@ -12,7 +12,7 @@ var FormatoInscripcion = new Vue({
                 horario_servicio:'', //6
                 direccion:'',
                 resp_escuela_guarderia:'', 
-                resp_esperan_como_institucion:'', //9
+                resp_esperan_como_institucion:{}, //9
                 resp_circunstancia_especial_familia:'',
                 resp_participacion_padres:{},
                 estado_embarazo:'',//13

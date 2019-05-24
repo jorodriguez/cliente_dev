@@ -25,9 +25,9 @@
         <div class="col text-right">DATA</div>
         <div class="w-100"></div>
       </div>
-      <div class="row">        
-          <div class="col">
-            <form>
+      <div class="row">
+        <div class="col">
+          <form>
             <!-- CONTENIDO -->
             <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
               <li class="nav-item">
@@ -66,13 +66,36 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  id="pills-contact-tab"
+                  id="pills-institucion-tab"
                   data-toggle="pill"
-                  href="#pills-familiar"
+                  href="#pills-institucion"
                   role="tab"
-                  aria-controls="pills-familiar"
+                  aria-controls="pills-institucion"
+                  aria-selected="false"
+                >Institución</a>
+              </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-familiares-tab"
+                  data-toggle="pill"
+                  href="#pills-familiares"
+                  role="tab"
+                  aria-controls="pills-familiares"
                   aria-selected="false"
                 >Familiares</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="eventos-ultimo-anio-tab"
+                  data-toggle="pill"
+                  href="#eventos-ultimo-anio"
+                  role="tab"
+                  aria-controls="eventos-ultimo-anio"
+                  aria-selected="false"
+                >Eventos</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -392,9 +415,11 @@
                 role="tabpanel"
                 aria-labelledby="pills-contact-tab"
               >
+                <h5 class="card-title text-center text-primary">Mamá</h5>
+
                 <!-- DATOS DE FAMILIA -->
                 <div class="form-group">
-                  <label for="inputNombreMadre">Nombre de la Madre</label>
+                  <label for="inputNombreMadre">Nombre</label>
                   <input
                     id="inputNombreMadre"
                     type="text"
@@ -447,7 +472,7 @@
                   >
                 </div>
                 <div class="form-group hidden">
-                  <label for="inputReligion">Réligion</label>
+                  <label for="inputReligion">Réligión</label>
                   <input
                     id="inputReligion"
                     type="text"
@@ -457,9 +482,10 @@
                   >
                 </div>
 
+                <h5 class="card-title text-center text-primary">Papá</h5>
                 <!-- PADRE -->
                 <div class="form-group">
-                  <label for="inputNombrePadre">Nombre del Padre</label>
+                  <label for="inputNombrePadre">Nombre</label>
                   <input
                     id="inputNombrePadre"
                     type="text"
@@ -511,7 +537,7 @@
                   >
                 </div>
                 <div class="form-group hidden">
-                  <label for="inputReligionPadre">Religion</label>
+                  <label for="inputReligionPadre">Religión</label>
                   <input
                     id="inputReligionPadre"
                     type="text"
@@ -523,11 +549,141 @@
 
                 <!-- DATOS DE FAMILIA -->
               </div>
+
+              <!-- INSTITUTCION -->
+              <div
+                class="tab-pane fade"
+                id="pills-institucion"
+                role="tabpanel"
+                aria-labelledby="pills-institucion-tab"
+              >
+                <div class="form-group">
+                  <label for="inputPregEscuelaGuarderia">¿Ha estado en alguna escuela o guardería?</label>
+                  <input
+                    id="inputPregEscuelaGuarderia"
+                    type="text"
+                    v-model="alumno.formato_inscripcion.resp_escuela_guarderia"
+                    class="form-control"
+                    placeholder="Nombre Escuela ó Guardería"
+                  >
+                </div>
+                <div class="form-group">
+                  <label
+                    for="inputPregMotivoInscripcion"
+                  >¿Cuál fue el motivo que los llevó a tomar la decisión de inscribir a su hijo con nosotros?</label>
+                  <input
+                    id="inputPregMotivoInscripcion"
+                    type="text"
+                    v-model="alumno.formato_inscripcion.resp_motivo_inscripcion"
+                    class="form-control"
+                    placeholder="Motivo"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label>¿Qué esperan de nosotros como institución?</label>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
+                        value="Más información sobre cómo educar a mi hijo"
+                      >Más información sobre cómo educar a mi hijo
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
+                        value="Que mi hijo sea más introvertido o extrovertido"
+                      >Que mi hijo sea más introvertido o extrovertido
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
+                        value="Que mi hijo logre tener valores establecidos"
+                      >Que mi hijo logre tener valores establecidos
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
+                        value="Que mi hijo respete las normas"
+                      >Que mi hijo respete las normas
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <input
+                    id="inputPregEsperanComoInstutucion"
+                    type="text"
+                    v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.especifico"
+                    class="form-control"
+                    placeholder="Motivo espefico"
+                  >
+                </div>
+                resp
+                {{alumno.formato_inscripcion.resp_esperan_como_institucion}}
+              </div>
+              <!-- INSTITUTCION -->
+
+              <!-- PERSONAS AUTORIZADAS -->
+              <div
+                class="tab-pane fade"
+                id="pills-familiares"
+                role="tabpanel"
+                aria-labelledby="pills-familiares-tab"
+              >familiares autorizados</div>
+              <!-- PERONAS AUTORIZADAS -->
+
+              <!--EVENTOS EN EL UTIMO AÑO-->
+              <div
+                class="tab-pane fade"
+                id="eventos-ultimo-anio"
+                role="tabpanel"
+                aria-labelledby="pills-eventos-ultimo-anio-tab"
+              >
+                <h6>Circunstancias especiales en la familia (en el último año)</h6>
+                
+                  <!--<div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="alumno.formato_inscripcion.circunstancia_especial_familia.resp_array"
+                        value="Separación de padres"
+                      >Que mi hijo respete las normas
+                    </label>
+                </div>-->
+                  datos {{metadatos}}                                   
+                  
+                <div class="form-group">
+                  <input
+                    id="inputPregCircustanciaEspecial"
+                    type="text"
+                    v-model="alumno.formato_inscripcion.circunstancia_especial_familia"
+                    class="form-control"
+                    placeholder="Describa"
+                  >
+                </div>
+              </div>
+              <!-- EVENTOS EN EL UTIMO AÑO -->
             </div>
+
             <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
-            </form>
-          </div>
-        
+          </form>
+        </div>
       </div>
       <div class="alert alert-info">{{mensaje}}</div>
     </div>
@@ -541,6 +697,7 @@
 import router from "@/router/index";
 import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
+import metadatos  from "../models/Formato";
 
 export default {
   name: "PerfilAlumno",
@@ -548,6 +705,7 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
+      metadatos:metadatos,
       listaGrupos: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
@@ -594,6 +752,17 @@ export default {
 
             if (this.alumno.formato_inscripcion == null)
               this.alumno.formato_inscripcion = {};
+
+            console.log("Preparando alumno como insticucion");
+
+            if (
+              this.alumno.formato_inscripcion.resp_esperan_como_institucion ==
+              null
+            )
+              this.alumno.formato_inscripcion.resp_esperan_como_institucion = {
+                resp_array: [],
+                especifico: ""
+              };
           },
           error => {
             console.error(error);
@@ -648,6 +817,32 @@ export default {
             console.error(error);
           }
         );
+    },
+    concatenar(newValue, value) {
+      console.log("concat");
+      newValue != "";
+    
+      if(value == undefined){
+        value="";
+        value = newValue;
+      }
+
+      if (value == null){ 
+        console.log("value "+value+" "+newValue);        
+        value = newValue;
+      }
+      else {
+        var cadenas = value.split(",");
+        let esta = cadenas.find(element => element == newValue);
+        if (esta) cadenas.splice(value.indexOf(newValue), 1);
+        else value += "," + newValue;
+
+        value = cadenas;
+
+      }
+    },
+    addToArray(newValue, array) {
+      array.push(newValue);
     }
   }
 };
