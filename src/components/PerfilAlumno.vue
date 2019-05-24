@@ -25,52 +25,63 @@
         <div class="col text-right">DATA</div>
         <div class="w-100"></div>
       </div>
-      <div class="row">
-        <div class="col">
-          <!-- CONTENIDO -->
-          <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                id="pills-home-tab"
-                data-toggle="pill"
-                href="#pills-home"
-                role="tab"
-                aria-controls="pills-home"
-                aria-selected="true"
-              >Perfil</a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="pills-profile-tab"
-                data-toggle="pill"
-                href="#pills-profile"
-                role="tab"
-                aria-controls="pills-profile"
-                aria-selected="false"
-              >Inscripción</a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="pills-contact-tab"
-                data-toggle="pill"
-                href="#pills-contact"
-                role="tab"
-                aria-controls="pills-contact"
-                aria-selected="false"
-              >Familia</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="pills-tabContent">
-            <div
-              class="tab-pane fade show active"
-              id="pills-home"
-              role="tabpanel"
-              aria-labelledby="pills-home-tab"
-            >
-              <form>
+      <div class="row">        
+          <div class="col">
+            <form>
+            <!-- CONTENIDO -->
+            <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-toggle="pill"
+                  href="#pills-home"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >Perfil</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-toggle="pill"
+                  href="#pills-profile"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"
+                >Inscripción</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-contact-tab"
+                  data-toggle="pill"
+                  href="#pills-contact"
+                  role="tab"
+                  aria-controls="pills-contact"
+                  aria-selected="false"
+                >Papá/Mamá</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-contact-tab"
+                  data-toggle="pill"
+                  href="#pills-familiar"
+                  role="tab"
+                  aria-controls="pills-familiar"
+                  aria-selected="false"
+                >Familiares</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+              >
                 <div class="form-group">
                   <label for="inputNombre">Nombre</label>
                   <input
@@ -96,9 +107,9 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputFechaNacimiento">Fecha de Nacimiento</label>
+                  <label for="inputFechaNacimientoAlumno">Fecha de Nacimiento</label>
                   <input
-                    id="inputFechaNacimiento"
+                    id="inputFechaNacimientoAlumno"
                     type="date"
                     v-model="alumno.fecha_nacimiento"
                     class="form-control"
@@ -107,12 +118,12 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputFechaNacimiento">Sexo</label>
+                  <label for="inputSexo">Sexo</label>
                   <select
-                    id="inputServicioContratar"
+                    id="inputSexo"
                     v-model="alumno.sexo"
                     class="form-control"
-                    placeholder="Servicio"
+                    placeholder="Sexo"
                     required
                   >
                     <option value="Niño" selected>Niño</option>
@@ -229,117 +240,117 @@
                   <label for="inputNota">Nota</label>
                   <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
                 </div>
-              </form>
-            </div>
-            <div
-              class="tab-pane fade"
-              id="pills-profile"
-              role="tabpanel"
-              aria-labelledby="pills-profile-tab"
-            >
-              <!-- DATOS DE INSCRIPCION  -->
-              <div class="form-group">
-                <label for="inputInscripcion">Fecha de Inscripción</label>
-                <input
-                  id="inputInscripcion"
-                  type="date"
-                  v-model="alumno.fecha_inscripcion"
-                  class="form-control"
-                  placeholder="Fecha de inscripción"
-                  required
-                >
               </div>
-              <div class="form-group">
-                <label for="inputInscripcion">Nombre de cariño</label>
-                <input
-                  id="inputNombreCarino"
-                  type="text"
-                  v-model="alumno.nombre_carino"
-                  class="form-control"
-                  placeholder="Nombre de cariño"
-                  required
-                >
-              </div>
-              <div class="form-group">
-                <label for="inputHermanos">No. Hermanos</label>
-                <input
-                  id="inputHermanos"
-                  type="number"
-                  v-model="alumno.formato_inscripcion.hermanos"
-                  class="form-control"
-                  placeholder="Hermanos"
-                  required
-                >
-              </div>
-              <div class="form-group">
-                <label for="inputPadres">Padres</label>
-              </div>
-              <div class="form-group">
-                <div class="custom-control custom-radio custom-control-inline">
+              <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+              >
+                <!-- DATOS DE INSCRIPCION  -->
+                <div class="form-group">
+                  <label for="inputInscripcion">Fecha de Inscripción</label>
                   <input
-                    type="radio"
-                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline1"
-                    name="radio_estado_conviencia"
-                    class="custom-control-input"
-                    value="Viven Juntos"
+                    id="inputInscripcion"
+                    type="date"
+                    v-model="alumno.fecha_inscripcion"
+                    class="form-control"
+                    placeholder="Fecha de inscripción"
+                    required
                   >
-                  <label class="custom-control-label" for="customRadioInline1">Viven Juntos</label>
                 </div>
-                <div class="custom-control custom-radio custom-control-inline">
+                <div class="form-group">
+                  <label for="inputInscripcion">Nombre de cariño</label>
                   <input
-                    type="radio"
-                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline2"
-                    name="radio_estado_conviencia"
-                    class="custom-control-input"
-                    value="Separados"
+                    id="inputNombreCarino"
+                    type="text"
+                    v-model="alumno.nombre_carino"
+                    class="form-control"
+                    placeholder="Nombre de cariño"
+                    required
                   >
-                  <label class="custom-control-label" for="customRadioInline2">Separados</label>
                 </div>
-                <div class="custom-control custom-radio custom-control-inline">
+                <div class="form-group">
+                  <label for="inputHermanos">No. Hermanos</label>
                   <input
-                    type="radio"
-                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline3"
-                    name="radio_estado_conviencia"
-                    class="custom-control-input"
-                    value="Viudo"
+                    id="inputHermanos"
+                    type="number"
+                    v-model="alumno.formato_inscripcion.hermanos"
+                    class="form-control"
+                    placeholder="Hermanos"
+                    required
                   >
-                  <label class="custom-control-label" for="customRadioInline3">Viudo</label>
                 </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    v-model="alumno.formato_inscripcion.estado_convivencia_padres"
-                    id="customRadioInline4"
-                    name="radio_estado_conviencia"
-                    class="custom-control-input"
-                    value="Soltero"
-                  >
-                  <label class="custom-control-label" for="customRadioInline4">Soltero</label>
+                <div class="form-group">
+                  <label for="inputPadres">Padres</label>
                 </div>
-              </div>
+                <div class="form-group">
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                      id="customRadioInline1"
+                      name="radio_estado_conviencia"
+                      class="custom-control-input"
+                      value="Viven Juntos"
+                    >
+                    <label class="custom-control-label" for="customRadioInline1">Viven Juntos</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                      id="customRadioInline2"
+                      name="radio_estado_conviencia"
+                      class="custom-control-input"
+                      value="Separados"
+                    >
+                    <label class="custom-control-label" for="customRadioInline2">Separados</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                      id="customRadioInline3"
+                      name="radio_estado_conviencia"
+                      class="custom-control-input"
+                      value="Viudo"
+                    >
+                    <label class="custom-control-label" for="customRadioInline3">Viudo</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      type="radio"
+                      v-model="alumno.formato_inscripcion.estado_convivencia_padres"
+                      id="customRadioInline4"
+                      name="radio_estado_conviencia"
+                      class="custom-control-input"
+                      value="Soltero"
+                    >
+                    <label class="custom-control-label" for="customRadioInline4">Soltero</label>
+                  </div>
+                </div>
 
-              <div class="form-group">
-                <label for="inputServicioContratar">Servicio a contratar</label>
-                <select
-                  id="inputServicioContratar"
-                  v-model="alumno.formato_inscripcion.servicio_contratar"
-                  class="form-control"
-                  placeholder="Servicio"
-                  required
-                  autofocus
-                >
-                  <option value="Guarderia" selected>Guardería</option>
-                  <option value="Estancia">Estancia</option>
-                  <option value="Kinder">Kinder</option>
-                  <option value="Curso">Curso / Taller</option>
-                  <option value="Curso">Taller</option>
-                  <option value="Kinder">Kinder</option>
-                </select>
-              </div>
+                <div class="form-group">
+                  <label for="inputServicioContratar">Servicio a contratar</label>
+                  <select
+                    id="inputServicioContratar"
+                    v-model="alumno.formato_inscripcion.servicio_contratar"
+                    class="form-control"
+                    placeholder="Servicio"
+                    required
+                    autofocus
+                  >
+                    <option value="Guarderia" selected>Guardería</option>
+                    <option value="Estancia">Estancia</option>
+                    <option value="Kinder">Kinder</option>
+                    <option value="Curso">Curso / Taller</option>
+                    <option value="Curso">Taller</option>
+                    <option value="Kinder">Kinder</option>
+                  </select>
+                </div>
 
+                <!--
               <div class="form-group">
                 <label for="inputHorario">Horario</label>
                 <input
@@ -350,17 +361,17 @@
                   placeholder="Horario"
                   required
                 >
-              </div>
+                </div>-->
 
-              <!-- DATOS DE DOMICILIO -->
-              <!--<div >
+                <!-- DATOS DE DOMICILIO -->
+                <!--<div >
                 <h5 class="text-center text-muted">Datos de Domicilio</h5>
                 <div class="card">
                   <div class="card-header">Header</div>
                   <div class="card-body">Content</div>
                 </div>
-              </div>-->
-             
+                </div>-->
+
                 <div class="form-group">
                   <label for="inputDireccion">Dirección</label>
                   <input
@@ -371,19 +382,18 @@
                     placeholder="Dirección, No. de Calle "
                     required
                   >
-                </div>            
-             
-              <!-- DATOS DE INSCRIPCION  -->
-            </div>
-            <div
-              class="tab-pane fade"
-              id="pills-contact"
-              role="tabpanel"
-              aria-labelledby="pills-contact-tab"
-            >
+                </div>
 
-            <!-- DATOS DE FAMILIA -->
-            <div class="form-group">
+                <!-- DATOS DE INSCRIPCION  -->
+              </div>
+              <div
+                class="tab-pane fade"
+                id="pills-contact"
+                role="tabpanel"
+                aria-labelledby="pills-contact-tab"
+              >
+                <!-- DATOS DE FAMILIA -->
+                <div class="form-group">
                   <label for="inputNombreMadre">Nombre de la Madre</label>
                   <input
                     id="inputNombreMadre"
@@ -393,61 +403,62 @@
                     placeholder="Nombre de la Madre"
                     required
                   >
-              </div>   
+                </div>
 
-               <div class="form-group">
-                  <label for="inputCelular">Celular </label>
+                <div class="form-group">
+                  <label for="inputCelular">Celular</label>
                   <input
                     id="inputCelular"
                     type="text"
                     v-model="alumno.madre.celular"
                     class="form-control"
-                    placeholder="Numero de celular"                    
+                    placeholder="Numero de celular"
                   >
-              </div> 
-               <div class="form-group">
-                  <label for="inputFechaNacimiento">Fecha Nacimiento </label>
+                </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimiento">Fecha Nacimiento</label>
                   <input
                     id="inputFechaNacimiento"
                     type="date"
                     v-model="alumno.madre.fecha_nacimiento"
                     class="form-control"
-                    placeholder="Fecha de Nacimiento"                    
+                    placeholder="Fecha de Nacimiento"
                   >
-              </div> 
-              <div class="form-group">
-                  <label for="inputCorreoMadre">Correo </label>
+                </div>
+                <div class="form-group">
+                  <label for="inputCorreoMadre">Correo</label>
                   <input
                     id="inputCorreoMadre"
                     type="email"
                     v-model="alumno.madre.correo"
                     class="form-control"
-                    placeholder="Correo electronico"                    
+                    placeholder="Correo electronico"
                   >
-              </div> 
-               <div class="form-group hidden">
+                </div>
+                <div class="form-group hidden d-none">
                   <label for="inputCorreo">Password</label>
                   <input
-                    id="inputCorreo"
+                    id="inputPasswordMadre"
                     type="password"
-                    v-model="alumno.madre.correo"
+                    v-model="alumno.madre.password"
                     class="form-control"
-                    placeholder="Password"                    
+                    visible="false"
+                    placeholder="Password"
                   >
-              </div> 
-              <div class="form-group hidden">
+                </div>
+                <div class="form-group hidden">
                   <label for="inputReligion">Réligion</label>
                   <input
                     id="inputReligion"
                     type="text"
                     v-model="alumno.madre.religion"
                     class="form-control"
-                    placeholder="Religion"                    
+                    placeholder="Religion"
                   >
-              </div>               
+                </div>
 
-              <!-- PADRE -->
-              <div class="form-group">
+                <!-- PADRE -->
+                <div class="form-group">
                   <label for="inputNombrePadre">Nombre del Padre</label>
                   <input
                     id="inputNombrePadre"
@@ -457,65 +468,66 @@
                     placeholder="Nombre del padre"
                     required
                   >
-              </div>   
+                </div>
 
-               <div class="form-group">
-                  <label for="inputCelularPadre">Celular </label>
+                <div class="form-group">
+                  <label for="inputCelularPadre">Celular</label>
                   <input
                     id="inputCelularPadre"
                     type="text"
                     v-model="alumno.padre.celular"
                     class="form-control"
-                    placeholder="Celular"                    
+                    placeholder="Celular"
                   >
-              </div> 
-               <div class="form-group">
-                  <label for="inputFechaNacimientoPadre">Fecha Nacimiento </label>
+                </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimientoPadre">Fecha Nacimiento</label>
                   <input
                     id="inputFechaNacimientoPadre"
                     type="date"
                     v-model="alumno.padre.fecha_nacimiento"
                     class="form-control"
-                    placeholder="Fecha de Nacimiento"                    
+                    placeholder="Fecha de Nacimiento"
                   >
-              </div> 
-              <div class="form-group">
-                  <label for="inputCorreoPadre">Correo </label>
+                </div>
+                <div class="form-group">
+                  <label for="inputCorreoPadre">Correo</label>
                   <input
                     id="inputCorreoPadre"
                     type="email"
                     v-model="alumno.padre.correo"
                     class="form-control"
-                    placeholder="Correo"                    
+                    placeholder="Correo"
                   >
-              </div> 
-               <div class="form-group hidden">
+                </div>
+                <div class="form-group hidden d-none">
                   <label for="inputPasswordPadre">Password</label>
                   <input
                     id="inputPasswordPadre"
                     type="email"
                     v-model="alumno.padre.correo"
                     class="form-control"
-                    placeholder="Password"                    
+                    placeholder="Password"
                   >
-              </div> 
-              <div class="form-group hidden">
+                </div>
+                <div class="form-group hidden">
                   <label for="inputReligionPadre">Religion</label>
                   <input
                     id="inputReligionPadre"
                     type="text"
                     v-model="alumno.padre.religion"
                     class="form-control"
-                    placeholder="Religion"                    
+                    placeholder="Religion"
                   >
-              </div>      
+                </div>
 
-            <!-- DATOS DE FAMILIA -->
-
+                <!-- DATOS DE FAMILIA -->
+              </div>
             </div>
+            <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
+            </form>
           </div>
-          <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
-        </div>
+        
       </div>
       <div class="alert alert-info">{{mensaje}}</div>
     </div>
@@ -576,12 +588,12 @@ export default {
         .then(
           result => {
             this.alumno = result.data;
-            if(this.alumno.padre == null)
-                this.alumno.padre={};
+            if (this.alumno.padre == null) this.alumno.padre = {};
 
-            if(this.alumno.madre == null)
-                this.alumno.madre={};
+            if (this.alumno.madre == null) this.alumno.madre = {};
 
+            if (this.alumno.formato_inscripcion == null)
+              this.alumno.formato_inscripcion = {};
           },
           error => {
             console.error(error);
