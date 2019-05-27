@@ -61,7 +61,7 @@
                   role="tab"
                   aria-controls="pills-contact"
                   aria-selected="false"
-                >Papá/Mamá</a>
+                >Mamá/Papá</a>
               </li>
               <li class="nav-item">
                 <a
@@ -419,7 +419,7 @@
 
                 <!-- DATOS DE FAMILIA -->
                 <div class="form-group">
-                  <label for="inputNombreMadre">Nombre</label>
+                  <label for="inputNombreMadre">Nombre Completo</label>
                   <input
                     id="inputNombreMadre"
                     type="text"
@@ -485,7 +485,7 @@
                 <h5 class="card-title text-center text-primary">Papá</h5>
                 <!-- PADRE -->
                 <div class="form-group">
-                  <label for="inputNombrePadre">Nombre</label>
+                  <label for="inputNombrePadre">Nombre Completo</label>
                   <input
                     id="inputNombrePadre"
                     type="text"
@@ -564,7 +564,7 @@
                     type="text"
                     v-model="alumno.formato_inscripcion.resp_escuela_guarderia"
                     class="form-control"
-                    placeholder="Nombre Escuela ó Guardería"
+                    placeholder="Nombre de la escuela ó Guardería"
                   >
                 </div>
                 <div class="form-group">
@@ -576,7 +576,7 @@
                     type="text"
                     v-model="alumno.formato_inscripcion.resp_motivo_inscripcion"
                     class="form-control"
-                    placeholder="Motivo"
+                    placeholder="Describa el Motivo"
                   >
                 </div>
 
