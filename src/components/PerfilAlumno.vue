@@ -655,8 +655,8 @@
                 aria-labelledby="pills-eventos-ultimo-anio-tab"
               >
                 <h6>Circunstancias especiales en la familia (en el último año)</h6>
-                
-                  <!--<div class="form-check">
+
+                <!--<div class="form-check">
                     <label class="form-check-label">
                       <input
                         type="checkbox"
@@ -666,8 +666,8 @@
                       >Que mi hijo respete las normas
                     </label>
                 </div>-->
-                  datos {{metadatos}}                                   
-                  
+
+                datos {{metadatos.circunstancias_especiales}}
                 <div class="form-group">
                   <input
                     id="inputPregCircustanciaEspecial"
@@ -697,7 +697,7 @@
 import router from "@/router/index";
 import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
-import metadatos  from "../models/Formato";
+import Utils from "../models/FormatoUtils";
 
 export default {
   name: "PerfilAlumno",
@@ -705,7 +705,7 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
-      metadatos:metadatos,
+      metadatos: Utils,
       listaGrupos: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
@@ -755,10 +755,7 @@ export default {
 
             console.log("Preparando alumno como insticucion");
 
-            if (
-              this.alumno.formato_inscripcion.resp_esperan_como_institucion ==
-              null
-            )
+            if (this.alumno.formato_inscripcion.resp_esperan_como_institucion == null)
               this.alumno.formato_inscripcion.resp_esperan_como_institucion = {
                 resp_array: [],
                 especifico: ""
@@ -817,32 +814,6 @@ export default {
             console.error(error);
           }
         );
-    },
-    concatenar(newValue, value) {
-      console.log("concat");
-      newValue != "";
-    
-      if(value == undefined){
-        value="";
-        value = newValue;
-      }
-
-      if (value == null){ 
-        console.log("value "+value+" "+newValue);        
-        value = newValue;
-      }
-      else {
-        var cadenas = value.split(",");
-        let esta = cadenas.find(element => element == newValue);
-        if (esta) cadenas.splice(value.indexOf(newValue), 1);
-        else value += "," + newValue;
-
-        value = cadenas;
-
-      }
-    },
-    addToArray(newValue, array) {
-      array.push(newValue);
     }
   }
 };
