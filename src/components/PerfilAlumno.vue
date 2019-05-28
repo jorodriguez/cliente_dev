@@ -8,6 +8,104 @@
         </router-link>
       </div>
 
+      <!-- MODAL PARA AGREGAR FAMILIAR -->
+
+      <div id="modal_familiar" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Registro de Familiar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body text-left">
+              <form>
+                <div class="form-group">
+                  <label for="selectParentescoFamiliar">Parentesco</label>
+                  <select
+                    v-model="familiar.co_parentesco"
+                    class="form-control"
+                    placeholder="Parentesco"
+                    required
+                    autofocus
+                  >
+                    <option
+                      id="selectParentesco"
+                      v-for="p in listaParentesco"
+                      v-bind:value="p.id"
+                      v-bind:key="p.id"
+                    >{{ p.nombre }}</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputNombreFamiliar">Nombre</label>
+                  <input
+                    id="inputNombreFamiliar"
+                    type="text"
+                    v-model="familiar.nombre"
+                    class="form-control"
+                    placeholder="Nombre"
+                    required
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputTelefonoFamiliar">Telefono</label>
+                  <input
+                    id="inputTelefonoFamiliar"
+                    type="text"
+                    v-model="familiar.telefono"
+                    class="form-control"
+                    placeholder="Telefono"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>
+                  <input
+                    id="inputFnacimientoFamiliar"
+                    type="text"
+                    v-model="familiar.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="Fecha de Nacimiento"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputCorreoFamiliar">Correo</label>
+                  <input
+                    id="inputCorreoFamiliar"
+                    type="text"
+                    v-model="familiar.correo"
+                    class="form-control"
+                    placeholder="Correo"
+                  >
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <div v-if="operacion == 'INSERT'">
+                <button
+                  class="btn btn-lg btn-primary"
+                  v-on:click="agregarFamiliar()"
+                  data-dismiss="modal"
+                >Guardar</button>
+              </div>
+              <div v-else-if="operacion == 'UPDATE'">
+                <button
+                  class="btn btn-lg btn-primary"
+                  v-on:click="modificarFamiliar()"
+                  data-dismiss="modal"
+                >Modificar</button>
+              </div>
+              <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL PARA AGREGAR FAMILIAR -->
+
       <div class="row center">
         <div class="col text-left">
           <img
@@ -85,17 +183,6 @@
                   aria-controls="pills-familiares"
                   aria-selected="false"
                 >Familiares</a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="eventos-ultimo-anio-tab"
-                  data-toggle="pill"
-                  href="#eventos-ultimo-anio"
-                  role="tab"
-                  aria-controls="eventos-ultimo-anio"
-                  aria-selected="false"
-                >Eventos</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -644,41 +731,56 @@
                 id="pills-familiares"
                 role="tabpanel"
                 aria-labelledby="pills-familiares-tab"
-              >familiares autorizados</div>
-              <!-- PERONAS AUTORIZADAS -->
-
-              <!--EVENTOS EN EL UTIMO AÑO-->
-              <div
-                class="tab-pane fade"
-                id="eventos-ultimo-anio"
-                role="tabpanel"
-                aria-labelledby="pills-eventos-ultimo-anio-tab"
               >
-                <h6>Circunstancias especiales en la familia (en el último año)</h6>
-
-                <!--<div class="form-check">
-                    <label class="form-check-label">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        v-model="alumno.formato_inscripcion.circunstancia_especial_familia.resp_array"
-                        value="Separación de padres"
-                      >Que mi hijo respete las normas
-                    </label>
-                </div>-->
-
-                datos {{metadatos.circunstancias_especiales}}
-                <div class="form-group">
-                  <input
-                    id="inputPregCircustanciaEspecial"
-                    type="text"
-                    v-model="alumno.formato_inscripcion.circunstancia_especial_familia"
-                    class="form-control"
-                    placeholder="Describa"
-                  >
+                familiares autorizados
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <th></th>
+                      <th>Parentesco</th>
+                      <th>Nombre</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>F. Nacimiento</th>
+                      <th></th>
+                      <th></th>
+                    </thead>
+                    <tr v-for="row in listaFamiliares" :key="row.id">
+                      <td class="text-right"></td>
+                      <td>
+                        {{row.nombre}}
+                        <!--
+                        <button
+                          type="button"
+                          class="btn btn-link"
+                          v-on:click="verPerfil(row)"
+                        >{{ row.nombre }}</button>-->
+                      </td>
+                      <td>{{ row.apellidos }}</td>
+                      <td>{{ row.correo }}</td>
+                      <td>
+                        <span>{{ row.fecha_nacimiento }}</span>
+                      </td>
+                      <td>
+                        <!-- v-on:click="select(row,'DELETE')" -->
+                        <!--<button
+                          class="btn btn-link red"
+                          data-toggle="modal"
+                          data-target="#modal_eliminar_alumno"
+                        >Eliminar</button>-->
+                      </td>
+                    </tr>
+                  </table>
                 </div>
+
+                <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  data-toggle="modal"
+                  data-target="#modal_familiar"
+                >Agregar</button>
               </div>
-              <!-- EVENTOS EN EL UTIMO AÑO -->
+              <!-- PERONAS AUTORIZADAS -->
             </div>
 
             <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
@@ -705,16 +807,22 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
+      familiar: familiarModel,
+      listaFamiliares: [],
       metadatos: Utils,
       listaGrupos: [],
+      listaParentesco: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
       //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
       uriTemp: "http://localhost:5000/alumnos",
       uriTempGrupos: "http://localhost:5000/grupos",
+      uriTempFamiliar: "http://localhost:5000/familiar",
+      uriTempParentesco: "http://localhost:5000/parentesco",
       response: "",
       mensaje: "",
       sesion: {},
+      operacion: "",
       usuarioSesion: {}
     };
   },
@@ -755,7 +863,10 @@ export default {
 
             console.log("Preparando alumno como insticucion");
 
-            if (this.alumno.formato_inscripcion.resp_esperan_como_institucion == null)
+            if (
+              this.alumno.formato_inscripcion.resp_esperan_como_institucion ==
+              null
+            )
               this.alumno.formato_inscripcion.resp_esperan_como_institucion = {
                 resp_array: [],
                 especifico: ""
@@ -765,6 +876,26 @@ export default {
             console.error(error);
           }
         );
+
+      //familiares
+      this.$http
+        .get(this.uriTempFamiliar + "/" + this.alumno.id, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.listaFamiliares = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
       //grupos
       //traer grupos
 
@@ -779,6 +910,25 @@ export default {
             this.response = result.data;
             if (this.response != null) {
               this.listaGrupos = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
+      // Parentesco
+      this.$http
+        .get(this.uriTempParentesco, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.listaParentesco = this.response;
             }
           },
           error => {
@@ -814,6 +964,34 @@ export default {
             console.error(error);
           }
         );
+    },
+    agregarFamiliar() {
+      console.log("Agregar familiar ");
+
+      this.alumno.genero = this.usuarioSesion.id;
+
+      this.$http
+        .put(this.uriTempFamiliar + "/" + this.alumno.id, this.familiar, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              this.mensaje = "Se agrego el familiar.";
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    },
+    modificarFamiliar() {
+      console.log("modificar familiar");
     }
   }
 };
