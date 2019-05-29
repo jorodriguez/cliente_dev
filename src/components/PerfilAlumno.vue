@@ -9,21 +9,20 @@
       </div>
 
       <!-- MODAL PARA AGREGAR FAMILIAR -->
+      <form>
+        <div id="modal_familiar" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Registro de Familiar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
 
-      <div id="modal_familiar" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Registro de Familiar</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <div class="modal-body text-left">
-              <form>
-                <div class="form-group">
-                  <label for="selectParentescoFamiliar">Parentesco</label>
+              <div class="modal-body text-left">
+                <div class="form-group" v-if="operacion == 'INSERT'">
+                  <label for="selectParentescoFamiliar">Parentesco <span class="text-danger">*</span></label>
                   <select
                     v-model="familiar.co_parentesco"
                     class="form-control"
@@ -39,9 +38,12 @@
                     >{{ p.nombre }}</option>
                   </select>
                 </div>
+                <div class="form-group" v-else-if="operacion == 'UPDATE'">
+                  {{familiar.parentesco}}
+                </div>
 
                 <div class="form-group">
-                  <label for="inputNombreFamiliar">Nombre</label>
+                  <label for="inputNombreFamiliar">Nombre <span class="text-danger">*</span> </label>
                   <input
                     id="inputNombreFamiliar"
                     type="text"
@@ -52,7 +54,7 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputTelefonoFamiliar">Telefono</label>
+                  <label for="inputTelefonoFamiliar">Telefono <span class="text-danger">*</span> </label>
                   <input
                     id="inputTelefonoFamiliar"
                     type="text"
@@ -65,7 +67,7 @@
                   <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>
                   <input
                     id="inputFnacimientoFamiliar"
-                    type="text"
+                    type="date"
                     v-model="familiar.fecha_nacimiento"
                     class="form-control"
                     placeholder="Fecha de Nacimiento"
@@ -81,47 +83,86 @@
                     placeholder="Correo"
                   >
                 </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <div v-if="operacion == 'INSERT'">
-                <button
-                  class="btn btn-lg btn-primary"
-                  v-on:click="agregarFamiliar()"
-                  data-dismiss="modal"
-                >Guardar</button>
               </div>
-              <div v-else-if="operacion == 'UPDATE'">
-                <button
-                  class="btn btn-lg btn-primary"
-                  v-on:click="modificarFamiliar()"
-                  data-dismiss="modal"
-                >Modificar</button>
+              <div class="modal-footer">
+                <div v-if="operacion == 'INSERT'">
+                  <!-- data-dismiss="modal" -->
+                  <button
+                    class="btn btn-lg btn-primary"
+                    v-on:click="agregarFamiliar()"                    
+                  >Guardar</button>
+                </div>
+                <div v-else-if="operacion == 'UPDATE'">
+                  <!-- data-dismiss="modal"-->
+                  <button
+                    class="btn btn-lg btn-primary"
+                    v-on:click="modificarFamiliar()"                    
+                  >Modificar</button>
+                </div>
+                <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
-              <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
+      </form>
+
+         <!-- ELIMINAR MODAL -->
+    <div
+      id="modal_eliminar_alumno"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Confirmar</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              ¿Confirma que desea eliminar al familiar?
+              <br>
+              <strong>{{familiar.nombre}} </strong>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              v-on:click="eliminarFamiliar()"
+              data-dismiss="modal"
+            >Eliminar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
       </div>
+    </div>
+
 
       <!-- MODAL PARA AGREGAR FAMILIAR -->
-
-      <div class="row center">
-        <div class="col text-left">
+      <div>
+        <div class="col text-center">
           <img
             src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
             alt
             class="rounded-circle"
-            width="75"
-            height="75"
+            width="50"
+            height="50"
           >
           <p>
             {{alumno.nombre}}
             {{alumno.apellidos}}
           </p>
         </div>
-        <div class="col text-right">DATA</div>
-        <div class="w-100"></div>
+        <div class="col text-center">
+          <span class="text-danger">$</span>
+        </div>
+        <div class="w-100"/>
       </div>
       <div class="row">
         <div class="col">
@@ -720,8 +761,6 @@
                     placeholder="Motivo espefico"
                   >
                 </div>
-                resp
-                {{alumno.formato_inscripcion.resp_esperan_como_institucion}}
               </div>
               <!-- INSTITUTCION -->
 
@@ -732,53 +771,56 @@
                 role="tabpanel"
                 aria-labelledby="pills-familiares-tab"
               >
-                familiares autorizados
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <th></th>
-                      <th>Parentesco</th>
-                      <th>Nombre</th>
-                      <th>Apellidos</th>
-                      <th>Correo</th>
-                      <th>F. Nacimiento</th>
-                      <th></th>
-                      <th></th>
-                    </thead>
-                    <tr v-for="row in listaFamiliares" :key="row.id">
-                      <td class="text-right"></td>
-                      <td>
-                        {{row.nombre}}
-                        <!--
-                        <button
-                          type="button"
-                          class="btn btn-link"
-                          v-on:click="verPerfil(row)"
-                        >{{ row.nombre }}</button>-->
-                      </td>
-                      <td>{{ row.apellidos }}</td>
-                      <td>{{ row.correo }}</td>
-                      <td>
-                        <span>{{ row.fecha_nacimiento }}</span>
-                      </td>
-                      <td>
-                        <!-- v-on:click="select(row,'DELETE')" -->
-                        <!--<button
-                          class="btn btn-link red"
-                          data-toggle="modal"
-                          data-target="#modal_eliminar_alumno"
-                        >Eliminar</button>-->
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
                 <button
                   type="button"
-                  class="btn btn-primary btn-lg"
+                  class="btn btn-success"
                   data-toggle="modal"
                   data-target="#modal_familiar"
+                  v-on:click="iniciarAgregarFamiliar()"
                 >Agregar</button>
+
+                <div class="card-deck scroll-div">
+                  <div class="card" v-for="row in listaFamiliares" :key="row.id">
+                    <!--<img src="../assets/magic.jpeg" height="50%" width="50%" class="card-img-top" alt="Foto">
+                    -->
+                    <div class="card-body">
+                      <h5 class="card-title">{{row.nombre}}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{row.parentesco}}</h6>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          Tel:
+                          <strong class="btn-link">{{row.telefono}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                          Correo:
+                          <strong class="btn-link">{{row.correo}}</strong>
+                        </li>
+                      </ul>
+                      <button
+                        type="button"
+                        class="btn btn-link"
+                        data-toggle="modal"
+                        data-target="#modal_familiar"
+                        v-on:click="seleccionarFamiliar(row,'UPDATE')"
+                      >Editar</button>
+                      <button
+                        type="button"
+                        class="btn btn-link"
+                        data-toggle="modal"
+                        data-target="#modal_familiar"
+                        v-on:click="seleccionarFamiliar(row,'DELETE')"
+                      >Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+                <!--
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  data-toggle="modal"
+                  data-target="#modal_familiar"
+                  v-on:click="iniciarAgregarFamiliar()"
+                >Agregar</button>-->
               </div>
               <!-- PERONAS AUTORIZADAS -->
             </div>
@@ -792,6 +834,29 @@
 
     <!-- EN CASO DE NO ENVIAR EL ID -->
     <div class="alert alert-warning" v-else-if="display==false">Es necesario seleccionar un alumno</div>
+    <!-- MODAL TOAST -->
+    <div
+      id="toast_id"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      class="toast border-warning"
+      data-autohide="true"
+      data-delay="1000"
+    >
+      <div class="toast-header p-1 mb-1 bg-warning text-dark">
+        <!--<img src="" class="rounded mr-2" alt="...">-->
+        <strong class="mr-auto">Perfil</strong>
+        <!--<small>11 mins ago</small>-->
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        <p id="toast_msg"></p>
+      </div>
+    </div>
+    <!-- MODAL TOAST -->
   </div>
 </template>
 
@@ -799,6 +864,7 @@
 import router from "@/router/index";
 import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
+import FamiliarModel from "../models/FamiliarModel";
 import Utils from "../models/FormatoUtils";
 
 export default {
@@ -807,7 +873,16 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
-      familiar: familiarModel,
+      familiar: {id:0,
+                id_relacion:-1,
+                co_alumno:-1,
+                co_parentesco:-1,
+                parentesco:'',
+                nombre:'',
+                telefono:'',
+                fecha_nacimiento:null,
+                correo:'',       
+                genero:0},
       listaFamiliares: [],
       metadatos: Utils,
       listaGrupos: [],
@@ -822,6 +897,9 @@ export default {
       response: "",
       mensaje: "",
       sesion: {},
+      loadFamiliaresFuncion: null,
+      mensajeToast:null,
+      initFamiliar:null,
       operacion: "",
       usuarioSesion: {}
     };
@@ -841,10 +919,14 @@ export default {
 
     this.id = this.$route.params.id;
 
+    console.log("this.uriTemp  " + this.uriTempGrupos);
+
     if (this.id == undefined) {
       this.display = false;
       console.log("No se recibe ningun id de alumno ");
     } else {
+      console.log("this.uriTemp  " + this.uriTemp);
+
       this.$http
         .get(this.uriTemp + "/id/" + this.id, {
           headers: {
@@ -878,44 +960,48 @@ export default {
         );
 
       //familiares
-      this.$http
-        .get(this.uriTempFamiliar + "/" + this.alumno.id, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.listaFamiliares = this.response;
+      this.loadFamiliaresFuncion = () => {
+        this.$http
+          .get(this.uriTempFamiliar + "/" + this.id, {
+            headers: {
+              "x-access-token": this.sesion.token
             }
-          },
-          error => {
-            console.error(error);
-          }
-        );
-
-      //grupos
-      //traer grupos
-
-      this.$http
-        .get(this.uriTempGrupos, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.listaGrupos = this.response;
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaFamiliares = this.response;
+              }
+            },
+            error => {
+              console.error(error);
             }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+          );
+
+        //grupos
+        //traer grupos
+
+        this.$http
+          .get(this.uriTempGrupos, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaGrupos = this.response;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      };
+
+      this.loadFamiliaresFuncion();
 
       // Parentesco
       this.$http
@@ -936,6 +1022,12 @@ export default {
           }
         );
     }
+
+       
+    this.mensajeToast = mensaje => {
+      $("#toast_msg").text(mensaje);
+      $("#toast_id").toast("show");
+    };
   },
   methods: {
     //FIXME : pasar al servicio
@@ -965,13 +1057,39 @@ export default {
           }
         );
     },
+    iniciarAgregarFamiliar() {
+      this.operacion = "INSERT";
+    this.familiar =  {id:0,
+                id_relacion:-1,
+                co_alumno:-1,
+                co_parentesco:-1,
+                parentesco:'',
+                nombre:'',
+                telefono:'',
+                fecha_nacimiento:null,
+                correo:'',       
+                genero:0}
+    },
+    seleccionarFamiliar(item,operacion) {
+      this.familiar = item;
+      this.operacion = operacion;
+
+    },    
     agregarFamiliar() {
       console.log("Agregar familiar ");
 
-      this.alumno.genero = this.usuarioSesion.id;
+      if (this.familiar.co_parentesco == -1 
+          || this.familiar.nombre == ''
+          || this.familiar.telefono == '') {
+        this.mensajeToast("Escribe los valores requeridos");
+        return;
+      }
+
+      console.log("== "+JSON.stringify(this.familiar));
+      this.familiar.genero = this.usuarioSesion.id;
 
       this.$http
-        .put(this.uriTempFamiliar + "/" + this.alumno.id, this.familiar, {
+        .post(this.uriTempFamiliar + "/" + this.alumno.id, this.familiar, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -983,6 +1101,10 @@ export default {
             if (this.response != null) {
               console.log("" + this.response);
               this.mensaje = "Se agrego el familiar.";
+              
+              $('#modal_familiar').modal('hide');
+
+              this.loadFamiliaresFuncion();
             }
           },
           error => {
@@ -992,10 +1114,55 @@ export default {
     },
     modificarFamiliar() {
       console.log("modificar familiar");
+
+
+      if (this.familiar.co_parentesco == -1 
+          || this.familiar.nombre == ''
+          || this.familiar.telefono == '') {
+        this.mensajeToast("Escribe los valores requeridos");
+        return;
+      }
+
+      this.familiar.genero = this.usuarioSesion.id;
+
+      this.$http
+        .put(this.uriTempFamiliar + "/" + this.familiar.id, this.familiar, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              if(this.response ==0 || this.response==null){
+                this.mensaje = "Sucedió un error inesperado";
+              }else{
+                this.mensaje = "Se actualizaron los datos de familiar.";
+                $('#modal_familiar').modal('hide');
+              }                
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
+     
+    },
+    eliminarFamiliar(){
+
     }
   }
 };
 </script>
 
 <style scoped>
+.scroll-div {
+  width: 100%;
+  height: 500px;
+  overflow-y: scroll;
+}
 </style>

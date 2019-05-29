@@ -9,176 +9,160 @@
     <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
-      <button
-        type="button"
-        class="btn btn-primary btn-lg"
-        data-toggle="modal"
-        data-target="#modal_alumno"
-        v-on:click="nuevo()"
-      >Nuevo</button>
+      <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
     </div>
     <br>
+    <form>
+      <div id="modal_alumno" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Registro de Alumno</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
 
-    <div id="modal_alumno" class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div id="modal_alumno" class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Registro de Alumno</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+            <div class="modal-body text-left">
+              <div>
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  v-model="input.nombre"
+                  class="form-control"
+                  placeholder="Nombre"
+                  required
+                  autofocus
+                >
+                <label>Apellidos</label>
+                <input
+                  type="text"
+                  v-model="input.apellidos"
+                  class="form-control"
+                  placeholder="Apellidos"
+                  required
+                >
+                <label>Fecha de nacimiento</label>
+                <input
+                  type="date"
+                  pattern="yyyy-MM-dd"
+                  v-model="input.fecha_nacimiento"
+                  class="form-control"
+                  placeholder="F. Nacimiento"
+                  required
+                >
+                <label>Sexo</label>
+                <select
+                  id="inputServicioContratar"
+                  v-model="input.sexo"
+                  class="form-control"
+                  placeholder="Servicio"
+                  required
+                >
+                  <option value="Niño" selected>Niño</option>
+                  <option value="Niña">Niña</option>
+                </select>
 
-              <div class="modal-body text-left">
-                <form>
-                  <div>
-                    <label>Nombre</label>
+                <label>Alergias</label>
+                <input
+                  type="textarea"
+                  class="form-control"
+                  v-model="input.alergias"
+                  placeholder="Alergias"
+                >
+
+                <label>Grupo</label>
+                <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
+                  <option
+                    v-for="grupo in listaGrupos"
+                    v-bind:value="grupo.id"
+                    v-bind:key="grupo.id"
+                  >{{ grupo.nombre }}</option>
+                </select>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label>Hora Entrada</label>
                     <input
-                      type="text"
-                      v-model="input.nombre"
+                      type="time"
+                      v-model="input.hora_entrada"
                       class="form-control"
-                      placeholder="Nombre"
+                      placeholder="H. Entrada"
                       required
                     >
-                    <label>Apellidos</label>
-                    <input
-                      type="text"
-                      v-model="input.apellidos"
-                      class="form-control"
-                      placeholder="Apellidos"
-                      required
-                    >
-                    <label>Fecha de nacimiento</label>
-                    <input
-                      type="date"
-                      pattern="yyyy-MM-dd"
-                      v-model="input.fecha_nacimiento"
-                      class="form-control"
-                      placeholder="F. Nacimiento"
-                      required
-                    >
-                    <label>Sexo</label>
-                    <select
-                      id="inputServicioContratar"
-                      v-model="input.sexo"
-                      class="form-control"
-                      placeholder="Servicio"
-                      required
-                    >
-                      <option value="Niño" selected>Niño</option>
-                      <option value="Niña">Niña</option>
-                    </select>
-
-                    <label>Alergias</label>
-                    <input
-                      type="textarea"
-                      class="form-control"
-                      v-model="input.alergias"
-                      placeholder="Alergias"
-                    >
-
-                    <label>Grupo</label>
-                    <select
-                      v-model="input.co_grupo"
-                      class="form-control"
-                      placeholder="Grupo"
-                      required
-                      autofocus
-                    >
-                      <option
-                        v-for="grupo in listaGrupos"
-                        v-bind:value="grupo.id"
-                        v-bind:key="grupo.id"
-                      >{{ grupo.nombre }}</option>
-                    </select>
-
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <label>Hora Entrada</label>
-                        <input
-                          type="time"
-                          v-model="input.hora_entrada"
-                          class="form-control"
-                          placeholder="H. Entrada"
-                          required
-                        >
-                      </div>
-                      <div class="col-sm-6">
-                        <label>Hora Salida</label>
-                        <input
-                          type="time"
-                          v-model="input.hora_salida"
-                          class="form-control"
-                          placeholder="H. Salida"
-                          required
-                        >
-                      </div>
-                    </div>
-
-                    <label>Minutos de Gracia</label>
-                    <input
-                      type="number"
-                      v-model="input.minutos_gracia"
-                      class="form-control"
-                      placeholder="Min. Gracia"
-                      required
-                    >
-
-                    <label>Costo Colegiatura</label>
-                    <input
-                      type="number"
-                      v-model="input.costo_colegiatura"
-                      class="form-control"
-                      placeholder="Costo Colegiatura"
-                      required
-                    >
-
-                    <label>Costo Inscripción</label>
-                    <input
-                      type="number"
-                      v-model="input.costo_inscripcion"
-                      class="form-control"
-                      placeholder="Costo Inscripcion"
-                      required
-                    >
-
-                    <label>F. de Reinscripción</label>
-                    <input
-                      type="date"
-                      v-model="input.fecha_reinscripcion"
-                      class="form-control"
-                      placeholder="F. Reinscripcion"
-                      required
-                    >
-                    <label>Nota</label>
-                    <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
                   </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <div v-if="operacion == 'INSERT'">
-                  <button
-                    class="btn btn-lg btn-primary"
-                    v-on:click="guardar()"
-                    data-dismiss="modal"
-                  >Guardar</button>
+                  <div class="col-sm-6">
+                    <label>Hora Salida</label>
+                    <input
+                      type="time"
+                      v-model="input.hora_salida"
+                      class="form-control"
+                      placeholder="H. Salida"
+                      required
+                    >
+                  </div>
                 </div>
-                <div v-else-if="operacion == 'UPDATE'">
-                  <button
-                    class="btn btn-lg btn-primary"
-                    v-on:click="modificar()"
-                    data-dismiss="modal"
-                  >Modificar</button>
-                </div>
-                <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                <label>Minutos de Gracia</label>
+                <input
+                  type="number"
+                  v-model="input.minutos_gracia"
+                  class="form-control"
+                  placeholder="Min. Gracia"
+                  required
+                >
+
+                <label>Costo Colegiatura</label>
+                <input
+                  type="number"
+                  v-model="input.costo_colegiatura"
+                  class="form-control"
+                  placeholder="Costo Colegiatura"
+                  required
+                >
+
+                <label>Costo Inscripción</label>
+                <input
+                  type="number"
+                  v-model="input.costo_inscripcion"
+                  class="form-control"
+                  placeholder="Costo Inscripcion"
+                  required
+                >
+
+                <label>F. de Reinscripción</label>
+                <input
+                  type="date"
+                  v-model="input.fecha_reinscripcion"
+                  class="form-control"
+                  placeholder="F. Reinscripcion"
+                  required
+                >
+                <label>Nota</label>
+                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
               </div>
+            </div>
+            <div class="modal-footer">
+              <div v-if="operacion == 'INSERT'">
+                <button
+                  class="btn btn-lg btn-primary"
+                  v-on:click="guardar()"
+                  data-dismiss="modal"
+                >Guardar</button>
+              </div>
+              <div v-else-if="operacion == 'UPDATE'">
+                <button
+                  class="btn btn-lg btn-primary"
+                  v-on:click="modificar()"
+                  data-dismiss="modal"
+                >Modificar</button>
+              </div>
+              <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <!-- ELIMINAR MODAL -->
     <div
@@ -379,6 +363,8 @@ export default {
         foto: "",
         genero: 1
       };
+
+      $("#modal_alumno").modal("show");
     },
     guardar() {
       //this.$http.get(process.env.ROOT_API+'/alumnos')
