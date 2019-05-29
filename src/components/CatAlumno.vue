@@ -381,11 +381,8 @@ export default {
         .then(
           result => {
             this.response = result.data;
-
-            if (this.response != null) {
-              console.log("===" + this.response);
-              this.loadFunction();
-            }
+            this.loadFunction();
+            //mensaje
           },
           error => {
             console.error(error);

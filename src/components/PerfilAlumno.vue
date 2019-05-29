@@ -21,8 +21,12 @@
               </div>
 
               <div class="modal-body text-left">
+                {{mensaje}}
                 <div class="form-group" v-if="operacion == 'INSERT'">
-                  <label for="selectParentescoFamiliar">Parentesco <span class="text-danger">*</span></label>
+                  <label for="selectParentescoFamiliar">
+                    Parentesco
+                    <span class="text-danger">*</span>
+                  </label>
                   <select
                     v-model="familiar.co_parentesco"
                     class="form-control"
@@ -39,11 +43,14 @@
                   </select>
                 </div>
                 <div class="form-group" v-else-if="operacion == 'UPDATE'">
-                  {{familiar.parentesco}}
+                  <input type="text" v-model="familiar.parentesco" class="form-control" disabled>
                 </div>
 
                 <div class="form-group">
-                  <label for="inputNombreFamiliar">Nombre <span class="text-danger">*</span> </label>
+                  <label for="inputNombreFamiliar">
+                    Nombre
+                    <span class="text-danger">*</span>
+                  </label>
                   <input
                     id="inputNombreFamiliar"
                     type="text"
@@ -54,7 +61,10 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputTelefonoFamiliar">Telefono <span class="text-danger">*</span> </label>
+                  <label for="inputTelefonoFamiliar">
+                    Telefono
+                    <span class="text-danger">*</span>
+                  </label>
                   <input
                     id="inputTelefonoFamiliar"
                     type="text"
@@ -87,17 +97,11 @@
               <div class="modal-footer">
                 <div v-if="operacion == 'INSERT'">
                   <!-- data-dismiss="modal" -->
-                  <button
-                    class="btn btn-lg btn-primary"
-                    v-on:click="agregarFamiliar()"                    
-                  >Guardar</button>
+                  <button class="btn btn-lg btn-primary" v-on:click="agregarFamiliar()">Guardar</button>
                 </div>
                 <div v-else-if="operacion == 'UPDATE'">
                   <!-- data-dismiss="modal"-->
-                  <button
-                    class="btn btn-lg btn-primary"
-                    v-on:click="modificarFamiliar()"                    
-                  >Modificar</button>
+                  <button class="btn btn-lg btn-primary" v-on:click="modificarFamiliar()">Modificar</button>
                 </div>
                 <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
@@ -106,45 +110,109 @@
         </div>
       </form>
 
-         <!-- ELIMINAR MODAL -->
-    <div
-      id="modal_eliminar_alumno"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Confirmar</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>
-              ¿Confirma que desea eliminar al familiar?
-              <br>
-              <strong>{{familiar.nombre}} </strong>
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              v-on:click="eliminarFamiliar()"
-              data-dismiss="modal"
-            >Eliminar</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      <!-- ELIMINAR MODAL FAMILIAR-->
+      <div
+        id="modal_eliminar_familiar"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Confirmar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                ¿Confirma que desea eliminar al familiar?
+                <br>
+                <strong>{{familiar.nombre}}</strong>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                v-on:click="eliminarFamiliar()"
+                data-dismiss="modal"
+              >Eliminar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
 
       <!-- MODAL PARA AGREGAR FAMILIAR -->
+
+      <!-- MODAL PARA SERVICIOS -->
+
+      <form>
+        <div id="modal_servicios" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Registro de Servicios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body text-left">
+                <label for="selectServicios">
+                  Servicio
+                  <span class="text-danger">*</span>
+                </label>
+                <select
+                  v-model="servicio.cat_servicio"
+                  class="form-control"
+                  placeholder="Servicio"
+                  required
+                  autofocus
+                >
+                  <option
+                    id="selectServicio"
+                    v-for="p in listaServicios"
+                    v-bind:value="p.id"
+                    v-bind:key="p.id"
+                  >{{ p.nombre }}</option>
+                </select>
+
+                <div class="form-group">
+                  <label for="inputCantidad">
+                    Cantidad
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    id="inputCantidad"
+                    type="text"
+                    v-model="servicio.cantidad"
+                    class="form-control"
+                    placeholder="Cantidad"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="modal-footer">
+                <!--<div v-if="operacion == 'INSERT'">                  -->
+                <button class="btn btn-lg btn-primary" v-on:click="agregarServicio()">Guardar</button>
+                <!--</div>-->
+                <!--<div v-else-if="operacion == 'UPDATE'">                  
+                  <button class="btn btn-lg btn-primary" v-on:click="modificarFamiliar()">Modificar</button>
+                </div>-->
+                <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- MODAL PARA SERVICIOS -->
+
       <div>
         <div class="col text-center">
           <img
@@ -224,6 +292,17 @@
                   aria-controls="pills-familiares"
                   aria-selected="false"
                 >Familiares</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-servicios-tab"
+                  data-toggle="pill"
+                  href="#pills-servicios"
+                  role="tab"
+                  aria-controls="pills-servicios"
+                  aria-selected="false"
+                >Servicios</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -537,7 +616,7 @@
 
                 <!-- DATOS DE INSCRIPCION  -->
               </div>
-              
+
               <!-- INSTITUTCION -->
               <div
                 class="tab-pane fade"
@@ -639,50 +718,105 @@
                   v-on:click="iniciarAgregarFamiliar()"
                 >Agregar</button>
 
-                <div class="card-deck scroll-div">
-                  <div class="card" v-for="row in listaFamiliares" :key="row.id">
-                    <!--<img src="../assets/magic.jpeg" height="50%" width="50%" class="card-img-top" alt="Foto">
-                    -->
-                    <div class="card-body">
-                      <h5 class="card-title">{{row.nombre}}</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{row.parentesco}}</h6>
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                          Tel:
-                          <strong class="btn-link">{{row.telefono}}</strong>
-                        </li>
-                        <li class="list-group-item">
-                          Correo:
-                          <strong class="btn-link">{{row.correo}}</strong>
-                        </li>
-                      </ul>
-                      <button
-                        type="button"
-                        class="btn btn-link"
-                        data-toggle="modal"
-                        data-target="#modal_familiar"
-                        v-on:click="seleccionarFamiliar(row,'UPDATE')"
-                      >Editar</button>
-                      <button
-                        type="button"
-                        class="btn btn-link"
-                        data-toggle="modal"
-                        data-target="#modal_familiar"
-                        v-on:click="seleccionarFamiliar(row,'DELETE')"
-                      >Eliminar</button>
-                    </div>
-                  </div>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <th></th>
+                      <th>Nombre</th>
+                      <th>Telefono</th>
+                      <th>Correo</th>
+                      <th>Parentesco</th>
+                      <th></th>
+                    </thead>
+                    <tr v-for="row in listaFamiliares" :key="row.id">
+                      <td class="text-right">
+                        <!--<img
+              src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+              width="50"
+              height="50"
+              v-on:click="verPerfil(row)"
+              alt="..."
+              class="rounded"
+                        >-->
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-link"
+                          data-toggle="modal"
+                          data-target="#modal_familiar"
+                          v-on:click="seleccionarFamiliar(row,'UPDATE')"
+                        >{{ row.nombre }}</button>
+                      </td>
+                      <td>
+                        <span>{{ row.telefono }}</span>
+                      </td>
+                      <td>{{ row.correo }}</td>
+                      <td>{{ row.parentesco }}</td>
+                      <td>
+                        <button
+                          v-if="!row.sistema"
+                          type="button"
+                          class="btn btn-link red"
+                          data-toggle="modal"
+                          data-target="#modal_eliminar_familiar"
+                          v-on:click="seleccionarFamiliar(row,'DELETE')"
+                        >Eliminar</button>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
-                <!--
+              </div>
+              <!-- PERONAS AUTORIZADAS -->
+
+              <!-- SERVICOS CONTRATADOS -->
+              <div
+                class="tab-pane fade"
+                id="pills-servicios"
+                role="tabpanel"
+                aria-labelledby="pills-servicios-tab"
+              >
                 <button
                   type="button"
                   class="btn btn-success"
                   data-toggle="modal"
-                  data-target="#modal_familiar"
-                  v-on:click="iniciarAgregarFamiliar()"
-                >Agregar</button>-->
+                  data-target="#modal_servicios"
+                  v-on:click="iniciarAgregarServicio()"
+                >Agregar Servicio</button>
+
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <th>Servicio</th>
+                      <th>Descripción</th>
+                      <th>Cantidad</th>
+                      <th>Precio</th>
+                      <th>Fecha Registro</th>
+                      <th></th>
+                    </thead>
+                    <tr v-for="row in listaServiciosAlumno" :key="row.id">
+                      <td>{{row.nombre}}</td>
+                      <td>
+                        <span>{{ row.descripcion }}</span>
+                      </td>
+                      <td>{{ row.cantidad }}</td>
+                      <td>{{ row.precio }}</td>
+                      <td>{{ row.fecha }}</td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-link red"
+                          data-toggle="modal"
+                          data-target="#modal_eliminar_servicio"
+                          v-on:click="seleccionarServicio(row,'DELETE')"
+                        >Eliminar</button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
-              <!-- PERONAS AUTORIZADAS -->
+
+              <!-- SERVICIOS CONTRATADOS -->
             </div>
 
             <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
@@ -733,20 +867,25 @@ export default {
     return {
       id: 0,
       alumno: AlumnoModel,
-      familiar: {id:0,
-                id_relacion:-1,
-                co_alumno:-1,
-                co_parentesco:-1,
-                parentesco:'',
-                nombre:'',
-                telefono:'',
-                fecha_nacimiento:null,
-                correo:'',       
-                genero:0},
+      familiar: {
+        id: 0,
+        id_relacion: -1,
+        co_alumno: -1,
+        co_parentesco: -1,
+        parentesco: "",
+        nombre: "",
+        telefono: "",
+        fecha_nacimiento: null,
+        correo: "",
+        genero: 0
+      },
+      servicio: { co_alumno: -1, cat_servicio: -1, cantidad: 1 },
       listaFamiliares: [],
       metadatos: Utils,
       listaGrupos: [],
       listaParentesco: [],
+      listaServicios: [],
+      listaServiciosAlumno: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
       //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
@@ -754,12 +893,16 @@ export default {
       uriTempGrupos: "http://localhost:5000/grupos",
       uriTempFamiliar: "http://localhost:5000/familiar",
       uriTempParentesco: "http://localhost:5000/parentesco",
+      uriTempServicio: "http://localhost:5000/servicio",
       response: "",
       mensaje: "",
       sesion: {},
       loadFamiliaresFuncion: null,
-      mensajeToast:null,
-      initFamiliar:null,
+      loadCatalogoParentescoFuncion: null,
+      loadCatalogoServiciosFuncion: null,
+      loadServiciosAlumnoFuncion: null,
+      mensajeToast: null,
+      initFamiliar: null,
       operacion: "",
       usuarioSesion: {}
     };
@@ -796,9 +939,9 @@ export default {
         .then(
           result => {
             this.alumno = result.data;
-            if (this.alumno.padre == null) this.alumno.padre = {};
+            //  if (this.alumno.padre == null) this.alumno.padre = {};
 
-            if (this.alumno.madre == null) this.alumno.madre = {};
+            // if (this.alumno.madre == null) this.alumno.madre = {};
 
             if (this.alumno.formato_inscripcion == null)
               this.alumno.formato_inscripcion = {};
@@ -860,30 +1003,74 @@ export default {
             }
           );
       };
+      // Parentesco
+      this.loadCatalogoParentescoFuncion = () => {
+        this.$http
+          .get(this.uriTempParentesco + "/" + this.id, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaParentesco = this.response;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      };
+
+      //Traer servicios
+      this.loadCatalogoServiciosFuncion = () => {
+        this.$http
+          .get(this.uriTempServicio, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaServicios = this.response;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      };
+
+      this.loadServiciosAlumnoFuncion = () => {
+        this.$http
+          .get(this.uriTempServicio + "/" + this.id, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaServicios = this.response;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      };
 
       this.loadFamiliaresFuncion();
-
-      // Parentesco
-      this.$http
-        .get(this.uriTempParentesco, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.listaParentesco = this.response;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+      this.loadCatalogoServiciosFuncion();
+      this.loadServiciosAlumnoFuncion();     
+      
     }
 
-       
     this.mensajeToast = mensaje => {
       $("#toast_msg").text(mensaje);
       $("#toast_id").toast("show");
@@ -919,33 +1106,39 @@ export default {
     },
     iniciarAgregarFamiliar() {
       this.operacion = "INSERT";
-    this.familiar =  {id:0,
-                id_relacion:-1,
-                co_alumno:-1,
-                co_parentesco:-1,
-                parentesco:'',
-                nombre:'',
-                telefono:'',
-                fecha_nacimiento:null,
-                correo:'',       
-                genero:0}
+      this.familiar = {
+        id: 0,
+        id_relacion: -1,
+        co_alumno: -1,
+        co_parentesco: -1,
+        parentesco: "",
+        nombre: "",
+        telefono: "",
+        fecha_nacimiento: null,
+        correo: "",
+        genero: 0
+      };
+      this.loadCatalogoParentescoFuncion();
     },
-    seleccionarFamiliar(item,operacion) {
+    seleccionarFamiliar(item, operacion) {
       this.familiar = item;
       this.operacion = operacion;
-
-    },    
+      this.loadCatalogoParentescoFuncion();
+    },
     agregarFamiliar() {
       console.log("Agregar familiar ");
 
-      if (this.familiar.co_parentesco == -1 
-          || this.familiar.nombre == ''
-          || this.familiar.telefono == '') {
+      if (
+        this.familiar.co_parentesco == -1 ||
+        this.familiar.nombre == "" ||
+        this.familiar.telefono == ""
+      ) {
+        this.mensaje = "Escribe los valores requeridos";
         this.mensajeToast("Escribe los valores requeridos");
         return;
       }
 
-      console.log("== "+JSON.stringify(this.familiar));
+      console.log("== " + JSON.stringify(this.familiar));
       this.familiar.genero = this.usuarioSesion.id;
 
       this.$http
@@ -961,8 +1154,8 @@ export default {
             if (this.response != null) {
               console.log("" + this.response);
               this.mensaje = "Se agrego el familiar.";
-              
-              $('#modal_familiar').modal('hide');
+
+              $("#modal_familiar").modal("hide");
 
               this.loadFamiliaresFuncion();
             }
@@ -975,10 +1168,11 @@ export default {
     modificarFamiliar() {
       console.log("modificar familiar");
 
-
-      if (this.familiar.co_parentesco == -1 
-          || this.familiar.nombre == ''
-          || this.familiar.telefono == '') {
+      if (
+        this.familiar.co_parentesco == -1 ||
+        this.familiar.nombre == "" ||
+        this.familiar.telefono == ""
+      ) {
         this.mensajeToast("Escribe los valores requeridos");
         return;
       }
@@ -997,23 +1191,108 @@ export default {
 
             if (this.response != null) {
               console.log("" + this.response);
-              if(this.response ==0 || this.response==null){
+              if (this.response == 0 || this.response == null) {
                 this.mensaje = "Sucedió un error inesperado";
-              }else{
+              } else {
                 this.mensaje = "Se actualizaron los datos de familiar.";
-                $('#modal_familiar').modal('hide');
-              }                
+                this.loadFamiliaresFuncion();
+                $("#modal_familiar").modal("hide");
+              }
             }
           },
           error => {
             console.error(error);
           }
         );
-
-     
     },
-    eliminarFamiliar(){
+    eliminarFamiliar() {
+      this.familiar.genero = this.usuarioSesion.id;
 
+      console.log("Eliminar familiar " + JSON.stringify(this.familiar));
+
+      this.$http
+        .put(
+          this.uriTempFamiliar + "/eliminar/" + this.familiar.id_relacion,
+          this.familiar,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              if (this.response == 0 || this.response == null) {
+                this.mensaje = "Sucedió un error inesperado";
+              } else {
+                this.mensaje = "Se actualizaron los datos de familiar.";
+                this.loadFamiliaresFuncion();
+                $("#modal_eliminar_familiar").modal("hide");
+              }
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    },
+    iniciarAgregarServicio() {
+      console.log("Iniciar add servicio");
+      this.servicio = { co_alumno: -1, cat_servicio: -1, cantidad: 1 };
+      this.loadCatalogoServiciosFuncion();
+    },
+    seleccionarServicio(item, operacion) {
+      console.log("seleccionar servisio");
+    },
+    agregarServicio() {
+
+      console.log("agregar servicio");
+
+      if(this.servicio.cantidad == null
+        ||this.servicio.cantidad == 0){
+          this.mensaje="La cantidad no es correcta ";
+          return ;
+      }
+      
+      if(this.servicio.cat_servicio == null
+        ||this.servicio.cantidad == -1){
+          this.mensaje="Selecione el servicio ";
+          return ;
+      }
+
+      this.servicio.genero = this.usuarioSesion.id;
+      this.servicio.co_alumno =  this.alumno.id;
+
+      this.$http
+        .post(this.uriTempServicio, this.servicio, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+
+            if (this.response != null) {
+              console.log("" + this.response);
+              this.mensaje = "Se agrego el servicio.";
+
+              $("#modal_servicio").modal("hide");
+
+              this.loadServiciosAlumnoFuncion();
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    },
+    eliminarServicio() {
+      console.log("eliminar servicio");
     }
   }
 };

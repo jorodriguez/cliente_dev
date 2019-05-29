@@ -1,7 +1,7 @@
 <template>
   <div class="login container">
-    <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
-    
+    <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
+    -->
         <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal"></h1>
       <input
@@ -80,7 +80,7 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       console.log("login con rest ");
 
       if (!this.input.correo || !this.input.password) {
@@ -90,7 +90,7 @@ export default {
 
       var data = { correo: this.input.correo, password: this.input.password };
 
-      this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(        
+      await this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(        
         result => {
           console.log("En el login");
           this.response = result.data;
