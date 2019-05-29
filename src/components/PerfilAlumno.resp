@@ -191,7 +191,7 @@
                   aria-selected="false"
                 >Inscripción</a>
               </li>
-              <!--<li class="nav-item">
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   id="pills-contact-tab"
@@ -201,7 +201,7 @@
                   aria-controls="pills-contact"
                   aria-selected="false"
                 >Mamá/Papá</a>
-              </li>-->
+              </li>
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -537,7 +537,147 @@
 
                 <!-- DATOS DE INSCRIPCION  -->
               </div>
-              
+              <div
+                class="tab-pane fade"
+                id="pills-contact"
+                role="tabpanel"
+                aria-labelledby="pills-contact-tab"
+              >
+                <h5 class="card-title text-center text-primary">Mamá</h5>
+
+                <!-- DATOS DE FAMILIA -->
+                <div class="form-group">
+                  <label for="inputNombreMadre">Nombre Completo</label>
+                  <input
+                    id="inputNombreMadre"
+                    type="text"
+                    v-model="alumno.madre.nombre"
+                    class="form-control"
+                    placeholder="Nombre de la Madre"
+                    required
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="inputCelular">Celular</label>
+                  <input
+                    id="inputCelular"
+                    type="text"
+                    v-model="alumno.madre.celular"
+                    class="form-control"
+                    placeholder="Numero de celular"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimiento">Fecha Nacimiento</label>
+                  <input
+                    id="inputFechaNacimiento"
+                    type="date"
+                    v-model="alumno.madre.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="Fecha de Nacimiento"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputCorreoMadre">Correo</label>
+                  <input
+                    id="inputCorreoMadre"
+                    type="email"
+                    v-model="alumno.madre.correo"
+                    class="form-control"
+                    placeholder="Correo electronico"
+                  >
+                </div>
+                <div class="form-group hidden d-none">
+                  <label for="inputCorreo">Password</label>
+                  <input
+                    id="inputPasswordMadre"
+                    type="password"
+                    v-model="alumno.madre.password"
+                    class="form-control"
+                    visible="false"
+                    placeholder="Password"
+                  >
+                </div>
+                <div class="form-group hidden">
+                  <label for="inputReligion">Réligión</label>
+                  <input
+                    id="inputReligion"
+                    type="text"
+                    v-model="alumno.madre.religion"
+                    class="form-control"
+                    placeholder="Religion"
+                  >
+                </div>
+
+                <h5 class="card-title text-center text-primary">Papá</h5>
+                <!-- PADRE -->
+                <div class="form-group">
+                  <label for="inputNombrePadre">Nombre Completo</label>
+                  <input
+                    id="inputNombrePadre"
+                    type="text"
+                    v-model="alumno.padre.nombre"
+                    class="form-control"
+                    placeholder="Nombre del padre"
+                    required
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="inputCelularPadre">Celular</label>
+                  <input
+                    id="inputCelularPadre"
+                    type="text"
+                    v-model="alumno.padre.celular"
+                    class="form-control"
+                    placeholder="Celular"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputFechaNacimientoPadre">Fecha Nacimiento</label>
+                  <input
+                    id="inputFechaNacimientoPadre"
+                    type="date"
+                    v-model="alumno.padre.fecha_nacimiento"
+                    class="form-control"
+                    placeholder="Fecha de Nacimiento"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="inputCorreoPadre">Correo</label>
+                  <input
+                    id="inputCorreoPadre"
+                    type="email"
+                    v-model="alumno.padre.correo"
+                    class="form-control"
+                    placeholder="Correo"
+                  >
+                </div>
+                <div class="form-group hidden d-none">
+                  <label for="inputPasswordPadre">Password</label>
+                  <input
+                    id="inputPasswordPadre"
+                    type="email"
+                    v-model="alumno.padre.correo"
+                    class="form-control"
+                    placeholder="Password"
+                  >
+                </div>
+                <div class="form-group hidden">
+                  <label for="inputReligionPadre">Religión</label>
+                  <input
+                    id="inputReligionPadre"
+                    type="text"
+                    v-model="alumno.padre.religion"
+                    class="form-control"
+                    placeholder="Religion"
+                  >
+                </div>
+
+                <!-- DATOS DE FAMILIA -->
+              </div>
+
               <!-- INSTITUTCION -->
               <div
                 class="tab-pane fade"
