@@ -1084,6 +1084,7 @@ export default {
             this.response = result.data;
             if (this.response != null) {
               this.listaServicios = this.response;
+              console.log("Servicios");
             }
           },
           error => {
