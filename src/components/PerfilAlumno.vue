@@ -152,31 +152,32 @@
       <!-- MODAL PARA SERVICIOS -->
 
       <form>
-        <div id="modal_servicios" class="modal" tabindex="-1" role="dialog">
+        <div id="modal_cargo_productos" class="modal" tabindex="-1" role="dialog">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Registro de Servicios</h5>
+                <h5 class="modal-title">Agregar producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
 
               <div class="modal-body text-left">
-                <label for="selectServicios">
-                  Servicio
+                <label for="selectProducto">
+                  Producto
                   <span class="text-danger">*</span>
                 </label>
                 <select
-                  v-model="servicio.cat_servicio"
+                  id="selectProductos"
+                  v-model="producto.cat_producto"
                   class="form-control"
-                  placeholder="Servicio"
+                  placeholder="Producto"
                   required
                   autofocus
                 >
                   <option
-                    id="selectServicio"
-                    v-for="p in listaServicios"
+                    id="selectProducto"
+                    v-for="p in listaProductos"
                     v-bind:value="p.id"
                     v-bind:key="p.id"
                   >{{ p.nombre }}</option>
@@ -190,7 +191,7 @@
                   <input
                     id="inputCantidad"
                     type="text"
-                    v-model="servicio.cantidad"
+                    v-model="producto.cantidad"
                     class="form-control"
                     placeholder="Cantidad"
                     required
@@ -199,7 +200,7 @@
               </div>
               <div class="modal-footer">
                 <!--<div v-if="operacion == 'INSERT'">                  -->
-                <button class="btn btn-lg btn-primary" v-on:click="agregarServicio()">Guardar</button>
+                <button class="btn btn-lg btn-primary" v-on:click="agregarProducto()">Guardar</button>
                 <!--</div>-->
                 <!--<div v-else-if="operacion == 'UPDATE'">                  
                   <button class="btn btn-lg btn-primary" v-on:click="modificarFamiliar()">Modificar</button>
@@ -302,7 +303,7 @@
                   role="tab"
                   aria-controls="pills-servicios"
                   aria-selected="false"
-                >Servicios</a>
+                >Otros cargos</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -565,19 +566,21 @@
                   <label for="inputServicioContratar">Servicio a contratar</label>
                   <select
                     id="inputServicioContratar"
-                    v-model="alumno.formato_inscripcion.servicio_contratar"
+                    v-model="alumno.formato_inscripcion.cat_servicio"
                     class="form-control"
                     placeholder="Servicio"
                     required
                     autofocus
                   >
-                    <option value="Guarderia" selected>Guardería</option>
-                    <option value="Estancia">Estancia</option>
-                    <option value="Kinder">Kinder</option>
-                    <option value="Curso">Curso / Taller</option>
-                    <option value="Curso">Taller</option>
-                    <option value="Kinder">Kinder</option>
+                     <option
+                      id="selectServicio"
+                      v-for="s in listaServicios"
+                      v-bind:value="s.id"
+                      v-bind:key="s.id"
+                    >{{ s.nombre }}</option>
                   </select>
+                   
+                
                 </div>
 
                 <!--
@@ -780,8 +783,8 @@
                   type="button"
                   class="btn btn-success"
                   data-toggle="modal"
-                  data-target="#modal_servicios"
-                  v-on:click="iniciarAgregarServicio()"
+                  data-target="#modal_cargo_productos"
+                  v-on:click="iniciaragregarProducto()"
                 >Agregar Servicio</button>
 
                 <div class="table-responsive">
@@ -794,7 +797,7 @@
                       <th>Fecha Registro</th>
                       <th></th>
                     </thead>
-                    <tr v-for="row in listaServiciosAlumno" :key="row.id">
+                    <tr v-for="row in listaProductosAlumno" :key="row.id_relacion">
                       <td>{{row.nombre}}</td>
                       <td>
                         <span>{{ row.descripcion }}</span>
@@ -808,7 +811,7 @@
                           class="btn btn-link red"
                           data-toggle="modal"
                           data-target="#modal_eliminar_servicio"
-                          v-on:click="seleccionarServicio(row,'DELETE')"
+                          v-on:click="seleccionarProducto(row,'DELETE')"
                         >Eliminar</button>
                       </td>
                     </tr>
@@ -879,13 +882,14 @@ export default {
         correo: "",
         genero: 0
       },
-      servicio: { co_alumno: -1, cat_servicio: -1, cantidad: 1 },
+      producto: { co_alumno: -1, cat_producto: -1, cantidad: 1 },
       listaFamiliares: [],
       metadatos: Utils,
       listaGrupos: [],
       listaParentesco: [],
+      listaProductos: [],
+      listaProductosAlumno: [],
       listaServicios: [],
-      listaServiciosAlumno: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
       //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
@@ -893,14 +897,15 @@ export default {
       uriTempGrupos: "http://localhost:5000/grupos",
       uriTempFamiliar: "http://localhost:5000/familiar",
       uriTempParentesco: "http://localhost:5000/parentesco",
-      uriTempServicio: "http://localhost:5000/servicio",
+      uriTempProducto: "http://localhost:5000/producto",
+      uriTempServicios: "http://localhost:5000/servicios",
       response: "",
       mensaje: "",
       sesion: {},
       loadFamiliaresFuncion: null,
       loadCatalogoParentescoFuncion: null,
-      loadCatalogoServiciosFuncion: null,
-      loadServiciosAlumnoFuncion: null,
+      loadCatalogoProductosFuncion: null,
+      loadProductosAlumnoFuncion: null,
       mensajeToast: null,
       initFamiliar: null,
       operacion: "",
@@ -1024,10 +1029,10 @@ export default {
           );
       };
 
-      //Traer servicios
-      this.loadCatalogoServiciosFuncion = () => {
+      //Traer productos
+      this.loadCatalogoProductosFuncion = () => {
         this.$http
-          .get(this.uriTempServicio, {
+          .get(this.uriTempProducto, {
             headers: {
               "x-access-token": this.sesion.token
             }
@@ -1036,7 +1041,7 @@ export default {
             result => {
               this.response = result.data;
               if (this.response != null) {
-                this.listaServicios = this.response;
+                this.listaProductos = this.response;
               }
             },
             error => {
@@ -1045,9 +1050,10 @@ export default {
           );
       };
 
-      this.loadServiciosAlumnoFuncion = () => {
+      this.loadProductosAlumnoFuncion = () => {
+        console.log("loadProductosAlumnoFuncion ");
         this.$http
-          .get(this.uriTempServicio + "/" + this.id, {
+          .get(this.uriTempProducto + "/" + this.id, {
             headers: {
               "x-access-token": this.sesion.token
             }
@@ -1055,8 +1061,9 @@ export default {
           .then(
             result => {
               this.response = result.data;
+              console.log("Respuesta " + JSON.stringify(this.response));
               if (this.response != null) {
-                this.listaServicios = this.response;
+                this.listaProductosAlumno = this.response;
               }
             },
             error => {
@@ -1064,11 +1071,29 @@ export default {
             }
           );
       };
+
+      //traer sevicios
+      this.$http
+        .get(this.uriTempServicios, {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.listaServicios = this.response;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
 
       this.loadFamiliaresFuncion();
-      this.loadCatalogoServiciosFuncion();
-      this.loadServiciosAlumnoFuncion();     
-      
+      this.loadCatalogoProductosFuncion();
+      this.loadProductosAlumnoFuncion();
     }
 
     this.mensajeToast = mensaje => {
@@ -1240,35 +1265,32 @@ export default {
           }
         );
     },
-    iniciarAgregarServicio() {
-      console.log("Iniciar add servicio");
-      this.servicio = { co_alumno: -1, cat_servicio: -1, cantidad: 1 };
-      this.loadCatalogoServiciosFuncion();
+    iniciaragregarProducto() {
+      console.log("Iniciar add producto");
+      this.producto = { co_alumno: -1, cat_producto: -1, cantidad: 1 };
+      this.loadCatalogoProductosFuncion();
     },
-    seleccionarServicio(item, operacion) {
-      console.log("seleccionar servisio");
+    seleccionarProducto(item, operacion) {
+      console.log("seleccionar producto");
     },
-    agregarServicio() {
-
+    agregarProducto() {
       console.log("agregar servicio");
 
-      if(this.servicio.cantidad == null
-        ||this.servicio.cantidad == 0){
-          this.mensaje="La cantidad no es correcta ";
-          return ;
-      }
-      
-      if(this.servicio.cat_servicio == null
-        ||this.servicio.cantidad == -1){
-          this.mensaje="Selecione el servicio ";
-          return ;
+      if (this.producto.cantidad == null || this.producto.cantidad == 0) {
+        this.mensaje = "La cantidad no es correcta ";
+        return;
       }
 
-      this.servicio.genero = this.usuarioSesion.id;
-      this.servicio.co_alumno =  this.alumno.id;
+      if (this.producto.cat_producto == null || this.producto.cantidad == -1) {
+        this.mensaje = "Selecione el producto ";
+        return;
+      }
+
+      this.producto.genero = this.usuarioSesion.id;
+      this.producto.co_alumno = this.alumno.id;
 
       this.$http
-        .post(this.uriTempServicio, this.servicio, {
+        .post(this.uriTempProducto, this.producto, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -1279,11 +1301,11 @@ export default {
 
             if (this.response != null) {
               console.log("" + this.response);
-              this.mensaje = "Se agrego el servicio.";
+              this.mensaje = "Se agrego el producto.";
 
-              $("#modal_servicio").modal("hide");
+              $("#modal_producto").modal("hide");
 
-              this.loadServiciosAlumnoFuncion();
+              this.loadProductosAlumnoFuncion();
             }
           },
           error => {
@@ -1291,8 +1313,8 @@ export default {
           }
         );
     },
-    eliminarServicio() {
-      console.log("eliminar servicio");
+    eliminarproducto() {
+      console.log("eliminar producto");
     }
   }
 };
