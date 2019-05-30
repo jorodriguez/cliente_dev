@@ -78,6 +78,7 @@
                   <input
                     id="inputFnacimientoFamiliar"
                     type="date"
+                    pattern="yyyy-MM-dd"
                     v-model="familiar.fecha_nacimiento"
                     class="form-control"
                     placeholder="Fecha de Nacimiento"
@@ -342,6 +343,7 @@
                   <input
                     id="inputFechaNacimientoAlumno"
                     type="date"
+                    pattern="yyyy-MM-dd"
                     v-model="alumno.fecha_nacimiento"
                     class="form-control"
                     placeholder="F. Nacimiento"
@@ -460,6 +462,7 @@
                   <input
                     id="inputFReinscripcion"
                     type="date"
+                    pattern="yyyy-MM-dd"
                     v-model="alumno.fecha_reinscripcion"
                     class="form-control"
                     placeholder="F. Reinscripcion"
@@ -484,6 +487,7 @@
                   <input
                     id="inputInscripcion"
                     type="date"
+                    pattern="yyyy-MM-dd"
                     v-model="alumno.fecha_inscripcion"
                     class="form-control"
                     placeholder="Fecha de inscripción"
@@ -572,15 +576,13 @@
                     required
                     autofocus
                   >
-                     <option
+                    <option
                       id="selectServicio"
                       v-for="s in listaServicios"
                       v-bind:value="s.id"
                       v-bind:key="s.id"
                     >{{ s.nombre }}</option>
                   </select>
-                   
-                
                 </div>
 
                 <!--
@@ -652,53 +654,24 @@
 
                 <div class="form-group">
                   <label>¿Qué esperan de nosotros como institución?</label>
-                  <div class="form-check">
+                  <div class="form-check" 
+                        v-for="row in listaValoresEsperados" :key="row.id" >
                     <label class="form-check-label">
                       <input
                         type="checkbox"
                         class="form-check-input"
-                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
-                        value="Más información sobre cómo educar a mi hijo"
-                      >Más información sobre cómo educar a mi hijo
+                        v-model="row.seleccionado"
+                        value="row.seleccionado"
+                      >{{row.concepto}}
                     </label>
-                  </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
-                        value="Que mi hijo sea más introvertido o extrovertido"
-                      >Que mi hijo sea más introvertido o extrovertido
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
-                        value="Que mi hijo logre tener valores establecidos"
-                      >Que mi hijo logre tener valores establecidos
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.resp_array"
-                        value="Que mi hijo respete las normas"
-                      >Que mi hijo respete las normas
-                    </label>
-                  </div>
+                  </div>                     
                 </div>
 
                 <div class="form-group">
                   <input
                     id="inputPregEsperanComoInstutucion"
                     type="text"
-                    v-model="alumno.formato_inscripcion.resp_esperan_como_institucion.especifico"
+                    v-model="alumno.formato_inscripcion.resp_esperan_como_institucion"
                     class="form-control"
                     placeholder="Motivo espefico"
                   >
@@ -890,6 +863,7 @@ export default {
       listaProductos: [],
       listaProductosAlumno: [],
       listaServicios: [],
+      listaValoresEsperados: [],
       display: true,
       //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
       //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
@@ -899,6 +873,7 @@ export default {
       uriTempParentesco: "http://localhost:5000/parentesco",
       uriTempProducto: "http://localhost:5000/producto",
       uriTempServicios: "http://localhost:5000/servicios",
+      uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
       response: "",
       mensaje: "",
       sesion: {},
@@ -906,6 +881,7 @@ export default {
       loadCatalogoParentescoFuncion: null,
       loadCatalogoProductosFuncion: null,
       loadProductosAlumnoFuncion: null,
+      loadValoresEsperadosFunction:null,
       mensajeToast: null,
       initFamiliar: null,
       operacion: "",
@@ -944,14 +920,11 @@ export default {
         .then(
           result => {
             this.alumno = result.data;
-            //  if (this.alumno.padre == null) this.alumno.padre = {};
-
-            // if (this.alumno.madre == null) this.alumno.madre = {};
 
             if (this.alumno.formato_inscripcion == null)
               this.alumno.formato_inscripcion = {};
 
-            console.log("Preparando alumno como insticucion");
+            console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
             if (
               this.alumno.formato_inscripcion.resp_esperan_como_institucion ==
@@ -961,6 +934,9 @@ export default {
                 resp_array: [],
                 especifico: ""
               };
+              
+              this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
+              
           },
           error => {
             console.error(error);
@@ -1084,7 +1060,7 @@ export default {
             this.response = result.data;
             if (this.response != null) {
               this.listaServicios = this.response;
-              console.log("Servicios");
+              console.log("Servicios " + this.listaServicios);
             }
           },
           error => {
@@ -1092,9 +1068,33 @@ export default {
           }
         );
 
+      this.loadValoresEsperadosFunction = (id_formato) => {
+        this.$http
+          .get(this.uriTempValoresEsperados + "/" + id_formato, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+              if (this.response != null) {
+                this.listaValoresEsperados = this.response;                           
+                
+                console.log("Valores esperados " + this.listaValoresEsperados);
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      };
+      
+      
       this.loadFamiliaresFuncion();
       this.loadCatalogoProductosFuncion();
       this.loadProductosAlumnoFuncion();
+     
     }
 
     this.mensajeToast = mensaje => {
@@ -1109,6 +1109,7 @@ export default {
       this.mensaje = JSON.stringify(this.alumno);
 
       this.alumno.genero = this.usuarioSesion.id;
+      this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
       this.$http
         .put(this.uriTemp + "/" + this.alumno.id, this.alumno, {
@@ -1202,8 +1203,7 @@ export default {
         this.mensajeToast("Escribe los valores requeridos");
         return;
       }
-
-      this.familiar.genero = this.usuarioSesion.id;
+      this.familiar.genero = this.usuarioSesion.id;      
 
       this.$http
         .put(this.uriTempFamiliar + "/" + this.familiar.id, this.familiar, {

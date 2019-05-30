@@ -8,25 +8,26 @@
     </small>
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-head btn-info">
-      <i class="fas fa-child" style="font-size:40px;"></i>
-      Alumnos        
+        <i class="fas fa-child" style="font-size:40px;"></i>
+        Alumnos
       </router-link>
       <router-link to="/Asistencia" class="btn btn-head btn-success">
-      <i class="fas fa-door-open" style="font-size:40px;"></i>
-      Asistencias
+        <i class="fas fa-door-open" style="font-size:40px;"></i>
+        Asistencias
         <!--<i class="fas fa-door-open"></i>-->
       </router-link>
       <!--<router-link to="/Actividades" class="btn btn-head btn-success">
         <i class="fas fa-skating"></i>
       </router-link>-->
-       <button
-          type="button"
-          data-toggle="modal"
-          class="btn btn-head btn-success"
-          v-on:click="initRegistroActividad()"
-         >
-         <i class="fas fa-skating" style="font-size:40px;"></i>
-         Actividad</button>
+      <button
+        type="button"
+        data-toggle="modal"
+        class="btn btn-head btn-success"
+        v-on:click="initRegistroActividad()"
+      >
+        <i class="fas fa-skating" style="font-size:40px;"></i>
+        Actividad
+      </button>
     </div>
     <div class="row">
       <div class="col-6 text-left">
@@ -56,7 +57,6 @@
           class="btn btn-block btn-info"
           v-on:click="initRegistroActividad()"
         >Actividad</button>-->
-        
       </div>
     </div>
 
@@ -78,9 +78,7 @@
                 class="rounded-circle"
               >
               <i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
-              <i v-bind:id="alumnoItem.id+'_selection_alumno'"
-                  is_alumno
-              ></i>
+              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
             </small>
           </div>
         </div>
@@ -97,109 +95,109 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-       <!-- <form class="needs-validation" novalidate>-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Registro de Actividad</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="bg-gray">
-                <div class="container jumbotron m-1 scroll-div">
-                  <div class="media">
-                    <div class="row">
-                      <div                        
-                        v-for="alumnoItem in listaAlumnosSeleccionados"
-                        v-bind:key="alumnoItem.id"
-                        class="d-flex align-content-top flex-wrap"
-                      >
-                        <span class="badge badge-pill badge-info">
-                          <!--<img
+        <!-- <form class="needs-validation" novalidate>-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Registro de Actividad</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="bg-gray">
+              <div class="container jumbotron m-1 scroll-div">
+                <div class="media">
+                  <div class="row">
+                    <div
+                      v-for="alumnoItem in listaAlumnosSeleccionados"
+                      v-bind:key="alumnoItem.id"
+                      class="d-flex align-content-top flex-wrap"
+                    >
+                      <span class="badge badge-pill badge-info">
+                        <!--<img
                           src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                           width="20"
                           height="20"
                           alt="..."
                           class="rounded-circle"
-                          >-->
-                          {{alumnoItem.nombre_alumno}}
-                          <i
-                            v-on:click="removeToListAlumno(alumnoItem)"
-                            class="fas fa-minus-circle text-danger"                            
-                          ></i>
-                        </span>
-                      </div>
+                        >-->
+                        {{alumnoItem.nombre_alumno}}
+                        <i
+                          v-on:click="removeToListAlumno(alumnoItem)"
+                          class="fas fa-minus-circle text-danger"
+                        ></i>
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <!-- seleccion de actividad -->
-              <div class="form-group">
-                <label>Actividad</label>
-                <select
-                  id="combo_actividad_principal"
-                  v-model="actividadSelecionada"
-                  class="form-control"
-                  placeholder="Grupo"
-                  required
-                  autofocus
-                >
-                  <option
-                    v-for="actividadItem in listaActividades"
-                    v-bind:value="actividadItem"
-                    v-bind:key="actividadItem.id"
-                  >{{ actividadItem.nombre }}</option>
-                </select>
-              </div>
-
-              <div class="form-group" v-if="actividadSelecionada.tipo_actividad != null">
-                <!--<label>Tipo</label>-->
-                <select
-                  id="combo_tipo_actividad"
-                  v-model="actividad.tipo_actividad"
-                  class="form-control"
-                  placeholder="Tipo"
-                  required
-                >
-                  <option
-                    v-for="tipoActividadItem in actividadSelecionada.tipo_actividad"
-                    v-bind:value="tipoActividadItem.id"
-                    v-bind:key="tipoActividadItem.id"
-                  >{{ tipoActividadItem.nombre }}</option>
-                </select>
-              </div>
-              <div class="form-group" v-if="actividadSelecionada.sub_actividad != null">
-                <!--<label>Tipo</label>-->
-                <select
-                  id="combo_sub_actividad"
-                  v-model="actividad.sub_actividad"
-                  class="form-control"
-                  placeholder="Tipo"
-                  required
-                >
-                  <option
-                    v-for="subActividadItem in actividadSelecionada.sub_actividad"
-                    v-bind:value="subActividadItem.id"
-                    v-bind:key="subActividadItem.id"
-                  >{{ subActividadItem.nombre }}</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <textarea id="nota_id" class="form-control" v-model="actividad.nota" rows="3"></textarea>
-              </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                v-on:click="registrarActividad()"
-              >Confirmar</button>
+
+            <!-- seleccion de actividad -->
+            <div class="form-group">
+              <label>Actividad</label>
+              <select
+                id="combo_actividad_principal"
+                v-model="actividadSelecionada"
+                class="form-control"
+                placeholder="Grupo"
+                required
+                autofocus
+              >
+                <option
+                  v-for="actividadItem in listaActividades"
+                  v-bind:value="actividadItem"
+                  v-bind:key="actividadItem.id"
+                >{{ actividadItem.nombre }}</option>
+              </select>
+            </div>
+
+            <div class="form-group" v-if="actividadSelecionada.tipo_actividad != null">
+              <!--<label>Tipo</label>-->
+              <select
+                id="combo_tipo_actividad"
+                v-model="actividad.tipo_actividad"
+                class="form-control"
+                placeholder="Tipo"
+                required
+              >
+                <option
+                  v-for="tipoActividadItem in actividadSelecionada.tipo_actividad"
+                  v-bind:value="tipoActividadItem.id"
+                  v-bind:key="tipoActividadItem.id"
+                >{{ tipoActividadItem.nombre }}</option>
+              </select>
+            </div>
+            <div class="form-group" v-if="actividadSelecionada.sub_actividad != null">
+              <!--<label>Tipo</label>-->
+              <select
+                id="combo_sub_actividad"
+                v-model="actividad.sub_actividad"
+                class="form-control"
+                placeholder="Tipo"
+                required
+              >
+                <option
+                  v-for="subActividadItem in actividadSelecionada.sub_actividad"
+                  v-bind:value="subActividadItem.id"
+                  v-bind:key="subActividadItem.id"
+                >{{ subActividadItem.nombre }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <textarea id="nota_id" class="form-control" v-model="actividad.nota" rows="3"></textarea>
             </div>
           </div>
-       <!-- </form>-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              v-on:click="registrarActividad()"
+            >Confirmar</button>
+          </div>
+        </div>
+        <!-- </form>-->
       </div>
     </div>
     <!-- Modal actividad -->
@@ -243,20 +241,21 @@ export default {
       listaAlumnos: [],
       listaAlumnosSeleccionados: [],
       listaGrupos: [],
+      listaGruposFiltrados: [],
       grupo: "Todos",
       actividad: ActividadModel,
       actividadSelecionada: {},
       listaActividades: [],
-      listaTipoActividad: [],      
-      limpiarFormularioActividad: null,      
-      validacion:null,
+      listaTipoActividad: [],
+      limpiarFormularioActividad: null,
+      validacion: null,
       mensajeToast: null,
-      //uriTempAsistencia: "http://localhost:5000/asistencia",
-      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
-      //uriTempGrupos: "http://localhost:5000/grupos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-      //uriTempActividad: "http://localhost:5000/actividad"
-      uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
+      uriTempAsistencia: "http://localhost:5000/asistencia",
+      //uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+      uriTempGrupos: "http://localhost:5000/grupos",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+      uriTempActividad: "http://localhost:5000/actividad"
+      //uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
     };
   },
   //FIXME: SESION
@@ -291,8 +290,9 @@ export default {
           result => {
             this.response = result.data;
             if (this.response != null) {
-              // console.log(" ==== " + this.response);
+              console.log(" ====>> " + JSON.stringify(this.response));
               this.listaAlumnos = this.response;
+              this.actualizarComboFiltro();
             }
           },
           error => {
@@ -347,7 +347,7 @@ export default {
       );
 
     //traer grupo
-    this.$http
+    /*  this.$http
       .get(this.uriTempGrupos, {
         headers: {
           "x-access-token": this.sesion.token
@@ -365,24 +365,51 @@ export default {
           console.error(error);
         }
       );
-
+*/
     ///c
-    this.validacion = function(){
-
-      if(this.actividadSelecionada.tipo_actividad !== null 
-            && this.actividad.tipo_actividad === -1){         
-            return false;
+    this.validacion = function() {
+      if (
+        this.actividadSelecionada.tipo_actividad !== null &&
+        this.actividad.tipo_actividad === -1
+      ) {
+        return false;
       }
 
-      if(this.actividadSelecionada.sub_actividad  !== null
-           && this.actividad.sub_actividad === -1){
-          return false;
+      if (
+        this.actividadSelecionada.sub_actividad !== null &&
+        this.actividad.sub_actividad === -1
+      ) {
+        return false;
       }
 
       return true;
-
     };
-    
+
+    //Filtro de grupos
+
+    this.actualizarComboFiltro = ()=>{
+      const distinct = (value,index,self)=>{
+          return self.indexOf(value) === index;
+      }
+
+      //this.listaGrupos = this.listaAlumnos.filter(distinct);
+
+      this.listaGrupos = this.listaAlumnos.map(e => {
+        return { id: e.co_grupo, grupo: e.nombre_grupo };
+      }).filter(distinct);
+
+      console.log("Grupos filtrados " + JSON.stringify(this.listaGrupos));
+
+      //return { id: e.co_grupo, grupo: e.nombre_grupo };
+    };
+
+    /*this.actualizarComboFiltro = () => {
+      this.listaGrupos = this.listaAlumnos.map(e => {
+        return { id: e.co_grupo, grupo: e.nombre_grupo };
+      });
+      console.log("Grupos filtrados " + JSON.stringify(this.listaGrupos));
+    };*/
+
     this.loadFunctionAlumnosDentro();
     //this.validacion();
   },
@@ -435,7 +462,7 @@ export default {
 
       console.log(JSON.stringify(this.actividad));
 
-    if (this.listaAlumnosSeleccionados.length == 0) {
+      if (this.listaAlumnosSeleccionados.length == 0) {
         console.log("Seleccione al menos un alumno");
         this.mensajeToast("Seleccione al menos un alumno");
         return;
@@ -448,7 +475,7 @@ export default {
         return;
       }
 
-      if(!this.validacion()){
+      if (!this.validacion()) {
         console.log("complete los campos");
         this.mensajeToast("Complete los campos");
         return;
@@ -464,12 +491,11 @@ export default {
       this.actividad["cat_actividad"] = this.actividadSelecionada.id;
       this.actividad.genero = this.usuarioSesion.id;
 
-      console.log("ENVO "+JSON.stringify(this.actividad));
+      console.log("ENVO " + JSON.stringify(this.actividad));
 
       this.$http
-        .post(this.uriTempActividad + "/registrar",
-         this.actividad, {
-         headers: {
+        .post(this.uriTempActividad + "/registrar", this.actividad, {
+          headers: {
             "x-access-token": this.sesion.token
           }
         })
@@ -478,12 +504,12 @@ export default {
             this.response = result.data;
             console.log("Actividades insertadas " + this.response);
             if (this.response != null) {
-              var rowsAffected = this.response;              
+              var rowsAffected = this.response;
               if (rowsAffected > 0) {
                 this.mensaje = "Se registro la actividad";
                 this.listaAlumnosSeleccionados = [];
-                this.limpiarFormularioActividad();                
-                
+                this.limpiarFormularioActividad();
+
                 $("[is_alumno]").removeClass("fas fa-check-circle text-danger");
                 //$("#div_foreach_alumno").find('[is_alumno]');
 
@@ -519,8 +545,7 @@ export default {
   overflow-y: scroll;
 }
 
-
 #toast-container {
-z-index: 9999999;
+  z-index: 9999999;
 }
 </style>

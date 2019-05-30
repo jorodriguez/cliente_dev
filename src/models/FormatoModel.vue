@@ -10,6 +10,7 @@ var FormatoInscripcion = new Vue({
                 hermanos:'', //-3                
                 estado_convivencia_padres:'',
                 servicio_contratar:'',
+                valores_esperados:[],
                 horario_servicio:'', //6
                 direccion:'',
                 resp_escuela_guarderia:'', 
