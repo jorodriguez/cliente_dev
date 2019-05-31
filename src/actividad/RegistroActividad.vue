@@ -176,13 +176,12 @@ export default {
       listaGrupos:[],
       loadFunction: null,
       loadFunctionAlumnos: null,
-      uriTemp: "http://localhost:5000/actividad/catalogo_actividad",
-      //uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
-      uriTempAlumnos: "http://localhost:5000/alumnos",
-      //uriTempAlumnos: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempAsistencia: "http://localhost:5000/asistencia",
-      //uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
-      
+      //uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
+      //uriTempAlumnos: "http://localhost:5000/alumnos",      
+      //uriTempAsistencia: "http://localhost:5000/asistencia",
+      uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
+      uriTempAlumnos: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",      
     };
   },
   //FIXME: SESION
@@ -198,8 +197,7 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;
-    console.log("===== >>>> " + this.sesion.token);
-
+    
     this.loadFunction = function() {
       this.$http
         .get(this.uriTemp, {
@@ -213,8 +211,7 @@ export default {
             if (this.response != null) {
               if (this.response.length > 0) {
                 this.listaActividades = this.response[0].catalogo_actividades;
-                console.log("  ===  " + JSON.stringify(this.listaActividades));
-                //console.log("  ===  "+JSON.stringify(this.listaActividades[0].catalogo_actividades));
+                console.log("  ===  " + JSON.stringify(this.listaActividades));                
               }
             }
           },

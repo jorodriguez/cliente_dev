@@ -51,6 +51,7 @@
                   placeholder="F. Nacimiento"
                   required
                 >
+                
                 <label>Sexo</label>
                 <select
                   id="inputServicioContratar"
@@ -133,6 +134,7 @@
                 <label>F. de Reinscripción</label>
                 <input
                   type="date"
+                   pattern="yyyy-MM-dd"
                   v-model="input.fecha_reinscripcion"
                   class="form-control"
                   placeholder="F. Reinscripcion"
@@ -229,7 +231,7 @@
           </td>
           <td class="hidden-xs">{{ row.apellidos }}</td>
           <td>
-            <span class="badge badge-info">{{ row.nombre_grupo }}</span>
+            <span class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
           </td>
           <td>{{ row.hora_entrada }}</td>
           <td>{{ row.hora_salida }}</td>
@@ -265,10 +267,10 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"
-      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      //uriTemp: "http://localhost:5000/alumnos",
+     // uriTempGrupos: "http://localhost:5000/grupos"
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {
@@ -351,7 +353,7 @@ export default {
         sexo: "",
         nombre_grupo: "",
         nombre_sucursal: "",
-        fecha_nacimiento: "",
+        fecha_nacimiento: null,
         alergias: "",
         nota: "",
         hora_entrada: "",
@@ -359,7 +361,7 @@ export default {
         costo_inscripcion: "",
         costo_colegiatura: "",
         minutos_gracia: "",
-        fecha_reinscripcion: "",
+        fecha_reinscripcion: null,
         foto: "",
         genero: 1
       };
@@ -380,12 +382,9 @@ export default {
         })
         .then(
           result => {
-            this.response = result.data;
-
-            if (this.response != null) {
-              console.log("===" + this.response);
-              this.loadFunction();
-            }
+            this.response = result.data;            
+            this.mensaje = "Se agregó el alumno";
+            this.loadFunction();
           },
           error => {
             console.error(error);
@@ -406,6 +405,7 @@ export default {
 
             if (this.response != null) {
               console.log("" + this.response);
+              this.mensaje = "Se modificó el alumno";
               this.loadFunction();
             }
           },

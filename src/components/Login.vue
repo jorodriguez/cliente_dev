@@ -80,7 +80,7 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       console.log("login con rest ");
 
       if (!this.input.correo || !this.input.password) {
@@ -90,7 +90,7 @@ export default {
 
       var data = { correo: this.input.correo, password: this.input.password };
 
-      this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(        
+      await this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(        
         result => {
           console.log("En el login");
           this.response = result.data;

@@ -5,10 +5,12 @@ import Vue from 'vue';
 var FormatoInscripcion = new Vue({
     data : {
                 co_alumno:0,
+                co_servicio:-1,
                 fecha_inscripcion:{},
                 hermanos:'', //-3                
                 estado_convivencia_padres:'',
                 servicio_contratar:'',
+                valores_esperados:[],
                 horario_servicio:'', //6
                 direccion:'',
                 resp_escuela_guarderia:'', 
