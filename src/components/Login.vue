@@ -1,7 +1,7 @@
 <template>
   <div class="login container">
-    <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
-    
+    <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
+    -->
         <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal"></h1>
       <input
@@ -53,72 +53,7 @@
   </div>
 </template>
 
-<script>
-//import axios from "axios";
-
-export default {
-  name: "Login",
-  data() {
-    return {
-      input: {
-        correo: "",
-        password: "",
-        mensajeToast:null
-      },
-      response: "",
-      uriTemp: "https://app-restexpres.herokuapp.com/auth/login"
-      //uriTemp: "http://localhost:5000/auth/login"
-    };
-  },
-  mounted() {
-    console.log("iniciando login ");
-    this.$session.clear();
-      //toast
-    this.mensajeToast = mensaje => {
-      $("#toast_msg").text(mensaje);
-      $("#toast_id").toast("show");
-    };
-  },
-  methods: {
-    async login() {
-      console.log("login con rest ");
-
-      if (!this.input.correo || !this.input.password) {
-        this.mensajeToast("Escribe tu usuario y tu clave.");
-        return;
-      }
-
-      var data = { correo: this.input.correo, password: this.input.password };
-
-      await this.$http.post(this.uriTemp, data, { emulateJSON: true }).then(        
-        result => {
-          console.log("En el login");
-          this.response = result.data;
-          //this.mensajeToast(JSON.stringify(result));
-          if (this.response.auth) {
-            this.$session.set("usuario_sesion", this.response);
-            this.$session.set("jwt", this.response.token);
-            this.$router.push({ name: "PaginaPrincipal" });
-          } else {
-            this.mensajeToast("No se encuentra el usuario..");
-            this.response = "No se encuentra el usuario..";
-          }
-        },
-        error => { //FIXME: modificar la contestacion del API
-          //console.log(JSON.stringify(error));
-          if(!error.auth){
-             this.mensajeToast("El usuario o la clave son incorrectas.");
-          }          
-          //this.response = error;
-        }
-      );
-    }
-  }
-};
-
-// axios({ method: "POST", "url": "https://httpbin.org/post", "data": this.input, "headers": { "content-type": "application/json" } }).then(result => {
-//                this.$http.post("https://develop1.herokuapp.com/api", this.input, { headers: { "content-type": "application/json" } }).then(result => {
-</script>
+<script src="../controller/LoginController.js"></script>
 
 <style scoped>
 </style>
