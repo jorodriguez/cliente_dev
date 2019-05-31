@@ -15,7 +15,7 @@ var Alumno = new Vue({
         sexo:"",        
         nombre_grupo:"",
         nombre_sucursal:"",
-        fecha_nacimiento: "",
+        fecha_nacimiento: null,
         alergias: "",
         nota: "",
         hora_entrada: "",
@@ -23,7 +23,7 @@ var Alumno = new Vue({
         costo_inscripcion: "",
         costo_colegiatura: "",
         minutos_gracia: "",        
-        fecha_reinscripcion: "",
+        fecha_reinscripcion: null,
         foto: "",
         genero: 1
     },

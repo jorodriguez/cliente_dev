@@ -866,14 +866,23 @@ export default {
       listaValoresEsperados: [],
       display: true,
       //uri:"http://localhost:5000/",
-      uri:"https://app-restexpres.herokuapp.com/",
-      uriTemp: this.uri+"alumnos",
-      uriTempGrupos: this.uri+"grupos",
-      uriTempFamiliar: this.uri+"familiar",
-      uriTempParentesco: this.uri+"parentesco",            
-      uriTempProducto: this.uri+"producto",
-      uriTempServicios: this.uri+"servicios",
-      uriTempValoresEsperados: this.uri+"valores_esperados",
+      //uri:"https://app-restexpres.herokuapp.com/",      
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos",
+      uriTempFamiliar: "http://localhost:5000/familiar",
+      uriTempParentesco: "http://localhost:5000/parentesco",            
+      uriTempProducto: "http://localhost:5000/producto",
+      uriTempServicios: "http://localhost:5000/servicios",
+      uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
+      
+      //--
+      /*uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+      uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
+      uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",            
+      uriTempProducto: "https://app-restexpres.herokuapp.com/producto",
+      uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
+      uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",*/
       response: "",
       mensaje: "",
       sesion: {},
@@ -925,15 +934,6 @@ export default {
               this.alumno.formato_inscripcion = {};
 
             console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
-
-            if (
-              this.alumno.formato_inscripcion.resp_esperan_como_institucion ==
-              null
-            )
-              this.alumno.formato_inscripcion.resp_esperan_como_institucion = {
-                resp_array: [],
-                especifico: ""
-              };
               
               this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
               
