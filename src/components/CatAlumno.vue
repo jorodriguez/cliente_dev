@@ -267,10 +267,10 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"
-      //uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      //uriTemp: "http://localhost:5000/alumnos",
+     // uriTempGrupos: "http://localhost:5000/grupos"
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
     };
   },
   mounted() {

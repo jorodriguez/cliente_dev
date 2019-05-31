@@ -249,12 +249,12 @@ export default {
       listaTipoActividad: [],
       limpiarFormularioActividad: null,
       validacion: null,
-      mensajeToast: null,
-      uriTempAsistencia: "http://localhost:5000/asistencia",
-      //uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
-      uriTempGrupos: "http://localhost:5000/grupos",
-      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+      mensajeToast: null,      
+      uriTempAsistencia: "http://localhost:5000/asistencia",      
+      uriTempGrupos: "http://localhost:5000/grupos",      
       uriTempActividad: "http://localhost:5000/actividad"
+      //uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+      //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
       //uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
     };
   },
