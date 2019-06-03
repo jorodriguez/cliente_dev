@@ -10,20 +10,17 @@ export default {
             sesion: {},
             response: "",
             listaAlumnos: [],
+            listaAlumnosResp: [],
             listaAlumnosSeleccionados: [],
             listaGrupos: [],
             listaGruposFiltrados: [],
-            grupoDefault: { id: -1, nombre: "Todos" },
-            grupoSeleccionado: { id: -1, nombre: "Todos" },
+            grupoDefault: {id:-1,nombre:"Todos"},
+            grupoSeleccionado : {id:-1,nombre:"Todos"},
             actividad: ActividadModel,
             actividadSelecionada: {},
             listaActividades: [],
             listaTipoActividad: [],
             limpiarFormularioActividad: null,
-            existeSeleccionAlumno: null,
-            seleccionarTodosAlumnos: null,
-            toggleSeleccionarTodosVisibles: null,
-            seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
             uriTempAsistencia: "http://localhost:5000/asistencia",
@@ -66,9 +63,10 @@ export default {
                     result => {
                         this.response = result.data;
                         if (this.response != null) {
-                            //console.log(" ====>> " + JSON.stringify(this.response));
+                            console.log(" ====>> " + JSON.stringify(this.response));
                             this.listaAlumnos = this.response;
-                            this.actualizarComboFiltro();
+                            this.listaAlumnosResp = this.response;
+                            this.actualizarComboFiltro();                            
                             this.filtrarAlumnosPorGrupo(this.grupoDefault);
                         }
                     },
@@ -147,100 +145,86 @@ export default {
                 return self.indexOf(value) === index;
             }
 
+            //this.listaGrupos = this.listaAlumnos.filter(distinct);
+
             this.listaGrupos = this.listaAlumnos.map(e => {
                 return { id: e.co_grupo, nombre: e.nombre_grupo };
             }).filter(distinct);
 
             console.log("Grupos filtrados " + JSON.stringify(this.listaGrupos));
 
+            //return { id: e.co_grupo, grupo: e.nombre_grupo };
         };
 
-        this.seleccionarTodos = (seleccion) => {
-            this.listaAlumnos
-                //.filter(e => e.seleccionado)
-                .forEach(e => {
-                    //if(e.visible){                        
-                    e.seleccionado = seleccion;
-                    //}
-                });
+        /*this.actualizarComboFiltro = () => {
+          this.listaGrupos = this.listaAlumnos.map(e => {
+            return { id: e.co_grupo, grupo: e.nombre_grupo };
+          });
+          console.log("Grupos filtrados " + JSON.stringify(this.listaGrupos));
+        };*/
 
+        this.limpiarSeleccionAlumnos = () => {
+            this.listaAlumnos['seleccionado'] = false;
         };
-
-        this.toggleSeleccionarTodosVisibles = () => {
-            var _this = this;
-            console.log("toggleSeleccionarTodosVisibles");
-
-            if (this.grupoSeleccionado.id == -1) {
-                console.log("Seleccionar todos sin grupo");
-                this.listaAlumnos                    
-                    .forEach(e => {
-                        if (e.visible) {
-                            console.log("seleccion " + e);
-                            e.seleccionado = !e.seleccionado;
-                        }
-                });
-            } else {
-                this.listaAlumnos
-                    .filter(e => e.co_grupo === _this.grupoSeleccionado.id)
-                    .forEach(e => {
-                        if (e.visible) {
-                            console.log("seleccion " + e);
-                            e.seleccionado = !e.seleccionado;
-                        }
-                });
-            }
-        };
-
-        this.existeSeleccionAlumno = () => {
-            return this.listaAlumnos.some(function (e) {
-                return e.seleccionado;
-            });
-        }
 
         this.loadFunctionAlumnosDentro();
         //this.validacion();
     },
     methods: {
-        toggleSelectAlumno(itemSelected) {
+        addToListAlumno(itemSelected) {
             if (!itemSelected.seleccionado) {
                 itemSelected["seleccionado"] = true;
+                this.listaAlumnosSeleccionados.push(itemSelected);
+                /*$("#" + itemSelected.id + "_selection_alumno").addClass(
+                    "fas fa-check-circle text-danger"
+                );*/
+                console.log(" Alumno seleccionado  " + JSON.stringify(itemSelected));
             } else {
                 itemSelected.seleccionado = false;
+                this.removeToListAlumno(itemSelected);
+            }
+            console.log("Add " + JSON.stringify(itemSelected));
+        },
+        removeToListAlumno(itemSelected) {
+            console.log("Remove " + itemSelected.nombre_alumno);
 
-                var existeSeleccion = this.existeSeleccionAlumno();
-                if (!existeSeleccion) {
-                    this.limpiarFormularioActividad();
-                    this.loadFunctionAlumnosDentro();
-                    $("#modal_actividad").modal("hide");
-                }
+            var pos = this.listaAlumnosSeleccionados.indexOf(itemSelected);
 
+            var elemento = this.listaAlumnosSeleccionados[pos];
+
+            this.listaAlumnosSeleccionados.splice(pos, 1);
+
+            $("#" + itemSelected.id + "_selection_alumno").removeClass(
+                "fas fa-check-circle text-danger"
+            );
+
+            if (this.listaAlumnosSeleccionados.length == 0) {
+                this.limpiarFormularioActividad();
+                this.loadFunctionAlumnosDentro();
+                $("#modal_actividad").modal("hide");
             }
         },
         initRegistroActividad() {
-
-            var existeSeleccion = this.existeSeleccionAlumno();
-            if (existeSeleccion) {
+            console.log("init registro actividad");
+            if (this.listaAlumnosSeleccionados.length > 0) {
                 this.limpiarFormularioActividad();
                 $("#modal_actividad").modal("show");
             } else {
                 this.mensajeToast("Seleccione al menos un alumno");
             }
-            console.log("init registro actividad");
-
         },
         registrarActividad() {
             console.log("Registrar actividad");
 
             console.log(JSON.stringify(this.actividad));
 
-            var existeSeleccion = this.existeSeleccionAlumno();
-
-            if (!existeSeleccion) {
+            if (this.listaAlumnosSeleccionados.length == 0) {
                 console.log("Seleccione al menos un alumno");
                 this.mensajeToast("Seleccione al menos un alumno");
                 return;
             }
 
+            //if (this.actividad.cat_actividad == -1) {
             if (!this.actividadSelecionada.id) {
                 console.log("Seleccione la actividad");
                 this.mensajeToast("Seleccione la actividad");
@@ -253,12 +237,10 @@ export default {
                 return;
             }
 
-            const alumnosIds = this.listaAlumnos
-                .filter(e => e.seleccionado)
-                .map(item => item.id_alumno);
-
-            console.log("Alumnos seleccionado " + alumnosIds);
-
+            const alumnosIds = this.listaAlumnosSeleccionados.map(
+                item => item.id_alumno
+            );
+            
             this.actividad["alumnosIds"] = alumnosIds;
             this.actividad["cat_actividad"] = this.actividadSelecionada.id;
             this.actividad.genero = this.usuarioSesion.id;
@@ -282,9 +264,8 @@ export default {
                                 this.listaAlumnosSeleccionados = [];
                                 this.limpiarFormularioActividad();
 
-                                $("[is_alumno]").removeClass("fas fa-check-circle text-danger");
+                                $("[is_alumno]").removeClass("fas fa-check-circle text-danger");                                
 
-                                this.seleccionarTodos(false);
                                 $("#modal_actividad").modal("hide");
                             }
                         }
@@ -300,35 +281,18 @@ export default {
             this.$router.push("/");
         },
         filtrarAlumnosPorGrupo(grupoItem) {
-            console.log("Grupo selecionado " + JSON.stringify(grupoItem));
+            console.log("Grupo selecionado "+JSON.stringify(grupoItem));
 
             this.grupoSeleccionado = grupoItem;
 
             if (this.grupoSeleccionado.id == -1) {
                 console.log("sinfiltro");
-                this.listaAlumnos.forEach(element => {
-                    element.visible = true;
-                });
+                this.listaAlumnos = this.listaAlumnosResp;
             } else {
                 console.log("Filtrar por grupo " + grupoItem.nombre);
-                this.listaAlumnos.forEach(element => {
-                    if (element.co_grupo == grupoItem.id) {
-                        element.visible = true;
-                    } else {
-                        element.visible = false;
-                    }
-                });
-
+                this.listaAlumnos = this.listaAlumnosResp.filter(e => e.co_grupo == grupoItem.id);               
             }
-        },
-        toggleSeleccionVisibles() {
-            if (this.listaAlumnos == null || this.listaAlumnos.length == 0) {
-                console.log("No existen alumnos seleccionados");
-                this.mensajeToast("No existen alumnos seleccionados");
-                return;
-            }
-            console.log("toggleSeleccionVisibles ");
-            this.toggleSeleccionarTodosVisibles();
+            console.log("new array " + JSON.stringify(this.listaAlumnos));
         }
     }
 };

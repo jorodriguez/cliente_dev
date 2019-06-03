@@ -1,6 +1,9 @@
 
 export default {
     name: "Login",
+    props: {
+      loading: { type: Boolean }
+    },
     data() {
       return {
         input: {

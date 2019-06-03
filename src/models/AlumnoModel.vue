@@ -25,6 +25,7 @@ var Alumno = new Vue({
         minutos_gracia: "",        
         fecha_reinscripcion: null,
         foto: "",
+        visible:false,
         genero: 1
     },
     methods: {

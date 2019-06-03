@@ -31,32 +31,45 @@
     </div>
     <div class="row">
       <div class="col-6 text-left">
-        {{listaGrupos}}
-        <div class="dropdown">          
-          <button
-            class="btn btn-link dropdown-toggle"
-            type="button"
-            id="dropdownMenu2"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >{{grupo}}</button>
-          <div
-            class="dropdown-menu"
-            aria-labelledby="dropdownMenu2"            
-          >
-            <button class="dropdown-item" 
-            v-for="grupoItem in listaGrupos"
-            v-bind:key="grupoItem.id"
-            type="button">{{grupoItem.nombre}}</button>
+        <div class="row">
+          <div class="dropdown">
+            <button
+              class="btn btn-link dropdown-toggle"
+              type="button"
+              id="dropdownMenu2"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >{{grupoSeleccionado.nombre}}</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button
+                class="dropdown-item"
+                v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+                type="button"
+              >{{grupoDefault.nombre}}</button>
+
+              <button
+                class="dropdown-item"
+                v-for="grupoItem in listaGrupos"
+                v-bind:key="grupoItem.id"
+                v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+                type="button"
+              >{{grupoItem.nombre}}</button>
+            </div>
           </div>
+          <button
+            type="button"
+            class="btn btn-link"
+            :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
+            v-on:click="toggleSeleccionVisibles()"
+          >Seleccionar Todos</button>
         </div>
       </div>
       <div class="col-6">
         <!--<button
           type="button"
           data-toggle="modal"
-          class="btn btn-block btn-info"
+          class="btn btn-blocks btn-info"
           v-on:click="initRegistroActividad()"
         >Actividad</button>-->
       </div>
@@ -71,7 +84,7 @@
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
           >
-            <small class="badge badge-pill badge-info">
+            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
               <img
                 src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                 width="35"
@@ -79,8 +92,11 @@
                 alt="..."
                 class="rounded-circle"
               >
-              <i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
+              <!--<i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>-->
+              <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
+
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
+              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
             </small>
           </div>
         </div>
@@ -111,11 +127,11 @@
                 <div class="media">
                   <div class="row">
                     <div
-                      v-for="alumnoItem in listaAlumnosSeleccionados"
+                      v-for="alumnoItem in listaAlumnos"
                       v-bind:key="alumnoItem.id"
                       class="d-flex align-content-top flex-wrap"
                     >
-                      <span class="badge badge-pill badge-info">
+                      <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                         <!--<img
                           src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                           width="20"
@@ -123,9 +139,11 @@
                           alt="..."
                           class="rounded-circle"
                         >-->
+
+                        <!--v-on:click="removeToListAlumno(alumnoItem)" -->
                         {{alumnoItem.nombre_alumno}}
                         <i
-                          v-on:click="removeToListAlumno(alumnoItem)"
+                          v-on:click="toggleSelectAlumno(alumnoItem)"
                           class="fas fa-minus-circle text-danger"
                         ></i>
                       </span>
@@ -142,7 +160,7 @@
                 id="combo_actividad_principal"
                 v-model="actividadSelecionada"
                 class="form-control"
-                placeholder="Grupo"
+                placeholder="Actividad"
                 required
                 autofocus
               >

@@ -12,7 +12,8 @@ import VueSession from 'vue-session'
 Vue.use(Router);
 Vue.use(VueSession);
 
-export default new Router({      
+//export default new Router({      
+  const router = new Router({
   routes: [    
     { path: '/', name:'Login', component: Login },        
     { path: '/principal', name: 'PaginaPrincipal', component: Principal },
@@ -22,3 +23,20 @@ export default new Router({
     { path: '/Actividades', name: 'Actividades', component: RegistroActividad }
   ]
 })
+
+
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {    
+      // Start the route progress bar.
+      NProgress.start()
+  }
+  next()
+})
+
+router.afterEach((to, from) => {
+  // Complete the animation of the route progress bar.
+  NProgress.done()
+})
+
+export default router;
