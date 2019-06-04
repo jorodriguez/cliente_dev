@@ -340,16 +340,21 @@
                 </div>
                 <div class="form-group">
                   <label for="inputFechaNacimientoAlumno">Fecha de Nacimiento <span class="text-danger">*</span></label>
-                  <input
+                  <!--<input
                     id="inputFechaNacimientoAlumno"
                     type="date"
                     pattern="yyyy-MM-dd"
-                    v-model="alumno.fecha_nacimiento"
+                    v-model="alumno.fecha_nacimiento"                    
                     class="form-control"
                     placeholder="F. Nacimiento"
                     required
-                  >
-                </div>
+                  >-->
+                 <datepicker id="inputFechaNacimientoAlumno"
+                   v-model="alumno.fecha_nacimiento" 
+                    
+                    input-class="form-control"
+                  required></datepicker>
+                 </div>
                 <div class="form-group">
                   <label for="inputSexo">Sexo <span class="text-danger">*</span></label>
                   <select
@@ -462,7 +467,7 @@
 
                 <div class="form-group">
                   <label for="inputFReinscripcion">Fecha de Reinscripción <span class="text-danger">*</span></label>
-                  <input
+                  <!--<input
                     id="inputFReinscripcion"
                     type="date"
                     pattern="yyyy-MM-dd"
@@ -470,7 +475,11 @@
                     class="form-control"
                     placeholder="F. Reinscripcion"
                     required
-                  >
+                  >-->
+                   <datepicker id="inputFReinscripcion"
+                      v-model="alumno.fecha_reinscripcion"                     
+                      input-class="form-control"
+                      required></datepicker>
                 </div>
 
                 <div class="form-group">

@@ -20,6 +20,7 @@
     "vue-router": "^3.0.1",
     "vue-session": "^1.0.0",
     "vue-sessionstorage": "^1.0.0",
+    "vuejs-datepicker": "^1.5.4",
     "vuejs-smart-table": "0.0.5"
   },
   "devDependencies": {

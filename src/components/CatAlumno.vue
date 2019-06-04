@@ -43,6 +43,7 @@
                   required
                 >
                 <label>Fecha de nacimiento <span class="text-danger">*</span></label>
+                <!--
                 <input
                   type="date"
                   pattern="yyyy-MM-dd"
@@ -50,7 +51,11 @@
                   class="form-control"
                   placeholder="F. Nacimiento"
                   required
-                >
+                >-->
+                 <datepicker
+                      v-model="input.fecha_nacimiento"                     
+                      input-class="form-control"
+                      required></datepicker>
                 
                 <label>Sexo <span class="text-danger">*</span></label>
                 <select
@@ -136,14 +141,19 @@
                 >
 
                 <label>F. de Reinscripción <span class="text-danger">*</span></label>
-                <input
+                <!--<input
                   type="date"
                    pattern="yyyy-MM-dd"
                   v-model="input.fecha_reinscripcion"
                   class="form-control"
                   placeholder="F. Reinscripcion"
                   required
-                >
+                >-->
+                <datepicker
+                      v-model="input.fecha_reinscripcion"                     
+                      input-class="form-control"
+                      required></datepicker>
+                
                 <label>Nota</label>
                 <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
               </div>

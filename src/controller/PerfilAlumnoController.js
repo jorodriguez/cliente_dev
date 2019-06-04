@@ -4,9 +4,13 @@ import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
 import FamiliarModel from "../models/FamiliarModel";
 import Utils from "../models/FormatoUtils";
+import Datepicker from 'vuejs-datepicker';
 
 export default {
     name: "PerfilAlumno",
+    components: {
+        Datepicker
+    },    
     data() {
         return {
             id: 0,
