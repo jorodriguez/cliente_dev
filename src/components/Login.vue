@@ -21,15 +21,7 @@
       >
       <button class="btn btn-lg btn-primary btn-block" v-on:click="login()" :disabled="loading">
         Entrar
-        <svg v-if="loading" class="Button__Icon Button__Spinner" viewBox="...">
-          <path d=""></path>
-        </svg>
-        <svg v-else class="Button__Icon" viewBox="0 0 20 20">
-          <path d="..."></path>
-        </svg>
-        <span v-if="!loading" class="Button__Content">
-          <slot></slot>
-        </span>
+       
       </button>
       <br>
       <br>

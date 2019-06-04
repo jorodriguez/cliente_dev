@@ -1,6 +1,7 @@
 
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
+import { truncateSync } from "fs";
 
 export default {
     name: "Principal",
@@ -174,9 +175,8 @@ export default {
                 console.log("Seleccionar todos sin grupo");
                 this.listaAlumnos                    
                     .forEach(e => {
-                        if (e.visible) {
-                            console.log("seleccion " + e);
-                            e.seleccionado = !e.seleccionado;
+                        if (e.visible) {                            
+                            e.seleccionado = true;
                         }
                 });
             } else {

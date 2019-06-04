@@ -97,6 +97,7 @@
 
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
               <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+              
             </small>
           </div>
         </div>
