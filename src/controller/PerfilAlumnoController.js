@@ -285,8 +285,30 @@ export default {
                     );
             };
 
+            //grupos
+            this.loadFunctionGrupos = function() {
+                this.$http
+                  .get(this.uriTempGrupos, {
+                    headers: {
+                      "x-access-token": this.sesion.token
+                    }
+                  })
+                  .then(
+                    result => {
+                      this.response = result.data;
+                      console.log("Grupos " + this.response);
+                      if (this.response != null) {
+                        this.listaGrupos = this.response;                        
+                      }
+                    },
+                    error => {
+                      console.error(error);
+                    }
+                  );
+              };
 
             this.loadFamiliaresFuncion();
+            this.loadFunctionGrupos();
             this.loadCatalogoProductosFuncion();
             this.loadProductosAlumnoFuncion();
 
