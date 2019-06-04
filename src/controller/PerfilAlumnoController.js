@@ -47,7 +47,7 @@ export default {
             uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
             uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
-            uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",            
+            uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",
             uriTempProducto: "https://app-restexpres.herokuapp.com/producto",
             uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",
@@ -89,29 +89,6 @@ export default {
         } else {
             console.log("this.uriTemp  " + this.uriTemp);
 
-            /*this.loadCatalogoFunction = function(url,listaTarget){
-                console.log("===> "+url);                
-                this.$http
-                    .get(url, {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    })
-                    .then(
-                        result => {          
-                            this.response = result.data;
-                            console.log("ZZZZ "+JSON.stringify(result.data));
-                            if (this.response != null) {
-                                listaTarget = result.data;
-                            }
-                        },
-                        error => {
-                            listaTarget = [];
-                            console.error(error);
-                        }
-                    );
-            };*/
-
             this.$http
                 .get(this.uriTemp + "/id/" + this.id, {
                     headers: {
@@ -128,20 +105,12 @@ export default {
                         console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
                         this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
-                       //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
+                        //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
                     },
                     error => {
                         console.error(error);
                     }
                 );
-
-           
-
-
-            //familiares
-            /*this.loadFamiliaresFuncion = () => {
-                    this.loadCatalogoFunction(this.uriTempFamiliar + "/" + this.id,this.listaFamiliares );
-            };*/
             this.loadFamiliaresFuncion = () => {
                 this.$http
                     .get(this.uriTempFamiliar + "/" + this.id, {
@@ -162,10 +131,7 @@ export default {
                     );
             };
 
-            // Parentesco
-            /*this.loadCatalogoParentescoFuncion = () => {
-                this.loadCatalogoFunction(this.uriTempParentesco + "/" + this.id,this.listaParentesco);
-            };*/
+            // Parentesco         
             this.loadCatalogoParentescoFuncion = () => {
                 this.$http
                     .get(this.uriTempParentesco + "/" + this.id, {
@@ -186,12 +152,8 @@ export default {
                     );
             };
 
-            //Traer productos
-            /*this.loadCatalogoProductosFuncion = () => {
-                    this.loadCatalogoFunction(this.uriTempProducto,this.listaProductos);
-            };
-            */
-           this.loadCatalogoProductosFuncion = () => {
+            //Traer productos           
+            this.loadCatalogoProductosFuncion = () => {
                 this.$http
                     .get(this.uriTempProducto, {
                         headers: {
@@ -211,11 +173,7 @@ export default {
                     );
             };
 
-            /*this.loadProductosAlumnoFuncion = ()=>{
-                this.loadCatalogoFunction(this.uriTempProducto + "/" + this.id,this.listaProductosAlumno);
-            };*/
-
-            this.loadProductosAlumnoFuncion = () => {
+          this.loadProductosAlumnoFuncion = () => {
                 console.log("loadProductosAlumnoFuncion ");
                 this.$http
                     .get(this.uriTempProducto + "/" + this.id, {
@@ -237,8 +195,7 @@ export default {
                     );
             };
 
-            //traer sevicios
-            //this.loadCatalogoFunction(this.uriTempServicios,this.listaServicios);  
+            //traer sevicios            
             this.$http
                 .get(this.uriTempServicios, {
                     headers: {
@@ -257,12 +214,8 @@ export default {
                         console.error(error);
                     }
                 );
-           
-           /*     this.loadValoresEsperadosFunction = (id_formato) => {
-                    this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + id_formato,this.listaValoresEsperados);  
-                };
-                */
-                
+
+
             this.loadValoresEsperadosFunction = (id_formato) => {
                 this.$http
                     .get(this.uriTempValoresEsperados + "/" + id_formato, {
@@ -286,26 +239,79 @@ export default {
             };
 
             //grupos
-            this.loadFunctionGrupos = function() {
+            this.loadFunctionGrupos = function () {
                 this.$http
-                  .get(this.uriTempGrupos, {
-                    headers: {
-                      "x-access-token": this.sesion.token
-                    }
-                  })
-                  .then(
-                    result => {
-                      this.response = result.data;
-                      console.log("Grupos " + this.response);
-                      if (this.response != null) {
-                        this.listaGrupos = this.response;                        
-                      }
-                    },
-                    error => {
-                      console.error(error);
-                    }
-                  );
-              };
+                    .get(this.uriTempGrupos, {
+                        headers: {
+                            "x-access-token": this.sesion.token
+                        }
+                    })
+                    .then(
+                        result => {
+                            this.response = result.data;
+                            console.log("Grupos " + this.response);
+                            if (this.response != null) {
+                                this.listaGrupos = this.response;
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    );
+            };
+
+            this.validacionGuardarFunction = ()=>{
+                if(this.alumno==null){
+                  return false;        
+                }else{          
+                 
+                  if(this.alumno.nombre == ''){
+                    this.mensaje = "* Escribe un nombre";
+                    return false;
+                  }
+                  if(this.alumno.apellidos == ''){
+                    this.mensaje = "* Escribe un nombre";
+                    return false;
+                  }
+                  if(this.alumno.fecha_nacimiento == null){
+                    this.mensaje = "* Selecciona la fecha de nacimiento";
+                    return false;
+                  }
+        
+                  if(this.alumno.sexo == ''){
+                    this.mensaje = "* Selecciona el sexo";
+                    return false;
+                  }                  
+        
+                  if(this.alumno.co_grupo == 0 ){
+                    this.mensaje = "Selecciona un grupo";
+                    return false;
+                  }
+                 
+                  if(this.alumno.hora_entrada == null || this.alumno.hora_salida == null
+                      || this.alumno.hora_entrada == '' || this.alumno.hora_salida == ''){            
+                    this.mensaje = "* Selecciona la hora de entrada y salida";
+                    return false;
+                  }
+        
+                  if(this.alumno.minutos_gracia == null || this.alumno.minutos_gracia == ''){
+                    this.mensaje = "* Escribe los minutos de gracia";
+                    return false;
+                  }
+                  
+                  if(this.alumno.costo_inscripcion == null || this.alumno.costo_inscripcion == ''){            
+                    this.mensaje = "* Escribe el costo de incripción";
+                    return false;
+                  }
+                                                 
+                  if(this.alumno.fecha_reinscripcion == null){
+                    this.mensaje = "* Selecciona la fecha de reinscripción";
+                    return false;
+                  }        
+        
+                  return true;
+                }
+            }
 
             this.loadFamiliaresFuncion();
             this.loadFunctionGrupos();
@@ -323,8 +329,11 @@ export default {
         //FIXME : pasar al servicio
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
-            this.mensaje = JSON.stringify(this.alumno);
 
+            if(!this.validacionGuardarFunction){
+                
+                return;
+            }           
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 

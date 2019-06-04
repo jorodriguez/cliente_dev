@@ -315,7 +315,7 @@
                 aria-labelledby="pills-home-tab"
               >
                 <div class="form-group">
-                  <label for="inputNombre">Nombre</label>
+                  <label for="inputNombre">Nombre <span class="text-danger">*</span></label>
                   <input
                     id="inputNombre"
                     type="text"
@@ -328,7 +328,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="inputApellidos">Apellidos</label>
+                  <label for="inputApellidos">Apellidos <span class="text-danger">*</span></label>
                   <input
                     id="inputApellidos"
                     type="text"
@@ -339,7 +339,7 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputFechaNacimientoAlumno">Fecha de Nacimiento</label>
+                  <label for="inputFechaNacimientoAlumno">Fecha de Nacimiento <span class="text-danger">*</span></label>
                   <input
                     id="inputFechaNacimientoAlumno"
                     type="date"
@@ -351,7 +351,7 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputSexo">Sexo</label>
+                  <label for="inputSexo">Sexo <span class="text-danger">*</span></label>
                   <select
                     id="inputSexo"
                     v-model="alumno.sexo"
@@ -376,13 +376,13 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="selectGrupo">Grupo</label>
+                  <label for="selectGrupo">Grupo <span class="text-danger">*</span></label>
                   <select
                     v-model="alumno.co_grupo"
                     class="form-control"
                     placeholder="Grupo"
                     required
-                    autofocus
+                    
                   >
                     <option
                       id="selectGrupo"
@@ -396,7 +396,7 @@
                 <div class="row">
                   <div class="col col-md-6">
                     <div class="form-group">
-                      <label for="inputHoraEntrada">Hora Entrada</label>
+                      <label for="inputHoraEntrada">Hora Entrada <span class="text-danger">*</span></label>
                       <input
                         id="inputHoraEntrada"
                         type="time"
@@ -409,7 +409,7 @@
                   </div>
                   <div class="col col-md-6">
                     <div class="form-group">
-                      <label for="inputHoraSalida">Hora Salida</label>
+                      <label for="inputHoraSalida">Hora Salida <span class="text-danger">*</span></label>
                       <input
                         id="inputHoraSalida"
                         type="time"
@@ -423,42 +423,45 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="inputMinutosGracia">Minutos de Gracia</label>
+                  <label for="inputMinutosGracia">Minutos de Gracia <span class="text-danger">*</span></label>
                   <input
                     id="inputMinutosGracia"
                     type="number"
                     v-model="alumno.minutos_gracia"
                     class="form-control"
                     placeholder="Min. Gracia"
+                    min="0"
                     required
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputCostoColegiatura">Costo Colegiatura</label>
+                  <label for="inputCostoColegiatura">Costo Colegiatura <span class="text-danger">*</span></label>
                   <input
                     id="inputCostoColegiatura"
                     type="number"
                     v-model="alumno.costo_colegiatura"
                     class="form-control"
                     placeholder="Costo Colegiatura"
+                    min="0"
                     required
                   >
                 </div>
 
                 <div class="form-group">
-                  <label for="inputCostoInscripcion">Costo Inscripción</label>
+                  <label for="inputCostoInscripcion">Costo Inscripción <span class="text-danger">*</span></label>
                   <input
                     id="inputCostoInscripcion"
                     type="number"
                     v-model="alumno.costo_inscripcion"
                     class="form-control"
                     placeholder="Costo Inscripcion"
+                    min="0"
                     required
                   >
                 </div>
 
                 <div class="form-group">
-                  <label for="inputFReinscripcion">Fecha de Reinscripción</label>
+                  <label for="inputFReinscripcion">Fecha de Reinscripción <span class="text-danger">*</span></label>
                   <input
                     id="inputFReinscripcion"
                     type="date"

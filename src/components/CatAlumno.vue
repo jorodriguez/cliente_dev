@@ -22,10 +22,10 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-
             <div class="modal-body text-left">
+              <span class="text-danger text-sm">{{mensaje}}</span>
               <div>
-                <label>Nombre</label>
+                <label>Nombre <span class="text-danger">*</span> </label>
                 <input
                   type="text"
                   v-model="input.nombre"
@@ -42,7 +42,7 @@
                   placeholder="Apellidos"
                   required
                 >
-                <label>Fecha de nacimiento</label>
+                <label>Fecha de nacimiento <span class="text-danger">*</span></label>
                 <input
                   type="date"
                   pattern="yyyy-MM-dd"
@@ -52,7 +52,7 @@
                   required
                 >
                 
-                <label>Sexo</label>
+                <label>Sexo <span class="text-danger">*</span></label>
                 <select
                   id="inputServicioContratar"
                   v-model="input.sexo"
@@ -72,8 +72,9 @@
                   placeholder="Alergias"
                 >
 
-                <label>Grupo</label>
+                <label>Grupo <span class="text-danger">*</span></label>
                 <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
+                  
                   <option
                     v-for="grupo in listaGrupos"
                     v-bind:value="grupo.id"
@@ -83,7 +84,7 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <label>Hora Entrada</label>
+                    <label>Hora Entrada <span class="text-danger">*</span></label>
                     <input
                       type="time"
                       v-model="input.hora_entrada"
@@ -93,7 +94,7 @@
                     >
                   </div>
                   <div class="col-sm-6">
-                    <label>Hora Salida</label>
+                    <label>Hora Salida <span class="text-danger">*</span></label>
                     <input
                       type="time"
                       v-model="input.hora_salida"
@@ -104,34 +105,37 @@
                   </div>
                 </div>
 
-                <label>Minutos de Gracia</label>
+                <label>Minutos de Gracia <span class="text-danger">*</span></label>
                 <input
                   type="number"
                   v-model="input.minutos_gracia"
                   class="form-control"
                   placeholder="Min. Gracia"
+                  min="0"
                   required
                 >
 
-                <label>Costo Colegiatura</label>
+                <label>Costo Colegiatura <span class="text-danger">*</span></label>
                 <input
                   type="number"
                   v-model="input.costo_colegiatura"
                   class="form-control"
                   placeholder="Costo Colegiatura"
+                  min="0"
                   required
                 >
 
-                <label>Costo Inscripción</label>
+                <label>Costo Inscripción <span class="text-danger">*</span></label>
                 <input
                   type="number"
                   v-model="input.costo_inscripcion"
                   class="form-control"
                   placeholder="Costo Inscripcion"
+                  min="0"
                   required
                 >
 
-                <label>F. de Reinscripción</label>
+                <label>F. de Reinscripción <span class="text-danger">*</span></label>
                 <input
                   type="date"
                    pattern="yyyy-MM-dd"
@@ -148,15 +152,13 @@
               <div v-if="operacion == 'INSERT'">
                 <button
                   class="btn btn-lg btn-primary"
-                  v-on:click="guardar()"
-                  data-dismiss="modal"
+                  v-on:click="guardar()"                  
                 >Guardar</button>
               </div>
               <div v-else-if="operacion == 'UPDATE'">
                 <button
                   class="btn btn-lg btn-primary"
-                  v-on:click="modificar()"
-                  data-dismiss="modal"
+                  v-on:click="modificar()"                  
                 >Modificar</button>
               </div>
               <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -213,8 +215,8 @@
           <th>Hora de Entrada</th>
           <th>Hora de Salida</th>
           <th></th>
-          <th></th>
-        </thead>
+          <!--<th></th>-->
+          </thead>
         <tr v-for="row in lista" :key="row.id">
           <td class="text-right">
             <img

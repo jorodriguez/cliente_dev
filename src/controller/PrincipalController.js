@@ -23,16 +23,17 @@ export default {
             limpiarFormularioActividad: null,
             existeSeleccionAlumno: null,
             seleccionarTodosAlumnos: null,
+            isSeleccionadoTodos: false,
             toggleSeleccionarTodosVisibles: null,
             seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
-            //uriTempAsistencia: "http://localhost:5000/asistencia",
-            //uriTempGrupos: "http://localhost:5000/grupos",
-            //uriTempActividad: "http://localhost:5000/actividad"
+            /*uriTempAsistencia: "http://localhost:5000/asistencia",
+            uriTempGrupos: "http://localhost:5000/grupos",
+            uriTempActividad: "http://localhost:5000/actividad"*/
             uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"          
         };
     },
     //FIXME: SESION
@@ -98,6 +99,7 @@ export default {
             this.actividad.sub_actividad = -1;
             this.actividad.genero = -1;
             this.actividad.alumnosIds = [];
+            this.actividad.nota = "";
         };
 
         //actividades
@@ -144,13 +146,19 @@ export default {
         //Filtro de grupos
 
         this.actualizarComboFiltro = () => {
-            const distinct = (value, index, self) => {
-                return self.indexOf(value) === index;
-            }
+            var resArr = [];            
+            this.listaAlumnos.filter(function (item) {
+                var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
+                if (i <= -1) {
+                    resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo});
+                }
+                return null;
+            });
+            
+            this.listaGrupos = resArr;
 
-            this.listaGrupos = this.listaAlumnos.map(e => {
-                return { id: e.co_grupo, nombre: e.nombre_grupo };
-            }).filter(distinct);
+            //this.listaGrupos = [...new Set(arr)]; 
+            //this.listaGrupos = [...new Set(this.listaAlumnos.map(e => { return { id: e.co_grupo, nombre: e.nombre_grupo } }))];
 
             console.log("Grupos filtrados " + JSON.stringify(this.listaGrupos));
 
@@ -173,21 +181,22 @@ export default {
 
             if (this.grupoSeleccionado.id == -1) {
                 console.log("Seleccionar todos sin grupo");
-                this.listaAlumnos                    
+                this.isSeleccionadoTodos = !this.isSeleccionadoTodos;
+                this.listaAlumnos
                     .forEach(e => {
-                        if (e.visible) {                            
-                            e.seleccionado = true;
+                        if (e.visible) {
+                            e.seleccionado = this.isSeleccionadoTodos;
                         }
-                });
+                    });
+
             } else {
                 this.listaAlumnos
                     .filter(e => e.co_grupo === _this.grupoSeleccionado.id)
                     .forEach(e => {
                         if (e.visible) {
-                            console.log("seleccion " + e);
                             e.seleccionado = !e.seleccionado;
                         }
-                });
+                    });
             }
         };
 
@@ -212,6 +221,7 @@ export default {
                     this.limpiarFormularioActividad();
                     this.loadFunctionAlumnosDentro();
                     $("#modal_actividad").modal("hide");
+                    $("#confirmar_salida_modal").modal("hide");
                 }
 
             }
@@ -329,6 +339,67 @@ export default {
             }
             console.log("toggleSeleccionVisibles ");
             this.toggleSeleccionarTodosVisibles();
+        },
+        iniciarRegistrarSalida() {
+            var existeSeleccion = this.existeSeleccionAlumno();
+            if (existeSeleccion) {
+                $("#confirmar_salida_modal").modal("show");
+            } else {
+                this.mensajeToast("Seleccione al menos un alumno de la lista");
+            }
+
+        },
+        registrarSalida() {
+            console.log("Registrar salida");
+
+            var existeSeleccion = this.existeSeleccionAlumno();
+
+            if (existeSeleccion) {
+
+                var ids = [];
+
+                for (var i = 0; i < this.listaAlumnos.length; i++) {
+                    var elem = this.listaAlumnos[i];
+                    if (elem.seleccionado) {
+                        ids.push(elem.id);
+                    }
+                }
+
+                console.log("IDS " + ids);
+
+                this.$http
+                    .post(
+                        this.uriTempAsistencia + "/salidaAlumnos",
+                        { ids: ids, genero: this.usuarioSesion.id },
+                        {
+                            headers: {
+                                "x-access-token": this.sesion.token
+                            }
+                        }
+                    )
+                    .then(
+                        result => {
+                            this.response = result.data;
+                            console.log("Response " + this.response);
+                            if (this.response != null) {
+                                this.lista = this.response;
+                                this.mensaje = "Se registro la salida de los alumnos";
+                                $("#confirmar_salida_modal").modal("hide");
+                                this.loadFunctionAlumnosDentro();
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    ).catch((e) => {
+                        $("#confirmar_salida_modal").modal("hide");
+                        this.mensajeToast("Sucedió un error inesperado");
+                    });
+            } else {
+                this.mensajeToast("Seleccione al menos un alumno de la lista");
+                //this.mensaje = "Seleccione al menos un alumno de la lista";
+            }
         }
+
     }
 };

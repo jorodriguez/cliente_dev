@@ -13,10 +13,11 @@ export default {
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
-      //uriTemp: "http://localhost:5000/alumnos",
-     // uriTempGrupos: "http://localhost:5000/grupos"
+      mensaje :"",
+      /*uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"*/
       uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      
     };
   },
   mounted() {
@@ -78,6 +79,61 @@ export default {
           }
         );
     };
+
+    //validacion
+    this.validacionGuardarFunction = ()=>{
+        if(this.input==null){
+          return false;        
+        }else{          
+         
+          if(this.input.nombre == ''){
+            this.mensaje = "* Escribe un nombre";
+            return false;
+          }
+          if(this.input.apellidos == ''){
+            this.mensaje = "* Escribe un nombre";
+            return false;
+          }
+          if(this.input.fecha_nacimiento == null){
+            this.mensaje = "* Selecciona la fecha de nacimiento";
+            return false;
+          }
+
+          if(this.input.sexo == ''){
+            this.mensaje = "* Selecciona el sexo";
+            return false;
+          }                  
+
+          if(this.input.co_grupo == 0 ){
+            this.mensaje = "Selecciona un grupo";
+            return false;
+          }
+         
+          if(this.input.hora_entrada == null || this.input.hora_salida == null
+              || this.input.hora_entrada == '' || this.input.hora_salida == ''){            
+            this.mensaje = "* Selecciona la hora de entrada y salida";
+            return false;
+          }
+
+          if(this.input.minutos_gracia == null || this.input.minutos_gracia == ''){
+            this.mensaje = "* Escribe los minutos de gracia";
+            return false;
+          }
+          
+          if(this.input.costo_inscripcion == null || this.input.costo_inscripcion == ''){            
+            this.mensaje = "* Escribe el costo de incripción";
+            return false;
+          }
+                                         
+          if(this.input.fecha_reinscripcion == null){
+            this.mensaje = "* Selecciona la fecha de reinscripción";
+            return false;
+          }        
+
+          return true;
+        }
+    }
+
     this.loadFunction();
     this.loadFunctionGrupos();
   },
@@ -114,6 +170,12 @@ export default {
     guardar() {
       //this.$http.get(process.env.ROOT_API+'/alumnos')
       console.log("Insertar");
+
+      if(!this.validacionGuardarFunction()){
+        console.log("No paso la validacion");
+          return;
+      }
+
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
       this.input.genero = this.usuarioSesion.id;
 
@@ -126,8 +188,10 @@ export default {
         .then(
           result => {
             this.response = result.data;            
+            console.log("this.response "+this.response);
             this.mensaje = "Se agregó el alumno";
             this.loadFunction();
+            $("#modal_alumno").modal("hide");
           },
           error => {
             console.error(error);
@@ -136,6 +200,12 @@ export default {
     },
     modificar() {
       console.log("Modificar el id " + this.input.id);
+
+      if(!this.validacionGuardarFunction()){
+        console.log("No paso la validacion");
+        return;
+      }
+
       this.$http
         .put(this.uriTemp + "/" + this.input.id, this.input, {
           headers: {
@@ -150,6 +220,7 @@ export default {
               console.log("" + this.response);
               this.mensaje = "Se modificó el alumno";
               this.loadFunction();
+              $("#modal_alumno").modal("hide");
             }
           },
           error => {
@@ -183,6 +254,7 @@ export default {
       console.log("fila seleccionada " + rowSelect.nombre);
       this.operacion = operacion;
       this.input = rowSelect;
+      this.mensaje="";
     },
     verPerfil(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);

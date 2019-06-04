@@ -30,54 +30,57 @@
       </button>
     </div>
     <div class="row">
-      <div class="col-6 text-left">
-        <div class="row">
-          <div class="dropdown">
-            <button
-              class="btn btn-link dropdown-toggle"
-              type="button"
-              id="dropdownMenu2"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >{{grupoSeleccionado.nombre}}</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button
-                class="dropdown-item"
-                v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
-                type="button"
-              >{{grupoDefault.nombre}}</button>
-
-              <button
-                class="dropdown-item"
-                v-for="grupoItem in listaGrupos"
-                v-bind:key="grupoItem.id"
-                v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
-                type="button"
-              >{{grupoItem.nombre}}</button>
-            </div>
-          </div>
+      <div class="col text-left">
+        <div class="dropdown">
           <button
+            class="btn btn-link btn-sm dropdown-toggle"
             type="button"
-            class="btn btn-link"
-            :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
-            v-on:click="toggleSeleccionVisibles()"
-          >Seleccionar Todos</button>
+            id="dropdownMenu2"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >{{grupoSeleccionado.nombre}}</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button
+              class="dropdown-item"
+              v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+              type="button"
+            >{{grupoDefault.nombre}}</button>
+            <button
+              class="dropdown-item"
+              v-for="grupoItem in listaGrupos"
+              v-bind:key="grupoItem.id"
+              v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+              type="button"
+            >{{grupoItem.nombre}}</button>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <!--<button
+      <div class="col">
+        <button
           type="button"
-          data-toggle="modal"
-          class="btn btn-blocks btn-info"
-          v-on:click="initRegistroActividad()"
-        >Actividad</button>-->
+          class="btn btn-link btn-sm"
+          :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
+          v-on:click="toggleSeleccionVisibles()"
+        >
+          <!--<i class="fas fa-user-check"></i>-->
+          Seleccionar
+        </button>
+      </div>
+      <div class="col">
+        <button
+          type="button"
+          class="btn btn-outline-info btn-sm"                           
+          v-on:click="iniciarRegistrarSalida()"
+        >
+         <i class="fas fa-arrow-right"></i>
+        Salida</button>
       </div>
     </div>
 
     <div class="jumbotron m-1">
       <div class="media">
-        <div class="row">
+        <div class="row overflow-auto">
           <div
             id="div_foreach_alumno"
             v-for="alumnoItem in listaAlumnos"
@@ -97,7 +100,6 @@
 
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
               <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
-              
             </small>
           </div>
         </div>
@@ -223,6 +225,63 @@
     </div>
     <!-- Modal actividad -->
 
+    <!-- MODAL CONFIRMAR SALIDA -->
+    <div
+      class="modal fade bd-example-modal-sm"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mySmallModalLabel"
+      aria-hidden="true"
+      id="confirmar_salida_modal"
+    >
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmar Salida</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5>Confirme que salen los alumnos</h5>
+            <div class="container jumbotron m-1 scroll-div">
+              <div class="media">
+                <div class="row">
+                  <div
+                    v-for="alumnoItem in listaAlumnos"
+                    v-bind:key="alumnoItem.id"
+                    class="d-flex align-content-top flex-wrap"
+                  >
+                    <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">                                          
+                      {{alumnoItem.nombre_alumno}}
+                      <i
+                        v-on:click="toggleSelectAlumno(alumnoItem)"
+                        class="fas fa-minus-circle text-danger"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            
+            <button
+              type="button"
+              :disabled="this.listaAlumnos == null || this.listaAlumnos == []"              
+              class="btn btn-success btn-sm"
+              v-on:click="registrarSalida()"
+            >
+              Confirmar Salida
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MODAL CONFIRMAR SALIDA -->
+
     <!-- MODAL TOAST -->
     <div
       id="toast_id"
@@ -230,12 +289,11 @@
       aria-live="assertive"
       aria-atomic="true"
       class="toast border-warning"
+       data-delay="1000"
       data-autohide="true"
     >
       <div class="toast-header p-1 mb-1 bg-warning text-dark">
-        <!--<img src="" class="rounded mr-2" alt="...">-->
         <strong class="mr-auto">Mensaje</strong>
-        <!--<small>11 mins ago</small>-->
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
