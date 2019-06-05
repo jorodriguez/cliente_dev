@@ -1,7 +1,11 @@
 import AlumnoModel from "../models/AlumnoModel";
+import Datepicker from 'vuejs-datepicker';
 
 export default {
   name: "Alumno",
+  components: {
+    Datepicker
+  }, 
   data() {
     return {
       input: AlumnoModel,

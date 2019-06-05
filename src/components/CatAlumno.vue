@@ -53,6 +53,7 @@
                   required
                 >-->
                  <datepicker
+                      name="fecha_nacmiento"
                       v-model="input.fecha_nacimiento"                     
                       input-class="form-control"
                       required></datepicker>
@@ -150,6 +151,7 @@
                   required
                 >-->
                 <datepicker
+                      name="fecha_reinscripcion"
                       v-model="input.fecha_reinscripcion"                     
                       input-class="form-control"
                       required></datepicker>
