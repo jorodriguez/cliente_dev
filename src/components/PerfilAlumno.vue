@@ -75,14 +75,18 @@
                 </div>
                 <div class="form-group">
                   <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>
-                  <input
+                  <!--<input
                     id="inputFnacimientoFamiliar"
                     type="date"
                     pattern="yyyy-MM-dd"
                     v-model="familiar.fecha_nacimiento"
                     class="form-control"
                     placeholder="Fecha de Nacimiento"
-                  >
+                  >-->
+                   <datepicker id="inputFnacimientoFamiliar"
+                      v-model="familiar.fecha_nacimiento"                     
+                      input-class="form-control"
+                      ></datepicker>
                 </div>
                 <div class="form-group">
                   <label for="inputCorreoFamiliar">Correo</label>
@@ -350,8 +354,7 @@
                     required
                   >-->
                  <datepicker id="inputFechaNacimientoAlumno"
-                   v-model="alumno.fecha_nacimiento" 
-                    
+                   v-model="alumno.fecha_nacimiento"                     
                     input-class="form-control"
                   required></datepicker>
                  </div>
@@ -463,6 +466,7 @@
                     min="0"
                     required
                   >
+                  
                 </div>
 
                 <div class="form-group">
@@ -496,7 +500,7 @@
                 <!-- DATOS DE INSCRIPCION  -->
                 <div class="form-group">
                   <label for="inputInscripcion">Fecha de Inscripción</label>
-                  <input
+                  <!--<input
                     id="inputInscripcion"
                     type="date"
                     pattern="yyyy-MM-dd"
@@ -504,7 +508,11 @@
                     class="form-control"
                     placeholder="Fecha de inscripción"
                     required
-                  >
+                  >-->
+                  <datepicker id="inputInscripcion"
+                      v-model="familiar.fecha_inscripcion"                     
+                      input-class="form-control"
+                      required></datepicker>
                 </div>
                 <div class="form-group">
                   <label for="inputInscripcion">Nombre de cariño</label>
