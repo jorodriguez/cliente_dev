@@ -510,7 +510,7 @@
                     required
                   >-->
                   <datepicker id="inputInscripcion"
-                      v-model="familiar.fecha_inscripcion"                     
+                      v-model="alumno.fecha_inscripcion"                     
                       input-class="form-control"
                       required></datepicker>
                 </div>
