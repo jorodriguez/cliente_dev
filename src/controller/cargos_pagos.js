@@ -12,8 +12,8 @@ export default {
       sesion: {},
       item: AlumnoModel,
       lista: [],
-      listaSeleccion: [],
-      listaRecibidos: [],
+      listaCargos: [],
+      listaPagos: [],
       listaSeleccionSalida: [],
       loadFunctionCargosAlumno:null,
       loadFunctionCatCargos:null,      
@@ -31,12 +31,11 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;
-
-    //this.usuarioSesion = this.$session.get("usuario_sesion");
-    this.loadFunction = function() {
+    
+    this.loadFunctionCargos = function() {
       this.$http
         .get(
-          this.uriTemp +
+          this.uriTempCargos +
             "/alumnos_por_recibidos" +
             "/" +
             this.usuarioSesion.co_sucursal,
