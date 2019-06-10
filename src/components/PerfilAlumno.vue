@@ -74,15 +74,7 @@
                   >
                 </div>
                 <div class="form-group">
-                  <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>
-                  <!--<input
-                    id="inputFnacimientoFamiliar"
-                    type="date"
-                    pattern="yyyy-MM-dd"
-                    v-model="familiar.fecha_nacimiento"
-                    class="form-control"
-                    placeholder="Fecha de Nacimiento"
-                  >-->
+                  <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>              
                    <datepicker id="inputFnacimientoFamiliar"
                       v-model="familiar.fecha_nacimiento"                     
                       input-class="form-control"
