@@ -15,12 +15,14 @@ export default {
       listaSeleccion: [],
       listaRecibidos: [],
       listaSeleccionSalida: [],
+      loadFunctionCargosAlumno:null,
+      loadFunctionCatCargos:null,      
       response: "",
       mensaje: ""
     };
   },
   mounted() {
-    console.log("iniciando el componente de asistencia ");
+    console.log("iniciando el componente de pagos y cargos ");
     this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
