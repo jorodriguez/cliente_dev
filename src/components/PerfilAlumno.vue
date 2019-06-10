@@ -226,7 +226,7 @@
           </p>
         </div>
         <div class="col text-center">
-          <span class="text-danger">$</span>
+          <span class="text-danger">$ <balance-alumno :idalumno="id"></balance-alumno> </span>
         </div>
         <div class="w-100"/>
       </div>
@@ -300,7 +300,7 @@
                   role="tab"
                   aria-controls="pills-servicios"
                   aria-selected="false"
-                >Otros cargos</a>
+                >Pagos</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -764,44 +764,10 @@
                 role="tabpanel"
                 aria-labelledby="pills-servicios-tab"
               >
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  data-toggle="modal"
-                  data-target="#modal_cargo_productos"
-                  v-on:click="iniciaragregarProducto()"
-                >Agregar Servicio</button>
-
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <th>Servicio</th>
-                      <th>Descripción</th>
-                      <th>Cantidad</th>
-                      <th>Precio</th>
-                      <th>Fecha Registro</th>
-                      <th></th>
-                    </thead>
-                    <tr v-for="row in listaProductosAlumno" :key="row.id_relacion">
-                      <td>{{row.nombre}}</td>
-                      <td>
-                        <span>{{ row.descripcion }}</span>
-                      </td>
-                      <td>{{ row.cantidad }}</td>
-                      <td>{{ row.precio }}</td>
-                      <td>{{ row.fecha }}</td>
-                      <td>
-                        <button
-                          type="button"
-                          class="btn btn-link red"
-                          data-toggle="modal"
-                          data-target="#modal_eliminar_servicio"
-                          v-on:click="seleccionarProducto(row,'DELETE')"
-                        >Eliminar</button>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
+               
+               <!-- Componente especial para cargos y pagos -->
+               <cargos-pagos :idalumno="id"></cargos-pagos>
+                
               </div>
 
               <!-- SERVICIOS CONTRATADOS -->

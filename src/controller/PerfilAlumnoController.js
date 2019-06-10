@@ -4,12 +4,18 @@ import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
 import FamiliarModel from "../models/FamiliarModel";
 import Utils from "../models/FormatoUtils";
+
 import Datepicker from 'vuejs-datepicker';
+//import CargosPagosController from './CargosPagosController'
+import CargosPagos from '../components/CargosPago.vue'
+import BalanceAlumno from './BalanceAlumnoController'
 
 export default {
     name: "PerfilAlumno",
     components: {
-        Datepicker
+        Datepicker,        
+        CargosPagos,
+        BalanceAlumno
     },    
     data() {
         return {
@@ -39,15 +45,16 @@ export default {
             display: true,
             //uri:"http://localhost:5000/",
             //uri:"https://app-restexpres.herokuapp.com/",      
-            /*uriTemp: "http://localhost:5000/alumnos",
+            uriTemp: "http://localhost:5000/alumnos",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempFamiliar: "http://localhost:5000/familiar",
             uriTempParentesco: "http://localhost:5000/parentesco",
             uriTempProducto: "http://localhost:5000/producto",
             uriTempServicios: "http://localhost:5000/servicios",
-            uriTempValoresEsperados: "http://localhost:5000/valores_esperados",*/
+            uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
 
             //--
+            /*
             uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
             uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
@@ -55,6 +62,7 @@ export default {
             uriTempProducto: "https://app-restexpres.herokuapp.com/producto",
             uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",
+            */
             response: "",
             mensaje: "",
             sesion: {},
