@@ -3,7 +3,7 @@ import Vue from "vue";
 
 export default {
   name: "balance-alumno",  
-  template:'<span> {{balanceAlumno.total_adeudo}} </span>',
+  template:'<span> {{ balanceAlumno.total_adeudo }} </span>',
   props: ['idalumno'],
   data() {
     return {      
