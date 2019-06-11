@@ -1,10 +1,14 @@
 
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
+import { isRegExp } from "util";
+import { timingSafeEqual } from "crypto";
+
 
 export default {
   name: "cargos-pagos",
   props: ['idalumno'],
+
   data() {
     return {
       uriTempPagos: "http://localhost:5000/pagos",
@@ -13,6 +17,10 @@ export default {
         cantidad: 1,
         cat_cargo: -1
       },
+      pago: {
+        pago_total: 0
+      },
+      total_cargos:0,
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -22,6 +30,7 @@ export default {
       listaSeleccionSalida: [],
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
+      mensajeToast:null,
       response: "",
       mensaje: ""
     };
@@ -86,6 +95,12 @@ export default {
           }
         );
     };
+
+    this.mensajeToast = mensaje => {
+      $("#toast_msg").text(mensaje);
+      $("#toast_id").toast("show");
+    };
+
     this.loadFunctionCargosAlumno();
     this.loadFunctionCatCargos();
   },
@@ -96,13 +111,13 @@ export default {
     },
     guardarCargo() {
       console.log("guardar cargos");
-      if (this.cargo.cat_cargo == 0) {
+      if (this.cargo.cat_cargo == -1) {
         console.log("cargo");
         this.mensaje = 'Seleccione el cargo..';
         return;
       }
 
-      if (this.cargo.cantidad == '' || this.cargo.cantidad == 0) {
+      if (this.cargo.cantidad == '' || this.cargo.cantidad == -1) {
         this.mensaje = 'Escriba la cantidad del cargo..';
         return;
       }
@@ -110,9 +125,9 @@ export default {
       console.log("invok");
       this.cargo.genero = this.usuarioSesion.id;
       this.cargo.id_alumno = this.idalumno;
-      
+
       this.$http
-        .post(this.uriTempCargos+"/registrar", this.cargo, {
+        .post(this.uriTempCargos + "/registrar", this.cargo, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -123,17 +138,66 @@ export default {
 
             if (this.response != null) {
               console.log("" + this.response);
-              this.mensaje = "Se agrego el familiar.";
+              this.mensaje = "Se agrego el cargo.";
 
               $("#modal_cargo").modal("hide");
               this.loadFunctionCargosAlumno();
-              
             }
           },
           error => {
             console.error(error);
           }
         );
+    },
+    iniciarAgregarPago() {
+      console.log("iniciar agregar pago ");      
+      this.pago.pago_total = Number(0);
+      this.total_cargos = Number(0);
+      
+
+      this.mensaje ="";
+      const existeSeleccionAlumno = () => {
+        return this.listaCargosAlumnos.some(function (e) {
+          return e.checked;
+        });
+      }
+
+      if (existeSeleccionAlumno()) {
+        for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
+          var element = this.listaCargosAlumnos[i];
+          if (element.checked) {
+            element.pago = Number(element.total);
+            this.total_cargos = this.total_cargos + Number(element.pago);            
+          }          
+        }
+        this.pago.pago_total = this.total_cargos;
+
+        $('#modal_pago').modal('show');
+
+      }else{
+        this.mensaje = "Seleccione al menos un cargo";
+        //this.mensajeToast("Seleccione al menos un cargo");
+      }
+    },
+    guardarPago() {
+      console.log(" pago "+this.pago.pago_total+" total_calculado "+this.total_cargos);
+      this.mensaje = "";
+      this.total_cargos = Number(0);
+
+      for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
+        var element = this.listaCargosAlumnos[i];
+        if (element.checked) {
+          element.pago = Number(element.total);
+          this.total_cargos = this.total_cargos + Number(element.pago);            
+        }          
+      }      
+
+        if(this.pago.pago_total != this.total_cargos){
+          this.mensaje = "No la suma de los cargos no es la misma que la del pago.";
+        }else{
+          //realizar pago
+          this.mensaje = "Procede ";
+        }
 
     }
   },
