@@ -13,9 +13,11 @@ Vue.use(Router);
 Vue.use(VueSession);
 
 //export default new Router({      
-  const router = new Router({
+  const router = new Router({   
+    //{ path: '/', name:'Login', component: Login },        
   routes: [    
-    { path: '/', name:'Login', component: Login },        
+    { path: '/', name:'Login', component: Login },        ,        
+    //{ path: '/login', name:'Login', component: Login },        
     { path: '/principal', name: 'PaginaPrincipal', component: Principal },
     { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno },
     { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno },

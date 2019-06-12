@@ -11,6 +11,7 @@
         v-model="input.correo"
         class="form-control"
         placeholder="Correo"
+        v-on:keyup.enter="login()"
         required
         autofocus
       >
@@ -19,12 +20,18 @@
         v-model="input.password"
         class="form-control"
         placeholder="Password"
+        v-on:keyup.enter="login()"
         required
       >
-      <button class="btn btn-lg btn-primary btn-block" v-on:click="login()" :disabled="loading">
-        Entrar
-       
-      </button>
+      <!--  -->     
+      <!--<button class="btn btn-lg btn-primary btn-block"  :disabled="loading">
+        Entrar       
+      </button>      -->
+      <a class="btn btn-lg btn-primary btn-block text-white "  
+            v-on:click="login()"  
+            :disabled="loading">
+        Entrar       
+      </a> 
       <br>
       <br>
       

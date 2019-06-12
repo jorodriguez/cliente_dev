@@ -1,12 +1,17 @@
 <template>
   <div class="asistencia container">
-    <div class="text-left">
+    <!--<div class="text-left">
       <router-link to="/principal">
         <i class="fas fa-arrow-circle-left text-gray"  style="font-size:20px;"></i>
       </router-link>
-    </div>
+    </div>-->
 
     <h1>Asistencias</h1>
+    <div class="text-left">
+    <router-link to="/principal" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+    </router-link>
+    </div>
     <span>{{this.mensaje}}</span>
     <nav>
       <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">

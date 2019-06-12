@@ -1,14 +1,18 @@
 <template>
   <div class="cat_alumno container">
+    <!--
     <div class="text-left">
       <router-link to="/principal">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
-    </div>
+    </div>-->
 
     <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
+      <router-link to="/principal" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+      </router-link>
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
     </div>
     <br>
@@ -239,10 +243,10 @@
               v-on:click="verPerfil(row)"
               alt="..."
               class="rounded-circle"
-            >
+            >            
           </td>
           <td>
-            <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}</button>
+            <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}  <span class="text-danger">{{row.adeuda ? '*':''}}</span></button>
           </td>
           <td class="hidden-xs">{{ row.apellidos }}</td>
           <td>
@@ -251,10 +255,9 @@
           <td>{{ row.hora_entrada }}</td>
           <td>{{ row.hora_salida }}</td>
           <td>
-            <button
-              class="btn btn-link red"
-              data-toggle="modal"
-              data-target="#modal_eliminar_alumno"
+            <button 
+              v-if="!row.adeuda"
+              class="btn btn-link red"              
               v-on:click="select(row,'DELETE')"
             >Eliminar</button>
           </td>

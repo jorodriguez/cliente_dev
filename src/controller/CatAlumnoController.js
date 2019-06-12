@@ -18,10 +18,10 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje :"",
-      uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"
-      /*uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      */
+      /*uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"*/
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      
     };
   },
   mounted() {
@@ -234,7 +234,8 @@ export default {
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
-      this.$http
+      
+           this.$http
         .delete(this.uriTemp + "/" + this.input.id, {
           headers: {
             "x-access-token": this.sesion.token
@@ -255,10 +256,17 @@ export default {
         );
     },
     select(rowSelect, operacion) {
-      console.log("fila seleccionada " + rowSelect.nombre);
+      console.log("fila seleccionada " + rowSelect.adeuda);
       this.operacion = operacion;
       this.input = rowSelect;
-      this.mensaje="";
+      this.mensaje="";      
+      if(operacion=='DELETE' && this.input.adeuda){        
+          this.mensaje = "No se puede eliminar por que tiene deudas.";
+          return ;       
+      }else{
+        $("#modal_eliminar_alumno").modal("show");
+        
+      }
     },
     verPerfil(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);

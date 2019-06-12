@@ -28,12 +28,13 @@ export default {
             seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
-            uriTempAsistencia: "http://localhost:5000/asistencia",
+            /*uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
-            /*uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+            */
+            uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"          */
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"          
         };
     },
     //FIXME: SESION
@@ -44,7 +45,7 @@ export default {
 
         if (!this.sesion || !this.sesion.usuario) {
             console.log("No tiene sesion");
-            this.$router.push("/");
+            this.$router.push("/login");
             return;
         }
         this.usuarioSesion = this.sesion.usuario;

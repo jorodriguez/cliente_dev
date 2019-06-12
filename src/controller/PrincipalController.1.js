@@ -23,12 +23,12 @@ export default {
             limpiarFormularioActividad: null,
             validacion: null,
             mensajeToast: null,
-            uriTempAsistencia: "http://localhost:5000/asistencia",
+            /*uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
-            uriTempActividad: "http://localhost:5000/actividad"
-            //uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
-            //uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            //uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
+            uriTempActividad: "http://localhost:5000/actividad"*/
+            uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+            uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"
         };
     },
     //FIXME: SESION

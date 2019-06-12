@@ -1,31 +1,36 @@
 <template>
   <div class="principal">
-    <small class="text-bold">
+    <small class="font-weight-bold h6">
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-      <span class="text-left">
+       <button
+        type="button"       
+        class="btn btn-sm btn-warning"     
+        v-on:click="signout()"   
+      >
         <i class="fas fa-power-off" v-on:click="signout()"></i>
-      </span>
+       </button>
     </small>
     <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-head btn-info">
-        <i class="fas fa-child" style="font-size:40px;"></i>
+      <router-link to="/CatAlumno" class="btn btn-lg  btn-info">
+        <!--<i class="fas fa-child" style="font-size:40px;"></i>-->
         Alumnos
       </router-link>
-      <router-link to="/Asistencia" class="btn btn-head btn-success">
-        <i class="fas fa-door-open" style="font-size:40px;"></i>
+      <router-link to="/Asistencia" class="btn btn-lg  btn-success">
+        <!--<i class="fas fa-door-open" style="font-size:40px;"></i>-->
         Asistencias
         <!--<i class="fas fa-door-open"></i>-->
       </router-link>
       <!--<router-link to="/Actividades" class="btn btn-head btn-success">
         <i class="fas fa-skating"></i>
       </router-link>-->
+      <!-- btn-head-->
       <button
         type="button"
         data-toggle="modal"
-        class="btn btn-head btn-success"
+        class="btn btn-success btn-lg "
         v-on:click="initRegistroActividad()"
       >
-        <i class="fas fa-skating" style="font-size:40px;"></i>
+        <!--<i class="fas fa-skating" style="font-size:40px;"></i>--->
         Actividad
       </button>
     </div>
@@ -70,10 +75,10 @@
       <div class="col">
         <button
           type="button"
-          class="btn btn-outline-info btn-sm"                           
+          class="btn btn-outline-info "                           
           v-on:click="iniciarRegistrarSalida()"
         >
-         <i class="fas fa-arrow-right"></i>
+         <!--<i class="fas fa-arrow-right"></i>-->
         Salida</button>
       </div>
     </div>
@@ -236,7 +241,7 @@
       data-keyboard="false" data-backdrop="static" 
       id="confirmar_salida_modal"
     >
-      <div class="modal-dialog modal-sm">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Confirmar Salida</h5>
@@ -244,8 +249,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <h5>Confirme que salen los alumnos</h5>
+          <div class="modal-body">            
             <div class="container jumbotron m-1 scroll-div">
               <div class="media">
                 <div class="row">
@@ -272,7 +276,7 @@
             <button
               type="button"
               :disabled="this.listaAlumnos == null || this.listaAlumnos == []"              
-              class="btn btn-success btn-sm"
+              class="btn btn-success"
               v-on:click="registrarSalida()"
             >
               Confirmar Salida

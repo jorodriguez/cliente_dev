@@ -16,7 +16,7 @@
             v-on:click="iniciarAgregarPago()"
             class="btn btn-success"
           >Agregar Pago</button>
-          <button
+          <!--<button
             type="button"
             class="btn btn-success dropdown-toggle dropdown-toggle-split"
             data-toggle="dropdown"
@@ -24,36 +24,35 @@
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Ver Pagos</a>
             <a class="dropdown-item" href="#">Administrar</a>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <!--
+    <div class="row text-center">
+      <div class="col">
+        <a
+          class="btn btn-link small text-center"
+          data-toggle="collapse"
+          href="#collapseExample"
+          role="button"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >Filtro</a>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            Pagado :
+            Filas : 20
+            <button
+              type="button"
+              class="btn btn-link"
+            >Actualizar Tabla</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="row text-center">
-      <div class="col">
-      <a
-        class="btn btn-link small text-center"
-        data-toggle="collapse"
-        href="#collapseExample"
-        role="button"
-        aria-expanded="false"
-        aria-controls="collapseExample"
-      >Filtro</a>
-      <div class="collapse" id="collapseExample">
-        <div
-          class="card card-body"
-           >
-           Pagado : 
-           Filas : 20           
-           <button
-            type="button"
-            class="btn btn-link"            
-          >Actualizar Tabla</button>
-           </div>           
-      </div>
-      </div>
-    </div>
-
-    <table class="table responsive">
+  -->
+    <table class="table">
       <thead>
         <th>-</th>
         <th>Fecha</th>
@@ -73,8 +72,10 @@
             <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
           </td>
           <td>
-            <span v-if="!row.pagado" class="small">{{row.nombre_cargo}}</span>
-            <span v-else-if="row.pagado" class="small tachado">{{row.nombre_cargo}}</span>
+            <button v-on:click="verDetalleCargo(row)" type="button" class="btn btn-link">
+              <span v-if="!row.pagado" class="small">{{row.nombre_cargo}}</span>
+              <span v-else-if="row.pagado" class="small tachado">{{row.nombre_cargo}}</span>
+            </button>
           </td>
           <td>
             <strong>
@@ -187,40 +188,19 @@
             </div>
 
             <div class="modal-body text-left">
-              {{mensaje}}
-              <div class="row form-inline h6">
-                <div class="col">
-                <div class="form-group">
-                  <label for="inputPagoTotal">
-                    Pago
-                    <span class="text-danger">*</span> $
-                  </label>
-                  <input
-                    id="inputPagoTotal"
-                    type="number"
-                    v-model="pago.pago_total"
-                    class="form-control form-control text-green"
-                    placeholder="Pago"
-                  >
-                </div>
-                </div>
-                <div class="col-4">                   
-                Cargos: $ {{total_cargos}}
-                </div>                
-              </div>
-             
-              <table class="table table-responsive">
+              <span class="text-danger"> {{mensaje}}</span>
+              <table class="table">
                 <thead>
                   <th>-</th>
                   <th>Concepto</th>
-                  <th>Abono</th>
+                  <th>Pago</th>
                   <th>Adeuda</th>
                   <!--<th>Pagado</th>-->
-                  <th>Nota</th>
+                  <!--<th>Nota</th>-->
                 </thead>
                 <tbody v-for="row in listaCargosAlumnos" :key="row.id">
                   <tr v-if="row.checked">
-                    <td>                      
+                    <td>
                       <input type="checkbox" id="checkbox" v-model="row.checked">
                     </td>
                     <td>
@@ -229,15 +209,17 @@
                     <td>
                       <input
                         id="inputAbono"
-                        type="number"                                                
+                        type="number"
+                        @change="reacalcularTotales"
                         v-model="row.pago"
                         class="form-control font-weight-bold text-success"
                         placeholder="Pago"
-                      >                      
+                        required
+                      >
                     </td>
                     <td>
                       <strong>
-                        <span class="small font-weight-bold text-danger">${{row.total}}</span>
+                        <span class="font-weight-bold text-danger">${{row.total}}</span>
                       </strong>
                     </td>
                     <!--<td>
@@ -245,20 +227,27 @@
                         <span class="small">${{row.total_pagado}}</span>
                       </strong>
                     </td>-->
-                    <td>
+                    <!--<td>
                       <input
                         id="inputNota"
-                        type="text"                        
+                        type="text"
                         v-model="row.nota_pago"
                         class="form-control"
                         placeholder="Nota"
                       >
-                    </td>
-                    <td></td>
+                    </td>-->
                   </tr>
                 </tbody>
               </table>
+              <div class="row float-right p-3 mb-2 bg-light text-dark">
+                <table>
+                  <tr><td ><strong>Cargos : </strong></td><td class="text-danger"><strong>${{total_cargos}}</strong></td></tr>
+                  <tr ><td><strong>Pago : </strong></td><td class="text-success"><strong>${{pago.pago_total}}</strong></td></tr>                  
+                  <tr ><td><strong>Resta : </strong></td><td class="text-danger"><strong>${{total_cargos - pago.pago_total  }}</strong></td></tr>                  
+                </table>                                  
+              </div>
             </div>
+
             <div class="modal-footer">
               <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Guardar</button>
               <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -267,6 +256,92 @@
         </div>
       </div>
     </form>
+
+    <!-- DETALLE CARGO -->
+    <div
+      id="modal_detalle_cargo"
+      class="modal"
+      tabindex="-1"
+      data-keyboard="false"
+      data-backdrop="static"
+      role="dialog"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalle del cargo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body text-left">
+            <table class="table">
+              <tr>
+                <td>Fecha</td>
+                <td>{{cargoSeleccionado.fecha | moment("DD-MMM-YY h:mm:ss a")}}</td>
+              </tr>
+              <tr>
+                <td>Cargo</td>
+                <td>
+                  <label class="font-weight-bold text-danger">${{cargoSeleccionado.cargo}}</label>
+                </td>
+              </tr>
+              <tr>
+                <td>Pagado</td>
+                <td>
+                  <label class="font-weight-bold text-success">$ {{cargoSeleccionado.total_pagado}}</label>
+                  <i v-if="cargoSeleccionado.pagado" class="fas fa-check-circle text-success"></i>
+                  <i v-else class="fas fa-check-circle text-secondary"></i>
+                </td>
+              </tr>
+              <!--
+              <tr>
+                <td>Nota</td>
+                <td>
+                  <textarea v-model="cargoSeleccionado.nota" disabled class="form-control "></textarea>
+                </td>
+              </tr>
+              -->
+            </table>
+            <span class="text-center">Pagos Realizados</span>
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <th>Fecha</th>
+                  <th>Pago</th>
+                  <!--<th>Nota</th>-->
+                </thead>
+                <tbody v-for="row in listaPagosCargo" :key="row.id">
+                  <tr>
+                    <td>
+                      <label>{{row.fecha | moment("DD-MMM-YY h:mm:ss a")}}</label>
+                    </td>
+                    <td>
+                      <label class="font-weight-bold text-success">${{row.pago}}</label>
+                    </td>
+                    <!--<td>
+                      <input
+                        type="text"
+                        v-model="row.nota"
+                        disabled
+                        class="form-control"
+                        placeholder="Sin nota"
+                      >
+                    </td>-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Guardar</button>
+            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DETALLE CARGO -->
   </div>
 </template>
 
