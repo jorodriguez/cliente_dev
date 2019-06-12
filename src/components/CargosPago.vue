@@ -27,6 +27,7 @@
         <tr>
           <td>
             <input type="checkbox" id="checkbox" v-model="row.checked">            
+            {{row.pagado}}
           </td>
           <td>
             <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
@@ -158,9 +159,10 @@
                   <!--<th>Pagado</th>-->
                   <th>Nota</th>
                 </thead>
-                <tbody v-for="row in listaCargosAlumnos" :key="row.id">
+                <tbody v-for="(row) in listaCargosAlumnos" :key="row.id">
                   <tr v-if="row.checked">
                     <td>
+                    
                       <input type="checkbox" id="checkbox" v-model="row.checked">
                     </td>
                     <td>

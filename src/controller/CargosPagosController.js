@@ -20,7 +20,7 @@ export default {
       pago: {
         pago_total: 0
       },
-      total_cargos:0,
+      total_cargos: 0,
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -30,7 +30,7 @@ export default {
       listaSeleccionSalida: [],
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
-      mensajeToast:null,
+      mensajeToast: null,
       response: "",
       mensaje: ""
     };
@@ -150,12 +150,12 @@ export default {
         );
     },
     iniciarAgregarPago() {
-      console.log("iniciar agregar pago ");      
+      console.log("iniciar agregar pago ");
       this.pago.pago_total = Number(0);
       this.total_cargos = Number(0);
-      
 
-      this.mensaje ="";
+
+      this.mensaje = "";
       const existeSeleccionAlumno = () => {
         return this.listaCargosAlumnos.some(function (e) {
           return e.checked;
@@ -167,20 +167,20 @@ export default {
           var element = this.listaCargosAlumnos[i];
           if (element.checked) {
             element.pago = Number(element.total);
-            this.total_cargos = this.total_cargos + Number(element.pago);            
-          }          
+            this.total_cargos = this.total_cargos + Number(element.pago);
+          }
         }
         this.pago.pago_total = this.total_cargos;
 
         $('#modal_pago').modal('show');
 
-      }else{
+      } else {
         this.mensaje = "Seleccione al menos un cargo";
         //this.mensajeToast("Seleccione al menos un cargo");
       }
     },
     guardarPago() {
-      console.log(" pago "+this.pago.pago_total+" total_calculado "+this.total_cargos);
+      console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
       this.mensaje = "";
       this.total_cargos = Number(0);
 
@@ -188,16 +188,79 @@ export default {
         var element = this.listaCargosAlumnos[i];
         if (element.checked) {
           element.pago = Number(element.total);
-          this.total_cargos = this.total_cargos + Number(element.pago);            
-        }          
-      }      
-
-        if(this.pago.pago_total != this.total_cargos){
-          this.mensaje = "No la suma de los cargos no es la misma que la del pago.";
-        }else{
-          //realizar pago
-          this.mensaje = "Procede ";
+          this.total_cargos = this.total_cargos + Number(element.pago);
         }
+      }
+
+      if (this.pago.pago_total != this.total_cargos) {
+        this.mensaje = "No la suma de los cargos no es la misma que la del pago.";
+      } else {
+        //realizar pago
+        this.mensaje = "Procede ";
+
+        var lista = this.listaCargosAlumnos
+          .filter(e => e.checked)
+          .map(e => {
+            return {
+              id_cargo_balance: e.id_cargo_balance_alumno,
+              pago: e.pago
+            };
+          });
+
+        console.log("  ==> " + JSON.stringify(lista));
+
+        var ids_cargos = "";
+        var cargos_desglosados = "";
+
+        var first = true;
+
+        lista.forEach(element => {
+          if (first) {
+            ids_cargos += element.id_cargo_balance;
+            cargos_desglosados += element.pago;
+            first = false;
+          } else {
+            ids_cargos += (',' + element.id_cargo_balance);
+            cargos_desglosados += (',' + element.pago);
+          }
+        });
+
+        console.log(" = = = > " + ids_cargos);
+        console.log(" = = = > " + cargos_desglosados);
+
+        var objEnvio = {
+          id_alumno: this.idalumno,
+          pago: this.pago.pago_total,
+          nota: '',
+          ids_cargos: ids_cargos,
+          cargos_desglosados: cargos_desglosados,
+          genero: this.usuarioSesion.id
+        };
+
+        this.$http
+          .post(this.uriTempPagos + "/registrar", objEnvio, {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          })
+          .then(
+            result => {
+              this.response = result.data;
+
+              if (this.response != null) {
+                console.log("" + this.response);
+                this.mensaje = "Se agrego el pago .";
+
+                $("#modal_pago").modal("hide");
+                this.loadFunctionCargosAlumno();
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+
+      }
 
     }
   },
