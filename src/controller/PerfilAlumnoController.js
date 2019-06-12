@@ -331,6 +331,7 @@ export default {
             this.loadProductosAlumnoFuncion();
 
         }
+   
 
         this.mensajeToast = mensaje => {
             $("#toast_msg").text(mensaje);

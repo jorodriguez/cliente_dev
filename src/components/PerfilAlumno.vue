@@ -1,6 +1,6 @@
 <template>
   <div class="perfil container">
-    <div class="alert alert-info">{{mensaje}}</div>
+    <div class="text-info">{{mensaje}}</div>
     <div v-if="display==true" class="text-left">
       <div class="text-left">
         <router-link :to="{ name: 'CatAlumno', params: {} }">
@@ -226,7 +226,7 @@
           </p>
         </div>
         <div class="col text-center">
-          <span class="text-danger">$ <balance-alumno :idalumno="id"></balance-alumno> </span>
+          <span class="text-danger font-weight-bold h6">$ <balance-alumno :idalumno="id"></balance-alumno> </span>
         </div>
         <div class="w-100"/>
       </div>
@@ -482,7 +482,12 @@
                   <label for="inputNota">Nota</label>
                   <input type="text" v-model="alumno.nota" class="form-control" placeholder="Nota">
                 </div>
+
+                <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
+
               </div>
+
+
               <div
                 class="tab-pane fade"
                 id="pills-profile"
@@ -630,7 +635,7 @@
                     required
                   >
                 </div>
-
+                  <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
                 <!-- DATOS DE INSCRIPCION  -->
               </div>
 
@@ -688,6 +693,8 @@
                     placeholder="Motivo espefico"
                   >
                 </div>
+
+                  <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
               </div>
               <!-- INSTITUTCION -->
 
@@ -753,7 +760,8 @@
                       </td>
                     </tr>
                   </table>
-                </div>
+                </div>             
+
               </div>
               <!-- PERONAS AUTORIZADAS -->
 
@@ -773,15 +781,15 @@
               <!-- SERVICIOS CONTRATADOS -->
             </div>
 
-            <button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>
+            <!--<button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>-->
           </form>
         </div>
       </div>
-      <div class="alert alert-info">{{mensaje}}</div>
+      <div class="text-info">{{mensaje}}</div>
     </div>
 
     <!-- EN CASO DE NO ENVIAR EL ID -->
-    <div class="alert alert-warning" v-else-if="display==false">Es necesario seleccionar un alumno</div>
+    <div class="text-info" v-else-if="display==false">Es necesario seleccionar un alumno</div>
     <!-- MODAL TOAST -->
     <div
       id="toast_id"

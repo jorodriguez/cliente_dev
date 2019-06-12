@@ -51,6 +51,11 @@ export default {
           }
         );
     };    
+
+    this.$root.$on('actualizacionPorCargoEvent', (text) => {
+      console.log("ACTUALIZACION POR CARGO NUEVO");
+      this.loadFunctionBalanceAlumno();
+    });
         this.loadFunctionBalanceAlumno();
   },
   methods: {

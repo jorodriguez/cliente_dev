@@ -13,7 +13,7 @@
     </div>
     <br>
     <form>
-      <div id="modal_alumno" class="modal" tabindex="-1" role="dialog">
+      <div id="modal_alumno" class="modal" tabindex="-1" data-keyboard="false" data-backdrop="static"  role="dialog">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -186,6 +186,7 @@
       class="modal fade"
       tabindex="-1"
       role="dialog"
+      data-keyboard="false" data-backdrop="static" 
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >

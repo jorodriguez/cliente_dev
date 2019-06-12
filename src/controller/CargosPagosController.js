@@ -30,6 +30,7 @@ export default {
       listaSeleccionSalida: [],
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
+      loadFunctionActualizarCargoGeneral:null,
       mensajeToast: null,
       response: "",
       mensaje: ""
@@ -87,7 +88,7 @@ export default {
             this.response = result.data;
             console.log("Consulta " + this.response);
             if (this.response != null) {
-              this.listaCargos = this.response;
+              this.listaCargos = this.response;              
             }
           },
           error => {
@@ -95,6 +96,10 @@ export default {
           }
         );
     };
+
+    this.loadFunctionActualizarCargoGeneral = function () {
+        this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
+    }
 
     this.mensajeToast = mensaje => {
       $("#toast_msg").text(mensaje);
@@ -104,9 +109,13 @@ export default {
     this.loadFunctionCargosAlumno();
     this.loadFunctionCatCargos();
   },
-  methods: {
+  methods: {  
     iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
+      this.cargo.cat_cargo = -1;
+      this.cargo.cantidad = 1;
+      this.cargo.nota = '';
+
       $('#modal_cargo').modal('show');
     },
     guardarCargo() {
@@ -142,6 +151,7 @@ export default {
 
               $("#modal_cargo").modal("hide");
               this.loadFunctionCargosAlumno();
+              this.loadFunctionActualizarCargoGeneral();
             }
           },
           error => {
@@ -153,8 +163,8 @@ export default {
       console.log("iniciar agregar pago ");
       this.pago.pago_total = Number(0);
       this.total_cargos = Number(0);
-
-
+      this.pago.nota_pago = '';
+    
       this.mensaje = "";
       const existeSeleccionAlumno = () => {
         return this.listaCargosAlumnos.some(function (e) {
@@ -187,7 +197,7 @@ export default {
       for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
         var element = this.listaCargosAlumnos[i];
         if (element.checked) {
-          element.pago = Number(element.total);
+          //element.pago = Number(element.total);
           this.total_cargos = this.total_cargos + Number(element.pago);
         }
       }
@@ -228,10 +238,11 @@ export default {
         console.log(" = = = > " + ids_cargos);
         console.log(" = = = > " + cargos_desglosados);
 
+        
         var objEnvio = {
           id_alumno: this.idalumno,
           pago: this.pago.pago_total,
-          nota: '',
+          nota: this.pago.nota_pago,
           ids_cargos: ids_cargos,
           cargos_desglosados: cargos_desglosados,
           genero: this.usuarioSesion.id
@@ -250,9 +261,10 @@ export default {
               if (this.response != null) {
                 console.log("" + this.response);
                 this.mensaje = "Se agrego el pago .";
-
-                $("#modal_pago").modal("hide");
+                
                 this.loadFunctionCargosAlumno();
+                this.loadFunctionActualizarCargoGeneral();
+                $("#modal_pago").modal("hide");
               }
             },
             error => {

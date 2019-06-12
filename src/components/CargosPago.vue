@@ -5,14 +5,54 @@
       <div class="col text-left">
         <button
           type="button"
-          class="btn btn-success"
+          class="btn btn-danger"
           v-on:click="iniciarAgregarCargo()"
         >Agregar Cargo</button>
       </div>
       <div class="col text-right">
-        <button type="button" class="btn btn-primary" v-on:click="iniciarAgregarPago()">Agregar Pago</button>
+        <div class="btn-group">
+          <button
+            type="button"
+            v-on:click="iniciarAgregarPago()"
+            class="btn btn-success"
+          >Agregar Pago</button>
+          <button
+            type="button"
+            class="btn btn-success dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+          ></button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Ver Pagos</a>
+            <a class="dropdown-item" href="#">Administrar</a>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="row text-center">
+      <div class="col">
+      <a
+        class="btn btn-link small text-center"
+        data-toggle="collapse"
+        href="#collapseExample"
+        role="button"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >Filtro</a>
+      <div class="collapse" id="collapseExample">
+        <div
+          class="card card-body"
+           >
+           Pagado : 
+           Filas : 20           
+           <button
+            type="button"
+            class="btn btn-link"            
+          >Actualizar Tabla</button>
+           </div>           
+      </div>
+      </div>
+    </div>
+
     <table class="table responsive">
       <thead>
         <th>-</th>
@@ -26,25 +66,26 @@
       <tbody v-for="row in listaCargosAlumnos" :key="row.id">
         <tr>
           <td>
-            <input type="checkbox" id="checkbox" v-model="row.checked">            
-            {{row.pagado}}
+            <input type="checkbox" id="checkbox" v-model="row.checked" v-if="!row.pagado">
+            <i v-else class="text-success font-weight-normal">¡Pagado!</i>
           </td>
           <td>
             <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
           </td>
           <td>
-            <span class="small">{{row.nombre_cargo}}</span>
+            <span v-if="!row.pagado" class="small">{{row.nombre_cargo}}</span>
+            <span v-else-if="row.pagado" class="small tachado">{{row.nombre_cargo}}</span>
           </td>
           <td>
             <strong>
-              <span class="small text-danger">${{row.total}}</span>
+              <span class="small font-weight-bold text-danger">${{row.total}}</span>
             </strong>
           </td>
           <td>
             <strong>
-              <span class="small">${{row.total_pagado}}</span>
+              <span class="small font-weight-bold text-success">${{row.total_pagado}}</span>
             </strong>
-          </td>         
+          </td>
           <td>
             <span class="d-inline-block text-truncate" style="max-width: 120px;">{{row.nota}}</span>
           </td>
@@ -55,7 +96,14 @@
 
     <!-- MODAL PARA AGREGAR CARGO -->
     <form>
-      <div id="modal_cargo" class="modal" tabindex="-1" role="dialog">
+      <div
+        id="modal_cargo"
+        class="modal"
+        tabindex="-1"
+        data-keyboard="false"
+        data-backdrop="static"
+        role="dialog"
+      >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -85,7 +133,7 @@
                   v-bind:key="p.id"
                 >{{ p.nombre }}</option>
               </select>
-
+              <!--
               <div class="form-group">
                 <label for="inputCargo">
                   Cantidad
@@ -98,7 +146,7 @@
                   class="form-control"
                   placeholder="Cantidad"
                 >
-              </div>
+              </div>-->
               <div class="form-group">
                 <label for="inputNota">Nota</label>
                 <input
@@ -121,7 +169,14 @@
 
     <!-- PAGO -->
     <form>
-      <div id="modal_pago" class="modal" tabindex="-1" role="dialog">
+      <div
+        id="modal_pago"
+        class="modal"
+        tabindex="-1"
+        data-keyboard="false"
+        data-backdrop="static"
+        role="dialog"
+      >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -132,24 +187,28 @@
             </div>
 
             <div class="modal-body text-left">
-
-            {{mensaje}}
-
-              <div class="row form-inline h4">
+              {{mensaje}}
+              <div class="row form-inline h6">
+                <div class="col">
                 <div class="form-group">
                   <label for="inputPagoTotal">
-                    Pago <span class="text-danger">*</span> $                    
-                  </label>                  
+                    Pago
+                    <span class="text-danger">*</span> $
+                  </label>
                   <input
                     id="inputPagoTotal"
                     type="number"
                     v-model="pago.pago_total"
-                    class="form-control form-control-lg text-green"
+                    class="form-control form-control text-green"
                     placeholder="Pago"
                   >
                 </div>
-                Cargos: {{total_cargos}} 
+                </div>
+                <div class="col-4">                   
+                Cargos: $ {{total_cargos}}
+                </div>                
               </div>
+             
               <table class="table table-responsive">
                 <thead>
                   <th>-</th>
@@ -159,10 +218,9 @@
                   <!--<th>Pagado</th>-->
                   <th>Nota</th>
                 </thead>
-                <tbody v-for="(row) in listaCargosAlumnos" :key="row.id">
+                <tbody v-for="row in listaCargosAlumnos" :key="row.id">
                   <tr v-if="row.checked">
-                    <td>
-                    
+                    <td>                      
                       <input type="checkbox" id="checkbox" v-model="row.checked">
                     </td>
                     <td>
@@ -171,16 +229,15 @@
                     <td>
                       <input
                         id="inputAbono"
-                        type="number"
+                        type="number"                                                
                         v-model="row.pago"
-                        class="form-control"
+                        class="form-control font-weight-bold text-success"
                         placeholder="Pago"
-                      >
-                       {{row.pago}}
+                      >                      
                     </td>
                     <td>
                       <strong>
-                        <span class="small text-danger">${{row.total}}</span>
+                        <span class="small font-weight-bold text-danger">${{row.total}}</span>
                       </strong>
                     </td>
                     <!--<td>
@@ -191,8 +248,8 @@
                     <td>
                       <input
                         id="inputNota"
-                        type="text"
-                        v-model="row.nota"
+                        type="text"                        
+                        v-model="row.nota_pago"
                         class="form-control"
                         placeholder="Nota"
                       >
@@ -216,4 +273,7 @@
 <script src="../controller/CargosPagosController.js"></script>
 
 <style scoped>
+.tachado {
+  text-decoration: line-through;
+}
 </style>

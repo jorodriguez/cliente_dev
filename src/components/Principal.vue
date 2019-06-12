@@ -113,6 +113,7 @@
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
+      data-keyboard="false" data-backdrop="static" 
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -232,6 +233,7 @@
       role="dialog"
       aria-labelledby="mySmallModalLabel"
       aria-hidden="true"
+      data-keyboard="false" data-backdrop="static" 
       id="confirmar_salida_modal"
     >
       <div class="modal-dialog modal-sm">
