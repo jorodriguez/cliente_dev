@@ -2,8 +2,8 @@
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
 import { truncateSync } from "fs";
-import firebase from 'firebase/app';
-
+import fire from '../fire'
+import Vue from "vue";
 
 export default {
     name: "Principal",
@@ -30,20 +30,20 @@ export default {
             seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
-            firebaseMessages:null,
+            firebaseMessages: null,
             uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
-            
+
             /*uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      */    
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      */
         };
     },
     //FIXME: SESION
     mounted() {
         console.log("iniciando el Bienvenida ");
-
+       
         this.sesion = this.$session.get("usuario_sesion");
 
         if (!this.sesion || !this.sesion.usuario) {
@@ -52,27 +52,36 @@ export default {
             return;
         }
         this.usuarioSesion = this.sesion.usuario;
-
-        console.log("carga de firebase");
-        try{
-        var firebaseConfig = {
-            apiKey: "AIzaSyCKv2X2cou74BSE7pxl3T9on7y0HGzn_Js",
-            authDomain: "magic-ff92f.firebaseapp.com",
-            databaseURL: "https://magic-ff92f.firebaseio.com",
-            projectId: "magic-ff92f",
-            storageBucket: "magic-ff92f.appspot.com",
-            messagingSenderId: "119606004783",
-            appId: "1:119606004783:web:46ab6c7d5bbb79ac"
-          };
-          // Initialize Firebase
-          this.firebaseMessages = firebase.initializeApp(firebaseConfig);
-          this.firebaseMessages.onMessage(function(payload) {
-            console.log('===========Message received. ', payload);
-            // ...
+            
+        console.log("   "+fire);
+        fire.usePublicVapidKey("BPyjJFCz2SDWVfRU_t-o29Ru3dskbHSkKw6qUWyiZXgawNcjANKpd1kZU5dBNq4xZqkgx8LK6jEaYcjFj_enfOU"); 
+        fire.requestPermission().then(function() {
+            console.log('Notification permission granted.');
+            // TODO(developer): Retrieve an Instance ID token for use with FCM.
+            
+          }).catch(function(err) {
+            console.log('Unable to get permission to notify.', err);
           });
-        }catch(e){
-            console.log("Error al inicar firebase "+e);
-        }
+          
+          fire.getToken().then(function(currentToken) {
+              console.log("Current token "+currentToken);
+            if (currentToken) {
+              sendTokenToServer(currentToken);
+              updateUIForPushEnabled(currentToken);
+            } else {
+              // Show permission request.
+              console.log('No Instance ID token available. Request permission to generate one.');
+              // Show permission UI.
+              updateUIForPushPermissionRequired();
+              setTokenSentToServer(false);
+            }
+          }).catch(function(err) {
+            console.log('An error occurred while retrieving token. ', err);
+            showToken('Error retrieving Instance ID token. ', err);
+            setTokenSentToServer(false);
+          });
+        
+
 
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
@@ -171,15 +180,15 @@ export default {
         //Filtro de grupos
 
         this.actualizarComboFiltro = () => {
-            var resArr = [];            
+            var resArr = [];
             this.listaAlumnos.filter(function (item) {
                 var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
                 if (i <= -1) {
-                    resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo});
+                    resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
                 }
                 return null;
             });
-            
+
             this.listaGrupos = resArr;
 
             //this.listaGrupos = [...new Set(arr)]; 
@@ -424,7 +433,7 @@ export default {
                 this.mensajeToast("Seleccione al menos un alumno de la lista");
                 //this.mensaje = "Seleccione al menos un alumno de la lista";
             }
-        }
+        }       
 
     }
 };

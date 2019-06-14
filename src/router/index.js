@@ -22,7 +22,8 @@ Vue.use(VueSession);
     { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno },
     { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno },
     { path: '/Asistencia', name: 'Asistencia', component: Asistencia },
-    { path: '/Actividades', name: 'Actividades', component: RegistroActividad }
+    { path: '/Actividades', name: 'Actividades', component: RegistroActividad },
+    {path: '*', redirect: '/'}
   ]
 })
 

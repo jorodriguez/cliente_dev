@@ -10,6 +10,7 @@
         <i class="fas fa-power-off" v-on:click="signout()"></i>
        </button>
     </small>
+    
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-lg  btn-info">
         <!--<i class="fas fa-child" style="font-size:40px;"></i>-->
