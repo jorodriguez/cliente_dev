@@ -11,10 +11,10 @@ export default {
 
   data() {
     return {
-      /*uriTempPagos: "http://localhost:5000/pagos",
-      uriTempCargos: "http://localhost:5000/cargos",*/
-      uriTempPagos: "https://app-restexpres.herokuapp.com/pagos",
-      uriTempCargos: "https://app-restexpres.herokuapp.com/cargos",      
+      uriTempPagos: "http://localhost:5000/pagos",
+      uriTempCargos: "http://localhost:5000/cargos",
+      /*uriTempPagos: "https://app-restexpres.herokuapp.com/pagos",
+      uriTempCargos: "https://app-restexpres.herokuapp.com/cargos",      */
       cargo: {
         cantidad: 1,
         cat_cargo: -1

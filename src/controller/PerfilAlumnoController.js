@@ -43,23 +43,23 @@ export default {
             listaServicios: [],
             listaValoresEsperados: [],
             display: true,            
-  /*          uriTemp: "http://localhost:5000/alumnos",
+            uriTemp: "http://localhost:5000/alumnos",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempFamiliar: "http://localhost:5000/familiar",
             uriTempParentesco: "http://localhost:5000/parentesco",
             uriTempProducto: "http://localhost:5000/producto",
             uriTempServicios: "http://localhost:5000/servicios",
             uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
-*/
+
             //--
     
-            uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+            /*uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
             uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
             uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",
             uriTempProducto: "https://app-restexpres.herokuapp.com/producto",
             uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
-            uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",
+            uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",*/
     
             response: "",
             mensaje: "",

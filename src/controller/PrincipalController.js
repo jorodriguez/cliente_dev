@@ -31,13 +31,13 @@ export default {
             validacion: null,
             mensajeToast: null,
             firebaseMessages:null,
-            /*uriTempAsistencia: "http://localhost:5000/asistencia",
+            uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
-            */
-            uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+            
+            /*uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"          
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      */    
         };
     },
     //FIXME: SESION
