@@ -17,7 +17,7 @@ export default {
       listaGrupos:[],
       loadFunction: null,
       loadFunctionAlumnos: null,
-      &*uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
+      /*uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
       uriTempAlumnos: "http://localhost:5000/alumnos",      
       uriTempAsistencia: "http://localhost:5000/asistencia",
       */
