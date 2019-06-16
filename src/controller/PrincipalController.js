@@ -2,7 +2,7 @@
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
 import { truncateSync } from "fs";
-import fire from '../fire'
+//import fire from '../fire'
 import Vue from "vue";
 
 export default {
@@ -31,13 +31,13 @@ export default {
             validacion: null,
             mensajeToast: null,
             firebaseMessages: null,
-            uriTempAsistencia: "http://localhost:5000/asistencia",
+  /*          uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
-
-            /*uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
+*/
+            uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      */
+            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      
         };
     },
     //FIXME: SESION
@@ -52,7 +52,7 @@ export default {
             return;
         }
         this.usuarioSesion = this.sesion.usuario;
-            
+         /*   
         console.log("   "+fire);
         fire.usePublicVapidKey("BPyjJFCz2SDWVfRU_t-o29Ru3dskbHSkKw6qUWyiZXgawNcjANKpd1kZU5dBNq4xZqkgx8LK6jEaYcjFj_enfOU"); 
         fire.requestPermission().then(function() {
@@ -80,7 +80,7 @@ export default {
             showToken('Error retrieving Instance ID token. ', err);
             setTokenSentToServer(false);
           });
-        
+        */
 
 
         console.log("Cargando lista alumno");

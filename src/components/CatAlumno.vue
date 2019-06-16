@@ -17,7 +17,14 @@
     </div>
     <br>
     <form>
-      <div id="modal_alumno" class="modal" tabindex="-1" data-keyboard="false" data-backdrop="static"  role="dialog">
+      <div
+        id="modal_alumno"
+        class="modal"
+        tabindex="-1"
+        data-keyboard="false"
+        data-backdrop="static"
+        role="dialog"
+      >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -29,7 +36,10 @@
             <div class="modal-body text-left">
               <span class="text-danger text-sm">{{mensaje}}</span>
               <div>
-                <label>Nombre <span class="text-danger">*</span> </label>
+                <label>
+                  Nombre
+                  <span class="text-danger">*</span>
+                </label>
                 <input
                   type="text"
                   v-model="input.nombre"
@@ -46,7 +56,10 @@
                   placeholder="Apellidos"
                   required
                 >
-                <label>Fecha de nacimiento <span class="text-danger">*</span></label>
+                <label>
+                  Fecha de nacimiento
+                  <span class="text-danger">*</span>
+                </label>
                 <!--
                 <input
                   type="date"
@@ -56,13 +69,17 @@
                   placeholder="F. Nacimiento"
                   required
                 >-->
-                 <datepicker
-                      name="fecha_nacmiento"
-                      v-model="input.fecha_nacimiento"                     
-                      input-class="form-control"
-                      required></datepicker>
-                
-                <label>Sexo <span class="text-danger">*</span></label>
+                <datepicker
+                  name="fecha_nacmiento"
+                  v-model="input.fecha_nacimiento"
+                  input-class="form-control"
+                  required
+                ></datepicker>
+
+                <label>
+                  Sexo
+                  <span class="text-danger">*</span>
+                </label>
                 <select
                   id="inputServicioContratar"
                   v-model="input.sexo"
@@ -82,9 +99,11 @@
                   placeholder="Alergias"
                 >
 
-                <label>Grupo <span class="text-danger">*</span></label>
+                <label>
+                  Grupo
+                  <span class="text-danger">*</span>
+                </label>
                 <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
-                  
                   <option
                     v-for="grupo in listaGrupos"
                     v-bind:value="grupo.id"
@@ -94,7 +113,10 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <label>Hora Entrada <span class="text-danger">*</span></label>
+                    <label>
+                      Hora Entrada
+                      <span class="text-danger">*</span>
+                    </label>
                     <input
                       type="time"
                       v-model="input.hora_entrada"
@@ -104,7 +126,10 @@
                     >
                   </div>
                   <div class="col-sm-6">
-                    <label>Hora Salida <span class="text-danger">*</span></label>
+                    <label>
+                      Hora Salida
+                      <span class="text-danger">*</span>
+                    </label>
                     <input
                       type="time"
                       v-model="input.hora_salida"
@@ -115,7 +140,10 @@
                   </div>
                 </div>
 
-                <label>Minutos de Gracia <span class="text-danger">*</span></label>
+                <label>
+                  Minutos de Gracia
+                  <span class="text-danger">*</span>
+                </label>
                 <input
                   type="number"
                   v-model="input.minutos_gracia"
@@ -125,7 +153,10 @@
                   required
                 >
 
-                <label>Costo Colegiatura <span class="text-danger">*</span></label>
+                <label>
+                  Costo Colegiatura
+                  <span class="text-danger">*</span>
+                </label>
                 <input
                   type="number"
                   v-model="input.costo_colegiatura"
@@ -135,7 +166,10 @@
                   required
                 >
 
-                <label>Costo Inscripción <span class="text-danger">*</span></label>
+                <label>
+                  Costo Inscripción
+                  <span class="text-danger">*</span>
+                </label>
                 <input
                   type="number"
                   v-model="input.costo_inscripcion"
@@ -145,7 +179,10 @@
                   required
                 >
 
-                <label>F. de Reinscripción <span class="text-danger">*</span></label>
+                <label>
+                  F. de Reinscripción
+                  <span class="text-danger">*</span>
+                </label>
                 <!--<input
                   type="date"
                    pattern="yyyy-MM-dd"
@@ -155,27 +192,22 @@
                   required
                 >-->
                 <datepicker
-                      name="fecha_reinscripcion"
-                      v-model="input.fecha_reinscripcion"                     
-                      input-class="form-control"
-                      required></datepicker>
-                
+                  name="fecha_reinscripcion"
+                  v-model="input.fecha_reinscripcion"
+                  input-class="form-control"
+                  required
+                ></datepicker>
+
                 <label>Nota</label>
                 <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
               </div>
             </div>
             <div class="modal-footer">
               <div v-if="operacion == 'INSERT'">
-                <button
-                  class="btn btn-lg btn-primary"
-                  v-on:click="guardar()"                  
-                >Guardar</button>
+                <button class="btn btn-lg btn-primary" v-on:click="guardar()">Guardar</button>
               </div>
               <div v-else-if="operacion == 'UPDATE'">
-                <button
-                  class="btn btn-lg btn-primary"
-                  v-on:click="modificar()"                  
-                >Modificar</button>
+                <button class="btn btn-lg btn-primary" v-on:click="modificar()">Modificar</button>
               </div>
               <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
@@ -190,7 +222,8 @@
       class="modal fade"
       tabindex="-1"
       role="dialog"
-      data-keyboard="false" data-backdrop="static" 
+      data-keyboard="false"
+      data-backdrop="static"
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
@@ -222,52 +255,79 @@
       </div>
     </div>
 
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <th></th>
-          <th>Nombre</th>
-          <th class="hidden-xs">Apellidos</th>
-          <th>Grupo</th>
-          <th>Hora de Entrada</th>
-          <th>Hora de Salida</th>
-          <th></th>
-          <!--<th></th>-->
-          </thead>
-        <tr v-for="row in lista" :key="row.id">
-          <td class="text-right">
-            <img
-              src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-              width="50"
-              height="50"
-              v-on:click="verPerfil(row)"
-              alt="..."
-              class="rounded-circle"
-            >            
-          </td>
-          <td>
-            <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">{{ row.nombre }}  <span class="text-danger">{{row.adeuda ? '*':''}}</span></button>
-          </td>
-          <td class="hidden-xs">{{ row.apellidos }}</td>
-          <td>
-            <span class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
-          </td>
-          <td>{{ row.hora_entrada }}</td>
-          <td>{{ row.hora_salida }}</td>
-          <td>
-            <button 
-              v-if="!row.adeuda"
-              class="btn btn-link red"              
-              v-on:click="select(row,'DELETE')"
-            >Eliminar</button>
-          </td>
-        </tr>
-      </table>
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por nombre.."
+            v-model="criterioNombre"
+             v-on:keyup.enter="buscarPorNombre()"
+            aria-label="Buscar por nombre.."
+            aria-describedby="basic-addon2"
+          >
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" 
+                type="button"
+                v-on:click="buscarPorNombre()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <th></th>
+              <th>Nombre</th>
+              <th class="hidden-xs">Apellidos</th>
+              <th>Grupo</th>
+              <th>Hora de Entrada</th>
+              <th>Hora de Salida</th>
+              <th></th>
+              <!--<th></th>-->
+            </thead>
+            <tr v-for="row in lista" :key="row.id">
+              <td class="text-right">
+                <img
+                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                  width="50"
+                  height="50"
+                  v-on:click="verPerfil(row)"
+                  alt="..."
+                  class="rounded-circle"
+                >
+              </td>
+              <td>
+                <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">
+                  {{ row.nombre }}
+                  <span class="text-danger">{{row.adeuda ? '*':''}}</span>
+                </button>
+              </td>
+              <td class="hidden-xs">{{ row.apellidos }}</td>
+              <td>
+                <span class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
+              </td>
+              <td>{{ row.hora_entrada }}</td>
+              <td>{{ row.hora_salida }}</td>
+              <td>
+                <button
+                  v-if="!row.adeuda"
+                  class="btn btn-link red"
+                  v-on:click="select(row,'DELETE')"
+                >Eliminar</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js" > </script>
+<script src="../controller/CatAlumnoController.js" >
+</script>
 
 <style scoped>
 </style>

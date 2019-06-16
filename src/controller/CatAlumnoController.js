@@ -13,15 +13,17 @@ export default {
       usuarioSesion: {},
       sesion: {},
       operacion: "INSERT",
+      criterioNombre:"",
       lista: [],
+      listaRespaldo: [],
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje :"",
-      uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"
-      /*uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      */
+      /*uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"*/
+      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      
     };
   },
   mounted() {
@@ -52,6 +54,7 @@ export default {
             console.log("Consulta " + this.response);
             if (this.response != null) {
               this.lista = this.response;
+              this.listaRespaldo = this.response;
             }
           },
           error => {
@@ -89,6 +92,8 @@ export default {
         if(this.input==null){
           return false;        
         }else{          
+
+          console.log("this.input.fecha_nacimiento "+this.input.fecha_nacimiento);
          
           if(this.input.nombre == ''){
             this.mensaje = "* Escribe un nombre";
@@ -98,7 +103,7 @@ export default {
             this.mensaje = "* Escribe un nombre";
             return false;
           }
-          if(this.input.fecha_nacimiento == null){
+          if(this.input.fecha_nacimiento == null || this.input.fecha_nacimiento==''){
             this.mensaje = "* Selecciona la fecha de nacimiento";
             return false;
           }
@@ -129,7 +134,7 @@ export default {
             return false;
           }
                                          
-          if(this.input.fecha_reinscripcion == null){
+          if(this.input.fecha_reinscripcion == null || this.input.fecha_reinscripcion == ''){
             this.mensaje = "* Selecciona la fecha de reinscripción";
             return false;
           }        
@@ -271,6 +276,17 @@ export default {
     verPerfil(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);
       this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
+    },
+    buscarPorNombre(){
+      console.log("Buscar por nombre "+this.criterioNombre);     
+      if(this.criterio == ''){
+          this.lista = this.listaRespaldo;
+      }else{
+
+      this.lista = this.listaRespaldo.filter(e=>e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase()));
+
+      }     
+
     }
   }
 };

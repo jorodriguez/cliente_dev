@@ -54,7 +54,10 @@
   -->
     <table class="table">
       <thead>
-        <th>-</th>
+        <th>
+           <input type="checkbox" id="checkboxSeleccionarTodo" 
+           v-model="seleccionTodos" v-on:change="seleccionarTodoPagos()"  >
+        </th>
         <th>Fecha</th>
         <th>Concepto</th>
         <th>Adeuda</th>
@@ -65,6 +68,7 @@
       <tbody v-for="row in listaCargosAlumnos" :key="row.id">
         <tr>
           <td>
+            
             <input type="checkbox" id="checkbox" v-model="row.checked" v-if="!row.pagado">
             <i v-else class="text-success font-weight-normal">¡Pagado!</i>
           </td>
@@ -88,7 +92,7 @@
             </strong>
           </td>
           <td>
-            <span class="d-inline-block text-truncate" style="max-width: 120px;">{{row.nota}}</span>
+            <span class="d-inline-block text-truncate small" style="max-width: 120px;" :title="row.nota" >{{row.nota}}</span>                       
           </td>
           <td></td>
         </tr>
@@ -190,8 +194,7 @@
             <div class="modal-body text-left">
               <span class="text-danger"> {{mensaje}}</span>
               <table class="table">
-                <thead>
-                  <th>-</th>
+                <thead>                 
                   <th>Concepto</th>
                   <th>Pago</th>
                   <th>Adeuda</th>
@@ -200,9 +203,13 @@
                 </thead>
                 <tbody v-for="row in listaCargosAlumnos" :key="row.id">
                   <tr v-if="row.checked">
-                    <td>
+                   <!-- <td>
+                       <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                          <input type="checkbox" class="custom-control-input" >                        
+                        </div>
                       <input type="checkbox" id="checkbox" v-model="row.checked">
                     </td>
+                    -->
                     <td>
                       <span class="small">{{row.nombre_cargo}}</span>
                     </td>
@@ -249,7 +256,7 @@
             </div>
 
             <div class="modal-footer">
-              <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Guardar</button>
+              <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Pagar</button>
               <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
           </div>
@@ -269,7 +276,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Detalle del cargo</h5>
+            <h5 class="modal-title">Detalle del cargo - {{cargoSeleccionado.nombre_cargo}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -294,15 +301,13 @@
                   <i v-if="cargoSeleccionado.pagado" class="fas fa-check-circle text-success"></i>
                   <i v-else class="fas fa-check-circle text-secondary"></i>
                 </td>
-              </tr>
-              <!--
+              </tr>              
               <tr>
                 <td>Nota</td>
                 <td>
                   <textarea v-model="cargoSeleccionado.nota" disabled class="form-control "></textarea>
                 </td>
-              </tr>
-              -->
+              </tr>              
             </table>
             <span class="text-center">Pagos Realizados</span>
             <div class="row">
@@ -334,9 +339,8 @@
               </table>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Guardar</button>
-            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cancelar</button>
+          <div class="modal-footer">            
+            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
@@ -346,6 +350,7 @@
 </template>
 
 <script src="../controller/CargosPagosController.js"></script>
+
 
 <style scoped>
 .tachado {

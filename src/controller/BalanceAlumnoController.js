@@ -7,8 +7,8 @@ export default {
   props: ['idalumno'],
   data() {
     return {      
-      uriTempBalance: "http://localhost:5000/balance",      
-      //uriTempBalance: "https://app-restexpres.herokuapp.com/balance",            
+      //uriTempBalance: "http://localhost:5000/balance",      
+      uriTempBalance: "https://app-restexpres.herokuapp.com/balance",            
       balanceAlumno : {total_adeudo:0},
       usuarioSesion: {},
       sesion: {},              

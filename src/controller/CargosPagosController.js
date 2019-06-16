@@ -11,10 +11,11 @@ export default {
 
   data() {
     return {
-      uriTempPagos: "http://localhost:5000/pagos",
+      /*uriTempPagos: "http://localhost:5000/pagos",
       uriTempCargos: "http://localhost:5000/cargos",
-      /*uriTempPagos: "https://app-restexpres.herokuapp.com/pagos",
-      uriTempCargos: "https://app-restexpres.herokuapp.com/cargos",      */
+      */
+      uriTempPagos: "https://app-restexpres.herokuapp.com/pagos",
+      uriTempCargos: "https://app-restexpres.herokuapp.com/cargos",      
       cargo: {
         cantidad: 1,
         cat_cargo: -1
@@ -25,6 +26,7 @@ export default {
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
       total_cargos: 0,
       total_pagos: 0,
+      seleccionTodos:false,
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -43,6 +45,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de pagos y cargos ");
+    $('[data-toggle="popover"]').popover(); 
     this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
@@ -91,7 +94,7 @@ export default {
         .then(
           result => {
             this.response = result.data;
-            console.log("Consulta " + this.response);
+            console.log("Consulta del catalogo de cargos" + this.response);
             if (this.response != null) {
               this.listaCargos = this.response;
             }
@@ -112,7 +115,7 @@ export default {
     };
 
     this.loadFunctionCargosAlumno();
-    this.loadFunctionCatCargos();
+    //this.loadFunctionCatCargos();
   },
   methods: {
     iniciarAgregarCargo() {
@@ -121,6 +124,7 @@ export default {
       this.cargo.cantidad = 1;
       this.cargo.nota = '';
       this.mensaje = "";
+      this.loadFunctionCatCargos();
       $('#modal_cargo').modal('show');
     },
     guardarCargo() {
@@ -153,7 +157,7 @@ export default {
             if (this.response != null) {
               console.log("" + this.response);
               this.mensaje = "Se agrego el cargo.";
-
+              this.seleccionTodos = false;
               $("#modal_cargo").modal("hide");
               this.loadFunctionCargosAlumno();
               this.loadFunctionActualizarCargoGeneral();
@@ -191,6 +195,7 @@ export default {
         $('#modal_pago').modal('show');
 
       } else {
+        this.mensajeToast("Seleccione al menos un cargo");
         this.mensaje = "Seleccione al menos un cargo";
       }
     },
@@ -235,7 +240,7 @@ export default {
         this.mensaje = "Por favor revise las cantidades, No pueden ir Ceros,Negativos ni espacios en blanco.";
       } else {
         //realizar pago
-        this.mensaje = "Procede ";
+       // this.mensaje = "Procede ";
 
         var lista = this.listaCargosAlumnos
           .filter(e => e.checked)
@@ -289,7 +294,7 @@ export default {
               if (this.response != null) {
                 console.log("" + this.response);
                 this.mensaje = "Se agrego el pago .";
-
+                this.seleccionTodos = false;
                 this.loadFunctionCargosAlumno();
                 this.loadFunctionActualizarCargoGeneral();
                 $("#modal_pago").modal("hide");
@@ -332,6 +337,12 @@ export default {
         );
 
 
+    },
+    seleccionarTodoPagos(){
+      console.log("Toggle Seleccionar todos los cargos "+this.seleccionTodos);
+        this.listaCargosAlumnos.forEach(element => {
+            element.checked = this.seleccionTodos;
+        });
     }
   },
 };

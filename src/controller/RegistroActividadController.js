@@ -17,13 +17,13 @@ export default {
       listaGrupos:[],
       loadFunction: null,
       loadFunctionAlumnos: null,
-      uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
+      &*uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
       uriTempAlumnos: "http://localhost:5000/alumnos",      
       uriTempAsistencia: "http://localhost:5000/asistencia",
-      
-      /*uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
+      */
+      uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
       uriTempAlumnos: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",     */ 
+      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",     
       
     };
   },

@@ -32,42 +32,36 @@ export default {
                 fecha_nacimiento: null,
                 correo: "",
                 genero: 0
-            },
-            producto: { co_alumno: -1, cat_producto: -1, cantidad: 1 },
+            },            
             listaFamiliares: [],
             metadatos: Utils,
             listaGrupos: [],
-            listaParentesco: [],
-            listaProductos: [],
-            listaProductosAlumno: [],
+            listaParentesco: [],            
             listaServicios: [],
             listaValoresEsperados: [],
             display: true,            
-            uriTemp: "http://localhost:5000/alumnos",
+            /*uriTemp: "http://localhost:5000/alumnos",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempFamiliar: "http://localhost:5000/familiar",
-            uriTempParentesco: "http://localhost:5000/parentesco",
-            uriTempProducto: "http://localhost:5000/producto",
+            uriTempParentesco: "http://localhost:5000/parentesco",            
             uriTempServicios: "http://localhost:5000/servicios",
             uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
+            */
 
             //--
     
-            /*uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
+            uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
             uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
             uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
-            uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",
-            uriTempProducto: "https://app-restexpres.herokuapp.com/producto",
+            uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",            
             uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
-            uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",*/
+            uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",
     
             response: "",
             mensaje: "",
             sesion: {},
             loadFamiliaresFuncion: null,
-            loadCatalogoParentescoFuncion: null,
-            loadCatalogoProductosFuncion: null,
-            loadProductosAlumnoFuncion: null,
+            loadCatalogoParentescoFuncion: null,            
             loadValoresEsperadosFunction: null,
             loadCatalogoFunction: null,
             mensajeToast: null,
@@ -162,49 +156,7 @@ export default {
                     );
             };
 
-            //Traer productos           
-            this.loadCatalogoProductosFuncion = () => {
-                this.$http
-                    .get(this.uriTempProducto, {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaProductos = this.response;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
-            };
-
-          this.loadProductosAlumnoFuncion = () => {
-                console.log("loadProductosAlumnoFuncion ");
-                this.$http
-                    .get(this.uriTempProducto + "/" + this.id, {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            console.log("Respuesta " + JSON.stringify(this.response));
-                            if (this.response != null) {
-                                this.listaProductosAlumno = this.response;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
-            };
-
+          
             //traer sevicios            
             this.$http
                 .get(this.uriTempServicios, {
@@ -325,9 +277,7 @@ export default {
 
             this.loadFamiliaresFuncion();
             this.loadFunctionGrupos();
-            this.loadCatalogoProductosFuncion();
-            this.loadProductosAlumnoFuncion();
-
+          
         }
    
 
@@ -382,6 +332,7 @@ export default {
                 correo: "",
                 genero: 0
             };
+            this.mensaje = '';
             this.loadCatalogoParentescoFuncion();
         },
         seleccionarFamiliar(item, operacion) {
@@ -503,56 +454,6 @@ export default {
                     }
                 );
         },
-        iniciaragregarProducto() {
-            console.log("Iniciar add producto");
-            this.producto = { co_alumno: -1, cat_producto: -1, cantidad: 1 };
-            this.loadCatalogoProductosFuncion();
-        },
-        seleccionarProducto(item, operacion) {
-            console.log("seleccionar producto");
-        },
-        agregarProducto() {
-            console.log("agregar servicio");
-
-            if (this.producto.cantidad == null || this.producto.cantidad == 0) {
-                this.mensaje = "La cantidad no es correcta ";
-                return;
-            }
-
-            if (this.producto.cat_producto == null || this.producto.cantidad == -1) {
-                this.mensaje = "Selecione el producto ";
-                return;
-            }
-
-            this.producto.genero = this.usuarioSesion.id;
-            this.producto.co_alumno = this.alumno.id;
-
-            this.$http
-                .post(this.uriTempProducto, this.producto, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-                })
-                .then(
-                    result => {
-                        this.response = result.data;
-
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            this.mensaje = "Se agrego el producto.";
-
-                            $("#modal_producto").modal("hide");
-
-                            this.loadProductosAlumnoFuncion();
-                        }
-                    },
-                    error => {
-                        console.error(error);
-                    }
-                );
-        },
-        eliminarproducto() {
-            console.log("eliminar producto");
-        }
+       
     }
 };
