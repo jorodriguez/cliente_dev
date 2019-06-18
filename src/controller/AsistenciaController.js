@@ -7,7 +7,7 @@ export default {
   data() {
     return {  
       //uriTemp: "http://localhost:5000/asistencia",
-      uriTemp:'https://app-restexpres.herokuapp.com/asistencia',
+      uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,

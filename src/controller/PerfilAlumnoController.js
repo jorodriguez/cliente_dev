@@ -50,12 +50,12 @@ export default {
 
             //--
     
-            uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-            uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempFamiliar: "https://app-restexpres.herokuapp.com/familiar",
-            uriTempParentesco: "https://app-restexpres.herokuapp.com/parentesco",            
-            uriTempServicios: "https://app-restexpres.herokuapp.com/servicios",
-            uriTempValoresEsperados: "https://app-restexpres.herokuapp.com/valores_esperados",
+            uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+            uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
+            uriTempFamiliar: "https://api-ambiente-produccion.herokuapp.com/familiar",
+            uriTempParentesco: "https://api-ambiente-produccion.herokuapp.com/parentesco",            
+            uriTempServicios: "https://api-ambiente-produccion.herokuapp.com/servicios",
+            uriTempValoresEsperados: "https://api-ambiente-produccion.herokuapp.com/valores_esperados",
     
             response: "",
             mensaje: "",

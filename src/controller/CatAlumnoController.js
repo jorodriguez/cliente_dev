@@ -22,8 +22,8 @@ export default {
       mensaje :"",
       /*uriTemp: "http://localhost:5000/alumnos",
       uriTempGrupos: "http://localhost:5000/grupos"*/
-      uriTemp: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos"      
+      uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+      uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos"      
     };
   },
   mounted() {

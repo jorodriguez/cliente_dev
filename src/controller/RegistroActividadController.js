@@ -21,9 +21,9 @@ export default {
       uriTempAlumnos: "http://localhost:5000/alumnos",      
       uriTempAsistencia: "http://localhost:5000/asistencia",
       */
-      uriTemp: "https://app-restexpres.herokuapp.com/actividad/catalogo_actividad",
-      uriTempAlumnos: "https://app-restexpres.herokuapp.com/alumnos",
-      uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",     
+      uriTemp: "https://api-ambiente-produccion.herokuapp.com/actividad/catalogo_actividad",
+      uriTempAlumnos: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+      uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",     
       
     };
   },

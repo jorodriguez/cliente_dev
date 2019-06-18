@@ -35,9 +35,9 @@ export default {
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
 */
-            uriTempAsistencia: "https://app-restexpres.herokuapp.com/asistencia",
-            uriTempGrupos: "https://app-restexpres.herokuapp.com/grupos",
-            uriTempActividad: "https://app-restexpres.herokuapp.com/actividad"      
+            uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",
+            uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
+            uriTempActividad: "https://api-ambiente-produccion.herokuapp.com/actividad"      
         };
     },
     //FIXME: SESION
