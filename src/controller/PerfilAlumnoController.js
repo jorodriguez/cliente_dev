@@ -64,6 +64,7 @@ export default {
             loadCatalogoParentescoFuncion: null,            
             loadValoresEsperadosFunction: null,
             loadCatalogoFunction: null,
+            loadServiciosFunction:null,
             mensajeToast: null,
             initFamiliar: null,
             operacion: "",
@@ -106,9 +107,9 @@ export default {
                         if (this.alumno.formato_inscripcion == null)
                             this.alumno.formato_inscripcion = {};
 
-                        console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
+                        //console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
-                        this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
+                        //this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
                         //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
                     },
                     error => {
@@ -158,6 +159,7 @@ export default {
 
           
             //traer sevicios            
+            this.loadServiciosFunction = ()=>{
             this.$http
                 .get(this.uriTempServicios, {
                     headers: {
@@ -176,6 +178,7 @@ export default {
                         console.error(error);
                     }
                 );
+            };
 
 
             this.loadValoresEsperadosFunction = (id_formato) => {
@@ -275,12 +278,10 @@ export default {
                 }
             }
 
-            this.loadFamiliaresFuncion();
-            this.loadFunctionGrupos();
-          
+          //  this.loadFamiliaresFuncion();
+            this.loadFunctionGrupos();                      
         }
    
-
         this.mensajeToast = mensaje => {
             $("#toast_msg").text(mensaje);
             $("#toast_id").toast("show");
@@ -454,6 +455,30 @@ export default {
                     }
                 );
         },
-       
+        cargarTabInscripcion(){
+            console.log("Inscripcion Tab load");
+            
+            if(this.listaServicios.length == 0){
+                console.log("Carga de lista");
+                this.loadServiciosFunction();
+            } 
+        },
+        cargarTabInstitucion(){
+            console.log("Institucion Tab load");
+            if(this.listaValoresEsperados.length == 0){
+
+                console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
+
+                this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
+                    
+            }
+        },
+        cargarTabFamiliares(){
+            console.log("Familiares Tab load");
+            if(this.listaFamiliares.length == 0){
+                console.log("Carga de lista de familiares");
+                this.loadFamiliaresFuncion();
+            }
+        }     
     }
 };

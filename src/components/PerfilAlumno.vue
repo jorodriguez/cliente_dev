@@ -197,6 +197,7 @@
                   role="tab"
                   aria-controls="pills-profile"
                   aria-selected="false"
+                  v-on:click="cargarTabInscripcion()"
                 >Inscripción</a>
               </li>
               <!--<li class="nav-item">
@@ -219,6 +220,7 @@
                   role="tab"
                   aria-controls="pills-institucion"
                   aria-selected="false"
+                  v-on:click="cargarTabInstitucion()"
                 >Institución</a>
               </li>
 
@@ -231,6 +233,7 @@
                   role="tab"
                   aria-controls="pills-familiares"
                   aria-selected="false"
+                  v-on:click="cargarTabFamiliares()"
                 >Familiares</a>
               </li>
               <li class="nav-item">

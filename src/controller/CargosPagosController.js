@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de pagos y cargos ");
-    $('[data-toggle="popover"]').popover(); 
+    
     this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
