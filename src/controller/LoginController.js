@@ -11,9 +11,10 @@ export default {
         password: "",
         mensajeToast: null
       },
-      response: "",
-      uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
+      response: "",      
       //uriTemp: "http://localhost:5000/auth/login"
+      //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
+      uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
     };
   },
   mounted() {

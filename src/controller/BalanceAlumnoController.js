@@ -8,7 +8,8 @@ export default {
   data() {
     return {      
       //uriTempBalance: "http://localhost:5000/balance",      
-      uriTempBalance: "https://api-ambiente-produccion.herokuapp.com/balance",            
+      //uriTempBalance: "https://api-ambiente-produccion.herokuapp.com/balance",            
+      uriTempBalance: "https://api-ambiente-desarrollo.herokuapp.com/balance",            
       balanceAlumno : {total_adeudo:0},
       usuarioSesion: {},
       sesion: {},              

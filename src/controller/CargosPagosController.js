@@ -14,8 +14,11 @@ export default {
       /*uriTempPagos: "http://localhost:5000/pagos",
       uriTempCargos: "http://localhost:5000/cargos",
       */
-      uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
+      /*uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
       uriTempCargos: "https://api-ambiente-produccion.herokuapp.com/cargos",      
+      */
+      uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
+      uriTempCargos: "https://api-ambiente-desarrollo.herokuapp.com/cargos",      
       cargo: {
         cantidad: 1,
         cat_cargo: -1
