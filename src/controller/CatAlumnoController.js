@@ -20,11 +20,16 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje :"",
-      uriTemp: "http://localhost:5000/alumnos",
+      /*uriTemp: "http://localhost:5000/alumnos",
       uriTempGrupos: "http://localhost:5000/grupos"
+      */
       
       /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
-      uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      */
+      uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      
+      */
+
+      uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+      uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos"      
     };
   },
   mounted() {

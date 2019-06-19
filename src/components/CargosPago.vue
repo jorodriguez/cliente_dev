@@ -202,14 +202,7 @@
                   <!--<th>Nota</th>-->
                 </thead>
                 <tbody v-for="row in listaCargosAlumnos" :key="row.id">
-                  <tr v-if="row.checked">
-                   <!-- <td>
-                       <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                          <input type="checkbox" class="custom-control-input" >                        
-                        </div>
-                      <input type="checkbox" id="checkbox" v-model="row.checked">
-                    </td>
-                    -->
+                  <tr v-if="row.checked">                  
                     <td>
                       <span class="small">{{row.nombre_cargo}}</span>
                     </td>

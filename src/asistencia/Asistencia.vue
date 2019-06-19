@@ -48,7 +48,7 @@
             type="button"
             class="btn btn-success btn-block"
             v-on:click="registrarEntrada()"
-          >Confirmar</button>
+          >Confirmar Entrada</button>
         </div>
         <div class="container jumbotron m-1">
           <p>Alumnos seleccionados</p>
