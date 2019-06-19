@@ -20,10 +20,11 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje :"",
-      /*uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"*/
-      uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
-      uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      
+      uriTemp: "http://localhost:5000/alumnos",
+      uriTempGrupos: "http://localhost:5000/grupos"
+      
+      /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
+      uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      */
     };
   },
   mounted() {
@@ -134,8 +135,8 @@ export default {
             return false;
           }
                                          
-          if(this.input.fecha_reinscripcion == null || this.input.fecha_reinscripcion == ''){
-            this.mensaje = "* Selecciona la fecha de reinscripción";
+          if(this.input.fecha_inscripcion == null || this.input.fecha_inscripcion == ''){
+            this.mensaje = "* Selecciona la fecha de inscripción";
             return false;
           }        
 
@@ -169,7 +170,7 @@ export default {
         costo_inscripcion: "",
         costo_colegiatura: "",
         minutos_gracia: "",
-        fecha_reinscripcion: null,
+        fecha_inscripcion: null,
         foto: "",
         genero: 1
       };

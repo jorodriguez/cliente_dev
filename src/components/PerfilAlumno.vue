@@ -406,22 +406,8 @@
                         required
                       >
                     </div>
-                    <div class="form-group">
-                      <label for="inputCostoColegiatura">
-                        Costo Colegiatura
-                        <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        id="inputCostoColegiatura"
-                        type="number"
-                        v-model="alumno.costo_colegiatura"
-                        class="form-control"
-                        placeholder="Costo Colegiatura"
-                        min="0"
-                        required
-                      >
-                    </div>
 
+                  
                     <div class="form-group">
                       <label for="inputCostoInscripcion">
                         Costo Inscripción
@@ -439,25 +425,19 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="inputFReinscripcion">
-                        Fecha de Reinscripción
+                      <label for="inputCostoColegiatura">
+                        Costo Colegiatura
                         <span class="text-danger">*</span>
                       </label>
-                      <!--<input
-                    id="inputFReinscripcion"
-                    type="date"
-                    pattern="yyyy-MM-dd"
-                    v-model="alumno.fecha_reinscripcion"
-                    class="form-control"
-                    placeholder="F. Reinscripcion"
-                    required
-                      >-->
-                      <datepicker
-                        id="inputFReinscripcion"
-                        v-model="alumno.fecha_reinscripcion"
-                        input-class="form-control"
+                      <input
+                        id="inputCostoColegiatura"
+                        type="number"
+                        v-model="alumno.costo_colegiatura"
+                        class="form-control"
+                        placeholder="Costo Colegiatura"
+                        min="0"
                         required
-                      ></datepicker>
+                      >
                     </div>
 
                     <div class="form-group">
@@ -487,18 +467,9 @@
               >
                 <div class="card">
                   <div class="card-body">
-                    <!-- DATOS DE INSCRIPCION  -->
+                    <!-- DATOS DE INSCRIPCION  -->                   
                     <div class="form-group">
-                      <label for="inputInscripcion">Fecha de Inscripción</label>
-                      <!--<input
-                    id="inputInscripcion"
-                    type="date"
-                    pattern="yyyy-MM-dd"
-                    v-model="alumno.fecha_inscripcion"
-                    class="form-control"
-                    placeholder="Fecha de inscripción"
-                    required
-                      >-->
+                      <label for="inputInscripcion">Fecha de Inscripción</label>                   
                       <datepicker
                         id="inputInscripcion"
                         v-model="alumno.fecha_inscripcion"
@@ -506,6 +477,20 @@
                         required
                       ></datepicker>
                     </div>
+                                        
+                    <div class="form-group">
+                      <label for="inputFReinscripcion">
+                        Fecha de Reinscripción
+                        <span class="text-danger">*</span>
+                      </label>                     
+                      <datepicker
+                        id="inputFReinscripcion"
+                        v-model="alumno.fecha_reinscripcion"
+                        input-class="form-control"
+                        required
+                      ></datepicker>
+                    </div>
+
                     <div class="form-group">
                       <label for="inputInscripcion">Nombre de cariño</label>
                       <input

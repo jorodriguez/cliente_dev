@@ -153,6 +153,26 @@
                   required
                 >
 
+
+                <label>
+                  F. de Inscripción
+                  <span class="text-danger">*</span>
+                </label>
+                <!--<input
+                  type="date"
+                   pattern="yyyy-MM-dd"
+                  v-model="input.fecha_reinscripcion"
+                  class="form-control"
+                  placeholder="F. Reinscripcion"
+                  required
+                >-->
+                <datepicker
+                  name="fecha_inscripcion"
+                  v-model="input.fecha_inscripcion"
+                  input-class="form-control"
+                  required
+                ></datepicker>
+
                 <label>
                   Costo Colegiatura
                   <span class="text-danger">*</span>
@@ -179,24 +199,6 @@
                   required
                 >
 
-                <label>
-                  F. de Reinscripción
-                  <span class="text-danger">*</span>
-                </label>
-                <!--<input
-                  type="date"
-                   pattern="yyyy-MM-dd"
-                  v-model="input.fecha_reinscripcion"
-                  class="form-control"
-                  placeholder="F. Reinscripcion"
-                  required
-                >-->
-                <datepicker
-                  name="fecha_reinscripcion"
-                  v-model="input.fecha_reinscripcion"
-                  input-class="form-control"
-                  required
-                ></datepicker>
 
                 <label>Nota</label>
                 <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
