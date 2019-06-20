@@ -32,7 +32,7 @@ export default {
             mensajeToast: null,
             firebaseMessages: null,
   
-            /*uriTempAsistencia: "http://localhost:5000/asistencia",
+           /* uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
             */
@@ -41,9 +41,11 @@ export default {
             uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos",
             uriTempActividad: "https://api-ambiente-desarrollo.herokuapp.com/actividad"      
             */
-           uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",
+            
+            uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",
             uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
             uriTempActividad: "https://api-ambiente-produccion.herokuapp.com/actividad"      
+            
         };
     },
     //FIXME: SESION
