@@ -22,7 +22,7 @@ export default {
       */
 
       uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
-      uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
+      uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pago",
       uriTempCargos: "https://api-ambiente-produccion.herokuapp.com/cargos", 
       
       cargo: {
