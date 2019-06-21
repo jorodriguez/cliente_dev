@@ -73,16 +73,18 @@
                     id="inputFnacimientoFamiliar"
                     v-model="familiar.fecha_nacimiento"
                     input-class="form-control"
+                    required
                   ></datepicker>
                 </div>
                 <div class="form-group">
-                  <label for="inputCorreoFamiliar">Correo</label>
+                  <label for="inputCorreoFamiliar">Correo <span class="text-danger">*</span></label>
                   <input
                     id="inputCorreoFamiliar"
                     type="text"
                     v-model="familiar.correo"
                     class="form-control"
                     placeholder="Correo"
+                    required
                   >
                 </div>
               </div>

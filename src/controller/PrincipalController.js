@@ -32,7 +32,7 @@ export default {
             mensajeToast: null,
             firebaseMessages: null,
   
-           /* uriTempAsistencia: "http://localhost:5000/asistencia",
+            /*uriTempAsistencia: "http://localhost:5000/asistencia",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempActividad: "http://localhost:5000/actividad"
             */

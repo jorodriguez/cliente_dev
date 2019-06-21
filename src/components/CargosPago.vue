@@ -192,7 +192,27 @@
             </div>
 
             <div class="modal-body text-left">
-              <span class="text-danger"> {{mensaje}}</span>
+              <p><span class="text-danger"> {{mensaje}}</span></p>
+             
+              <label for="selectFormaPago">
+                Forma de Pago
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                v-model="pago.cat_forma_pago"
+                class="form-control"
+                placeholder="Forma pago"
+                required
+                autofocus
+              >
+                <option
+                  id="selectFormaPago"
+                  v-for="p in listaFormasPago"
+                  v-bind:value="p.id"
+                  v-bind:key="p.id"
+                >{{ p.nombre }}</option>
+              </select>
+
               <table class="table">
                 <thead>                 
                   <th>Concepto</th>
@@ -308,6 +328,7 @@
                 <thead>
                   <th>Fecha</th>
                   <th>Pago</th>
+                  <th>Forma de Pago</th>
                   <!--<th>Nota</th>-->
                 </thead>
                 <tbody v-for="row in listaPagosCargo" :key="row.id">
@@ -317,6 +338,9 @@
                     </td>
                     <td>
                       <label class="font-weight-bold text-success">${{row.pago}}</label>
+                    </td>
+                    <td>
+                      <label class="font-weight-bold text-info">{{row.nombre_forma_pago}}</label>
                     </td>
                     <!--<td>
                       <input

@@ -353,7 +353,8 @@ export default {
             if (
                 this.familiar.co_parentesco == -1 ||
                 this.familiar.nombre == "" ||
-                this.familiar.telefono == ""
+                this.familiar.telefono == "" ||
+                this.familiar.correo == "" 
             ) {
                 this.mensaje = "Escribe los valores requeridos";
                 this.mensajeToast("Escribe los valores requeridos");
@@ -393,7 +394,8 @@ export default {
             if (
                 this.familiar.co_parentesco == -1 ||
                 this.familiar.nombre == "" ||
-                this.familiar.telefono == ""
+                this.familiar.telefono == "" ||
+                this.familiar.correo == "" 
             ) {
                 this.mensajeToast("Escribe los valores requeridos");
                 return;

@@ -239,7 +239,7 @@
           </div>
           <div class="modal-body">
             <p>
-              ¿Confirma que desea eliminar al alumno?
+              ¿Confirma que desea dar de baja al alumno?
               <br>
               <strong>{{input.nombre}} {{input.apellidos}}</strong>
             </p>
@@ -250,7 +250,7 @@
               class="btn btn-danger"
               v-on:click="eliminar()"
               data-dismiss="modal"
-            >Eliminar</button>
+            >Dar de Baja</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           </div>
         </div>
@@ -298,11 +298,12 @@
                   height="50"
                   v-on:click="verPerfil(row)"
                   alt="..."
+                  title="Ver el perfil del alumno"
                   class="rounded-circle"
                 >
               </td>
               <td>
-                <button type="button" class="btn btn-link" v-on:click="verPerfil(row)">
+                <button type="button" class="btn btn-link" title="Ver el perfil del alumno" v-on:click="verPerfil(row)">
                   {{ row.nombre }}
                   <span class="text-danger">{{row.adeuda ? '*':''}}</span>
                 </button>
@@ -318,7 +319,8 @@
                   v-if="!row.adeuda"
                   class="btn btn-link red"
                   v-on:click="select(row,'DELETE')"
-                >Eliminar</button>
+                  title="Dar de baja el alumno."
+                >Iniciar Baja</button>
               </td>
             </tr>
           </table>
