@@ -11,20 +11,20 @@ export default {
 
   data() {
     return {
-      /*uriTempPagos: "http://localhost:5000/pagos",
+      uriTempPagos: "http://localhost:5000/pagos",
       uriTempFormasPagos: "http://localhost:5000/formas_pago",
       uriTempCargos: "http://localhost:5000/cargos",
-      */
+      
 
       /*uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
       uriTempCargos: "https://api-ambiente-desarrollo.herokuapp.com/cargos",      
       */
 
-      uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
+      /*uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
       uriTempCargos: "https://api-ambiente-produccion.herokuapp.com/cargos", 
-      
+      */
       cargo: {
         cantidad: 1,
         cat_cargo: -1
@@ -396,7 +396,9 @@ export default {
     seleccionarTodoPagos() {
       console.log("Toggle Seleccionar todos los cargos " + this.seleccionTodos);
       this.listaCargosAlumnos.forEach(element => {
-        element.checked = this.seleccionTodos;
+        if(!element.pagado){
+          element.checked = this.seleccionTodos;
+        }
       });
     }
   },
