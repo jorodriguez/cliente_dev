@@ -20,17 +20,17 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje :"",
-      /*uriTemp: "http://localhost:5000/alumnos",
+      uriTemp: "http://localhost:5000/alumnos",
       uriTempGrupos: "http://localhost:5000/grupos"
-      */
+      
       
       /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
       uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      
       */
 
-      uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+      /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
       uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos"      
-  
+  */
     };
   },
   mounted() {
@@ -130,6 +130,12 @@ export default {
             this.mensaje = "* Selecciona la hora de entrada y salida";
             return false;
           }
+
+         /* if(this.input.hora_entrada > this.input.hora_salida){
+            this.mensaje = "* La hora de entrada es mayor a la hora de salida.";
+            return false;
+          }*/
+
 
           if(this.input.minutos_gracia == null || this.input.minutos_gracia == ''){
             this.mensaje = "* Escribe los minutos de gracia";

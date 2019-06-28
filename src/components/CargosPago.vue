@@ -210,7 +210,7 @@
                   v-for="p in listaFormasPago"
                   v-bind:value="p.id"
                   v-bind:key="p.id"
-                >{{ p.nombre }}</option>
+                >{{ p.nombre }}  - ({{p.descripcion}}) </option>
               </select>
 
               <table class="table">
