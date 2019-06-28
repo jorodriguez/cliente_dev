@@ -1,13 +1,8 @@
 <template>
   <div class="cat_alumno container">
   
-    <h1>Pagos</h1>(
-    <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
-    <div class="text-left">
-      <router-link to="/principal" class="btn btn-secondary btn-lg">
-        <i class="fas fa-arrow-circle-left text-gray"></i>
-      </router-link>      
-    </div>
+    <h1>Balances</h1>
+    <boton-logout></boton-logout>
     <br>
         
     <div class="card">
@@ -32,7 +27,15 @@
           </div>
         </div>-->
 
-        <div class="table-responsive">
+      <div v-for="row in lista" :key="row.id">
+                <button                  
+                  class="btn btn-link "
+                  v-on:click="verDetalleSucursal(row.id)"
+                  title="ver detalle ."
+                >{{row.nombre}} {{row.total_adeuda}}</button>
+      </div>
+
+        <!--<div class="table-responsive">
           <table class="table">
             <thead>
               <th></th>
@@ -62,17 +65,11 @@
               <td class="hidden-xs">{{ row.apellidos }}</td>                           
               <td>{{ row.hora_salida }}</td>
               <td>
-                <!--
-                <button
-                  v-if="!row.adeuda"
-                  class="btn btn-link red"
-                  v-on:click="select(row,'DELETE')"
-                  title="Dar de baja el alumno."
-                >Iniciar Baja</button>-->
+                
               </td>
             </tr>
           </table>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>

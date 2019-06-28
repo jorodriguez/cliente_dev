@@ -6,6 +6,7 @@ import CatAlumno from '@/components/CatAlumno'
 import PerfilAlumno from '@/components/PerfilAlumno'
 import Asistencia from '@/asistencia/Asistencia'
 import RegistroActividad from '@/actividad/RegistroActividad'
+import ReporteDeudas from '@/components_admin/ReporteDeudas'
 import Home from '@/components/Home'
 import VueSession from 'vue-session'
 
@@ -23,6 +24,7 @@ Vue.use(VueSession);
     { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno },
     { path: '/Asistencia', name: 'Asistencia', component: Asistencia },
     { path: '/Actividades', name: 'Actividades', component: RegistroActividad },
+    { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas },
     {path: '*', redirect: '/'}
   ]
 })

@@ -11,8 +11,8 @@ export default {
         password: "",
         mensajeToast: null
       },
-      response: "",      
-      uriTemp: "http://localhost:5000/auth/login"      
+      response: "",
+      uriTemp: "http://localhost:5000/auth/login"
       //uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
       //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
     };
@@ -36,17 +36,20 @@ export default {
       }
 
       var data = { correo: this.input.correo, password: this.input.password };
-            
+
       this.$http.post(this.uriTemp, data).then(
         result => {
           console.log("En el login");
           this.response = result.data;
-          //this.mensajeToast(JSON.stringify(result));
           if (this.response.auth) {
             this.$session.set("usuario_sesion", this.response);
             this.$session.set("jwt", this.response.token);
-            //this.$router.push({ name: "PaginaPrincipal" });
-            this.$router.replace({ path: "/principal" });            
+            console.log("JSON "+JSON.stringify(this.response));
+            if(this.response.usuario.permiso_gerente){
+              this.$router.replace({ path: "/ReporteAdmin" });
+            }else{
+              this.$router.replace({ path: "/principal" });
+            }
             
           } else {
             this.mensajeToast("No se encuentra el usuario..");

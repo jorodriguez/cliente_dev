@@ -1,19 +1,26 @@
 
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
+import SignoutComponent from "./SignoutComponent";
 
 export default {
-  name: "Asistencia",
+  name: "ReporteDeudas",
+  components: {
+    SignoutComponent
+  },
   data() {
-    return {  
-      uriTemp: "http://localhost:5000/asistencia",       
-      //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
-      //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
+    return {
+      uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
+      uriTempBalanceAlumnosSucursal: "http://localhost:5000/balance_alumnos_sucursal",
+      //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/reporte_deudas',
+      //uriTemp:'https://api-ambiente-produccion.herokuapp.com/reporte_deudas',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
-      lista: [],
-      listaSeleccion: [],     
+      id_sucursal_seleccionada: -1,
+      listaBalanceSucursal: [],
+      listaBalancesAlumnosPorSucursal: [],
+      listaSeleccion: [],
       listaSeleccionSalida: [],
       response: "",
       mensaje: ""
@@ -29,14 +36,16 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;
-    
-    this.loadFunction = function() {
+
+    if(!this.usuarioSesion.permiso_gerente){
+      this.$router.push("/");
+      return;
+    }
+
+    this.loadFunctionBalanceSucursal = function () {
       this.$http
         .get(
-          this.uriTemp +
-            "/alumnos_por_recibidos" +
-            "/" +
-            this.usuarioSesion.co_sucursal,
+          this.uriTempBalanceSucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -45,21 +54,54 @@ export default {
         )
         .then(
           result => {
-            this.response = result.data;
-            console.log("Consulta " + this.response);
-            if (this.response != null) {
-              this.lista = this.response;
+            console.log("Consulta " + result.data);
+            if (result.data != null) {
+              this.listaBalanceSucursal = result.data;
             }
           },
           error => {
             console.error(error);
           }
         );
-    };   
-    this.loadFunction();
-   
+    };
+
+    this.loadFunctionBalancesAlumnosPorSucursal = function () {
+
+      if (this.id_sucursal_seleccionada != -1) {
+        this.$http
+          .get(
+            this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada,
+            {
+              headers: {
+                "x-access-token": this.sesion.token
+              }
+            }
+          )
+          .then(
+            result => {
+              console.log("Consulta " + result.data);
+              if (result.data != null) {
+                this.listaBalancesAlumnosPorSucursal = result.data;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      }else{
+        this.mensaje = "Por favor seleccione una sucursal.";
+      }
+    };
+
+
+    this.loadFunctionBalanceSucursal();
+
   },
   methods: {
+    verDetalleSucursal(id_sucursal){
+        this.id_sucursal_seleccionada = id_sucursal;
+        this.loadFunctionBalancesAlumnosPorSucursal();   
+    }
 
-   }  
+  }
 };
