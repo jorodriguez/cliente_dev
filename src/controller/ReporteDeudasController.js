@@ -101,7 +101,11 @@ export default {
     verDetalleSucursal(id_sucursal){
         this.id_sucursal_seleccionada = id_sucursal;
         this.loadFunctionBalancesAlumnosPorSucursal();   
-    }
+    },
+    formatPrice(value) {
+      let val = (value/1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+     }
 
   }
 };

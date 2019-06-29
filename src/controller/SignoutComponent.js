@@ -12,7 +12,7 @@ export default {
     <i class="fas fa-power-off" v-on:click="signout()"></i>
 </button>
 </small>`,
-  props: [''],
+  //props: [''],
   data() {
     return {
       usuarioSesion: {},
