@@ -12,16 +12,20 @@ export default {
     return {
       uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "http://localhost:5000/balance_alumnos_sucursal",
+      uriTempBalanceCrecimiento: "http://localhost:5000/balance_crecimiento",
+      uriTempMesesActivos: "http://localhost:5000/meses_activos",
+      
       //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/reporte_deudas',
       //uriTemp:'https://api-ambiente-produccion.herokuapp.com/reporte_deudas',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
       id_sucursal_seleccionada: -1,
+      sucursal_seleccionada : {id_sucursal: -1,nombre:''},
       listaBalanceSucursal: [],
+      listaBalanceCrecimiento:[],
       listaBalancesAlumnosPorSucursal: [],
-      listaSeleccion: [],
-      listaSeleccionSalida: [],
+      listaMesesActivos: [],      
       response: "",
       mensaje: ""
     };
@@ -93,14 +97,66 @@ export default {
       }
     };
 
+    this.loadFunctionBalanceCrecimiento = function () {
+      this.$http
+        .get(
+          this.uriTempBalanceCrecimiento,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            console.log("Consulta balance crecimiento " + result.data);
+            if (result.data != null) {
+              this.listaBalanceCrecimiento = result.data;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
+
+    this.loadFunctionMesesActivos = function () {
+      this.$http
+        .get(
+          this.uriTempMesesActivos,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            console.log("Consulta meses activos " + result.data);
+            if (result.data != null) {
+              this.listaMesesActivos = result.data;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
 
     this.loadFunctionBalanceSucursal();
+    this.loadFunctionBalanceCrecimiento();
 
   },
   methods: {
-    verDetalleSucursal(id_sucursal){
-        this.id_sucursal_seleccionada = id_sucursal;
+    verDetalleDeudasSucursal(row){        
+        this.sucursal_seleccionada =  row;
+        this.id_sucursal_seleccionada = row.id;
         this.loadFunctionBalancesAlumnosPorSucursal();   
+    },
+    verDetalleCrecimientoSucursal(row){
+      this.sucursal_seleccionada =  row;
+      this.id_sucursal_seleccionada = row.id;
+      this.loadFunctionBalancesAlumnosPorSucursal();   
     },
     formatPrice(value) {
       let val = (value/1).toFixed(2).replace('.', ',')
