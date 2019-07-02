@@ -1,7 +1,16 @@
 <template>
   <div class="cat_alumno container">
     <h1>Balances</h1>
-    <boton-logout></boton-logout>
+    <small class="font-weight-bold h6">
+      {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
+      <button
+        type="button"
+        class="btn btn-sm btn-warning"
+        v-on:click="signout()"
+      >
+        <i class="fas fa-power-off" v-on:click="signout()"></i>
+      </button>
+    </small>
     <br>
 
     <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
@@ -38,28 +47,26 @@
         <div class="card">
           <div class="card-body">
             <div class="row mb-3">
-              <div v-for="row in listaBalanceSucursal" :key="row.id" class="col-xl-3 col-sm-4 py-2">
+              <div
+                v-for="row in listaBalanceSucursal"
+                :key="row.id"
+                class="col-xl-3 col-sm-4 py-2 mx-auto"
+              >
                 <div
-                  class="card bg-success text-white h-100"
+                  class="card bg-success text-white h-100 pointer"
                   v-on:click="verDetalleDeudasSucursal(row)"
+                  title="Clic para ver el detalle"
                 >
                   <div class="card-body bg-info">
                     <!--div class="rotate">
                                 <i class="fa fa-user fa-3x"></i>
                     </div>-->
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
+                    <small>Pendiente</small>
                     <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>
                     <h6>{{row.contador_alumnos}} alumnos en total</h6>
-                    <!--<h6>
-                      <small>{{row.contador_alumnos_ingresado_mes}} alumnos inscritos este mes</small>
-                    </h6>-->
                   </div>
                 </div>
-                <!--<button                  
-                  class="btn btn-link "
-                  v-on:click="verDetalleSucursal(row.id)"
-                  title="ver detalle ."
-                >{{row.nombre}} {{row.total_adeuda}}</button>-->
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
@@ -120,69 +127,109 @@
               <div
                 v-for="row in listaBalanceCrecimiento"
                 :key="row.id"
-                class="col-xl-3 col-sm-4 py-2"
+                class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
                 <div
-                  class="card bg-success text-white h-100"
+                  class="card bg-success text-white h-100 pointer"
                   v-on:click="verDetalleCrecimientoSucursal(row)"
+                  title="Clic para ver el detalle"
                 >
                   <div class="card-body bg-info">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
-                    <h6>{{row.contador_alumnos_ingresado_mes}} alumnos inscritos este mes</h6>                    
+                    <h6>{{row.contador_alumnos_ingresado_mes}} alumnos inscritos este mes</h6>
                     <!--<h4 class="display-5">Cargos : ${{formatPrice(row.total_cargos_crecimiento)}}</h4>-->
-                    <h4 class="display-5"><small>Pendiente</small> ${{formatPrice(row.total_adeuda_crecimiento)}}</h4>
-                    <h4 class="display-5"><small>Pagado</small> ${{formatPrice(row.total_pagos_crecimiento)}}</h4>                    
+                    <small>Pendiente</small>
+                    <h4>
+                      <p>${{formatPrice(row.total_adeuda_crecimiento)}}</p>
+                    </h4>
+                    <small>Pagado</small>
+                    <h4>
+                      <p>${{formatPrice(row.total_pagos_crecimiento)}}</p>
+                    </h4>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="mx-auto">
               <h3>{{sucursal_seleccionada.nombre}}</h3>
+              <br>
+            </div>
+            <div class="row text-center">
               <div class="table-responsive">
                 <table class="table">
-                  <thead>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th class="hidden-xs">Apellidos</th>
-                    <th>Adeuda</th>
-                    <th></th>
-                  </thead>
-                  <tbody v-for="row in listaBalancesAlumnosPorSucursal" :key="row.id">
-                    <tr v-if="listaBalancesAlumnosPorSucursal.length == 0" ><td colspan="5" >No existen alumnos ingresados este mes.</td></tr>
-                    <tr v-if="row.nuevo_ingreso" class="text-left">
-                      <td>                        
-                        <img
-                          src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                          width="50"
-                          height="50"
-                          alt="..."
-                          title="Ver datos del alumno"
-                          class="rounded-circle"
+                  <tbody>
+                    <tr>
+                      <td
+                        v-for="row in listaCrecimientoMensualSucursal"
+                        :key="row.id"
+                        class="border"
+                      >
+                        <h6>
+                          <strong>{{row.mes_anio}}</strong>
+                        </h6>
+                        <p
+                          v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-info'"
                         >
+                          {{row.count_alumno}}
+                          <span>Alumnos</span>
+                        </p>
+                        <p
+                          v-bind:class="row.count_alumno == 0 ? 'text-muted text-danger':'text-muted'"
+                        >${{ formatPrice(row.suma_colegiaturas)}}</p>
                       </td>
-                      <td>
-                        <button type="button" class="btn btn-link" title="Ver datos del alumno">
-                          {{ row.nombre }}
-                          <sup
-                            v-if="row.nuevo_ingreso"
-                            class="badge badge-pill badge-warning"
-                          >
-                            <i>Nuevo Ingreso</i>
-                          </sup>
-                          <span class="text-danger">{{row.adeuda ? '*':''}}</span>
-                        </button>
-                      </td>
-                      <td class="hidden-xs">{{ row.apellidos }}</td>
-                      <td class="text-center">
-                        <span
-                          v-if="row.total_adeudo > 0"
-                          class="text-danger"
-                        >${{ row.total_adeudo }}</span>
-                        <span v-else>${{ row.total_adeudo }}</span>
-                      </td>
-                      <td></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+              <div class="mx-auto">
+                <button v-on:click="verCrecimientoGlobal()" class="btn btn-link">Ver Global</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <th></th>
+                  <th>Nombre</th>
+                  <th class="hidden-xs">Apellidos</th>
+                  <th>Adeuda</th>
+                  <th></th>
+                </thead>
+                <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">
+                  <tr v-if="listaBalancesAlumnosNuevosPorSucursal.length == 0">
+                    <td colspan="5">No existen alumnos ingresados este mes.</td>
+                  </tr>
+                  <tr v-if="row.nuevo_ingreso" class="text-left">
+                    <td>
+                      <img
+                        src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                        width="50"
+                        height="50"
+                        alt="..."
+                        title="Ver datos del alumno"
+                        class="rounded-circle"
+                      >
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-link" title="Ver datos del alumno">
+                        {{ row.nombre }}
+                        <sup
+                          v-if="row.nuevo_ingreso"
+                          class="badge badge-pill badge-warning"
+                        >
+                          <i>Nuevo Ingreso</i>
+                        </sup>
+                        <span class="text-danger">{{row.adeuda ? '*':''}}</span>
+                      </button>
+                    </td>
+                    <td class="hidden-xs">{{ row.apellidos }}</td>
+                    <td class="text-center">
+                      <span v-if="row.total_adeudo > 0" class="text-danger">${{ row.total_adeudo }}</span>
+                      <span v-else>${{ row.total_adeudo }}</span>
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -208,6 +255,70 @@
             </button>
           </div>
     </div>-->
+
+    <!-- Crecimiento global -->
+    <div
+      id="modal_crecimiento_global"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="exampleModalLongTitle"
+            >Crecimiento Global de ingreso de alumnos</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- crecimiento gliobal-->
+            <div class>
+              <span
+                class="text-info"
+              >Las cantidades son las que se escriben en el registro del alumno, no son los cargos realizados.</span>
+              <div class="table-responsive table-striped">
+                <table class="table">
+                  <thead>
+                    <th>Mes</th>
+                    <th>Alumnos</th>
+                    <th>Suma Colegiaturas</th>
+                    <th>Suma Inscripciones</th>
+                    <th>Suma Total</th>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="row in listaCrecimientoGlobal"
+                      :key="row.id"
+                      class="border"
+                      v-bind:class="row.count_alumno == 0 ? 'text-danger':''"
+                    >
+                      <td>{{row.mes_anio}}</td>
+                      <td>
+                        <span
+                          v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger' : 'badge badge-pill badge-primary'"
+                        >{{row.count_alumno}}</span>
+                      </td>
+                      <td>$ {{ formatPrice(row.suma_colegiaturas)}}</td>
+                      <td>$ {{formatPrice(row.suma_inscripciones)}}</td>
+                      <td>$ {{formatPrice(row.suma_total)}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -215,4 +326,7 @@
 </script>
 
 <style scoped>
+.pointer {
+  cursor: pointer;
+}
 </style>
