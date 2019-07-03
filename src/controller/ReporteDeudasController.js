@@ -127,7 +127,7 @@ export default {
     };
 
     this.loadFunctionBalanceCrecimientoAlumnosPorSucursal = function (id_sucursal) {
-
+      console.log("Id sucursal "+id_sucursal);
       if (id_sucursal != null && id_sucursal != undefined) {
         this.$http
           .get(

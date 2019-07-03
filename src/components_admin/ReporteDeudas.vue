@@ -194,11 +194,8 @@
                   <th>Adeuda</th>
                   <th></th>
                 </thead>
-                <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">
-                  <tr v-if="listaBalancesAlumnosNuevosPorSucursal.length == 0">
-                    <td colspan="5">No existen alumnos ingresados este mes.</td>
-                  </tr>
-                  <tr v-if="row.nuevo_ingreso" class="text-left">
+                <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">                  
+                  <tr class="text-left">
                     <td>
                       <img
                         src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
