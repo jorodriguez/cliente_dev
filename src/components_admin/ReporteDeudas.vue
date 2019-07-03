@@ -136,15 +136,17 @@
                 >
                   <div class="card-body bg-info">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
-                    <h6>{{row.contador_alumnos_ingresado_mes}} alumnos inscritos este mes</h6>
+                    <h6>
+                        <span v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'" >{{row.count_alumno}}</span>
+                         alumnos inscritos este mes</h6>
                     <!--<h4 class="display-5">Cargos : ${{formatPrice(row.total_cargos_crecimiento)}}</h4>-->
-                    <small>Pendiente</small>
+                    <small>Crecimiento (Mensualidad)</small>
                     <h4>
-                      <p>${{formatPrice(row.total_adeuda_crecimiento)}}</p>
+                      <p>${{formatPrice(row.suma_colegiaturas)}}</p>
                     </h4>
-                    <small>Pagado</small>
-                    <h4>
-                      <p>${{formatPrice(row.total_pagos_crecimiento)}}</p>
+                    <small class="text-muted">Inscripciones</small>
+                    <h4 class="text-muted">
+                      <p>${{formatPrice(row.suma_inscripciones)}}</p>
                     </h4>
                   </div>
                 </div>
