@@ -6,7 +6,7 @@ import SignoutComponent from "./SignoutComponent";
 export default {
   name: "ReporteDeudas",
   components: {
-    SignoutComponent
+    SignoutComponent,
   },
   data() {
     return {
@@ -26,6 +26,7 @@ export default {
       item: AlumnoModel,
       id_sucursal_seleccionada: -1,
       sucursal_seleccionada: { id_sucursal: -1, nombre: '' },
+      sucursal_seleccionada_crecimiento :{ id_sucursal: -1, nombre: '' },
       listaBalanceSucursal: [],
       listaBalanceCrecimiento: [],
       listaBalancesAlumnosPorSucursal: [],
@@ -33,11 +34,17 @@ export default {
       listaMesesActivos: [],
       listaCrecimientoGlobal: [],
       listaCrecimientoMensualSucursal:[],
+      alumno_seleccionado : {id:0,nombre:""},
       response: "",
       mensaje: ""
     };
   },
   mounted() {
+
+    $('.popover-dismiss').popover({
+      trigger: 'focus'
+    });
+  
     console.log("iniciando el componente reporte deudas ");
     this.sesion = this.$session.get("usuario_sesion");
 
@@ -215,7 +222,7 @@ export default {
         ) {
         this.$http
           .get(
-            this.uriTempBalanceAlumnoCrecimientoMensualSucursal+'/{"id_sucursal":'+id_sucursal+',"mes_anio":"'+mes_anio+'"}',
+            this.uriTempBalanceAlumnoCrecimientoMensualSucursal+'/'+id_sucursal+'/'+mes_anio,
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -226,7 +233,7 @@ export default {
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
-                this.listaCrecimientoMensualSucursal = result.data;
+                this.listaBalancesAlumnosNuevosPorSucursal = result.data;
               }
             },
             error => {
@@ -276,18 +283,23 @@ export default {
       this.loadFunctionBalancesAlumnosPorSucursal();
     },
     verDetalleCrecimientoSucursal(row) {
-      this.sucursal_seleccionada = row;
+      this.sucursal_seleccionada_crecimiento = row;      
       this.loadFunctionBalanceCrecimientoAlumnosPorSucursal(row.id);
-      this.loadFunctionCrecimientoMensualSucursal(row.id);
+      this.loadFunctionCrecimientoMensualSucursal(row.id);                 
     },
-    verCrecimientoGlobal(){
-      
+    verCrecimientoGlobal(){      
       this.loadFunctionCrecimientoGlobal();
       $("#modal_crecimiento_global").modal("show");
     },
     verAlumnosCrecimientoMensualSucursal(rowMes){
       console.log("Seleccion "+rowMes.mes_anio);
-        this.loadFunctionAlumnosCrecmientoMensualSucursal(this.sucursal_seleccionada.id,rowMes.mes_anio);
+        this.loadFunctionAlumnosCrecmientoMensualSucursal(this.sucursal_seleccionada_crecimiento.id,rowMes.mes_anio);
+    },
+    verDetalleAlumno(alumno){
+      this.alumno_seleccionado = alumno;
+      console.log(""+JSON.stringify(this.alumno_seleccionado));
+
+      $("#modal_alumno").modal("show");
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')

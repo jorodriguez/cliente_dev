@@ -53,7 +53,7 @@
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
                 <div
-                  class="card bg-success text-white h-100 pointer"
+                  class="card bg-success text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
                   title="Clic para ver el detalle"
                 >
@@ -91,7 +91,8 @@
                     >
                   </td>
                   <td>
-                    <button type="button" class="btn btn-link" title="Ver datos del alumno">
+                    <button type="button" class="btn btn-link" title="Ver datos del alumno"
+                            v-on:click="verDetalleAlumno(row)">
                       {{ row.nombre }}
                       <sup
                         v-if="row.nuevo_ingreso"
@@ -130,15 +131,18 @@
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
                 <div
-                  class="card bg-success text-white h-100 pointer"
+                  class="card bg-success text-white h-100 pointer sucursal-item-hover"
                   v-on:click="verDetalleCrecimientoSucursal(row)"
                   title="Clic para ver el detalle"
                 >
                   <div class="card-body bg-info">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <h6>
-                        <span v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'" >{{row.count_alumno}}</span>
-                         alumnos inscritos este mes</h6>
+                      <span
+                        v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'"
+                      >{{row.count_alumno}}</span>
+                      alumnos inscritos este mes
+                    </h6>
                     <!--<h4 class="display-5">Cargos : ${{formatPrice(row.total_cargos_crecimiento)}}</h4>-->
                     <small>Crecimiento (Mensualidad)</small>
                     <h4>
@@ -153,19 +157,20 @@
               </div>
             </div>
             <div class="mx-auto">
-              <h3>{{sucursal_seleccionada.nombre}}</h3>
+              <h3>{{sucursal_seleccionada_crecimiento.nombre}}</h3>
               <br>
             </div>
             <div class="row text-center">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table alumnos_table">
                   <tbody>
                     <tr>
                       <td
                         v-for="row in listaCrecimientoMensualSucursal"
                         :key="row.id"
-                        class="border"
+                        class="border pointer"
                         v-on:click="verAlumnosCrecimientoMensualSucursal(row)"
+                        title="Clic para ver la lista de alumnos ingresados."
                       >
                         <h6>
                           <strong>{{row.mes_anio}}</strong>
@@ -197,7 +202,7 @@
                   <th>Adeuda</th>
                   <th></th>
                 </thead>
-                <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">                  
+                <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">
                   <tr class="text-left">
                     <td>
                       <img
@@ -210,7 +215,12 @@
                       >
                     </td>
                     <td>
-                      <button type="button" class="btn btn-link" title="Ver datos del alumno">
+                      <button
+                        type="button"
+                        class="btn btn-link"
+                        title="Ver datos del alumno"
+                        v-on:click="verDetalleAlumno(row)"
+                      >
                         {{ row.nombre }}
                         <sup
                           v-if="row.nuevo_ingreso"
@@ -223,8 +233,25 @@
                     </td>
                     <td class="hidden-xs">{{ row.apellidos }}</td>
                     <td class="text-center">
-                      <span v-if="row.total_adeudo > 0" class="text-danger">${{ row.total_adeudo }}</span>
+                      <span 
+                            :data-popover-content="'#'+row.id"
+                            data-toggle="popover"
+                            data-placement="right"
+                           v-if="row.total_adeudo > 0" class="text-danger">${{ row.total_adeudo }}</span>
                       <span v-else>${{ row.total_adeudo }}</span>
+                      <div class="popover-block-container">                        
+                        <div  
+                            :id="row.id" 
+                            style="display:none;">
+                          <div class="popover-body">
+                            <button type="button" class="popover-close close">
+                              <i class="material-icons">close</i>
+                            </button>
+                              Adeuda {{row.total_adeuda}}
+                              Pagado {{row.total_pagado}}
+                          </div>
+                        </div>
+                      </div>
                     </td>
                     <td></td>
                   </tr>
@@ -283,7 +310,7 @@
                 class="text-info"
               >Las cantidades son las que se escriben en el registro del alumno, no son los cargos realizados.</span>
               <div class="table-responsive table-striped">
-                <table class="table">
+                <table class="table table-hover">
                   <thead>
                     <th>Mes</th>
                     <th>Alumnos</th>
@@ -317,16 +344,72 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
-      </div>
+      </div>     
     </div>
+     <!--- Detalle -->
+
+      <div id="modal_alumno" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Detalle del Alumno </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">             
+               <h4>{{alumno_seleccionado.nombre}} {{alumno_seleccionado.apellidos}} </h4>
+               <small class="text-muted">{{alumno_seleccionado.nombre_sucursal}}</small>                  
+                 <div class="table-responsive table-striped">
+                  <table class="table table-hover">
+                      <tr>
+                        <td>Adeuda</td>
+                        <td><span v-bind:class="alumno_seleccionado.total_adeudo == 0 ? '':'text-danger'"> <strong>$ {{alumno_seleccionado.total_adeudo}}</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td>Pagado</td>
+                        <td><span class="text-success" >$ {{alumno_seleccionado.total_pagos}} </span></td>
+                      </tr>
+                      <tr>
+                        <td>Mensualidad</td>
+                        <td><span class="text-primary" >$ {{alumno_seleccionado.costo_colegiatura}} </span></td>
+                      </tr>
+                       <tr>
+                        <td>Inscrito </td>
+                        <td><span>{{alumno_seleccionado.fecha_inscripcion | moment("DD-MMM-YYYY")}} </span></td>
+                      </tr>
+                      <tr>
+                        <td>Entrada : {{alumno_seleccionado.hora_entrada}}</td>
+                        <td>Salida :  {{alumno_seleccionado.hora_salida}}</td>
+                      </tr>
+                  </table>
+                 </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalle -->
   </div>
 </template>
 
 <script src="../controller/ReporteDeudasController.js" >
 </script>
 
+
 <style scoped>
 .pointer {
   cursor: pointer;
+}
+
+.alumnos_table td:hover {
+  background: #ffdddd;
+}
+
+.sucursal-item-hover:hover {
+  border-color: #f4720f !important;
 }
 </style>
