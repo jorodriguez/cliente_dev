@@ -165,6 +165,7 @@
                         v-for="row in listaCrecimientoMensualSucursal"
                         :key="row.id"
                         class="border"
+                        v-on:click="verAlumnosCrecimientoMensualSucursal(row)"
                       >
                         <h6>
                           <strong>{{row.mes_anio}}</strong>

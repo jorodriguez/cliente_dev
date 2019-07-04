@@ -17,6 +17,7 @@ export default {
       uriTempBalanceCrecimientoGlobal: "http://localhost:5000/balance_crecimiento_global",
       uriTempBalanceCrecimientoMensualSucursal: "http://localhost:5000/balance_crecimiento_mensual",
       uriTempMesesActivos: "http://localhost:5000/meses_activos",
+      uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
 
       //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/reporte_deudas',
       //uriTemp:'https://api-ambiente-produccion.herokuapp.com/reporte_deudas',
@@ -208,6 +209,38 @@ export default {
     };
 
 
+    this.loadFunctionAlumnosCrecmientoMensualSucursal = function (id_sucursal,mes_anio) {
+      if (id_sucursal != null && id_sucursal != undefined
+        || mes_anio != null && mes_anio != undefined
+        ) {
+        this.$http
+          .get(
+            this.uriTempBalanceAlumnoCrecimientoMensualSucursal+'/{"id_sucursal":'+id_sucursal+',"mes_anio":"'+mes_anio+'"}',
+            {
+              headers: {
+                "x-access-token": this.sesion.token
+              }
+            }
+          )
+          .then(
+            result => {
+              console.log("Consulta " + result.data);
+              if (result.data != null) {
+                this.listaCrecimientoMensualSucursal = result.data;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+      } else {
+        this.mensaje = "Por favor seleccione una sucursal y un mes.";
+      }
+    };
+
+    
+
+
 
     this.loadFunctionMesesActivos = function () {
       this.$http
@@ -251,6 +284,10 @@ export default {
       
       this.loadFunctionCrecimientoGlobal();
       $("#modal_crecimiento_global").modal("show");
+    },
+    verAlumnosCrecimientoMensualSucursal(rowMes){
+      console.log("Seleccion "+rowMes.mes_anio);
+        this.loadFunctionAlumnosCrecmientoMensualSucursal(this.sucursal_seleccionada.id,rowMes.mes_anio);
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
