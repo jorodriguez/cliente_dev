@@ -7,12 +7,12 @@
     </div>-->
 
     <h1>Asistencias</h1>
+     <span>{{this.mensaje}}</span>
     <div class="text-left">
-    <router-link to="/principal" class="btn btn-secondary btn-lg">
+      <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
-    </router-link>
-    </div>
-    <span>{{this.mensaje}}</span>
+      </router-link>
+    </div>   
     <nav>
       <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
         <a
@@ -50,16 +50,17 @@
             v-on:click="registrarEntrada()"
           >Confirmar Entrada</button>
         </div>
-        <div class="container jumbotron m-1">
-          <p>Alumnos seleccionados</p>
-          <div class="media">
+        <!--<div class="container jumbotron m-1">-->
+        <div class="card border" style="background-color:#E9E9E9;">       
+          <p>Alumnos seleccionados</p>       
+          <div class="card-body">
             <div class="row">
               <div
                 v-for="item in listaSeleccion"
                 v-bind:key="item.id"
-                class="d-flex flex-wrap align-content-center bg-light"
+                class="d-flex flex-wrap align-content-center"
               >
-                <small class="badge badge-pill badge-info">
+                <small class="badge badge-pill badge-info border border-white">
                   <img
                     src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                     width="35"
@@ -80,25 +81,57 @@
             </div>
           </div>
         </div>
-
-        <div class="container jumbotron m-1">
-          <p>Seleccione para registrar entrada</p>
+        <div class="border"/>
+        <div class="border"/>
+        <div class="border"/>
+        <!--<div class="container jumbotron m-1">-->
+        <div class="card border" style="background-color:#E9E9E9;">
           <div class="row">
-            <div
-              v-for="item in lista"
-              v-bind:key="item.id"
-              class="d-flex align-content-center flex-wrap"
-            >
-              <small class="badge badge-pill badge-warning border border-primary" v-on:click="addToList(item)">
-                <img
-                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                  width="35"
-                  height="35"
-                  alt="..."
-                  class="rounded-circle"
-                >
-                <i>{{item.nombre}}</i>
-              </small>
+            <div class="dropdown">
+              <button
+                class="btn btn-link dropdown-toggle"
+                type="button"
+                id="dropdownMenu2"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >{{grupoSeleccionado.nombre}}</button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button
+                  class="dropdown-item"
+                  v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+                  type="button"
+                >{{grupoDefault.nombre}}</button>
+                <button
+                  class="dropdown-item"
+                  v-for="grupoItem in listaFiltroGrupos"
+                  v-bind:key="grupoItem.id"
+                  v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+                  type="button"
+                >{{grupoItem.nombre}}</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body " style="background-color:#E9E9E9;">
+            <!--<p>Seleccione para registrar entrada</p>-->
+            <div class="row">
+              <div v-for="item in lista" v-bind:key="item.id">
+                <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
+                  <small
+                    class="badge badge-pill badge-warning border border-primary"
+                    v-on:click="addToList(item)"
+                  >
+                    <img
+                      src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                      width="35"
+                      height="35"
+                      alt="..."
+                      class="rounded-circle"
+                    >
+                    <i>{{item.nombre}}</i>
+                  </small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -119,34 +152,36 @@
             v-on:click="registrarSalida()"
           >Confirmar Salida</button>
         </div>
-        <div class="container jumbotron m-1">
-          <p>Alumnos seleccionados</p>
-          <div class="media">
-            <div class="row">
-              <div
-                v-for="item in listaSeleccionSalida"
-                v-bind:key="item.id"
-                class="d-flex align-content-center flex-wrap"
-              >
-                <small class="badge badge-pill badge-info">
-                  <img
-                    src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                    width="35"
-                    height="35"
-                    alt="..."
-                    class="rounded-circle"
-                  >
-                  <i>{{item.nombre_alumno}}</i>
-                  <button
-                    type="button"
-                    class="btn btn-link btn-xs text-white"
-                    v-on:click="removeToListSalida(item)"
-                  >
-                    <span class="badge badge-pill badge-danger">x</span>
-                  </button>
-                </small>
+        <div class="card border" style="background-color:#E9E9E9;">
+          <div class="card-body">
+            <!--<div class="container jumbotron m-1">-->
+            <p>Alumnos seleccionados</p>
+            <div class="media">
+              <div class="row">
+                <div
+                  v-for="item in listaSeleccionSalida"
+                  v-bind:key="item.id"
+                  class="d-flex align-content-center flex-wrap"
+                >
+                  <small class="badge badge-pill badge-info">
+                    <img
+                      src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                      width="35"
+                      height="35"
+                      alt="..."
+                      class="rounded-circle"
+                    >
+                    <i>{{item.nombre_alumno}}</i>
+                    <button
+                      type="button"
+                      class="btn btn-link btn-xs text-white"
+                      v-on:click="removeToListSalida(item)"
+                    >
+                      <span class="badge badge-pill badge-danger">x</span>
+                    </button>
+                  </small>
 
-                <!--<span class="label label-default">
+                  <!--<span class="label label-default">
                   {{item.nombre_alumno}}
                   <span class="badge badge-primary">
                     <button
@@ -155,41 +190,37 @@
                       v-on:click="removeToListSalida(item)"
                     >X</button>
                   </span>
-                </span>-->
+                  </span>-->
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="container jumbotron m-1">
-          <p>Seleccione para registrar salida</p>
-          <div class="row">
-            <div
-              v-for="item in listaRecibidos"
-              v-bind:key="item.id"
-              class="d-flex align-content-center flex-wrap"
-            >
-              <small v-on:click="addToListSalida(item)" class="badge badge-pill badge-info">
-                <img
-                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                  width="35"
-                  height="35"
-                  alt="..."
-                  class="rounded-circle"
-                >
-                <i>{{item.nombre_alumno}}</i>
-              </small>
-
-              <!--<span class="label label-default">
-                {{item.nombre_alumno}}
-                <span class="badge badge-primary">
-                  <button
-                    type="button"
-                    class="btn btn-link btn-sm text-white"
-                    v-on:click="addToListSalida(item)"
-                  >X</button>
-                </span>
-              </span>-->
+        <div class="border"/>
+        <div class="border"/>
+        <div class="border"/>
+        <!--<div class="container jumbotron m-1">-->
+        <div class="card border" style="background-color:#E9E9E9;">
+          <div class="card-body">
+            <p>Seleccione para registrar salida</p>
+            <div class="row">
+              <div
+                v-for="item in listaRecibidos"
+                v-bind:key="item.id"
+                class="d-flex align-content-center flex-wrap"
+              >
+                <small v-on:click="addToListSalida(item)" class="badge badge-pill badge-info">
+                  <img
+                    src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                    width="35"
+                    height="35"
+                    alt="..."
+                    class="rounded-circle"
+                  >
+                  <i>{{item.nombre_alumno}}</i>
+                </small>
+              </div>
             </div>
           </div>
         </div>

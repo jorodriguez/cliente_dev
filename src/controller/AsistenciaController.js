@@ -5,8 +5,8 @@ import AlumnoModel from "../models/AlumnoModel";
 export default {
   name: "Asistencia",
   data() {
-    return {  
-      uriTemp: "http://localhost:5000/asistencia",       
+    return {
+      uriTemp: "http://localhost:5000/asistencia",
       //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
       //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
       usuarioSesion: {},
@@ -16,6 +16,9 @@ export default {
       listaSeleccion: [],
       listaRecibidos: [],
       listaSeleccionSalida: [],
+      listaFiltroGrupos: [],
+      grupoSeleccionado: {id:-1,nombre:''},
+      grupoDefault : {id:-1,nombre:'Todos'},
       response: "",
       mensaje: ""
     };
@@ -32,13 +35,13 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
 
     //this.usuarioSesion = this.$session.get("usuario_sesion");
-    this.loadFunction = function() {
+    this.loadFunction = function () {
       this.$http
         .get(
           this.uriTemp +
-            "/alumnos_por_recibidos" +
-            "/" +
-            this.usuarioSesion.co_sucursal,
+          "/alumnos_por_recibidos" +
+          "/" +
+          this.usuarioSesion.co_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -51,6 +54,8 @@ export default {
             console.log("Consulta " + this.response);
             if (this.response != null) {
               this.lista = this.response;
+              this.filtrarAlumnosPorGrupo(this.grupoDefault);
+              this.actualizarComboFiltro();
             }
           },
           error => {
@@ -60,14 +65,14 @@ export default {
     };
 
     //Funcion get alumnos salida
-    this.loadFunctionAlumnosSalida = function() {
+    this.loadFunctionAlumnosSalida = function () {
       this.listaRecibidos = [];
       this.$http
         .get(
           this.uriTemp +
-            "/alumnos_recibidos" +
-            "/" +
-            this.usuarioSesion.co_sucursal,
+          "/alumnos_recibidos" +
+          "/" +
+          this.usuarioSesion.co_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -87,8 +92,22 @@ export default {
           }
         );
     };
+
+    this.actualizarComboFiltro = () => {
+      var resArr = [];
+      this.lista.filter(function (item) {
+          var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
+          if (i <= -1) {
+              resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
+          }
+          return null;
+      });
+      this.listaFiltroGrupos = resArr;
+      console.log("Grupos filtrados " + JSON.stringify(this.listaFiltroGrupos));
+  };
+
     this.loadFunction();
-    this.loadFunctionAlumnosSalida();
+    this.loadFunctionAlumnosSalida();    
   },
   methods: {
     addToList(itemSelected) {
@@ -96,6 +115,7 @@ export default {
       this.listaSeleccion.push(itemSelected);
       var pos = this.lista.indexOf(itemSelected);
       var elementoEliminado = this.lista.splice(pos, 1);
+      this.mensaje = "";
     },
     removeToList(itemSelected) {
       console.log("Remove " + itemSelected.nombre);
@@ -108,6 +128,8 @@ export default {
       this.lista.push(elemento);
 
       this.listaSeleccion.splice(pos, 1);
+
+      this.filtrarAlumnosPorGrupo(this.grupoSeleccionado);
     },
     registrarEntrada() {
       console.log("registrando entrada");
@@ -154,6 +176,7 @@ export default {
       this.listaSeleccionSalida.push(itemSelected);
       var pos = this.listaRecibidos.indexOf(itemSelected);
       var elementoEliminado = this.listaRecibidos.splice(pos, 1);
+      this.mensaje = "";
     },
     removeToListSalida(itemSelected) {
       console.log("Remove en lista de salida" + itemSelected.nombre);
@@ -208,6 +231,28 @@ export default {
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }
-    }
+    },
+    filtrarAlumnosPorGrupo(grupoItem) {
+      console.log("Grupo selecionado " + JSON.stringify(grupoItem));
+
+      this.grupoSeleccionado = grupoItem;
+
+      if (this.grupoSeleccionado.id == -1) {
+        console.log("sinfiltro");
+        this.lista.forEach(element => {
+          element.visible = true;
+        });
+      } else {
+        console.log("Filtrar por grupo " + grupoItem.nombre);
+        this.lista.forEach(element => {
+          if (element.co_grupo == grupoItem.id) {
+            element.visible = true;
+          } else {
+            element.visible = false;
+          }
+        });
+
+      }
+    },
   }
 };
