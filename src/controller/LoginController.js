@@ -13,13 +13,13 @@ export default {
       },
       response: "",
       
-      //uriTemp: "http://localhost:5000/auth/login"    
+      uriTemp: "http://localhost:5000/auth/login"    
       //uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
-      uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
+      //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
     };
   },
   mounted() {
-    console.log("iniciando login ");
+    console.log("iniciando login "+process.env.ROOT_API);
     this.$session.clear();
     //toast
     this.mensajeToast = mensaje => {

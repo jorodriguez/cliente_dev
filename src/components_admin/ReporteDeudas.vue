@@ -199,6 +199,7 @@
                   <th></th>
                   <th>Nombre</th>
                   <th class="hidden-xs">Apellidos</th>
+                  <th>Inscripción</th>
                   <th>Adeuda</th>
                   <th></th>
                 </thead>
@@ -231,7 +232,11 @@
                         <span class="text-danger">{{row.adeuda ? '*':''}}</span>
                       </button>
                     </td>
+                   
                     <td class="hidden-xs">{{ row.apellidos }}</td>
+                    
+                    <td><span>{{row.fecha_inscripcion | moment("DD-MMM-YYYY")}} </span></td>
+                    
                     <td class="text-center">
                       <span 
                             :data-popover-content="'#'+row.id"
