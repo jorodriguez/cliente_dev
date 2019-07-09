@@ -89,7 +89,7 @@
                       alt="..."
                       title="Ver datos del alumno"
                       class="rounded-circle"
-                      v-on:click="verPerfil(row)"
+                       v-on:click="verPerfil(row)"
                     >
                   </td>
                   <td>
