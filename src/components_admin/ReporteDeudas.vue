@@ -51,8 +51,7 @@
                 v-for="row in listaBalanceSucursal"
                 :key="row.id"
                 class="col-xl-3 col-sm-4 py-2 mx-auto"                
-              >
-              
+              >              
                 <div
                   class="card text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
@@ -63,11 +62,13 @@
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <small>Pendiente</small>
                     <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>                    
+                    aqui ahi un cambio
                     <div v-if="row.array_desglose_cargos.length > 0">
                       <div
                         v-for="desglose in row.array_desglose_cargos"
                         :key="desglose.id"                        
                       >
+                      aqui tamboen
                         <small
                           v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
                         >
