@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
+     /* uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "http://localhost:5000/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "http://localhost:5000/balance_crecimiento",
       uriTempBalanceCrecimientoAlumnos: "http://localhost:5000/balance_crecimiento_alumnos",
@@ -18,9 +18,9 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "http://localhost:5000/balance_crecimiento_mensual",
       uriTempMesesActivos: "http://localhost:5000/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
-      
+      */
 
-  /*    uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
+      uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento",
       uriTempBalanceCrecimientoAlumnos: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_alumnos",
@@ -28,7 +28,7 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_mensual",
       uriTempMesesActivos: "https://api-ambiente-desarrollo.herokuapp.com/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_balance_crecimiento_mensual_sucursal",      
-*/
+
 
       /*uriTempBalanceSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_alumnos_sucursal",
