@@ -112,11 +112,7 @@ export default {
 
                         if (this.alumno.formato_inscripcion == null)
                             this.alumno.formato_inscripcion = {};
-
-                        //console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
-
-                        //this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
-                        //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
+                        
                     },
                     error => {
                         console.error(error);
