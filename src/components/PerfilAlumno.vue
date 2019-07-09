@@ -150,7 +150,7 @@
           </router-link>
           -->
           <a @click="$router.go(-1)"  class="btn btn-secondary btn-lg">
-            <i class="fas fa-arrow-circle-left text-gray"></i>
+            <i class="fas fa-arrow-circle-left text-white"></i>
           </a>
         </div>
         <div class="col text-center">

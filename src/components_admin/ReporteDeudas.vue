@@ -51,28 +51,26 @@
                 v-for="row in listaBalanceSucursal"
                 :key="row.id"
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
-              >
-              
+              >              
                 <div
-                  class="card bg-success text-white h-100 pointer sucursal-item-hover hover"
+                  class="card text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
                   title="Clic para ver el detalle"
+                  v-bind:style="{'background-color':row.class_color}"
                 >
-                  <div class="card-body bg-info">
+                  <div class="card-body " v-bind:style="{'background-color':row.class_color}">
                     <!--div class="rotate">
                                 <i class="fa fa-user fa-3x"></i>
                     </div>-->
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <small>Pendiente</small>
 
-                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>                    
-                    aqui ahi un cambio
+                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>                                        
                     <div v-if="row.array_desglose_cargos.length > 0">
                       <div
                         v-for="desglose in row.array_desglose_cargos"
                         :key="desglose.id"                        
-                      >
-                      aqui tamboen
+                      >                      
                         <small
                           v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
                         >
@@ -83,6 +81,7 @@
                       </div>
                     </div>                    
                   </div>
+                  <h6>{{row.contador_alumnos}} alumnos en total</h6>
                 </div>
               </div>
             </div>
@@ -146,14 +145,14 @@
               <div
                 v-for="row in listaBalanceCrecimiento"
                 :key="row.id"
-                class="col-xl-3 col-sm-4 py-2 mx-auto"
+                class="col-xl-3 col-sm-4 py-2 mx-auto"                
               >
                 <div
-                  class="card bg-success text-white h-100 pointer sucursal-item-hover"
+                  class="card text-white h-100 pointer sucursal-item-hover"
                   v-on:click="verDetalleCrecimientoSucursal(row)"
                   title="Clic para ver el detalle"
                 >
-                  <div class="card-body bg-info">
+                  <div class="card-body " v-bind:style="{'background-color':row.class_color}">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <h6>
                       <span
@@ -231,6 +230,7 @@
                         alt="..."
                         title="Ver datos del alumno"
                         class="rounded-circle"
+                        v-on:click="verPerfil(row)"
                       >
                     </td>
                     <td>
@@ -238,7 +238,7 @@
                         type="button"
                         class="btn btn-link"
                         title="Ver datos del alumno"
-                        v-on:click="verDetalleAlumno(row)"
+                        v-on:click="verPerfil(row)"
                       >
                         {{ row.nombre }}
                         <sup
@@ -286,89 +286,7 @@
       </div>
     </div>
 
-    <!--
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Buscar por nombre.."
-            v-model="criterioNombre"
-             v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."
-            aria-describedby="basic-addon2"
-          >
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" 
-                type="button"
-                v-on:click="buscarPorNombre()">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-    </div>-->
-
-    <!-- Crecimiento global -->
-    <div
-      id="modal_crecimiento_global"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5
-              class="modal-title"
-              id="exampleModalLongTitle"
-            >Crecimiento Global de ingreso de alumnos</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- crecimiento gliobal-->
-            <div class>
-              <span
-                class="text-info"
-              >Las cantidades son las que se escriben en el registro del alumno, no son los cargos realizados.</span>
-              <div class="table-responsive table-striped">
-                <table class="table table-hover">
-                  <thead>
-                    <th>Mes</th>
-                    <th>Alumnos</th>
-                    <th>Suma Colegiaturas</th>
-                    <th>Suma Inscripciones</th>
-                    <th>Suma Total</th>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="row in listaCrecimientoGlobal"
-                      :key="row.id"
-                      class="border"
-                      v-bind:class="row.count_alumno == 0 ? 'text-danger':''"
-                    >
-                      <td>{{row.mes_anio}}</td>
-                      <td>
-                        <span
-                          v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger' : 'badge badge-pill badge-primary'"
-                        >{{row.count_alumno}}</span>
-                      </td>
-                      <td>$ {{ formatPrice(row.suma_colegiaturas)}}</td>
-                      <td>$ {{formatPrice(row.suma_inscripciones)}}</td>
-                      <td>$ {{formatPrice(row.suma_total)}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>     
-    </div>
+         
      <!--- Detalle -->
 
       <div id="modal_alumno" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

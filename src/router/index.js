@@ -7,8 +7,10 @@ import PerfilAlumno from '@/components/PerfilAlumno'
 import Asistencia from '@/asistencia/Asistencia'
 import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
+import CrecimientoGlobal from '@/components_admin/CrecimientoGlobal'
 import Home from '@/components/Home'
 import VueSession from 'vue-session'
+
 
 Vue.use(Router);
 Vue.use(VueSession);
@@ -25,6 +27,7 @@ Vue.use(VueSession);
     { path: '/Asistencia', name: 'Asistencia', component: Asistencia },
     { path: '/Actividades', name: 'Actividades', component: RegistroActividad },
     { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas },
+    { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal},
     {path: '*', redirect: '/'}
   ]
 })

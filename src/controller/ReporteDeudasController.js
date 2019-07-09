@@ -58,11 +58,6 @@ export default {
     };
   },
   mounted() {
-
-    $('.popover-dismiss').popover({
-      trigger: 'focus'
-    });
-  
     console.log("iniciando el componente reporte deudas ");
     this.sesion = this.$session.get("usuario_sesion");
 
@@ -263,10 +258,6 @@ export default {
       }
     };
 
-    
-
-
-
     this.loadFunctionMesesActivos = function () {
       this.$http
         .get(
@@ -293,6 +284,7 @@ export default {
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
     this.loadFunctionCrecimientoGlobal();
+        
   },
   methods: {
     verDetalleDeudasSucursal(row) {
@@ -307,7 +299,8 @@ export default {
     },
     verCrecimientoGlobal(){      
       this.loadFunctionCrecimientoGlobal();
-      $("#modal_crecimiento_global").modal("show");
+      //$("#modal_crecimiento_global").modal("show");
+      this.$router.push("/CrecimientoGlobal");
     },
     verAlumnosCrecimientoMensualSucursal(rowMes){
       console.log("Seleccion "+rowMes.mes_anio);
