@@ -11,7 +11,7 @@
         <i class="fas fa-power-off" v-on:click="signout()"></i>
       </button>
     </small>
-    <br>
+    <br />
 
     <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
       <li class="nav-item">
@@ -50,22 +50,34 @@
               <div
                 v-for="row in listaBalanceSucursal"
                 :key="row.id"
-                class="col-xl-3 col-sm-4 py-2 mx-auto"
+                class="col-xl-3 col-sm-4 py-2 mx-auto"                
               >
                 <div
-                  class="card bg-success text-white h-100 pointer sucursal-item-hover hover"
+                  class="card text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
-                  title="Clic para ver el detalle"
-                >
-                  <div class="card-body bg-info">
-                    <!--div class="rotate">
-                                <i class="fa fa-user fa-3x"></i>
-                    </div>-->
+                  title="Clic para ver el detalle"        
+                  v-bind:style="{ 'background-color' :row.class_color ,'color':'rgba(138,221,45,0.8)'}"                  
+                >                
+                  <div class="card-body "  v-bind:style="{ 'background-color' : row.class_color }">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <small>Pendiente</small>
-                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>
-                    <h6>{{row.contador_alumnos}} alumnos en total</h6>
+                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>                    
+                    <div v-if="row.array_desglose_cargos.length > 0">
+                      <div
+                        v-for="desglose in row.array_desglose_cargos"
+                        :key="desglose.id"                        
+                      >
+                        <small
+                          v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
+                        >
+                         ${{ formatPrice(desglose.total_cargos_pendiente_desglose)}} de 
+                        <span class="badge badge-light">{{desglose.cargos_pendientes_pago}} </span>
+                          {{desglose.tipo_cargo}}
+                          </small>
+                      </div>
+                    </div>                    
                   </div>
+                  <h6>{{row.contador_alumnos}} alumnos en total</h6>
                 </div>
               </div>
             </div>
@@ -88,11 +100,15 @@
                       alt="..."
                       title="Ver datos del alumno"
                       class="rounded-circle"
-                    >
+                    />
                   </td>
                   <td>
-                    <button type="button" class="btn btn-link" title="Ver datos del alumno"
-                            v-on:click="verDetalleAlumno(row)">
+                    <button
+                      type="button"
+                      class="btn btn-link"
+                      title="Ver datos del alumno"
+                      v-on:click="verDetalleAlumno(row)"
+                    >
                       {{ row.nombre }}
                       <sup
                         v-if="row.nuevo_ingreso"
@@ -128,14 +144,14 @@
               <div
                 v-for="row in listaBalanceCrecimiento"
                 :key="row.id"
-                class="col-xl-3 col-sm-4 py-2 mx-auto"
-              >
+                class="col-xl-3 col-sm-4 py-2 mx-auto"               
+              >              
                 <div
-                  class="card bg-success text-white h-100 pointer sucursal-item-hover"
+                  class="card text-white h-100 pointer sucursal-item-hover"                  
                   v-on:click="verDetalleCrecimientoSucursal(row)"
                   title="Clic para ver el detalle"
                 >
-                  <div class="card-body bg-info">
+                  <div class="card-body"   v-bind:style="{ 'background-color' : row.class_color }">
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <h6>
                       <span
@@ -153,12 +169,13 @@
                       <p>${{formatPrice(row.suma_inscripciones)}}</p>
                     </h4>
                   </div>
+                 
                 </div>
               </div>
             </div>
             <div class="mx-auto">
               <h3>{{sucursal_seleccionada_crecimiento.nombre}}</h3>
-              <br>
+              <br />
             </div>
             <div class="row text-center">
               <div class="table-responsive">
@@ -213,7 +230,7 @@
                         alt="..."
                         title="Ver datos del alumno"
                         class="rounded-circle"
-                      >
+                      />
                     </td>
                     <td>
                       <button
@@ -232,28 +249,30 @@
                         <span class="text-danger">{{row.adeuda ? '*':''}}</span>
                       </button>
                     </td>
-                   
+
                     <td class="hidden-xs">{{ row.apellidos }}</td>
-                    
-                    <td><span>{{row.fecha_inscripcion | moment("DD-MMM-YYYY")}} </span></td>
-                    
+
+                    <td>
+                      <span>{{row.fecha_inscripcion | moment("DD-MMM-YYYY")}}</span>
+                    </td>
+
                     <td class="text-center">
-                      <span 
-                            :data-popover-content="'#'+row.id"
-                            data-toggle="popover"
-                            data-placement="right"
-                           v-if="row.total_adeudo > 0" class="text-danger">${{ row.total_adeudo }}</span>
+                      <span
+                        :data-popover-content="'#'+row.id"
+                        data-toggle="popover"
+                        data-placement="right"
+                        v-if="row.total_adeudo > 0"
+                        class="text-danger"
+                      >${{ row.total_adeudo }}</span>
                       <span v-else>${{ row.total_adeudo }}</span>
-                      <div class="popover-block-container">                        
-                        <div  
-                            :id="row.id" 
-                            style="display:none;">
+                      <div class="popover-block-container">
+                        <div :id="row.id" style="display:none;">
                           <div class="popover-body">
                             <button type="button" class="popover-close close">
                               <i class="material-icons">close</i>
                             </button>
-                              Adeuda {{row.total_adeuda}}
-                              Pagado {{row.total_pagado}}
+                            Adeuda {{row.total_adeuda}}
+                            Pagado {{row.total_pagado}}
                           </div>
                         </div>
                       </div>
@@ -349,55 +368,65 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
-      </div>     
+      </div>
     </div>
-     <!--- Detalle -->
+    <!--- Detalle -->
 
-      <div id="modal_alumno" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Detalle del Alumno </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+    <div id="modal_alumno" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalle del Alumno</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h4>{{alumno_seleccionado.nombre}} {{alumno_seleccionado.apellidos}}</h4>
+            <small class="text-muted">{{alumno_seleccionado.nombre_sucursal}}</small>
+            <div class="table-responsive table-striped">
+              <table class="table table-hover">
+                <tr>
+                  <td>Adeuda</td>
+                  <td>
+                    <span v-bind:class="alumno_seleccionado.total_adeudo == 0 ? '':'text-danger'">
+                      <strong>$ {{alumno_seleccionado.total_adeudo}}</strong>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pagado</td>
+                  <td>
+                    <span class="text-success">$ {{alumno_seleccionado.total_pagos}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Mensualidad</td>
+                  <td>
+                    <span class="text-primary">$ {{alumno_seleccionado.costo_colegiatura}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Inscrito</td>
+                  <td>
+                    <span>{{alumno_seleccionado.fecha_inscripcion | moment("DD-MMM-YYYY")}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Entrada : {{alumno_seleccionado.hora_entrada}}</td>
+                  <td>Salida : {{alumno_seleccionado.hora_salida}}</td>
+                </tr>
+              </table>
             </div>
-            <div class="modal-body">             
-               <h4>{{alumno_seleccionado.nombre}} {{alumno_seleccionado.apellidos}} </h4>
-               <small class="text-muted">{{alumno_seleccionado.nombre_sucursal}}</small>                  
-                 <div class="table-responsive table-striped">
-                  <table class="table table-hover">
-                      <tr>
-                        <td>Adeuda</td>
-                        <td><span v-bind:class="alumno_seleccionado.total_adeudo == 0 ? '':'text-danger'"> <strong>$ {{alumno_seleccionado.total_adeudo}}</strong></span></td>
-                      </tr>
-                      <tr>
-                        <td>Pagado</td>
-                        <td><span class="text-success" >$ {{alumno_seleccionado.total_pagos}} </span></td>
-                      </tr>
-                      <tr>
-                        <td>Mensualidad</td>
-                        <td><span class="text-primary" >$ {{alumno_seleccionado.costo_colegiatura}} </span></td>
-                      </tr>
-                       <tr>
-                        <td>Inscrito </td>
-                        <td><span>{{alumno_seleccionado.fecha_inscripcion | moment("DD-MMM-YYYY")}} </span></td>
-                      </tr>
-                      <tr>
-                        <td>Entrada : {{alumno_seleccionado.hora_entrada}}</td>
-                        <td>Salida :  {{alumno_seleccionado.hora_salida}}</td>
-                      </tr>
-                  </table>
-                 </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Detalle -->
+    <!-- Detalle -->
   </div>
 </template>
 
