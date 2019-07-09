@@ -52,6 +52,7 @@
                 :key="row.id"
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
+              
                 <div
                   class="card bg-success text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
