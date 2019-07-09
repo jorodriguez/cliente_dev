@@ -15,7 +15,7 @@ export default {
 */
          
           uriTempBalanceCrecimientoGlobal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_global",      
-          uriTempBalanceAlumnosIngreso: "https://api-ambiente-produccion.herokuapp.com/alumnos_crecimiento_mes",      
+          uriTempBalanceAlumnosIngreso: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_crecimiento_mes",      
     
       usuarioSesion: {},
       sesion: {},
