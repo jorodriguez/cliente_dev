@@ -319,6 +319,10 @@ export default {
 
       $("#modal_alumno").modal("show");
     },
+    verPerfil(row) {
+      console.log("fila seleccionada " + row.nombre);
+      this.$router.push({ name: "PerfilAlumno", params: { id: row.id } });
+    },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")

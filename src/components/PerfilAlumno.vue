@@ -142,16 +142,16 @@
       </div>
 
       <!-- MODAL PARA AGREGAR FAMILIAR -->
-
-      <!-- MODAL PARA SERVICIOS -->
-
-      <!-- MODAL PARA SERVICIOS -->
-
+  
       <div class="row">
         <div class="col">
-          <router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-secondary btn-lg">
+          <!--<router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-secondary btn-lg">
             <i class="fas fa-arrow-circle-left text-gray"></i>
           </router-link>
+          -->
+          <a @click="$router.go(-1)"  class="btn btn-secondary btn-lg">
+            <i class="fas fa-arrow-circle-left text-gray"></i>
+          </a>
         </div>
         <div class="col text-center">
           <img

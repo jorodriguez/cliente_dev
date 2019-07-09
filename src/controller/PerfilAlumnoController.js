@@ -11,7 +11,7 @@ import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 
 export default {
-    name: "PerfilAlumno",
+    name: "perfil-alumno",
     components: {
         Datepicker,        
         CargosPagos,
