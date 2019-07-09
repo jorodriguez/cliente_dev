@@ -64,9 +64,24 @@
                     </div>-->
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <small>Pendiente</small>
-                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>
-                    <p>{{row.array_desglose_cargos}}</p>
-                    <h6>{{row.contador_alumnos}} alumnos en total</h6>
+
+                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>                    
+                    aqui ahi un cambio
+                    <div v-if="row.array_desglose_cargos.length > 0">
+                      <div
+                        v-for="desglose in row.array_desglose_cargos"
+                        :key="desglose.id"                        
+                      >
+                      aqui tamboen
+                        <small
+                          v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
+                        >
+                         ${{ formatPrice(desglose.total_cargos_pendiente_desglose)}} de 
+                        <span class="badge badge-light">{{desglose.cargos_pendientes_pago}} </span>
+                          {{desglose.tipo_cargo}}
+                          </small>
+                      </div>
+                    </div>                    
                   </div>
                 </div>
               </div>
