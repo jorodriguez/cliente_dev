@@ -39,13 +39,16 @@ export default {
             listaParentesco: [],            
             listaServicios: [],
             listaValoresEsperados: [],
-            display: true,            
+            display: true,          
+            requiere_datos_facturacion:false,  
+            datos_facturacion : {},
             uriTemp: "http://localhost:5000/alumnos",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempFamiliar: "http://localhost:5000/familiar",
             uriTempParentesco: "http://localhost:5000/parentesco",            
             uriTempServicios: "http://localhost:5000/servicios",
             uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
+            uriTempDatosFacturacion: "http://localhost:5000/guardar_datos_facturacion",            
                                   
 
             /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
@@ -54,6 +57,7 @@ export default {
             uriTempParentesco: "https://api-ambiente-desarrollo.herokuapp.com/parentesco",            
             uriTempServicios: "https://api-ambiente-desarrollo.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://api-ambiente-desarrollo.herokuapp.com/valores_esperados",
+            uriTempDatosFacturacion: "https://api-ambiente-desarrollo.herokuapp.com/guardar_datos_facturacion",            
          */
 
             /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
@@ -62,6 +66,7 @@ export default {
             uriTempParentesco: "https://api-ambiente-produccion.herokuapp.com/parentesco",            
             uriTempServicios: "https://api-ambiente-produccion.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://api-ambiente-produccion.herokuapp.com/valores_esperados",
+            uriTempDatosFacturacion: "https://api-ambiente-produccion.herokuapp.com/guardar_datos_facturacion",            
             */
             response: "",
             mensaje: "",
@@ -112,7 +117,10 @@ export default {
 
                         if (this.alumno.formato_inscripcion == null)
                             this.alumno.formato_inscripcion = {};
-
+                        
+                        if (this.alumno.datos_facturacion == null)
+                            this.datos_facturacion = {};                        
+                            
                         //console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
                         //this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
@@ -462,6 +470,33 @@ export default {
                         console.error(error);
                     }
                 );
+        },
+        guardarDatosFacturacion(){
+
+            this.$http
+                .put(this.uriTempDatosFacturacion, this.datos_facturacion, {
+                    headers: {
+                        "x-access-token": this.sesion.token
+                    }
+                })
+                .then(
+                    result => {
+                        this.response = result.data;
+
+                        if (this.response != null) {
+                            console.log("" + this.response);
+                            if (this.response == 0 || this.response == null) {
+                                this.mensaje = "Sucedió un error inesperado";
+                            } else {
+                                this.mensaje = "Se actualizaron los datos de facturación.";                                                                
+                            }
+                        }
+                    },
+                    error => {
+                        console.error(error);
+                    }
+                );
+
         },
         cargarTabInscripcion(){
             console.log("Inscripcion Tab load");
