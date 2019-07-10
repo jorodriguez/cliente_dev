@@ -39,11 +39,23 @@ export default {
             listaParentesco: [],            
             listaServicios: [],
             listaValoresEsperados: [],
-                        
+             mensaje_facturacion : "",
             display: true,          
             requiere_datos_facturacion:false,  
-            datos_facturacion : {},
-            
+            datos_facturacion : {
+                            rfc:"",
+                            razon_social:"" ,
+                            curp : "",
+                            calle :"",
+                            numero_exterior: "",
+                            colonia : "",
+                            ciudad : "",
+                            municipio : "",
+                            estado:"",
+                            codigo_postal:"",
+                            telefono_contacto : "",
+                            correo_contacto:""
+            },            
             uriTemp: "http://localhost:5000/alumnos",
             uriTempGrupos: "http://localhost:5000/grupos",
             uriTempFamiliar: "http://localhost:5000/familiar",
@@ -51,7 +63,7 @@ export default {
             uriTempServicios: "http://localhost:5000/servicios",
             uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
 
-            uriTempDatosFacturacion: "http://localhost:5000/guardar_datos_facturacion",            
+            uriTempDatosFacturacion: "http://localhost:5000/datos_facturacion",            
                                   
 
             /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
@@ -60,7 +72,7 @@ export default {
             uriTempParentesco: "https://api-ambiente-desarrollo.herokuapp.com/parentesco",            
             uriTempServicios: "https://api-ambiente-desarrollo.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://api-ambiente-desarrollo.herokuapp.com/valores_esperados",
-            uriTempDatosFacturacion: "https://api-ambiente-desarrollo.herokuapp.com/guardar_datos_facturacion",            
+            uriTempDatosFacturacion: "https://api-ambiente-desarrollo.herokuapp.com/datos_facturacion",            
          */
 
             /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
@@ -69,6 +81,7 @@ export default {
             uriTempParentesco: "https://api-ambiente-produccion.herokuapp.com/parentesco",            
             uriTempServicios: "https://api-ambiente-produccion.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://api-ambiente-produccion.herokuapp.com/valores_esperados",
+            uriTempDatosFacturacion: "https://api-ambiente-produccion.herokuapp.com/datos_facturacion",            
 */
             response: "",
             mensaje: "",
@@ -120,8 +133,9 @@ export default {
                         if (this.alumno.formato_inscripcion == null)
                             this.alumno.formato_inscripcion = {};
 
-                        if (this.alumno.datos_facturacion == null)
-                            this.datos_facturacion = {};                        
+                        if (this.alumno.co_datos_facturacion != null){
+                            this.datos_facturacion = this.alumno.datos_facturacion;
+                        }                                      
                             
                         //console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
@@ -474,14 +488,35 @@ export default {
                     }
                 );
         },
-        guardarDatosFacturacion(){
+        guardarDatosFacturacion(){            
+            if(
+                this.datos_facturacion.rfc == ""
+               || this.datos_facturacion.razon_social == "" 
+               || this.datos_facturacion.curp == ""
+               || this.datos_facturacion.calle ==""
+               || this.datos_facturacion.numero_exterior == ""
+               || this.datos_facturacion.colonia == ""
+               || this.datos_facturacion.ciudad == ""
+               || this.datos_facturacion.municipio  == ""
+               || this.datos_facturacion.estado == ""
+               || this.datos_facturacion.codigo_postal ==""
+               || this.datos_facturacion.telefono_contacto == ""   
+               || this.datos_facturacion.correo_contacto == ""
+            ){
+                this.mensaje = "Escribe los valores requeridos.";
+                return;
+            }
+
+            this.datos_facturacion.factura = this.alumno.factura;
+            this.datos_facturacion.genero  = this.usuarioSesion.id;
+            this.datos_facturacion.id_alumno = this.id;
 
             this.$http
-                .put(this.uriTempDatosFacturacion, this.datos_facturacion, {
+                .post(this.uriTempDatosFacturacion, this.datos_facturacion, {
                     headers: {
                         "x-access-token": this.sesion.token
                     }
-                })
+            })
                 .then(
                     result => {
                         this.response = result.data;
@@ -498,8 +533,51 @@ export default {
                     error => {
                         console.error(error);
                     }
-                );
+            );
 
+        },
+        iniciarHabilitarDesabilitarDatosFacturacion(){
+            
+            if(this.alumno.factura && this.alumno.co_datos_facturacion != null){
+                //lanzar confirmacion
+                this.mensaje_facturacion = "Con esta acción se especifica que no se requiere expedir facturas para el alumno ";
+                $("#modal_confirmar_facturacion").modal("show");
+            }
+
+            if(!this.alumno.factura && this.alumno.co_datos_facturacion != null){
+                this.mensaje_facturacion ="Con esta acción se especifica que se requiere expedir facturas para el alumno ";
+                $("#modal_confirmar_facturacion").modal("show");       
+            }
+        },
+        cancelarHabilitarDesabilitarDatosFacturacion(){
+            this.alumno.factura = !this.alumno.factura ;
+
+        },
+        habilitarDesabilitarDatosFacturacion(){           
+
+            this.$http
+                .put(this.uriTempDatosFacturacion,  { id_alumno :this.id ,factura : this.alumno.factura,genero:this.usuarioSesion.id}, {
+                    headers: {
+                        "x-access-token": this.sesion.token
+                    }
+            })
+                .then(
+                    result => {
+                        this.response = result.data;
+
+                        if (this.response != null) {
+                            console.log("" + this.response);
+                            if (this.response == 0 || this.response == null) {
+                                this.mensaje = "Sucedió un error inesperado";
+                            } else {
+                                this.mensaje = "Se actualizaron los datos de facturación.";                                                                
+                            }
+                        }
+                    },
+                    error => {
+                        console.error(error);
+                    }
+            );    
         },
         cargarTabInscripcion(){
             console.log("Inscripcion Tab load");

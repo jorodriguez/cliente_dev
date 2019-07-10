@@ -48,6 +48,7 @@
                   <input
                     id="inputNombreFamiliar"
                     type="text"
+                    name="nombre"
                     v-model="familiar.nombre"
                     class="form-control"
                     placeholder="Nombre"
@@ -64,6 +65,7 @@
                     type="text"
                     v-model="familiar.telefono"
                     class="form-control"
+                    name="telefono"
                     placeholder="Telefono"
                   >
                 </div>
@@ -73,6 +75,7 @@
                     id="inputFnacimientoFamiliar"
                     v-model="familiar.fecha_nacimiento"
                     input-class="form-control"
+                    name="fecha_nacimiento"
                     required
                   ></datepicker>
                 </div>
@@ -84,6 +87,7 @@
                   <input
                     id="inputCorreoFamiliar"
                     type="text"
+                    name="correo"
                     v-model="familiar.correo"
                     class="form-control"
                     placeholder="Correo"
@@ -524,6 +528,7 @@
                         type="number"
                         v-model="alumno.formato_inscripcion.hermanos"
                         class="form-control"
+                        name="hermanos"
                         placeholder="Hermanos"
                         required
                       >
@@ -789,7 +794,7 @@
                 <div class="card">
                   <div class="card-body">
                     <!-- Componente especial para cargos y pagos -->
-                    <cargos-pagos :idalumno="id"></cargos-pagos>
+                    <cargos-pagos :idalumno="id" :requiere_factura="alumno.factura"></cargos-pagos>
                   </div>
                 </div>
               </div>
@@ -808,18 +813,21 @@
                         <input
                           type="checkbox"
                           id="checkboxRequiereFacturacion"
-                          v-model="requiere_datos_facturacion"
+                          v-model="alumno.factura"
+                          name="factura"                          
+                          v-on:click="iniciarHabilitarDesabilitarDatosFacturacion()"
                         >
                         <label
                           class="form-check-label"
                           for="checkboxRequiereFacturacion"
-                        >Requiere Factura.</label>
+                          v-on:click="iniciarHabilitarDesabilitarDatosFacturacion()"
+                        >Requiere Factura. <span v-if="!alumno.factura" class="text-danger">| por el momento no se requieren facturas.</span> </label>
                       </div>
                     </div>
                     <!--<div :class="{ requiere_datos_facturacion ? '':'disabled'}" >-->
 
                     <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-6 disable">
                         <label for="inputRfc">
                           RFC
                           <span class="text-danger">*</span>
@@ -828,8 +836,11 @@
                           type="text"
                           class="form-control"
                           id="inputRfc"
-                          placeholder="Rfc"
+                          placeholder="RFC"
+                          name="rfc"
                           v-model="datos_facturacion.rfc"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-6">
@@ -842,9 +853,12 @@
                           class="form-control"
                           id="inputCurp"
                           placeholder="Curp"
+                          name="curp"
                           v-model="datos_facturacion.curp"
+                          :disabled="!alumno.factura"
+                          required
                         >
-                      </div>                      
+                      </div>
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-12">
@@ -857,8 +871,11 @@
                           class="form-control text-uppercase"
                           id="inputRazonSocial"
                           placeholder="Razón Social"
+                          name="razon_social"
                           v-model="datos_facturacion.razon_social"
-                        >                        
+                          :disabled="!alumno.factura"
+                          required
+                        >
                       </div>
                     </div>
                     <div class="form-row">
@@ -872,7 +889,10 @@
                           class="form-control"
                           id="inputCalle"
                           placeholder="Calle"
+                          name="calle"
                           v-model="datos_facturacion.calle"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-4">
@@ -885,88 +905,142 @@
                           class="form-control"
                           id="inputNoExterior"
                           placeholder="No. Exterior"
+                          name="numero_exterior"
                           v-model="datos_facturacion.numero_exterior"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-8">
-                        <label for="inputColonia">Colonia <span class="text-danger">*</span></label>
+                        <label for="inputColonia">
+                          Colonia
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           placeholder="Colonia"
                           id="inputColonia"
+                          name="colonia"
                           v-model="datos_facturacion.colonia"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="inputCP">CP. <span class="text-danger">*</span></label>
+                        <label for="inputCP">
+                          CP.
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           placeholder="CP."
                           id="inputCP"
+                          name="codigo_postal"
                           v-model="datos_facturacion.codigo_postal"
+                          :disabled="!alumno.factura"
+                          required
                         >
-                      </div>                     
-                      
+                      </div>
                     </div>
                     <div class="form-row">
-                       <div class="form-group col-md-4">
-                        <label for="inputCiudad">Ciudad <span class="text-danger">*</span></label>
+                      <div class="form-group col-md-4">
+                        <label for="inputCiudad">
+                          Ciudad
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           id="inputCiudad"
                           placeholder="Ciudad"
+                          name="ciudad"
                           v-model="datos_facturacion.ciudad"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="inputMunicipio">Municipio <span class="text-danger">*</span></label>
+                        <label for="inputMunicipio">
+                          Municipio
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           id="inputMunicipio"
                           placeholder="Municipio"
+                          name="municipio"
                           v-model="datos_facturacion.municipio"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="inputEstado">Estado <span class="text-danger">*</span></label>
+                        <label for="inputEstado">
+                          Estado
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           placeholder="Estado"
                           id="inputEstado"
+                          name="estado"
                           v-model="datos_facturacion.estado"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-4">
-                        <label for="inputTelefono">Telefono <span class="text-danger">*</span></label>
+                        <label for="inputTelefono">
+                          Teléfono
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
                           id="inputTelefono"
                           placeholder="Telefono"
+                          name="telefono_contacto"
                           v-model="datos_facturacion.telefono_contacto"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="inputEstado">Correo <span class="text-danger">*</span></label>
+                        <label for="inputEstado">
+                          Correo
+                          <span class="text-danger">*</span>
+                        </label>
                         <input
                           type="email"
                           class="form-control"
                           placeholder="Correo"
                           id="inputCorreo"
+                          name="correo_contacto"
                           v-model="datos_facturacion.correo_contacto"
+                          :disabled="!alumno.factura"
+                          required
                         >
                       </div>
                     </div>
 
+                    <button
+                      class="btn btn-primary"
+                      v-on:click="guardarDatosFacturacion()"
+                      :disabled="!alumno.factura"
+                    >Guardar</button>
+                    <!-- <button class="btn btn-danger" v-on:click="habilitarDesabilitarDatosFacturacion()"                    
+                            :disabled="!alumno.factura">
+                        No requiere factura
+                    </button>                    
+                    -->
                     <!-- form -->
                   </div>
                 </div>
@@ -976,6 +1050,45 @@
           </form>
         </div>
       </div>
+
+      <!-- confirmar desabilitar factura -->
+      <div
+        id="modal_confirmar_facturacion"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Confirmar facturación</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">              
+              <p class="text-danger">{{mensaje_facturacion}} <strong>{{alumno.nombre}} {{alumno.apellidos}}</strong>.</p>
+              <p>
+                ¿Confirma que desea <strong>{{alumno.factura ? 'Habilitar':'DESABILITAR'}} </strong> la facturación?                
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                v-on:click="habilitarDesabilitarDatosFacturacion()"
+                data-dismiss="modal"
+              >Confirmar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              v-on:click="cancelarHabilitarDesabilitarDatosFacturacion()"
+              >Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="text-info">{{mensaje}}</div>
     </div>
 

@@ -7,7 +7,7 @@ import { timingSafeEqual } from "crypto";
 
 export default {
   name: "cargos-pagos",
-  props: ['idalumno'],
+  props: ['idalumno','requiere_factura'],
 
   data() {
     return {
@@ -31,7 +31,9 @@ export default {
       },
       pago: {
         pago_total: 0,
-        cat_forma_pago: -1
+        cat_forma_pago: -1,        
+        identificador_factura:"",
+        nota_pago:""
       },
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
       total_cargos: 0,
@@ -215,6 +217,8 @@ export default {
       this.total_cargos = Number(0);
       this.pago.nota_pago = '';
       this.pago.cat_forma_pago = -1;
+      this.pago.identificador_factura = "";
+     
 
       this.mensaje = "";
       const existeSeleccionAlumno = () => {
@@ -232,8 +236,7 @@ export default {
           }
         }
         this.pago.pago_total = this.total_cargos;
-        //this.total_pagos = this.total_cargos;
-
+        
         this.loadFunctionCatFormasPago();
 
         $('#modal_pago').modal('show');
@@ -275,12 +278,6 @@ export default {
         this.mensaje = "Por favor seleccione la forma de pago.";
 
       } else {
-
-        /*if(this.pago.pago_total > this.total_cargos){
-            this.mensaje = "Por favor seleccione la forma de pago.";
-        }*/
-
-
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
           var element = this.listaCargosAlumnos[i];
           if (element.checked) {
@@ -329,7 +326,8 @@ export default {
             id_alumno: this.idalumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
-            cat_forma_pago: this.pago.cat_forma_pago,
+            cat_forma_pago: this.pago.cat_forma_pago,            
+            identificador_factura : this.pago.identificador_factura,            
             ids_cargos: ids_cargos,
             cargos_desglosados: cargos_desglosados,
             genero: this.usuarioSesion.id

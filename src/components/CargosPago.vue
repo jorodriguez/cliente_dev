@@ -1,6 +1,9 @@
 <template>
   <div id="id_tabla_cargos">
-    <br>
+    <p
+      v-if="requiere_factura"
+      class="text-right text-success small"
+    >* Este alumno requiere de facturación.</p>
     <div class="row">
       <div class="col text-left">
         <button
@@ -16,47 +19,19 @@
             v-on:click="iniciarAgregarPago()"
             class="btn btn-success"
           >Agregar Pago</button>
-          <!--<button
-            type="button"
-            class="btn btn-success dropdown-toggle dropdown-toggle-split"
-            data-toggle="dropdown"
-          ></button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Ver Pagos</a>
-            <a class="dropdown-item" href="#">Administrar</a>
-          </div>-->
         </div>
       </div>
     </div>
-    <!--
-    <div class="row text-center">
-      <div class="col">
-        <a
-          class="btn btn-link small text-center"
-          data-toggle="collapse"
-          href="#collapseExample"
-          role="button"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-        >Filtro</a>
-        <div class="collapse" id="collapseExample">
-          <div class="card card-body">
-            Pagado :
-            Filas : 20
-            <button
-              type="button"
-              class="btn btn-link"
-            >Actualizar Tabla</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  -->
+
     <table class="table">
       <thead>
         <th>
-           <input type="checkbox" id="checkboxSeleccionarTodo" 
-           v-model="seleccionTodos" v-on:change="seleccionarTodoPagos()"  >
+          <input
+            type="checkbox"
+            id="checkboxSeleccionarTodo"
+            v-model="seleccionTodos"
+            v-on:change="seleccionarTodoPagos()"
+          >
         </th>
         <th>Fecha</th>
         <th>Concepto</th>
@@ -68,7 +43,6 @@
       <tbody v-for="row in listaCargosAlumnos" :key="row.id">
         <tr>
           <td>
-            
             <input type="checkbox" id="checkbox" v-model="row.checked" v-if="!row.pagado">
             <i v-else class="text-success font-weight-normal">¡Pagado!</i>
           </td>
@@ -92,7 +66,11 @@
             </strong>
           </td>
           <td>
-            <span class="d-inline-block text-truncate small" style="max-width: 120px;" :title="row.nota" >{{row.nota}}</span>                       
+            <span
+              class="d-inline-block text-truncate small"
+              style="max-width: 120px;"
+              :title="row.nota"
+            >{{row.nota}}</span>
           </td>
           <td></td>
         </tr>
@@ -192,8 +170,10 @@
             </div>
 
             <div class="modal-body text-left">
-              <p><span class="text-danger"> {{mensaje}}</span></p>
-             
+              <p>
+                <span class="text-danger">{{mensaje}}</span>
+              </p>
+
               <label for="selectFormaPago">
                 Forma de Pago
                 <span class="text-danger">*</span>
@@ -210,11 +190,37 @@
                   v-for="p in listaFormasPago"
                   v-bind:value="p.id"
                   v-bind:key="p.id"
-                >{{ p.nombre }}  - ({{p.descripcion}}) </option>
+                >{{ p.nombre }} - ({{p.descripcion}})</option>
               </select>
-
+              <div class="form-row">
+                <div class="col-md-6">
+                  <label
+                    v-if="requiere_factura"
+                    for="inputIdentificadorFactura"
+                  >Folio de factura</label>
+                  <input
+                    id="inputIdentificadorFactura"
+                    type="text"
+                    v-model="pago.identificador_factura"
+                    class="form-control font-weight-bold text-primary"
+                    placeholder="Folio de factura"
+                    v-if="requiere_factura"
+                  >
+                </div>
+                <div class="col-md-6">
+                  <label for="inputIdentificadorFactura" v-if="requiere_factura">Nota</label>
+                  <input
+                    id="inputNotaPago"
+                    type="text"
+                    v-model="pago.nota_pago"
+                    class="form-control"
+                    placeholder="Nota "
+                    v-if="requiere_factura"
+                  >
+                </div>
+              </div>
               <table class="table">
-                <thead>                 
+                <thead>
                   <th>Concepto</th>
                   <th>Pago</th>
                   <th>Adeuda</th>
@@ -222,7 +228,7 @@
                   <!--<th>Nota</th>-->
                 </thead>
                 <tbody v-for="row in listaCargosAlumnos" :key="row.id">
-                  <tr v-if="row.checked">                  
+                  <tr v-if="row.checked">
                     <td>
                       <span class="small">{{row.nombre_cargo}}</span>
                     </td>
@@ -261,10 +267,31 @@
               </table>
               <div class="row float-right p-3 mb-2 bg-light text-dark">
                 <table>
-                  <tr><td ><strong>Cargos : </strong></td><td class="text-danger"><strong>${{total_cargos}}</strong></td></tr>
-                  <tr ><td><strong>Pago : </strong></td><td class="text-success"><strong>${{pago.pago_total}}</strong></td></tr>                  
-                  <tr ><td><strong>Resta : </strong></td><td class="text-danger"><strong>${{total_cargos - pago.pago_total  }}</strong></td></tr>                  
-                </table>                                  
+                  <tr>
+                    <td>
+                      <strong>Cargos :</strong>
+                    </td>
+                    <td class="text-danger">
+                      <strong>${{total_cargos}}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Pago :</strong>
+                    </td>
+                    <td class="text-success">
+                      <strong>${{pago.pago_total}}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Resta :</strong>
+                    </td>
+                    <td class="text-danger">
+                      <strong>${{total_cargos - pago.pago_total }}</strong>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
 
@@ -314,13 +341,13 @@
                   <i v-if="cargoSeleccionado.pagado" class="fas fa-check-circle text-success"></i>
                   <i v-else class="fas fa-check-circle text-secondary"></i>
                 </td>
-              </tr>              
+              </tr>
               <tr>
                 <td>Nota</td>
                 <td>
-                  <textarea v-model="cargoSeleccionado.nota" disabled class="form-control "></textarea>
+                  <textarea v-model="cargoSeleccionado.nota" disabled class="form-control"></textarea>
                 </td>
-              </tr>              
+              </tr>
             </table>
             <span class="text-center">Pagos Realizados</span>
             <div class="row">
@@ -329,7 +356,7 @@
                   <th>Fecha</th>
                   <th>Pago</th>
                   <th>Forma de Pago</th>
-                  <!--<th>Nota</th>-->
+                  <th>Factura</th>
                 </thead>
                 <tbody v-for="row in listaPagosCargo" :key="row.id">
                   <tr>
@@ -342,6 +369,7 @@
                     <td>
                       <label class="font-weight-bold text-info">{{row.nombre_forma_pago}}</label>
                     </td>
+                    <td>{{row.identificador_factura}}</td>
                     <!--<td>
                       <input
                         type="text"
@@ -356,7 +384,7 @@
               </table>
             </div>
           </div>
-          <div class="modal-footer">            
+          <div class="modal-footer">
             <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
