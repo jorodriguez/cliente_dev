@@ -25,13 +25,13 @@ export default {
       uriTempGrupos: "http://localhost:5000/grupos"
       */
       
-      uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
+      /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
       uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos"      
-      
+      */
 
-      /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+      uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
       uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos"      
-  */
+  
     };
   },
   mounted() {

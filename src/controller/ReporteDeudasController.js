@@ -20,7 +20,7 @@ export default {
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
       */
 
-      uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
+      /*uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento",
       uriTempBalanceCrecimientoAlumnos: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_alumnos",
@@ -28,9 +28,9 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_mensual",
       uriTempMesesActivos: "https://api-ambiente-desarrollo.herokuapp.com/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_balance_crecimiento_mensual_sucursal",      
+*/
 
-
-      /*uriTempBalanceSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_sucursal",
+      uriTempBalanceSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento",
       uriTempBalanceCrecimientoAlumnos: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_alumnos",
@@ -38,7 +38,7 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_mensual",
       uriTempMesesActivos: "https://api-ambiente-produccion.herokuapp.com/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "https://api-ambiente-produccion.herokuapp.com/alumnos_balance_crecimiento_mensual_sucursal",      
-*/
+
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
