@@ -10,18 +10,18 @@ export default {
   },
   data() {
     return {
-    /*  uriTempBalanceCrecimientoGlobal: "http://localhost:5000/balance_crecimiento_global",
+      uriTempBalanceCrecimientoGlobal: "http://localhost:5000/balance_crecimiento_global",
       uriTempBalanceAlumnosIngreso: "http://localhost:5000/alumnos_crecimiento_mes",
-*/
+
          
       /*
       uriTempBalanceCrecimientoGlobal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_global",      
       uriTempBalanceAlumnosIngreso: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_crecimiento_mes",      
     */
 
-   uriTempBalanceCrecimientoGlobal: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_global",      
+  /* uriTempBalanceCrecimientoGlobal: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_global",      
    uriTempBalanceAlumnosIngreso: "https://api-ambiente-produccion.herokuapp.com/alumnos_crecimiento_mes",      
-
+*/
       usuarioSesion: {},
       sesion: {},
       mes_seleccionado: {},

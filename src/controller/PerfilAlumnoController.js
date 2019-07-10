@@ -63,13 +63,13 @@ export default {
             uriTempDatosFacturacion: "https://api-ambiente-desarrollo.herokuapp.com/guardar_datos_facturacion",            
          */
 
-            uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
+            /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
             uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
             uriTempFamiliar: "https://api-ambiente-produccion.herokuapp.com/familiar",
             uriTempParentesco: "https://api-ambiente-produccion.herokuapp.com/parentesco",            
             uriTempServicios: "https://api-ambiente-produccion.herokuapp.com/servicios",
             uriTempValoresEsperados: "https://api-ambiente-produccion.herokuapp.com/valores_esperados",
-
+*/
             response: "",
             mensaje: "",
             sesion: {},
