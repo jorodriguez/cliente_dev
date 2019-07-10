@@ -119,7 +119,7 @@ export default {
 
                         if (this.alumno.formato_inscripcion == null)
                             this.alumno.formato_inscripcion = {};
-                        
+
                         if (this.alumno.datos_facturacion == null)
                             this.datos_facturacion = {};                        
                             
@@ -127,6 +127,7 @@ export default {
 
                         //this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
                         //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
+
                     },
                     error => {
                         console.error(error);

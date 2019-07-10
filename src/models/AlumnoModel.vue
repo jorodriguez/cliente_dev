@@ -7,6 +7,7 @@ var Alumno = new Vue({
         formato_inscripcion:FormatoModel,        
         padre:{},
         madre:{},
+        datos_facturacion:{},
         co_sucursal:0,
         co_grupo:0,
         nombre: "",
