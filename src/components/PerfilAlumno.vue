@@ -77,7 +77,10 @@
                   ></datepicker>
                 </div>
                 <div class="form-group">
-                  <label for="inputCorreoFamiliar">Correo <span class="text-danger">*</span></label>
+                  <label for="inputCorreoFamiliar">
+                    Correo
+                    <span class="text-danger">*</span>
+                  </label>
                   <input
                     id="inputCorreoFamiliar"
                     type="text"
@@ -142,14 +145,14 @@
       </div>
 
       <!-- MODAL PARA AGREGAR FAMILIAR -->
-  
+
       <div class="row">
         <div class="col">
           <!--<router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-secondary btn-lg">
             <i class="fas fa-arrow-circle-left text-gray"></i>
           </router-link>
           -->
-          <a @click="$router.go(-1)"  class="btn btn-secondary btn-lg">
+          <a @click="$router.go(-1)" class="btn btn-secondary btn-lg">
             <i class="fas fa-arrow-circle-left text-white"></i>
           </a>
         </div>
@@ -248,6 +251,17 @@
                   aria-controls="pills-servicios"
                   aria-selected="false"
                 >Pagos</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-servicios-tab"
+                  data-toggle="pill"
+                  href="#pills-facturacion"
+                  role="tab"
+                  aria-controls="pills-facturacion"
+                  aria-selected="false"
+                >Facturación</a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -409,7 +423,6 @@
                       >
                     </div>
 
-                  
                     <div class="form-group">
                       <label for="inputCostoInscripcion">
                         Costo Inscripción
@@ -469,9 +482,9 @@
               >
                 <div class="card">
                   <div class="card-body">
-                    <!-- DATOS DE INSCRIPCION  -->                   
+                    <!-- DATOS DE INSCRIPCION  -->
                     <div class="form-group">
-                      <label for="inputInscripcion">Fecha de Inscripción</label>                   
+                      <label for="inputInscripcion">Fecha de Inscripción</label>
                       <datepicker
                         id="inputInscripcion"
                         v-model="alumno.fecha_inscripcion"
@@ -479,12 +492,12 @@
                         required
                       ></datepicker>
                     </div>
-                                        
+
                     <div class="form-group">
                       <label for="inputFReinscripcion">
                         Fecha de Reinscripción
                         <span class="text-danger">*</span>
-                      </label>                     
+                      </label>
                       <datepicker
                         id="inputFReinscripcion"
                         v-model="alumno.fecha_reinscripcion"
@@ -780,10 +793,185 @@
                   </div>
                 </div>
               </div>
-
               <!-- SERVICIOS CONTRATADOS -->
-            </div>
 
+              <div
+                class="tab-pane fade"
+                id="pills-facturacion"
+                role="tabpanel"
+                aria-labelledby="pills-facturacion-tab"
+              >
+                <div class="card">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          id="checkboxRequiereFacturacion"
+                          v-model="requiere_datos_facturacion"
+                        >
+                        <label
+                          class="form-check-label"
+                          for="checkboxRequiereFacturacion"
+                        >Requiere Factura.</label>
+                      </div>
+                    </div>
+                    <!--<div :class="{ requiere_datos_facturacion ? '':'disabled'}" >-->
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputRfc">
+                          RFC
+                          <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputRfc"
+                          placeholder="Rfc"
+                          v-model="datos_facturacion.rfc"
+                        >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCurp">
+                          Curp
+                          <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputCurp"
+                          placeholder="Curp"
+                          v-model="datos_facturacion.curp"
+                        >
+                      </div>                      
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-12">
+                        <label for="inputRazonSocial">
+                          Razón Social
+                          <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control text-uppercase"
+                          id="inputRazonSocial"
+                          placeholder="Razón Social"
+                          v-model="datos_facturacion.razon_social"
+                        >                        
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-8">
+                        <label for="inputCurp">
+                          Calle
+                          <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputCalle"
+                          placeholder="Calle"
+                          v-model="datos_facturacion.calle"
+                        >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputNoExterior">
+                          No. Ext.
+                          <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputNoExterior"
+                          placeholder="No. Exterior"
+                          v-model="datos_facturacion.numero_exterior"
+                        >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-8">
+                        <label for="inputColonia">Colonia <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Colonia"
+                          id="inputColonia"
+                          v-model="datos_facturacion.colonia"
+                        >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputCP">CP. <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="CP."
+                          id="inputCP"
+                          v-model="datos_facturacion.codigo_postal"
+                        >
+                      </div>                     
+                      
+                    </div>
+                    <div class="form-row">
+                       <div class="form-group col-md-4">
+                        <label for="inputCiudad">Ciudad <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputCiudad"
+                          placeholder="Ciudad"
+                          v-model="datos_facturacion.ciudad"
+                        >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputMunicipio">Municipio <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputMunicipio"
+                          placeholder="Municipio"
+                          v-model="datos_facturacion.municipio"
+                        >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputEstado">Estado <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Estado"
+                          id="inputEstado"
+                          v-model="datos_facturacion.estado"
+                        >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputTelefono">Telefono <span class="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputTelefono"
+                          placeholder="Telefono"
+                          v-model="datos_facturacion.telefono_contacto"
+                        >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputEstado">Correo <span class="text-danger">*</span></label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          placeholder="Correo"
+                          id="inputCorreo"
+                          v-model="datos_facturacion.correo_contacto"
+                        >
+                      </div>
+                    </div>
+
+                    <!-- form -->
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--<button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>-->
           </form>
         </div>
