@@ -11,15 +11,15 @@ export default {
 
   data() {
     return {
-      uriTempPagos: "http://localhost:5000/pagos",
+      /*uriTempPagos: "http://localhost:5000/pagos",
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
       uriTempCargos: "http://localhost:5000/cargos",
-      
+      */
 
-      /*uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
+      uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
       uriTempCargos: "https://api-ambiente-desarrollo.herokuapp.com/cargos",      
-      */
+      
 
       /*uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
