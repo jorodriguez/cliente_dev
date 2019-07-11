@@ -44,15 +44,15 @@
         <tr>
           <td>
             <input type="checkbox" id="checkbox" v-model="row.checked" v-if="!row.pagado">
-            <i v-else class="text-success font-weight-normal">¡Pagado!</i>
+            <i v-else class="text-success font-weight-normal">¡Pagado! </i>
           </td>
-          <td>
+          <td>            
             <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
           </td>
           <td>
             <button v-on:click="verDetalleCargo(row)" type="button" class="btn btn-link">
               <span v-if="!row.pagado" class="small">{{row.nombre_cargo}}</span>
-              <span v-else-if="row.pagado" class="small tachado">{{row.nombre_cargo}}</span>
+              <span v-else-if="row.pagado" class="small tachado">{{row.nombre_cargo}}  </span>
             </button>
           </td>
           <td>
@@ -188,37 +188,52 @@
                 <option
                   id="selectFormaPago"
                   v-for="p in listaFormasPago"
-                  v-bind:value="p.id"
+                  v-bind:value="p"
                   v-bind:key="p.id"
                 >{{ p.nombre }} - ({{p.descripcion}})</option>
-              </select>
-              <div class="form-row">
-                <div class="col-md-6">
+              </select>              
+
+              <div class="form-group" v-if="pago.cat_forma_pago.permite_factura && existen_montos_facturables">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    id="checkboxFacturado"
+                    v-model="escribir_folio_factura"
+                    name="facturado"                    
+                  >
                   <label
-                    v-if="requiere_factura"
-                    for="inputIdentificadorFactura"
-                  >Folio de factura</label>
+                    class="form-check-label"
+                    for="checkboxFacturado"                    
+                  >
+                    Facturado <span class="text-muted">| Escribir folio de factura</span>                    
+                  </label>
+                </div>
+              </div>
+     
+              <div class="form-row" v-if="pago.cat_forma_pago.permite_factura && existen_montos_facturables && escribir_folio_factura">
+                <span v-if="!requiere_factura" class="text-danger">* No estan activos los datos de facturación, valla a la pestaña facturacion para habilitarlos ó escribirlos.</span>                
+                <div class="col-md-6" v-if="requiere_factura">
+                  <label for="inputIdentificadorFactura">Folio de factura</label>
                   <input
                     id="inputIdentificadorFactura"
                     type="text"
                     v-model="pago.identificador_factura"
                     class="form-control font-weight-bold text-primary"
-                    placeholder="Folio de factura"
-                    v-if="requiere_factura"
+                    placeholder="Folio de factura"                    
                   >
                 </div>
-                <div class="col-md-6">
-                  <label for="inputIdentificadorFactura" v-if="requiere_factura">Nota</label>
+                <div class="col-md-6" v-if="requiere_factura">
+                  <label for="inputNotaPago">Nota</label>
                   <input
                     id="inputNotaPago"
                     type="text"
                     v-model="pago.nota_pago"
                     class="form-control"
-                    placeholder="Nota "
-                    v-if="requiere_factura"
+                    placeholder="Nota "                    
                   >
                 </div>
               </div>
+              
               <table class="table">
                 <thead>
                   <th>Concepto</th>
@@ -228,9 +243,9 @@
                   <!--<th>Nota</th>-->
                 </thead>
                 <tbody v-for="row in listaCargosAlumnos" :key="row.id">
-                  <tr v-if="row.checked">
+                  <tr v-if="row.checked" :class="row.es_facturable ? 'bg-info text-white':''">
                     <td>
-                      <span class="small">{{row.nombre_cargo}}</span>
+                      <span class="small">{{row.nombre_cargo}} {{row.es_facturable}}</span>
                     </td>
                     <td>
                       <input

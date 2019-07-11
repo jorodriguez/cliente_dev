@@ -11,15 +11,15 @@ export default {
 
   data() {
     return {
-      /*uriTempPagos: "http://localhost:5000/pagos",
+      uriTempPagos: "http://localhost:5000/pagos",
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
       uriTempCargos: "http://localhost:5000/cargos",
-      */
+      
 
-      uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
+      /*uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
       uriTempCargos: "https://api-ambiente-desarrollo.herokuapp.com/cargos",      
-      
+      */
 
       /*uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
       uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
@@ -31,11 +31,13 @@ export default {
       },
       pago: {
         pago_total: 0,
-        cat_forma_pago: -1,        
+        cat_forma_pago: {id:-1,nombre:"",permite_factura:false},        
         identificador_factura:"",
         nota_pago:""
       },
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
+      escribir_folio_factura:false,
+      existen_montos_facturables:false,
       total_cargos: 0,
       total_pagos: 0,
       seleccionTodos: false,
@@ -216,9 +218,9 @@ export default {
       this.pago.pago_total = Number(0);
       this.total_cargos = Number(0);
       this.pago.nota_pago = '';
-      this.pago.cat_forma_pago = -1;
+      this.pago.cat_forma_pago =  {id:-1,nombre:"",permite_factura:false};
       this.pago.identificador_factura = "";
-     
+      this.facturado = false;
 
       this.mensaje = "";
       const existeSeleccionAlumno = () => {
@@ -226,6 +228,14 @@ export default {
           return e.checked;
         });
       }
+
+      const montos_facturables = () => {
+        return this.listaCargosAlumnos.some(function (e) {          
+          return (e.checked && e.es_facturable);
+        });
+      }
+
+      this.existen_montos_facturables = montos_facturables();
 
       if (existeSeleccionAlumno()) {
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
@@ -272,11 +282,24 @@ export default {
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
       this.mensaje = "";
       var pass = true;
+     
+      if (this.pago.cat_forma_pago.id == -1) {
 
-      if (this.pago.cat_forma_pago == -1) {
+        this.mensaje = "Por favor seleccione la forma de pago.";       
+        $("#selectFormaPago").focus();
+        return;
+      }
+      
+      console.log("permit "+JSON.stringify(this.pago.cat_forma_pago));
 
-        this.mensaje = "Por favor seleccione la forma de pago.";
-
+      if(this.pago.cat_forma_pago.permite_factura && 
+          this.escribir_folio_factura &&
+          this.existen_montos_facturables &&
+          this.pago.identificador_factura == ""){
+        //validar que escriban el folio
+        this.mensaje = "Por favor escribe el folio de la factura";
+        $("#inputIdentificadorFactura").focus();
+        return;
       } else {
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
           var element = this.listaCargosAlumnos[i];
@@ -286,7 +309,7 @@ export default {
               break;
             }
           }
-        }
+        }        
 
         if (!pass) {
           this.mensaje = "Por favor revise las cantidades, No pueden ir Ceros,Negativos ni espacios en blanco.";
@@ -326,7 +349,7 @@ export default {
             id_alumno: this.idalumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
-            cat_forma_pago: this.pago.cat_forma_pago,            
+            cat_forma_pago: this.pago.cat_forma_pago.id,            
             identificador_factura : this.pago.identificador_factura,            
             ids_cargos: ids_cargos,
             cargos_desglosados: cargos_desglosados,

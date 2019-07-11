@@ -152,13 +152,18 @@
 
       <div class="row">
         <div class="col">
-          <!--<router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-secondary btn-lg">
+          <router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-secondary btn-lg"
+              v-if="!usuarioSesion.permiso_gerente">
             <i class="fas fa-arrow-circle-left text-gray"></i>
           </router-link>
-          -->
-          <a @click="$router.go(-1)" class="btn btn-secondary btn-lg">
+          <router-link :to="{ name: 'ReporteDeudas', params: {} }" class="btn btn-secondary btn-lg"
+              v-if="usuarioSesion.permiso_gerente">
+            <i class="fas fa-arrow-circle-left text-gray"></i>
+          </router-link>
+          <!--<a @click="$router.go(-1)" class="btn btn-secondary btn-lg">
             <i class="fas fa-arrow-circle-left text-white"></i>
           </a>
+          -->
         </div>
         <div class="col text-center">
           <img

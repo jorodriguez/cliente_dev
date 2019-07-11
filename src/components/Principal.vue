@@ -12,28 +12,24 @@
     </small>
     
     <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-lg  btn-info">
-        <!--<i class="fas fa-child" style="font-size:40px;"></i>-->
+      <router-link to="/CatAlumno" class="btn btn-lg  btn-info">        
         Alumnos
       </router-link>
-      <router-link to="/Asistencia" class="btn btn-lg  btn-success">
-        <!--<i class="fas fa-door-open" style="font-size:40px;"></i>-->
-        Asistencias
-        <!--<i class="fas fa-door-open"></i>-->
-      </router-link>
-      <!--<router-link to="/Actividades" class="btn btn-head btn-success">
-        <i class="fas fa-skating"></i>
-      </router-link>-->
+      <router-link to="/Asistencia" class="btn btn-lg  btn-success">        
+        Asistencias        
+      </router-link>             
       <!-- btn-head-->
       <button
         type="button"
         data-toggle="modal"
         class="btn btn-success btn-lg "
         v-on:click="initRegistroActividad()"
-      >
-        <!--<i class="fas fa-skating" style="font-size:40px;"></i>--->
+      >        
         Actividad
       </button>
+      <router-link to="/Gastos" class="btn btn-lg  btn-primary">        
+        Gastos        
+      </router-link>
     </div>
     <div class="row">
       <div class="col text-left">

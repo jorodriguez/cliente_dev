@@ -8,6 +8,7 @@ import Asistencia from '@/asistencia/Asistencia'
 import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
 import CrecimientoGlobal from '@/components_admin/CrecimientoGlobal'
+import Gastos from '@/components/Gastos'
 import Home from '@/components/Home'
 import VueSession from 'vue-session'
 
@@ -15,9 +16,7 @@ import VueSession from 'vue-session'
 Vue.use(Router);
 Vue.use(VueSession);
 
-//export default new Router({      
-  const router = new Router({   
-    //{ path: '/', name:'Login', component: Login },        
+const router = new Router({       
   routes: [    
     { path: '/', name:'Login', component: Login },        ,        
     //{ path: '/login', name:'Login', component: Login },        
@@ -28,6 +27,7 @@ Vue.use(VueSession);
     { path: '/Actividades', name: 'Actividades', component: RegistroActividad },
     { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas },
     { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal},
+    { path: '/Gastos', name: 'Gastos', component: Gastos},
     {path: '*', redirect: '/'}
   ]
 })
