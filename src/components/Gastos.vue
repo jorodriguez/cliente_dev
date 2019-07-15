@@ -13,14 +13,14 @@
       <thead>        
         <th>Fecha</th>
         <th>Gasto</th>
-        <th>Tipo Pago</th>
+        <th>Tipo de Pago</th>
         <th>Gasto</th>
         <th>Observaciones</th>
         <th></th>
       </thead>
       <tbody v-for="row in listaGastos" :key="row.id">
         <tr>          
-          <td>            
+          <td>                        
             <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
           </td>
           <td>
@@ -30,9 +30,12 @@
           </td>
           <td>
             <strong>
-              <span class="small font-weight-bold text-danger">{{row.nombre_tipo_pago }}</span>
+              <span class="small font-weight-bold">{{row.nombre_tipo_pago}}</span>
             </strong>
-          </td>         
+          </td>      
+          <td>
+            ${{row.gasto}}
+          </td>   
           <td>
             <span
               class="d-inline-block text-truncate small"
@@ -41,8 +44,8 @@
             >{{row.observaciones}}</span>
           </td>
           <td>
-             <button type="button" class="btn btn-primary btn-lg" v-on:click="seleccionarGasto(row,'DELETE')">
-               Eliminar
+             <button type="button" class="btn btn-danger btn-sm" v-on:click="seleccionarGasto(row,'DELETE')">
+               <i class="fas fa-trash-alt"></i>
              </button>
           </td>
         </tr>
