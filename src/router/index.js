@@ -8,6 +8,7 @@ import Asistencia from '@/asistencia/Asistencia'
 import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
 import CrecimientoGlobal from '@/components_admin/CrecimientoGlobal'
+import ReporteGastos from '@/components_admin/ReporteGastos'
 import Gastos from '@/components/Gastos'
 import Home from '@/components/Home'
 import VueSession from 'vue-session'
@@ -27,6 +28,7 @@ const router = new Router({
     { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas },
     { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal},
     { path: '/Gastos', name: 'Gastos', component: Gastos},
+    { path: '/ReporteGastos', name: 'ReporteGastos', component:ReporteGastos },
     {path: '*', redirect: '/'}
   ]
 })

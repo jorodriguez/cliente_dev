@@ -62,6 +62,11 @@ export default {
     }
     this.usuarioSesion = this.sesion.usuario;
 
+    if (!this.usuarioSesion.permiso_gerente) {
+      this.$router.push("/");
+      return;
+    }
+
     this.loadFunctionGastos = function (anio_mes) {
       this.$http
         .get(
@@ -243,7 +248,9 @@ export default {
     },
     verDetalleMesSeleccionado(){
       console.log(" ver mes seleccionado ");
-      this.loadFunctionGastos(this.mes_seleccionado.anio_mes);
+      if(this.mes_seleccionado.anio_mes != '' ){
+         this.loadFunctionGastos(this.mes_seleccionado.anio_mes);
+      }
     },
     guardarTipoGasto() {
       console.log(" guardar tipo de gasto ");
