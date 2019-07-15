@@ -30,7 +30,7 @@
           </td>
           <td>
             <strong>
-              <span class="small font-weight-bold text-danger">${{row.nombre_tipo_pago }}</span>
+              <span class="small font-weight-bold text-danger">{{row.nombre_tipo_pago }}</span>
             </strong>
           </td>         
           <td>
