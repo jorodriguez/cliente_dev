@@ -12,7 +12,6 @@ import Gastos from '@/components/Gastos'
 import Home from '@/components/Home'
 import VueSession from 'vue-session'
 
-
 Vue.use(Router);
 Vue.use(VueSession);
 

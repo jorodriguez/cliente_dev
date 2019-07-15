@@ -11,6 +11,7 @@ Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
 Vue.config.productionTip = false
 
+
 /* eslint-disable */
 new Vue({
   el: '#app',

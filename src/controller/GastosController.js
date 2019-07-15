@@ -1,16 +1,20 @@
 
 import Vue from "vue";
 import Datepicker from 'vuejs-datepicker';
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table';
 
 export default {
   name: "gastos",
   props: ['idalumno', 'requiere_factura'],
   components: {
-    Datepicker
+    Datepicker,
+    VueGoodTable
   }, 
   data() {
     return {
       uriTempGastos: "http://localhost:5000/gastos",
+      uriTempHistoricoGastos: "http://localhost:5000/historico_gastos",      
       uriTempTiposGasto: "http://localhost:5000/tipos_gasto",
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
 
@@ -24,12 +28,26 @@ export default {
       listaGastos: [],
       listaTiposGasto: [],
       listaFormasPago:[],
+      listaGastosMensuales:[],
+      mes_seleccionado:{mes_anio:'',anio_mes:'',suma:-1},
       operacion: '',
+      disabledDates: {
+        from : new Date(Date.now() + 8640000)
+      },
       usuarioSesion: {},
       sesion: {},
       mensajeToast: null,
       response: "",
-      mensaje: ""
+      mensaje: "",
+      /*columns: [
+          {label:"Fecha",field:"fecha", type: 'date',dateInputFormat: 'YYYY-MM-DD',dateOutputFormat: 'DD-MMM-YY',sortable: true},
+          {label:"Gasto",
+                field:` 
+                <button v-on:click="seleccionarGasto(row,'UPDATE')" type="button" class="btn btn-link">
+                <span class="small">{{row.nombre_tipo_gasto}}</span>
+                </button>`,type: 'string',sortable: true},
+          {label:"Tipo de Pago",field:"nombre_tipo_pago",type: 'string',sortable: true},          
+      ]*/
     };
   },
   mounted() {
@@ -44,10 +62,10 @@ export default {
     }
     this.usuarioSesion = this.sesion.usuario;
 
-    this.loadFunctionGastos = function () {
+    this.loadFunctionGastos = function (anio_mes) {
       this.$http
         .get(
-          this.uriTempGastos + "/" + this.usuarioSesion.co_sucursal,
+          this.uriTempGastos + "/" + this.usuarioSesion.co_sucursal+"/"+anio_mes,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -113,14 +131,42 @@ export default {
           );      
     };
 
+    this.loadFunctionGastosMensuales = function () {
+      this.$http
+        .get(
+          this.uriTempHistoricoGastos + "/" + this.usuarioSesion.co_sucursal,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.listaGastosMensuales = this.response;
+              if(this.listaGastosMensuales  != null && this.listaGastosMensuales.length > 0){
+                this.mes_seleccionado = this.listaGastosMensuales[0];
+                this.loadFunctionGastos(this.mes_seleccionado.anio_mes);
+              }
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
+
     this.mensajeToast = mensaje => {
       $("#toast_msg").text(mensaje);
       $("#toast_id").toast("show");
     };
 
-    this.loadFunctionGastos();
+    //this.loadFunctionGastos();
+    this.loadFunctionGastosMensuales();
     this.loadFunctionCargarListaTiposGasto();
-    this.loadFunctionCatFormasPago();
+    this.loadFunctionCatFormasPago();   
 
   },
   methods: {
@@ -133,6 +179,7 @@ export default {
         gasto: 0,
         observaciones: ""
       };
+      this.mensaje= "";
       this.operacion = 'INSERT';
       $('#modal_gasto').modal('show');
 
@@ -173,7 +220,7 @@ export default {
           );
       } else {
         this.$http
-          .put(this.uriTempGastos + "/" + this.gasto.id, this.gasto, {
+          .put(this.uriTempGastos, this.gasto, {
             headers: {
               "x-access-token": this.sesion.token
             }
@@ -194,6 +241,10 @@ export default {
           );
       }
     },
+    verDetalleMesSeleccionado(){
+      console.log(" ver mes seleccionado ");
+      this.loadFunctionGastos(this.mes_seleccionado.anio_mes);
+    },
     guardarTipoGasto() {
       console.log(" guardar tipo de gasto ");
 
@@ -210,13 +261,11 @@ export default {
     },
     confirmarEliminar() {
       console.log("confirmar eliminar gasto");
-      
-
       this.gasto.genero = this.usuarioSesion.id;
       this.gasto.co_sucursal = this.usuarioSesion.co_sucursal;
 
       this.$http
-        .delete(this.uriTempGastos, this.gasto.id, {
+        .delete(this.uriTempGastos+"/"+this.gasto.id, {
           headers: {
             "x-access-token": this.sesion.token
           }

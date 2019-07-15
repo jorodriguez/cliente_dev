@@ -2,13 +2,30 @@
   <div id="id_gastos">
     <h1>Gastos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
-    <div class="text-left">
+    <div class="row">
+      <div class="col-auto mr-auto">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
       <button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarAgregarGasto()">Nuevo</button>
+      </div>
+      <div class="col-auto ">
+         <select v-model="mes_seleccionado" class="form-control" placeholder="Mes" 
+                v-on:change="verDetalleMesSeleccionado()">
+                  <option
+                    v-for="mes in listaGastosMensuales"
+                    v-bind:value="mes"
+                    v-bind:key="mes.mes_anio"
+                  >{{ mes.mes_anio }} <strong><span class="text-danger">(${{ mes.suma }})</span> </strong> </option>
+                </select>
+      </div>
     </div>
+    
     <br>   
+    <!--<vue-good-table
+      :columns="columns"
+       :rows="listaGastos"/>
+   -->
     <table class="table">
       <thead>        
         <th>Fecha</th>
@@ -81,12 +98,14 @@
                 <datepicker
                   name="fecha"
                   v-model="gasto.fecha"
+                  :open-date="new Date()"
                   input-class="form-control"
+                  :disabledDates="disabledDates"
                   required
                 ></datepicker>
 
               <label for="selectTipoGasto">
-                Gasto
+                Gasto 
                 <span class="text-danger">*</span>
               </label>
               <select
@@ -178,7 +197,7 @@
 
             <div class="modal-body text-left">
               {{mensaje}}
-              ¿Confirma eliminar el gasto ?
+              ¿Confirma eliminar el gasto de <strong>{{gasto.nombre_tipo_gasto}}</strong> del <strong>{{gasto.fecha | moment("DD-MMM-YY")}}</strong> por $<strong>{{gasto.gasto}}</strong>?
             </div>
             <div class="modal-footer">
               <button class="btn btn-lg btn-danger" v-on:click="confirmarEliminar()">Eliminar</button>
