@@ -12,10 +12,11 @@
       </button>
     </small>
     <br>
-    <div class="row">
-      <div class="col ">
+
+    <div class="row text-right">
+      <div class="col align-self-end ">
         <router-link to="/ReporteGastos" class="btn btn-outline-danger">          
-          Gastos $ 1000
+          Gastos $ {{ formatPrice(gasto_mensual)}}
         </router-link>
       </div>
     </div>

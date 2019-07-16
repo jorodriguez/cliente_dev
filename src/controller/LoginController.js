@@ -13,8 +13,8 @@ export default {
       },
       response: "",
       
-      uriTemp: "http://localhost:5000/auth/login"    
-      //uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
+      //uriTemp: "http://localhost:5000/auth/login"    
+      uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
       //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
     };
   },

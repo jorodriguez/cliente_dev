@@ -13,11 +13,23 @@ export default {
   }, 
   data() {
     return {
-      uriTempGastos: "http://localhost:5000/gastos",
+      /*uriTempGastos: "http://localhost:5000/gastos",
       uriTempHistoricoGastos: "http://localhost:5000/historico_gastos",      
       uriTempTiposGasto: "http://localhost:5000/tipos_gasto",
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
+      */
 
+      uriTempGastos: "https://api-ambiente-desarrollo.herokuapp.com/gastos",
+      uriTempHistoricoGastos: "https://api-ambiente-desarrollo.herokuapp.com/historico_gastos",      
+      uriTempTiposGasto: "https://api-ambiente-desarrollo.herokuapp.com/tipos_gasto",
+      uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
+
+      /*
+      uriTempGastos: "https://api-ambiente-produccion.herokuapp.com/gastos",
+      uriTempHistoricoGastos: "https://api-ambiente-produccion.herokuapp.com/historico_gastos",      
+      uriTempTiposGasto: "https://api-ambiente-produccion.herokuapp.com/tipos_gasto",
+      uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
+      */
       gasto: {
         cat_tipo_gasto: -1,
         co_forma_pago: -1,
@@ -61,11 +73,6 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;
-
-    if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }
 
     this.loadFunctionGastos = function (anio_mes) {
       this.$http
@@ -215,8 +222,8 @@ export default {
               if (this.response != null) {
                 console.log("" + this.response);
                 this.mensaje = "Se agrego el gasto.";
-                $("#modal_gasto").modal("hide");
-                this.loadFunctionGastos();
+                $("#modal_gasto").modal("hide");                
+                this.loadFunctionGastosMensuales();
               }
             },
             error => {
@@ -236,8 +243,8 @@ export default {
               if (this.response != null) {
                 console.log("" + this.response);
                 this.mensaje = "Se modifico el gasto.";
-                $("#modal_gasto").modal("hide");
-                this.loadFunctionGastos();
+                $("#modal_gasto").modal("hide");                
+                this.loadFunctionGastosMensuales();
               }
             },
             error => {
@@ -283,8 +290,8 @@ export default {
             if (this.response != null) {
               console.log("" + this.response);
               this.mensaje = "Se agrego el gasto.";
-              $("#modal_eliminar").modal("hide");
-              this.loadFunctionGastos();
+              $("#modal_eliminar").modal("hide");              
+              this.loadFunctionGastosMensuales();
             }
           },
           error => {

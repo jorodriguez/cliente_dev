@@ -3,7 +3,7 @@
     <div class="text-info">{{mensaje}}</div>
     <div v-if="display==true" class="text-left">
       <!-- MODAL PARA AGREGAR FAMILIAR -->
-      <form>
+     
         <div id="modal_familiar" class="modal" tabindex="-1" role="dialog">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -109,7 +109,7 @@
             </div>
           </div>
         </div>
-      </form>
+      
 
       <!-- ELIMINAR MODAL FAMILIAR-->
       <div
@@ -188,7 +188,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <form>
+          
             <!-- CONTENIDO -->
             <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
               <li class="nav-item">
@@ -1052,7 +1052,7 @@
               </div>
             </div>
             <!--<button type="button" class="btn btn-lg btn-primary" v-on:click="modificar()">Guardar</button>-->
-          </form>
+        
         </div>
       </div>
 

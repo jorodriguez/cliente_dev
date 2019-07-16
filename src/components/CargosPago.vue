@@ -78,7 +78,7 @@
     </table>
 
     <!-- MODAL PARA AGREGAR CARGO -->
-    <form>
+    
       <div
         id="modal_cargo"
         class="modal"
@@ -148,10 +148,10 @@
           </div>
         </div>
       </div>
-    </form>
+  
 
     <!-- PAGO -->
-    <form>
+    
       <div
         id="modal_pago"
         class="modal"
@@ -317,7 +317,7 @@
           </div>
         </div>
       </div>
-    </form>
+   
 
     <!-- DETALLE CARGO -->
     <div

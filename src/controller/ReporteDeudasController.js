@@ -10,6 +10,7 @@ export default {
   },
   data() {
     return {
+      /*
      uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "http://localhost:5000/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "http://localhost:5000/balance_crecimiento",
@@ -18,9 +19,10 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "http://localhost:5000/balance_crecimiento_mensual",
       uriTempMesesActivos: "http://localhost:5000/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
-      
+      uriTempGastosMesActual : "http://localhost:5000/reporte_gastos_mes_actual",      
+      */
 
-      /*uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
+      uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_alumnos_sucursal",
       uriTempBalanceCrecimiento: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento",
       uriTempBalanceCrecimientoAlumnos: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_alumnos",
@@ -28,7 +30,8 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_mensual",
       uriTempMesesActivos: "https://api-ambiente-desarrollo.herokuapp.com/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_balance_crecimiento_mensual_sucursal",      
-*/
+      uriTempGastosMesActual : "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos_mes_actual",     
+
 
      /* uriTempBalanceSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_sucursal",
       uriTempBalanceAlumnosSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_alumnos_sucursal",
@@ -38,9 +41,11 @@ export default {
       uriTempBalanceCrecimientoMensualSucursal: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_mensual",
       uriTempMesesActivos: "https://api-ambiente-produccion.herokuapp.com/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "https://api-ambiente-produccion.herokuapp.com/alumnos_balance_crecimiento_mensual_sucursal",      
+      uriTempGastosMesActual : "https://api-ambiente-produccion.herokuapp.com/reporte_gastos_mes_actual",      
 */
       usuarioSesion: {},
       sesion: {},
+      gasto_mensual : 0,
       item: AlumnoModel,
       id_sucursal_seleccionada: -1,
       sucursal_seleccionada: { id_sucursal: -1, nombre: '' },
@@ -281,9 +286,34 @@ export default {
         );
     };
 
+
+    this.loadFunctionGastoMensual = function () {
+      this.$http
+        .get(
+          this.uriTempGastosMesActual,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            console.log("Consulta " + JSON.stringify(result.data));
+            if (result.data != null && result.data.length > 0) {
+              this.gasto_mensual = result.data[0].gasto_mes_actual;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
+
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
     this.loadFunctionCrecimientoGlobal();
+    this.loadFunctionGastoMensual();
         
   },
   methods: {

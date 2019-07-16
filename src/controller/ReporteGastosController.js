@@ -13,8 +13,18 @@ export default {
   }, 
   data() {
     return {
+      /*
       uriTempReporteGastos: "http://localhost:5000/reporte_gastos",
       uriTempReporteGastosGlobal: "http://localhost:5000/reporte_gastos_global",            
+      */
+     
+      uriTempReporteGastos: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos",
+      uriTempReporteGastosGlobal: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos_global",            
+
+      /*
+      uriTempReporteGastos: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos",
+      uriTempReporteGastosGlobal: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos_global",            
+      */
      
       listaGastosPorSucursal: [],            
       listaGastosPorSucursalTrendMensual :[],
@@ -173,8 +183,10 @@ export default {
 
       this.loadFunctionReporteGastosTipoYSucursal(this.sucursal_seleccionada.id_sucursal ,this.mes_seleccionado.anio_mes);
     },
-    verGastosGlobal(){
+    verGastosGlobal(){     
+      
       this.loadFunctionGastosGlobal();
+      $("#modal_detallado").modal("show");
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')

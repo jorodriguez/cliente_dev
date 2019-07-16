@@ -26,6 +26,7 @@
       :columns="columns"
        :rows="listaGastos"/>
    -->
+   <form>
     <table class="table">
       <thead>        
         <th>Fecha</th>
@@ -68,9 +69,10 @@
         </tr>
       </tbody>
     </table>
+    </form>
 
     <!-- MODAL PARA AGREGAR Gasto -->
-    <form>
+   
       <div
         id="modal_gasto"
         class="modal"
@@ -157,13 +159,19 @@
 
               <div class="form-group">
                 <label for="inputObservaciones">Observaciones</label>
-                <input
+                <textarea 
+                  v-model="gasto.observaciones"
+                  class="form-control"
+                 placeholder="Observaciones">
+
+                </textarea>
+                <!--<input
                   id="inputObservaciones"
                   type="text"
                   v-model="gasto.observaciones"
                   class="form-control"
                   placeholder="Escriba alguna observación importante"
-                >
+                >-->
               </div>
             </div>
             <div class="modal-footer">
@@ -173,11 +181,11 @@
           </div>
         </div>
       </div>
-    </form>
+    
 
 
      <!-- MODAL PARA eliminar Gasto -->
-    <form>
+   
       <div
         id="modal_eliminar"
         class="modal"
@@ -206,7 +214,7 @@
           </div>
         </div>
       </div>
-    </form>
+   
 
 
   </div>
