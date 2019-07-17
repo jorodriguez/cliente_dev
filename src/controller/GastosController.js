@@ -19,17 +19,16 @@ export default {
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
       */
 
-      uriTempGastos: "https://api-ambiente-desarrollo.herokuapp.com/gastos",
+  /*    uriTempGastos: "https://api-ambiente-desarrollo.herokuapp.com/gastos",
       uriTempHistoricoGastos: "https://api-ambiente-desarrollo.herokuapp.com/historico_gastos",      
       uriTempTiposGasto: "https://api-ambiente-desarrollo.herokuapp.com/tipos_gasto",
       uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
-
-      /*
+*/
       uriTempGastos: "https://api-ambiente-produccion.herokuapp.com/gastos",
       uriTempHistoricoGastos: "https://api-ambiente-produccion.herokuapp.com/historico_gastos",      
       uriTempTiposGasto: "https://api-ambiente-produccion.herokuapp.com/tipos_gasto",
       uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
-      */
+      
       gasto: {
         cat_tipo_gasto: -1,
         co_forma_pago: -1,
