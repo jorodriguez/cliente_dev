@@ -13,18 +13,18 @@ export default {
   }, 
   data() {
     return {
-      /*
+      
       uriTempReporteGastos: "http://localhost:5000/reporte_gastos",
       uriTempReporteGastosGlobal: "http://localhost:5000/reporte_gastos_global",            
-      */
+      
      
       /*uriTempReporteGastos: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos",
       uriTempReporteGastosGlobal: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos_global",            
 */
       
-      uriTempReporteGastos: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos",
+     /*uriTempReporteGastos: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos",
       uriTempReporteGastosGlobal: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos_global",            
-      
+      */
      
       listaGastosPorSucursal: [],            
       listaGastosPorSucursalTrendMensual :[],
