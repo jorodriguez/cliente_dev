@@ -25,7 +25,7 @@ export default {
                 id: 0,
                 id_relacion: -1,
                 co_alumno: -1,
-                co_parentesco: -1,
+                co_parentesco: -1,                
                 parentesco: "",
                 nombre: "",
                 telefono: "",
@@ -39,7 +39,9 @@ export default {
             listaParentesco: [],            
             listaServicios: [],
             listaValoresEsperados: [],
-             mensaje_facturacion : "",
+            listaPosiblesPadres:[],
+            familiarRelacionado:null,
+            mensaje_facturacion : "",
             display: true,          
             requiere_datos_facturacion:false,  
             datos_facturacion : {
@@ -255,6 +257,29 @@ export default {
                     );
             };
 
+
+            this.loadFunctionPosiblesFamiliares = function (id_parentesco,apellidos_alumno,id_sucursal) {
+                this.$http
+                    .get(this.uriTempFamiliar+"/"+id_parentesco+"/"+apellidos_alumno+"/"+id_sucursal, {
+                        headers: {
+                            "x-access-token": this.sesion.token
+                        }
+                    })
+                    .then(
+                        result => {
+                            this.response = result.data;
+                            console.log("Posibles padres " + this.response);
+                            if (this.response != null) {
+                                this.listaPosiblesPadres = this.response;
+                                console.log(JSON.stringify(this.listaPosiblesPadres));
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    );
+            };
+
             this.validacionGuardarFunction = ()=>{
                 if(this.alumno==null){
                   return false;        
@@ -364,7 +389,24 @@ export default {
                 genero: 0
             };
             this.mensaje = '';
+            this.familiarRelacionado = null;
             this.loadCatalogoParentescoFuncion();
+        },
+        seleccionarParentesco(){
+          
+            this.loadFunctionPosiblesFamiliares(
+                        this.familiar.co_parentesco,
+                        this.alumno.apellidos,
+                        this.usuarioSesion.co_sucursal
+                        );
+
+        },
+        seleccionarFamiliarParaRelacion(){
+            this.familiar.id = this.familiarRelacionado ? this.familiarRelacionado.id:-1;
+            this.familiar.nombre = this.familiarRelacionado ? this.familiarRelacionado.nombre : '';
+            this.familiar.telefono = this.familiarRelacionado ? this.familiarRelacionado.telefono : '';
+            this.familiar.fecha_nacimiento = this.familiarRelacionado ? this.familiarRelacionado.fecha_nacimiento : null;
+            this.familiar.correo = this.familiarRelacionado ? this.familiarRelacionado.correo:'';
         },
         seleccionarFamiliar(item, operacion) {
             this.familiar = item;

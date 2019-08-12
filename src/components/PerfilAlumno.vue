@@ -23,6 +23,7 @@
                   </label>
                   <select
                     v-model="familiar.co_parentesco"
+                    v-on:change="seleccionarParentesco"
                     class="form-control"
                     placeholder="Parentesco"
                     required
@@ -39,8 +40,34 @@
                 <div class="form-group" v-else-if="operacion == 'UPDATE'">
                   <input type="text" v-model="familiar.parentesco" class="form-control" disabled>
                 </div>
+              <!-- posible familiar -->
+              <div class="form-group" v-if="operacion == 'INSERT' && (familiar.co_parentesco == 1 || familiar.co_parentesco == 2)">
+                  <label for="selectPosiblePadres">
+                    Seleccionar una persona ya registrada
+                  </label>
+                  <select
+                    v-model="familiarRelacionado"
+                    v-on:change="seleccionarFamiliarParaRelacion"
+                    class="form-control"
+                    placeholder="Padre"                                        
+                  >
+                   <option
+                      id="opcionEscribirPadre"                                            
+                      v-bind:value="null"
+                      v-bind:key="-1"
+                    > Ecribir nuevo registro </option>
+                    <option
+                      id="selectPosiblePadres"
+                      v-for="p in listaPosiblesPadres"
+                      v-bind:value="p"
+                      v-bind:key="p.id"
+                    >{{ p.nombre }} - {{p.parentesco}} de {{p.alumno_hijo}} </option>
+                  </select>
+                </div>
+                
+              <!-- posible familiar -->
 
-                <div class="form-group">
+                <div class="form-group" >
                   <label for="inputNombreFamiliar">
                     Nombre
                     <span class="text-danger">*</span>
@@ -52,10 +79,12 @@
                     v-model="familiar.nombre"
                     class="form-control"
                     placeholder="Nombre"
+                    v-bind:disabled="familiarRelacionado != null"
+                    v-bind:style="familiarRelacionado != null ? 'color:green' : ''"
                     required
-                  >
+                  >                  
                 </div>
-                <div class="form-group">
+                <div class="form-group" >
                   <label for="inputTelefonoFamiliar">
                     Telefono
                     <span class="text-danger">*</span>
@@ -67,19 +96,22 @@
                     class="form-control"
                     name="telefono"
                     placeholder="Telefono"
+                    v-bind:disabled="familiarRelacionado != null"
+                    v-bind:style="familiarRelacionado != null ? 'color:green' : ''"
                   >
                 </div>
-                <div class="form-group">
+                <div class="form-group" >
                   <label for="inputFnacimientoFamiliar">Fecha de Nacimiento</label>
-                  <datepicker
+                  <datepicker 
                     id="inputFnacimientoFamiliar"
                     v-model="familiar.fecha_nacimiento"
-                    input-class="form-control"
+                    v-bind:input-class="familiarRelacionado != null ? 'form-control text-success':'form-control'"
                     name="fecha_nacimiento"
+                    v-bind:disabled="familiarRelacionado != null"                    
                     required
-                  ></datepicker>
+                  ></datepicker>                  
                 </div>
-                <div class="form-group">
+                <div class="form-group" >
                   <label for="inputCorreoFamiliar">
                     Correo
                     <span class="text-danger">*</span>
@@ -91,6 +123,8 @@
                     v-model="familiar.correo"
                     class="form-control"
                     placeholder="Correo"
+                    v-bind:disabled="familiarRelacionado != null"
+                    v-bind:style="familiarRelacionado != null ? 'color:green' : ''"
                     required
                   >
                 </div>
