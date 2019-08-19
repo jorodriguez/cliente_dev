@@ -211,7 +211,7 @@
               </div>
      
               <div class="form-row" v-if="pago.cat_forma_pago.permite_factura && existen_montos_facturables && escribir_folio_factura">
-                <span v-if="!requiere_factura" class="text-danger">* No estan activos los datos de facturación, valla a la pestaña facturacion para habilitarlos ó escribirlos.</span>                
+                <span v-if="!requiere_factura" class="text-danger">* No estan activos los datos de facturación, vaya a la pestaña facturación para habilitarlos ó escribirlos.</span>                
                 <div class="col-md-6" v-if="requiere_factura">
                   <label for="inputIdentificadorFactura">Folio de factura</label>
                   <input

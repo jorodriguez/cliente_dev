@@ -2,11 +2,13 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
+import ReporteMensualidades from "../components_admin/ReporteMensualidades";
 
 export default {
   name: "ReporteDeudas",
   components: {
     SignoutComponent,
+    ReporteMensualidades
   },
   data() {
     return {

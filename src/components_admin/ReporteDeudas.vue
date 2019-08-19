@@ -11,13 +11,14 @@
         <i class="fas fa-power-off" v-on:click="signout()"></i>
       </button>
     </small>
-    <br>
+    <br />
 
     <div class="row text-right">
-      <div class="col align-self-end ">
-        <router-link to="/ReporteGastos" class="btn btn-outline-danger">          
-          Gastos $ {{ formatPrice(gasto_mensual)}}
-        </router-link>
+      <div class="col align-self-end">
+        <router-link
+          to="/ReporteGastos"
+          class="btn btn-outline-danger"
+        >Gastos $ {{ formatPrice(gasto_mensual)}}</router-link>
       </div>
     </div>
 
@@ -43,6 +44,17 @@
           aria-controls="pills-profile"
           aria-selected="false"
         >Crecimiento</a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-mensualidades-tab"
+          data-toggle="pill"
+          href="#pills-mensualidades"
+          role="tab"
+          aria-controls="pills-mensualidades"
+          aria-selected="false"
+        >Mensualidades</a>
       </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -112,7 +124,7 @@
                       title="Ver datos del alumno"
                       class="rounded-circle"
                       v-on:click="verPerfil(row)"
-                    >
+                    />
                   </td>
                   <td>
                     <button
@@ -186,7 +198,7 @@
             </div>
             <div class="mx-auto">
               <h3>{{sucursal_seleccionada_crecimiento.nombre}}</h3>
-              <br>
+              <br />
             </div>
             <div class="row text-center">
               <div class="table-responsive">
@@ -242,7 +254,7 @@
                         title="Ver datos del alumno"
                         class="rounded-circle"
                         v-on:click="verPerfil(row)"
-                      >
+                      />
                     </td>
                     <td>
                       <button
@@ -293,6 +305,22 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="pills-mensualidades"
+        role="tabpanel"
+        aria-labelledby="pills-mensualidades-tab"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+                Mensualidades
+                <ReporteMensualidades/>
+
             </div>
           </div>
         </div>
