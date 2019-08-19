@@ -5,9 +5,13 @@ export default {
   data() {
     return {      
      uriTemp: "http://localhost:5000/reporte_mensualidades",     
+     listaSucursales : [],
      listaCargos : [],      
-      usuarioSesion: {},
+      usuarioSesion: {},      
       sesion: {},   
+      sucursal_seleccionada:{id_sucursal:0,nombre:""},
+      loadFunctionReporteMensualidades:null,
+      loadFunctionReporteMensualidadesSucursales:null,
       response: "",
       mensaje: ""
     };
@@ -28,10 +32,10 @@ export default {
       return;
     }
 
-    this.loadFunctionReporteMensualidades = function () {
+    this.loadFunctionReporteMensualidades = function (id_sucursal) {
       this.$http
         .get(
-          this.uriTemp,
+          this.uriTemp+"/"+id_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -51,10 +55,37 @@ export default {
         );
     };
 
-    this.loadFunctionReporteMensualidades();
+    this.loadFunctionReporteMensualidadesSucursales = function () {
+      this.$http
+        .get(
+          this.uriTemp,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            console.log("Consulta cargos por sucursal" + result.data);
+            if (result.data != null) {
+              this.listaSucursales = result.data;
+            }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
     
+    this.loadFunctionReporteMensualidadesSucursales();
   },
   methods: {
-    
+    verListaMensualidadesFacturadas(row_sucursal){
+        console.log("row sucursal "+JSON.stringify(row_sucursal));
+
+        this.loadFunctionReporteMensualidades(row_sucursal.id_sucursal);
+
+    }
   }
 };
