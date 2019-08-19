@@ -315,14 +315,9 @@
         role="tabpanel"
         aria-labelledby="pills-mensualidades-tab"
       >
-        <div class="card">
-          <div class="card-body">
-            <div class="row mb-3">
-                Mensualidades
-                <ReporteMensualidades/>
-
-            </div>
-          </div>
+        <div class="card">                    
+                
+                <ReporteMensualidades/>          
         </div>
       </div>
     </div>
