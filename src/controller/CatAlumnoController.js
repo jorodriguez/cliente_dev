@@ -299,8 +299,10 @@ export default {
 
       this.lista = this.listaRespaldo.filter(e=>e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase()));
 
-      }     
-
+      }
+    },
+    cambiarSucursal(row){
+      this.$router.push({ name: "CambioSucursal", params: { id_alumno: row.id } });
     }
   }
 };

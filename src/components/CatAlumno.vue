@@ -1,12 +1,5 @@
 <template>
   <div class="cat_alumno container">
-    <!--
-    <div class="text-left">
-      <router-link to="/principal">
-        <i class="fas fa-arrow-circle-left text-gray"></i>
-      </router-link>
-    </div>-->
-
     <h1>Alumnos</h1>(
     <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">
@@ -15,7 +8,7 @@
       </router-link>
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
     </div>
-    <br>
+    <br />
     <form>
       <div
         id="modal_alumno"
@@ -47,7 +40,7 @@
                   placeholder="Nombre"
                   required
                   autofocus
-                >
+                />
                 <label>Apellidos</label>
                 <input
                   type="text"
@@ -55,7 +48,7 @@
                   class="form-control"
                   placeholder="Apellidos"
                   required
-                >
+                />
                 <label>
                   Fecha de nacimiento
                   <span class="text-danger">*</span>
@@ -97,7 +90,7 @@
                   class="form-control"
                   v-model="input.alergias"
                   placeholder="Alergias"
-                >
+                />
 
                 <label>
                   Grupo
@@ -123,7 +116,7 @@
                       class="form-control"
                       placeholder="H. Entrada"
                       required
-                    >
+                    />
                   </div>
                   <div class="col-sm-6">
                     <label>
@@ -136,7 +129,7 @@
                       class="form-control"
                       placeholder="H. Salida"
                       required
-                    >
+                    />
                   </div>
                 </div>
 
@@ -151,8 +144,7 @@
                   placeholder="Min. Gracia"
                   min="0"
                   required
-                >
-
+                />
 
                 <label>
                   F. de Inscripción
@@ -184,7 +176,7 @@
                   placeholder="Costo Colegiatura"
                   min="0"
                   required
-                >
+                />
 
                 <label>
                   Costo Inscripción
@@ -197,11 +189,10 @@
                   placeholder="Costo Inscripcion"
                   min="0"
                   required
-                >
-
+                />
 
                 <label>Nota</label>
-                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota">
+                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
               </div>
             </div>
             <div class="modal-footer">
@@ -240,7 +231,7 @@
           <div class="modal-body">
             <p>
               ¿Confirma que desea dar de baja al alumno?
-              <br>
+              <br />
               <strong>{{input.nombre}} {{input.apellidos}}</strong>
             </p>
           </div>
@@ -265,14 +256,12 @@
             class="form-control"
             placeholder="Buscar por nombre.."
             v-model="criterioNombre"
-             v-on:keyup.enter="buscarPorNombre()"
+            v-on:keyup.enter="buscarPorNombre()"
             aria-label="Buscar por nombre.."
             aria-describedby="basic-addon2"
-          >
+          />
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" 
-                type="button"
-                v-on:click="buscarPorNombre()">
+            <button class="btn btn-outline-secondary" type="button" v-on:click="buscarPorNombre()">
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -300,10 +289,15 @@
                   alt="..."
                   title="Ver el perfil del alumno"
                   class="rounded-circle"
-                >
+                />
               </td>
               <td>
-                <button type="button" class="btn btn-link" title="Ver el perfil del alumno" v-on:click="verPerfil(row)">
+                <button
+                  type="button"
+                  class="btn btn-link"
+                  title="Ver el perfil del alumno"
+                  v-on:click="verPerfil(row)"
+                >
                   {{ row.nombre }}
                   <span class="text-danger">{{row.adeuda ? '*':''}}</span>
                 </button>
@@ -315,12 +309,29 @@
               <td>{{ row.hora_entrada }}</td>
               <td>{{ row.hora_salida }}</td>
               <td>
-                <button
-                  v-if="!row.adeuda"
-                  class="btn btn-link red"
-                  v-on:click="select(row,'DELETE')"
-                  title="Dar de baja el alumno."
-                >Iniciar Baja</button>
+                <div class="btn-group" v-if="!row.adeuda">
+                  <button
+                    type="button"
+                    class="btn btn-link text-gray"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                  <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <div class="dropdown-menu  bg-light">                                                                              
+                    <button                      
+                      class="dropdown-item"
+                      v-on:click="cambiarSucursal(row)"
+                      title="Cambiar de sucursal."
+                    ><i class="fas fa-exchange-alt"></i>Cambiar de sucursal </button>          
+                    <button                      
+                      class="dropdown-item text-danger"
+                      v-on:click="select(row,'DELETE')"
+                      title="Dar de baja el alumno."
+                    ><i class="fas fa-user-minus"></i> Iniciar Baja</button>                                                                              
+                  </div>
+                </div>
               </td>
             </tr>
           </table>
