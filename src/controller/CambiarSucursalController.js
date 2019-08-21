@@ -32,7 +32,7 @@ export default {
     }
     this.usuarioSesion = this.sesion.usuario;
 
-    let id_alumno = this.$route.params.id_alumno;    
+    let id_alumno = this.$route.params.id_alumno;
 
     if (id_alumno == undefined) {
       console.log("No se recibe ningun id de alumno ");
@@ -70,12 +70,12 @@ export default {
             result => {
               this.response = result.data;
               console.log("Consulta " + JSON.stringify(this.response));
-              console.log("alumni "+JSON.stringify(this.alumno));
+              console.log("alumni " + JSON.stringify(this.alumno));
               if (this.response != null) {
-                this.listaSucursal = this.response.filter(row => row.id != this.alumno.co_sucursal); 
+                this.listaSucursal = this.response.filter(row => row.id != this.alumno.co_sucursal);
                 console.log("Consulta " + JSON.stringify(this.listaSucursal));
               }
-              
+
             },
             error => {
               console.error(error);
@@ -83,28 +83,27 @@ export default {
           );
       };
 
-      
+
 
     }
   },
   methods: {
     iniciarCambioSucursal() {
-        this.mensaje = "";
-        if(this.sucursal_seleccionada == null || this.sucursal_seleccionada == undefined || this.sucursal_seleccionada.id == -1){
-          this.mensaje="Selecciona la sucursal destino.";
-          $("#id_sucursal_destino").focus();
-        }else{
-          $("#modal_confirmar_cambio_sucursal").modal("show");
-        }
-        
+      this.mensaje = "";
+      if (this.sucursal_seleccionada == null || this.sucursal_seleccionada == undefined || this.sucursal_seleccionada.id == -1) {
+        this.mensaje = "Selecciona la sucursal destino.";
+        $("#id_sucursal_destino").focus();
+      } else {
+        $("#modal_confirmar_cambio_sucursal").modal("show");
+      }
+
     },
     confirmarCambioSucursal() {
-
       this.$http
-        .put(this.uriTempCambioSucursal + "/" +this.alumno.id,{
+        .put(this.uriTempCambioSucursal + "/" + this.alumno.id, {
           id_sucursal_origen: this.alumno.co_sucursal,
-          id_sucursal_destino: this.sucursal_seleccionada.id, 
-          genero: this.usuarioSesion.id 
+          id_sucursal_destino: this.sucursal_seleccionada.id,
+          genero: this.usuarioSesion.id
         },
           {
             headers: {
@@ -117,12 +116,12 @@ export default {
             this.response = result.data;
             console.log("Consulta " + this.response);
             if (this.response != 0) {
-               console.log("Se cambio de sucursal sin problemas ");
-               this.mensaje="Se realizó el cambio de sucursal del Alumno(a) "+this.alumno.nombre+" "+this.alumno.apellidos
-               +", de "+this.alumno.nombre_sucursal+" a "+this.sucursal_seleccionada.nombre+".";               
-            }else{
+              console.log("Se cambio de sucursal sin problemas ");
+              this.mensaje = "Se realizó el cambio de sucursal del Alumno(a) " + this.alumno.nombre + " " + this.alumno.apellidos
+                + ", de " + this.alumno.nombre_sucursal + " a " + this.sucursal_seleccionada.nombre + ".";
+            } else {
               console.log("Existieron problemas para cambiar de sucursal ");
-              this.mensaje=`Existió un error al intentar realizar el cambio de sucursal, por favor contacta al equipo de soporte para notificar este detalle.`;
+              this.mensaje = `Existió un error al intentar realizar el cambio de sucursal, por favor contacta al equipo de soporte para notificar este detalle.`;
             }
             $("#modal_mensaje").modal("show");
           },

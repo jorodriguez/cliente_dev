@@ -200,6 +200,7 @@
               <h3>{{sucursal_seleccionada_crecimiento.nombre}}</h3>
               <br />
             </div>
+
             <div class="row text-center">
               <div class="table-responsive">
                 <table class="table alumnos_table">
@@ -224,6 +225,10 @@
                         <p
                           v-bind:class="row.count_alumno == 0 ? 'text-muted text-danger':'text-muted'"
                         >${{ formatPrice(row.suma_colegiaturas)}}</p>
+                        <small>Gastos</small>
+                        <p
+                          v-bind:class="row.suma_gastos > 0 ? 'text-danger':''"
+                        >${{ formatPrice(row.suma_gastos)}}</p>
                       </td>
                     </tr>
                   </tbody>
@@ -233,6 +238,54 @@
                 <button v-on:click="verCrecimientoGlobal()" class="btn btn-link">Ver Global</button>
               </div>
             </div>
+
+            <div class="card mx-auto">
+              Ingresos - gastos
+              <div class="card-body">
+                <table class="table table-striper" v-if="reporteIngresoMenosGastos != null">
+                  <tr>
+                    <th>Sucursal</th>
+                    <th>Mensualidades</th>
+                    <th>Gastos</th>
+                    <th>Ingresos - Cargos</th>
+                  </tr>
+                  <tr>
+                    <td>{{reporteIngresoMenosGastos.sucursal}}</td>
+                    <td>$ {{ formatPrice(reporteIngresoMenosGastos.cargos)}}</td>
+                    <td>
+                      <span
+                        v-bind:class="reporteIngresoMenosGastos.suma_gastos > 0 ? 'text-danger':'text-success'"
+                      >$ {{ formatPrice(reporteIngresoMenosGastos.suma_gastos)}}</span>
+                    </td>
+                    <td>
+                      
+                        <strong>
+                          <span
+                            v-if="reporteIngresoMenosGastos.suma_gastos == null"
+                            class="text-success"
+                          >$ {{formatPrice(reporteIngresoMenosGastos.cargos)}}</span>
+
+                          <span
+                            v-if="reporteIngresoMenosGastos.suma_gastos != null"
+                            v-bind:class="reporteIngresoMenosGastos.ganancias <= 0 ? 'text-danger':'text-success'"
+                          >$ {{formatPrice(reporteIngresoMenosGastos.ganancias)}}</span>
+                        </strong>
+                      
+                    </td>
+                  </tr>
+                </table>
+                <!--
+                    "ganancias":"3001",
+                  "contador_total_cargos":"3",
+                  "contador_cargos_pagados":"1",
+                  "contador_cargos_no_pagados":"2",
+                  "cargos":"3501",
+                  "pagados":"1",
+                  "suma_cargos":"1",
+                "suma_cargos_pendientes":"3500"-->
+              </div>
+            </div>
+
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -276,12 +329,14 @@
 
                     <td class="hidden-xs text-center">{{ row.apellidos }}</td>
 
-                    <td  class="text-center">
+                    <td class="text-center">
                       <span>{{row.fecha_inscripcion | moment("DD-MMM-YYYY")}}</span>
                     </td>
 
                     <td class="text-center">
-                     <strong> <span class="text-primary">$ {{ formatPrice(row.costo_colegiatura)}}</span></strong>
+                      <strong>
+                        <span class="text-primary">$ {{ formatPrice(row.costo_colegiatura)}}</span>
+                      </strong>
                     </td>
                     <td></td>
                   </tr>
@@ -297,9 +352,8 @@
         role="tabpanel"
         aria-labelledby="pills-mensualidades-tab"
       >
-        <div class="card">                    
-                
-                <ReporteMensualidades/>          
+        <div class="card">
+          <ReporteMensualidades />
         </div>
       </div>
     </div>

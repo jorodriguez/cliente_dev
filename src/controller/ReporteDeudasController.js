@@ -22,6 +22,7 @@ export default {
       uriTempMesesActivos: "http://localhost:5000/meses_activos",
       uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
       uriTempGastosMesActual : "http://localhost:5000/reporte_gastos_mes_actual",      
+      uriTempIngresoMenosGastos : "http://localhost:5000/reporte_ingreso_menos_gasto_mensual",
       
 
   /*    uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",
@@ -59,6 +60,7 @@ export default {
       listaMesesActivos: [],
       listaCrecimientoGlobal: [],
       listaCrecimientoMensualSucursal:[],
+      reporteIngresoMenosGastos : null,
       alumno_seleccionado : {id:0,nombre:""},
       response: "",
       mensaje: ""
@@ -119,7 +121,7 @@ export default {
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
-                this.listaBalancesAlumnosPorSucursal = result.data;
+                this.listaBalancesAlumnosPorSucursal = result.data;                
               }
             },
             error => {
@@ -170,7 +172,7 @@ export default {
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
-                this.listaBalancesAlumnosNuevosPorSucursal = result.data;                
+                this.listaBalancesAlumnosNuevosPorSucursal = result.data;                              
               }
             },
             error => {
@@ -221,9 +223,13 @@ export default {
           )
           .then(
             result => {
-              console.log("Consulta " + result.data);
+              console.log("MMMMESUAL " + result.data);
               if (result.data != null) {
                 this.listaCrecimientoMensualSucursal = result.data;
+                if(this.listaCrecimientoMensualSucursal.length > 0){
+                    //let mes_actual = this.listaCrecimientoMensualSucursal[0];
+                    this.loadReporteIngresosMenosGastos(id_sucursal,null);
+                }                
               }
             },
             error => {
@@ -254,6 +260,7 @@ export default {
               console.log("Consulta " + result.data);
               if (result.data != null) {
                 this.listaBalancesAlumnosNuevosPorSucursal = result.data;
+                this.loadReporteIngresosMenosGastos(id_sucursal,mes_anio);
               }
             },
             error => {
@@ -304,7 +311,31 @@ export default {
             console.log("Consulta " + JSON.stringify(result.data));
             if (result.data != null && result.data.length > 0) {
               this.gasto_mensual = result.data[0].gasto_mes_actual;
+            
             }
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    };
+
+    this.loadReporteIngresosMenosGastos = function (id_sucursal,mes) {
+      this.$http
+        .get(
+          this.uriTempIngresoMenosGastos+"/"+id_sucursal+"/"+mes,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
+          }
+        )
+        .then(
+          result => {
+            console.log("reporteIngresoMenosGastos " + JSON.stringify(result.data));
+            //if (result.data != null) {
+              this.reporteIngresoMenosGastos = result.data;
+            //}
           },
           error => {
             console.error(error);
