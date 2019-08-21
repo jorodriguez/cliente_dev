@@ -118,7 +118,8 @@ export default {
             console.log("Consulta " + this.response);
             if (this.response != 0) {
                console.log("Se cambio de sucursal sin problemas ");
-               this.mensaje="Se realizó el cambio de sucursal del alumno Alumno(a)"+this.alumno.nombre+" "+this.alumno.apellidos+".";
+               this.mensaje="Se realizó el cambio de sucursal del Alumno(a) "+this.alumno.nombre+" "+this.alumno.apellidos
+               +", de "+this.alumno.nombre_sucursal+" a "+this.sucursal_seleccionada.nombre+".";               
             }else{
               console.log("Existieron problemas para cambiar de sucursal ");
               this.mensaje=`Existió un error al intentar realizar el cambio de sucursal, por favor contacta al equipo de soporte para notificar este detalle.`;

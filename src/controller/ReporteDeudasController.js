@@ -170,7 +170,7 @@ export default {
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
-                this.listaBalancesAlumnosNuevosPorSucursal = result.data;
+                this.listaBalancesAlumnosNuevosPorSucursal = result.data;                
               }
             },
             error => {

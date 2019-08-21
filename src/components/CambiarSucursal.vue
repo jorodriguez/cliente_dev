@@ -67,7 +67,7 @@
           </div>
           <div class="modal-body">
             <p>
-              ¿Confirma que desea realizar el cambio de sucursal ?              
+               ¿ Confirma que desea realizar el cambio de sucursal ?              
             </p>
             <p><strong> Alumno(a) <span class="text-info">{{alumno.nombre}} {{alumno.apellidos}} </span></strong></p>
             <div class="row">
@@ -109,15 +109,17 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">Cambio de sucursal</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <router-link :to="{ name: 'CatAlumno', params: {} }" 
+            ria-label="Close"
+                        data-dismiss="modal"
+            >
+            <span aria-hidden="true">&times;</span>
+          </router-link>             
           </div>
           <div class="modal-body">
             <p>
               {{mensaje}}              
-            </p>
-            <p>de {{alumno.nombre_sucursal}} a {{sucursal_seleccionada.nombre}}</p>            
+            </p>           
           </div>
           <div class="modal-footer">
             <router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-primary"

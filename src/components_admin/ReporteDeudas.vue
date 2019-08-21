@@ -240,7 +240,7 @@
                   <th>Nombre</th>
                   <th class="hidden-xs">Apellidos</th>
                   <th>Inscripción</th>
-                  <th>Adeuda</th>
+                  <th>Mensualidad</th>
                   <th></th>
                 </thead>
                 <tbody v-for="row in listaBalancesAlumnosNuevosPorSucursal" :key="row.id">
@@ -274,32 +274,14 @@
                       </button>
                     </td>
 
-                    <td class="hidden-xs">{{ row.apellidos }}</td>
+                    <td class="hidden-xs text-center">{{ row.apellidos }}</td>
 
-                    <td>
+                    <td  class="text-center">
                       <span>{{row.fecha_inscripcion | moment("DD-MMM-YYYY")}}</span>
                     </td>
 
                     <td class="text-center">
-                      <span
-                        :data-popover-content="'#'+row.id"
-                        data-toggle="popover"
-                        data-placement="right"
-                        v-if="row.total_adeudo > 0"
-                        class="text-danger"
-                      >${{ row.total_adeudo }}</span>
-                      <span v-else>${{ row.total_adeudo }}</span>
-                      <div class="popover-block-container">
-                        <div :id="row.id" style="display:none;">
-                          <div class="popover-body">
-                            <button type="button" class="popover-close close">
-                              <i class="material-icons">close</i>
-                            </button>
-                            Adeuda {{row.total_adeuda}}
-                            Pagado {{row.total_pagado}}
-                          </div>
-                        </div>
-                      </div>
+                     <strong> <span class="text-primary">$ {{ formatPrice(row.costo_colegiatura)}}</span></strong>
                     </td>
                     <td></td>
                   </tr>

@@ -61,7 +61,7 @@ export default {
           result => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
-              this.listaCrecimientoGlobal = result.data;
+              this.listaCrecimientoGlobal = result.data;              
             }
           },
           error => {
@@ -88,7 +88,7 @@ export default {
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
-                this.listaNuevosAlumno = result.data;
+                this.listaNuevosAlumno = result.data;                
               }
             },
             error => {
