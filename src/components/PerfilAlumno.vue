@@ -779,6 +779,7 @@
                           <th>Correo</th>
                           <th>Parentesco</th>
                           <th></th>
+                          <th></th>
                         </thead>
                         <tr v-for="row in listaFamiliares" :key="row.id">
                           <td class="text-right">
@@ -814,6 +815,14 @@
                               data-target="#modal_eliminar_familiar"
                               v-on:click="seleccionarFamiliar(row,'DELETE')"
                             >Eliminar</button>
+                          </td>
+                          <td>
+                            <button
+                              v-if="row.sistema"
+                              type="button"
+                              class="btn btn-link blue"                              
+                              v-on:click="seleccionarFamiliarResetClave(row)"
+                            >Resetear contraseña</button>
                           </td>
                         </tr>
                       </table>
@@ -1122,6 +1131,43 @@
               >Confirmar</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal"
               v-on:click="cancelarHabilitarDesabilitarDatosFacturacion()"
+              >Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <!-- confirmar resetear clave -->
+      <div
+        id="modal_confirmar_resetear_clave"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Resetear clave</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">                            
+              <p>
+                ¿Confirma que desea resetear la contraseña de cliente <strong>{{familiar.nombre}} </strong> ?                
+              </p>
+              <p>Se enviará un correo a <strong>{{familiar.correo}}</strong>  con la nueva clave al cliente.</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                v-on:click="confirmarResetClave()"
+                data-dismiss="modal"
+              >Confirmar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"              
               >Cancelar</button>
             </div>
           </div>

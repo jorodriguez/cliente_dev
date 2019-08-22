@@ -65,6 +65,7 @@ export default {
             uriTempServicios: "http://localhost:5000/servicios",
             uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
             uriTempDatosFacturacion: "http://localhost:5000/datos_facturacion",            
+            uriTempResetClaveFamiliar: "http://localhost:5000/reset_password",
            
 
            /* uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
@@ -412,6 +413,36 @@ export default {
             this.familiar = item;
             this.operacion = operacion;
             this.loadCatalogoParentescoFuncion();
+        },
+        seleccionarFamiliarResetClave(item) {
+            this.familiar = item;
+            $("#modal_confirmar_resetear_clave").modal("show");
+        },
+        confirmarResetClave(){
+            this.$http
+            .get(this.uriTempResetClaveFamiliar + "/" + this.familiar.id, 
+            {
+                headers: {
+                    "x-access-token": this.sesion.token
+                }
+            })
+            .then(
+                result => {
+                    this.response = result.data;
+
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        this.mensaje = "Se envio un correo con la nueva contraseña al usuario.";
+
+                        $("#modal_confirmar_resetear_clave").modal("hide");
+
+                        //this.loadFamiliaresFuncion();
+                    }
+                },
+                error => {
+                    console.error(error);
+                }
+            );
         },
         agregarFamiliar() {
             console.log("Agregar familiar ");
