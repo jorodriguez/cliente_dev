@@ -469,15 +469,16 @@ export default {
                 })
                 .then(
                     result => {
-                        this.response = result.data;
+                        let respuesta = result.data;
+                        console.log(JSON.stringify(respuesta));
 
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            this.mensaje = "Se agrego el familiar.";
+                        if (respuesta != null) {                            
+                            this.mensaje = respuesta.mensaje;
+                            if(respuesta.estatus){
+                                $("#modal_familiar").modal("hide");
 
-                            $("#modal_familiar").modal("hide");
-
-                            this.loadFamiliaresFuncion();
+                                this.loadFamiliaresFuncion();
+                            }                            
                         }
                     },
                     error => {
@@ -507,17 +508,15 @@ export default {
                 })
                 .then(
                     result => {
-                        this.response = result.data;
-
-                        if (this.response != null) {
+                        //probar mensaje en la vista
+                        
+                        if (result.data != null) {
                             console.log("" + this.response);
-                            if (this.response == 0 || this.response == null) {
-                                this.mensaje = "Sucedió un error inesperado";
-                            } else {
-                                this.mensaje = "Se actualizaron los datos de familiar.";
+                            if (result.data.estatus) {                                
+                                this.mensaje = this.response.mensaje;
                                 this.loadFamiliaresFuncion();
                                 $("#modal_familiar").modal("hide");
-                            }
+                            } 
                         }
                     },
                     error => {
