@@ -15,7 +15,7 @@
               </div>
 
               <div class="modal-body text-left">
-                {{mensaje}}
+                 <span class="text-danger"> {{ mensaje }} </span>
                 <div class="form-group" v-if="operacion == 'INSERT'">
                   <label for="selectParentescoFamiliar">
                     Parentesco
