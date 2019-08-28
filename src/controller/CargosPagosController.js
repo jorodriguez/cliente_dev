@@ -27,8 +27,9 @@ export default {
   */    
       cargo: {
         cantidad: 1,
-        cat_cargo: -1
-      },
+        cat_cargo: {id:-1,nombre:"",descripcion:"",precio:0,escribir_cantidad:false},        
+        total_cargo:0
+      },      
       pago: {
         pago_total: 0,
         cat_forma_pago: {id:-1,nombre:"",permite_factura:false},        
@@ -165,23 +166,35 @@ export default {
   methods: {
     iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
-      this.cargo.cat_cargo = -1;
+      this.cargo.cat_cargo = {id:-1,nombre:"",descripcion:"",precio:0,escribir_cantidad:false};
       this.cargo.cantidad = 1;
       this.cargo.nota = '';
       this.mensaje = "";
+      this.cargo.total_cargo = 0;
       this.loadFunctionCatCargos();
       $('#modal_cargo').modal('show');
     },
+    calcularTotalCargo(){       
+        if(!this.cargo.cat_cargo.escribir_cantidad){
+          this.cargo.cantidad = 1;
+        }
+        this.cargo.total_cargo = this.cargo.cantidad * this.cargo.cat_cargo.precio;
+    },
     guardarCargo() {
       console.log("guardar cargos");
-      if (this.cargo.cat_cargo == -1) {
+      if (this.cargo.cat_cargo.id == -1) {
         console.log("cargo");
         this.mensaje = 'Seleccione el cargo..';
         return;
       }
 
-      if (this.cargo.cantidad == '' || this.cargo.cantidad == -1) {
+      if (this.cargo.cantidad == '' ) {
         this.mensaje = 'Escriba la cantidad del cargo..';
+        return;
+      }
+
+      if (this.cargo.cantidad <= 0 ) {
+        this.mensaje = 'La cantidad no debe ser cero ó negativo..';
         return;
       }
 
@@ -421,6 +434,10 @@ export default {
           element.checked = this.seleccionTodos;
         }
       });
-    }
+    },
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
   },
 };
