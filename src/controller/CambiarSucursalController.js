@@ -108,7 +108,7 @@ export default {
       this.$http
         .put(
           //this.uriTempCambioSucursal + "/" + this.alumno.id, {
-          URL.SUCURSAL_BASE + "/" + this.alumno.id, {
+          URL.CAMBIO_SUCURSAL_BASE + "/" + this.alumno.id, {
           id_sucursal_origen: this.alumno.co_sucursal,
           id_sucursal_destino: this.sucursal_seleccionada.id,
           genero: this.usuarioSesion.id

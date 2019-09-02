@@ -239,6 +239,7 @@
               </div>
             </div>
 
+          <!-- PENDIENTE
             <div class="card mx-auto">
               Ingresos - gastos
               <div class="card-body">
@@ -273,18 +274,10 @@
                       
                     </td>
                   </tr>
-                </table>
-                <!--
-                    "ganancias":"3001",
-                  "contador_total_cargos":"3",
-                  "contador_cargos_pagados":"1",
-                  "contador_cargos_no_pagados":"2",
-                  "cargos":"3501",
-                  "pagados":"1",
-                  "suma_cargos":"1",
-                "suma_cargos_pendientes":"3500"-->
+                </table>               
               </div>
             </div>
+            -->
 
             <div class="table-responsive">
               <table class="table">

@@ -227,10 +227,9 @@ export default {
               console.log("MMMMESUAL " + result.data);
               if (result.data != null) {
                 this.listaCrecimientoMensualSucursal = result.data;
-                if(this.listaCrecimientoMensualSucursal.length > 0){
-                    //let mes_actual = this.listaCrecimientoMensualSucursal[0];
+                /*if(this.listaCrecimientoMensualSucursal.length > 0){                
                     this.loadReporteIngresosMenosGastos(id_sucursal,null);
-                }                
+                } */               
               }
             },
             error => {
@@ -261,7 +260,7 @@ export default {
               console.log("Consulta " + result.data);
               if (result.data != null) {
                 this.listaBalancesAlumnosNuevosPorSucursal = result.data;
-                this.loadReporteIngresosMenosGastos(id_sucursal,mes_anio);
+               // this.loadReporteIngresosMenosGastos(id_sucursal,mes_anio);
               }
             },
             error => {
@@ -321,7 +320,7 @@ export default {
         );
     };
 
-    this.loadReporteIngresosMenosGastos = function (id_sucursal,mes) {
+    /*this.loadReporteIngresosMenosGastos = function (id_sucursal,mes) {
       this.$http
         .get(
           this.uriTempIngresoMenosGastos+"/"+id_sucursal+"/"+mes,
@@ -342,7 +341,7 @@ export default {
             console.error(error);
           }
         );
-    };
+    };*/
 
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
