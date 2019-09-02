@@ -2,13 +2,15 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 
+import URL from "../helpers/Urls";
+
 export default {
   name: "Asistencia",
   data() {
     return {
-      uriTemp: "http://localhost:5000/asistencia",
+     // uriTemp: "http://localhost:5000/asistencia",
       //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
-     //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
+      //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -17,8 +19,8 @@ export default {
       listaRecibidos: [],
       listaSeleccionSalida: [],
       listaFiltroGrupos: [],
-      grupoSeleccionado: {id:-1,nombre:''},
-      grupoDefault : {id:-1,nombre:'Todos'},
+      grupoSeleccionado: { id: -1, nombre: '' },
+      grupoDefault: { id: -1, nombre: 'Todos' },
       response: "",
       mensaje: ""
     };
@@ -38,10 +40,8 @@ export default {
     this.loadFunction = function () {
       this.$http
         .get(
-          this.uriTemp +
-          "/alumnos_por_recibidos" +
-          "/" +
-          this.usuarioSesion.co_sucursal,
+          //URL.ASISTENCIA +"/alumnos_por_recibidos" +"/" + this.usuarioSesion.co_sucursal,
+          URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -69,10 +69,8 @@ export default {
       this.listaRecibidos = [];
       this.$http
         .get(
-          this.uriTemp +
-          "/alumnos_recibidos" +
-          "/" +
-          this.usuarioSesion.co_sucursal,
+          //   this.uriTemp + "/alumnos_recibidos" + "/" + this.usuarioSesion.co_sucursal,
+          URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -96,18 +94,18 @@ export default {
     this.actualizarComboFiltro = () => {
       var resArr = [];
       this.lista.filter(function (item) {
-          var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
-          if (i <= -1) {
-              resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
-          }
-          return null;
+        var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
+        if (i <= -1) {
+          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
+        }
+        return null;
       });
       this.listaFiltroGrupos = resArr;
       console.log("Grupos filtrados " + JSON.stringify(this.listaFiltroGrupos));
-  };
+    };
 
     this.loadFunction();
-    this.loadFunctionAlumnosSalida();    
+    this.loadFunctionAlumnosSalida();
   },
   methods: {
     addToList(itemSelected) {
@@ -143,8 +141,8 @@ export default {
 
         this.$http
           .post(
-            this.uriTemp + "/entradaAlumnos",
-            { ids: ids, genero: this.usuarioSesion.id },
+            //this.uriTemp + "/entradaAlumnos", { ids: ids, genero: this.usuarioSesion.id },
+            URL.ASISTENCIA_ENTRADA_ALUMNOS , { ids: ids, genero: this.usuarioSesion.id },
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -203,7 +201,8 @@ export default {
 
         this.$http
           .post(
-            this.uriTemp + "/salidaAlumnos",
+            //this.uriTemp + "/salidaAlumnos",
+            URL.ASISTENCIA_SALIDA_ALUMNOS,
             { ids: ids, genero: this.usuarioSesion.id },
             {
               headers: {

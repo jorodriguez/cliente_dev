@@ -1,4 +1,6 @@
 
+import URL from "../helpers/Urls";
+
 export default {
   name: "Login",
   props: {
@@ -11,9 +13,9 @@ export default {
         password: "",
         mensajeToast: null
       },
-      response: "",
-      
-      uriTemp: "http://localhost:5000/auth/login"    
+      response: "",      
+      //uriTemp : URL.LOGIN,
+      //uriTemp: "http://localhost:5000/auth/login"    
       //uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
       //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
     };
@@ -38,7 +40,7 @@ export default {
 
       var data = { correo: this.input.correo, password: this.input.password };
 
-      this.$http.post(this.uriTemp, data).then(
+      this.$http.post(URL.LOGIN, data).then(
         result => {
           console.log("En el login");
           this.response = result.data;
