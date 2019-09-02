@@ -1,6 +1,8 @@
 
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
+import URL from "../helpers/Urls";
+
 
 export default {
   name: "Actividad",
@@ -18,9 +20,9 @@ export default {
       loadFunction: null,
       loadFunctionAlumnos: null,
       
-      uriTemp: "http://localhost:5000/actividad/catalogo_actividad",      
-      uriTempAlumnos: "http://localhost:5000/alumnos",      
-      uriTempAsistencia: "http://localhost:5000/asistencia",
+      uriTemp: URL.CATALOGO_ACTIVIDAD, // "http://localhost:5000/actividad/catalogo_actividad",      
+      uriTempAlumnos: URL.ALUMNOS_BASE, //"http://localhost:5000/alumnos",      
+      uriTempAsistencia: URL.ASISTENCIA_BASE, // "http://localhost:5000/asistencia",
        
            
       /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/actividad/catalogo_actividad",

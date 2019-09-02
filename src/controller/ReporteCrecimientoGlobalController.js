@@ -2,6 +2,8 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
+import URL from "../helpers/Urls";
+
 
 export default {
   name: "CrecimientoGlobal",
@@ -10,8 +12,8 @@ export default {
   },
   data() {
     return {
-      uriTempBalanceCrecimientoGlobal: "http://localhost:5000/balance_crecimiento_global",
-      uriTempBalanceAlumnosIngreso: "http://localhost:5000/alumnos_crecimiento_mes",
+      uriTempBalanceCrecimientoGlobal: URL.BALANCE_CRECIMIENTO_GLOBAL, //"http://localhost:5000/balance_crecimiento_global",
+      uriTempBalanceAlumnosIngreso: URL.ALUMNOS_CRECIMIENTO_MES, // "http://localhost:5000/alumnos_crecimiento_mes",
       
 
       /*uriTempBalanceCrecimientoGlobal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_global",      

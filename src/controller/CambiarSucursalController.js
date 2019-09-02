@@ -2,13 +2,15 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 
+import URL from "../helpers/Urls";
+
 export default {
   name: "cambiar-alumno-sucursal",
   data() {
     return {
-      uriTemp: "http://localhost:5000/sucursal",
-      uriTempCambioSucursal: "http://localhost:5000/cambio_sucursal",
-      uriTempAlumnos: "http://localhost:5000/alumnos",
+     // uriTemp: "http://localhost:5000/sucursal",
+     // uriTempCambioSucursal: "http://localhost:5000/cambio_sucursal",
+   // uriTempAlumnos: "http://localhost:5000/alumnos",
       //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
       //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
       usuarioSesion: {},
@@ -42,7 +44,9 @@ export default {
 
       //cargar informacion del alumno
       this.$http
-        .get(this.uriTempAlumnos + "/id/" + id_alumno, {
+        .get(
+          //this.uriTempAlumnos + "/id/" + id_alumno, {
+          URL.ALUMNOS_BASE + "/id/" + id_alumno, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -59,7 +63,9 @@ export default {
 
       this.loadFunction = function () {
         this.$http
-          .get(this.uriTemp,
+          .get(
+            //this.uriTemp,
+            URL.SUCURSAL_BASE,
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -100,7 +106,9 @@ export default {
     },
     confirmarCambioSucursal() {
       this.$http
-        .put(this.uriTempCambioSucursal + "/" + this.alumno.id, {
+        .put(
+          //this.uriTempCambioSucursal + "/" + this.alumno.id, {
+          URL.SUCURSAL_BASE + "/" + this.alumno.id, {
           id_sucursal_origen: this.alumno.co_sucursal,
           id_sucursal_destino: this.sucursal_seleccionada.id,
           genero: this.usuarioSesion.id

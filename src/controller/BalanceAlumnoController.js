@@ -1,13 +1,15 @@
 
 import Vue from "vue";
 
+import URL from "../helpers/Urls";
+
 export default {
   name: "balance-alumno",  
   template:'<span> {{ balanceAlumno.total_adeudo }} </span>',
   props: ['idalumno'],
   data() {
     return {      
-      uriTempBalance: "http://localhost:5000/balance",           
+      //uriTempBalance: "http://localhost:5000/balance",           
       //uriTempBalance: "https://api-ambiente-desarrollo.herokuapp.com/balance",            
       //uriTempBalance: "https://api-ambiente-produccion.herokuapp.com/balance",            
       balanceAlumno : {total_adeudo:0},
@@ -32,8 +34,7 @@ export default {
     
     this.loadFunctionBalanceAlumno = function() {
       this.$http
-        .get(
-          this.uriTempBalance +"/" +this.idalumno,            
+        .get(URL.BALANCE_BASE +"/" +this.idalumno,            
           {
             headers: {
               "x-access-token": this.sesion.token

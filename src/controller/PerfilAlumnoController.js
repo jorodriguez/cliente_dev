@@ -9,6 +9,7 @@ import Datepicker from 'vuejs-datepicker';
 //import CargosPagosController from './CargosPagosController'
 import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
+import URL from "../helpers/Urls";
 
 export default {
     name: "perfil-alumno",
@@ -58,14 +59,14 @@ export default {
                             telefono_contacto : "",
                             correo_contacto:""
             },            
-            uriTemp: "http://localhost:5000/alumnos",
-            uriTempGrupos: "http://localhost:5000/grupos",
-            uriTempFamiliar: "http://localhost:5000/familiar",
-            uriTempParentesco: "http://localhost:5000/parentesco",            
-            uriTempServicios: "http://localhost:5000/servicios",
-            uriTempValoresEsperados: "http://localhost:5000/valores_esperados",
-            uriTempDatosFacturacion: "http://localhost:5000/datos_facturacion",            
-            uriTempResetClaveFamiliar: "http://localhost:5000/reset_password",
+            uriTemp: URL.ALUMNOS_BASE,
+            uriTempGrupos: URL.GRUPOS_BASE,
+            uriTempFamiliar: URL.FAMILIAR_BASE,
+            uriTempParentesco: URL.PARENTESCO_BASE, // "http://localhost:5000/parentesco",            
+            uriTempServicios: URL.SERVICIOS_BASE, //"http://localhost:5000/servicios",
+            uriTempValoresEsperados:URL.VALORES_ESPERADOS, // "http://localhost:5000/valores_esperados",
+            uriTempDatosFacturacion: URL.DATOS_FACTURADOS, // "http://localhost:5000/datos_facturacion",            
+            uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
            
 
            /* uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",

@@ -1,6 +1,9 @@
 import AlumnoModel from "../models/AlumnoModel";
 import Datepicker from 'vuejs-datepicker';
 
+
+import URL from "../helpers/Urls";
+
 export default {
   name: "Alumno",
   components: {
@@ -21,8 +24,8 @@ export default {
       loadFunctionGrupos: null,
       mensaje :"",
       
-      uriTemp: "http://localhost:5000/alumnos",
-      uriTempGrupos: "http://localhost:5000/grupos"
+     // uriTemp: "http://localhost:5000/alumnos",
+   //   uriTempGrupos: "http://localhost:5000/grupos"
       
       
       /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
@@ -51,7 +54,9 @@ export default {
     console.log("Cargando lista alumno");
     this.loadFunction = function() {
       this.$http
-        .get(this.uriTemp + "/" + this.usuarioSesion.co_sucursal, {
+        .get(
+          //this.uriTemp + "/" + this.usuarioSesion.co_sucursal, {
+          URL.ALUMNOS_BASE+ "/" + this.usuarioSesion.co_sucursal, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -75,7 +80,9 @@ export default {
     console.log("process.env.URL_GRUPOS " + process.env.URL_GRUPOS);
     this.loadFunctionGrupos = function() {
       this.$http
-        .get(this.uriTempGrupos, {
+        .get(
+          //this.uriTempGrupos, {
+          URL.GRUPOS_BASE, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -203,7 +210,7 @@ export default {
       this.input.genero = this.usuarioSesion.id;
 
       this.$http
-        .post(this.uriTemp, this.input, {
+        .post(URL.ALUMNOS_BASE, this.input, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -230,7 +237,7 @@ export default {
       }
 
       this.$http
-        .put(this.uriTemp + "/" + this.input.id, this.input, {
+        .put(URL.ALUMNOS_BASE + "/" + this.input.id, this.input, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -255,7 +262,7 @@ export default {
       console.log("Modificar el id " + this.input.id);
       
            this.$http
-        .delete(this.uriTemp + "/" + this.input.id, {
+        .delete(URL.ALUMNOS_BASE + "/" + this.input.id, {
           headers: {
             "x-access-token": this.sesion.token
           }

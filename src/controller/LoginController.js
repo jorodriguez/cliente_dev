@@ -21,7 +21,8 @@ export default {
     };
   },
   mounted() {
-    console.log("iniciando login "+process.env.ROOT_API);
+    //console.log("iniciando login "+process.env.ROOT_API);
+    console.log("URL BASE "+URL.LOGIN);
     this.$session.clear();
     //toast
     this.mensajeToast = mensaje => {
@@ -39,7 +40,7 @@ export default {
       }
 
       var data = { correo: this.input.correo, password: this.input.password };
-
+      
       this.$http.post(URL.LOGIN, data).then(
         result => {
           console.log("En el login");

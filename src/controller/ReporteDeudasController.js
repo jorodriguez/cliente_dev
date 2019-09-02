@@ -3,6 +3,7 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
 import ReporteMensualidades from "../components_admin/ReporteMensualidades";
+import URL from "../helpers/Urls";
 
 export default {
   name: "ReporteDeudas",
@@ -13,16 +14,16 @@ export default {
   data() {
     return {
       
-     uriTempBalanceSucursal: "http://localhost:5000/balance_sucursal",
-      uriTempBalanceAlumnosSucursal: "http://localhost:5000/balance_alumnos_sucursal",
-      uriTempBalanceCrecimiento: "http://localhost:5000/balance_crecimiento",
-      uriTempBalanceCrecimientoAlumnos: "http://localhost:5000/balance_crecimiento_alumnos",
-      uriTempBalanceCrecimientoGlobal: "http://localhost:5000/balance_crecimiento_global",
-      uriTempBalanceCrecimientoMensualSucursal: "http://localhost:5000/balance_crecimiento_mensual",
-      uriTempMesesActivos: "http://localhost:5000/meses_activos",
-      uriTempBalanceAlumnoCrecimientoMensualSucursal: "http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
-      uriTempGastosMesActual : "http://localhost:5000/reporte_gastos_mes_actual",      
-      uriTempIngresoMenosGastos : "http://localhost:5000/reporte_ingreso_menos_gasto_mensual",
+     uriTempBalanceSucursal: URL.BALANCE_SUCURSAL, // "http://localhost:5000/balance_sucursal",
+      uriTempBalanceAlumnosSucursal: URL.BALANCE_ALUMNO_SUCURSAL, // "http://localhost:5000/balance_alumnos_sucursal",
+      uriTempBalanceCrecimiento: URL.BALANCE_CRECIMIENTO, //"http://localhost:5000/balance_crecimiento",
+      uriTempBalanceCrecimientoAlumnos: URL.BALANCE_CRECIMIENTO_ALUMNOS, // "http://localhost:5000/balance_crecimiento_alumnos",
+      uriTempBalanceCrecimientoGlobal: URL.BALANCE_CRECIMIENTO_GLOBAL, // "http://localhost:5000/balance_crecimiento_global",
+      uriTempBalanceCrecimientoMensualSucursal: URL.BALANCE_CRECIMIENTO_MENSUAL, // "http://localhost:5000/balance_crecimiento_mensual",
+      uriTempMesesActivos: URL.MESES_ACTIVOS, // "http://localhost:5000/meses_activos",
+      uriTempBalanceAlumnoCrecimientoMensualSucursal: URL.ALUMNOS_BALANCE_CRECIMIENTO_MENSUAL_SUCURSAL, //"http://localhost:5000/alumnos_balance_crecimiento_mensual_sucursal",      
+      uriTempGastosMesActual : URL.REPORTE_GASTO_MES_ACTUAL,// "http://localhost:5000/reporte_gastos_mes_actual",      
+      uriTempIngresoMenosGastos : URL.REPORTE_INGRESO_MENOS_GASTO_MENSUAL, //"http://localhost:5000/reporte_ingreso_menos_gasto_mensual",
       
 
   /*    uriTempBalanceSucursal: "https://api-ambiente-desarrollo.herokuapp.com/balance_sucursal",

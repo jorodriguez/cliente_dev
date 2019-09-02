@@ -3,6 +3,7 @@ import Vue from "vue";
 import Datepicker from 'vuejs-datepicker';
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
+import URL from "../helpers/Urls";
 
 export default {
   name: "repote-gastos",
@@ -14,8 +15,8 @@ export default {
   data() {
     return {
       
-      uriTempReporteGastos: "http://localhost:5000/reporte_gastos",
-      uriTempReporteGastosGlobal: "http://localhost:5000/reporte_gastos_global",            
+      uriTempReporteGastos: URL.REPORTE_GASTOS, //"http://localhost:5000/reporte_gastos",
+      uriTempReporteGastosGlobal: URL.REPORTE_GASTOS_GLOBAL, //"http://localhost:5000/reporte_gastos_global",            
       
      
       /*uriTempReporteGastos: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos",

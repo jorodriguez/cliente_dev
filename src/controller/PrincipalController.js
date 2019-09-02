@@ -4,6 +4,8 @@ import ActividadModel from "../models/ActividadModel";
 import { truncateSync } from "fs";
 //import fire from '../fire'
 import Vue from "vue";
+import URL from "../helpers/Urls";
+
 
 export default {
     name: "Principal",
@@ -32,9 +34,9 @@ export default {
             mensajeToast: null,
             firebaseMessages: null,
             
-            uriTempAsistencia: "http://localhost:5000/asistencia",
-            uriTempGrupos: "http://localhost:5000/grupos",
-            uriTempActividad: "http://localhost:5000/actividad"
+            uriTempAsistencia: URL.ASISTENCIA_BASE,
+            uriTempGrupos:  URL.GRUPOS_BASE,
+            uriTempActividad: URL.ACTIVIDAD_BASE,
             
 
             /*uriTempAsistencia: "https://api-ambiente-desarrollo.herokuapp.com/asistencia",

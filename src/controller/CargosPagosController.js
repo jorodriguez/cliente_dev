@@ -4,6 +4,8 @@ import AlumnoModel from "../models/AlumnoModel";
 import { isRegExp } from "util";
 import { timingSafeEqual } from "crypto";
 
+import URL from "../helpers/Urls";
+
 
 export default {
   name: "cargos-pagos",
@@ -11,9 +13,9 @@ export default {
 
   data() {
     return {
-      uriTempPagos: "http://localhost:5000/pagos",
-      uriTempFormasPagos: "http://localhost:5000/formas_pagos",
-      uriTempCargos: "http://localhost:5000/cargos",
+     // uriTempPagos: "http://localhost:5000/pagos",
+     // uriTempFormasPagos: "http://localhost:5000/formas_pagos",
+    //  uriTempCargos: "http://localhost:5000/cargos",
     
 
       /*uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
@@ -74,7 +76,8 @@ export default {
     this.loadFunctionCargosAlumno = function () {
       this.$http
         .get(
-          this.uriTempCargos + "/" + this.idalumno,
+          //this.uriTempCargos + "/" + this.idalumno,
+          URL.CARGOS_BASE + "/" + this.idalumno,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -100,7 +103,8 @@ export default {
       this.listaCargos = [];
       this.$http
         .get(
-          this.uriTempCargos,
+          //this.uriTempCargos,
+          URL.CARGOS_BASE,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -127,7 +131,8 @@ export default {
         console.log("Iniciando consulta de formas pago");
         this.$http
           .get(            
-            this.uriTempFormasPagos,
+            //this.uriTempFormasPagos,
+            URL.FORMAS_PAGO_BASE,
             {
               headers: {
                 "x-access-token": this.sesion.token
@@ -203,7 +208,9 @@ export default {
       this.cargo.id_alumno = this.idalumno;
 
       this.$http
-        .post(this.uriTempCargos + "/registrar", this.cargo, {
+        .post(
+          //this.uriTempCargos + "/registrar", this.cargo, {
+          URL.CARGO_REGISTRAR , this.cargo, {
           headers: {
             "x-access-token": this.sesion.token
           }
@@ -370,7 +377,9 @@ export default {
           };
 
           this.$http
-            .post(this.uriTempPagos + "/registrar", objEnvio, {
+            .post(
+             // this.uriTempPagos + "/registrar", objEnvio, {
+              URL.PAGOS_REGISTRAR , objEnvio, {
               headers: {
                 "x-access-token": this.sesion.token
               }
@@ -405,7 +414,9 @@ export default {
       console.log("this.cargoSeleccionado.id_cargo_balance_alumno " + this.cargoSeleccionado.id_cargo_balance_alumno);
 
       this.$http
-        .get(this.uriTempPagos + "/" + this.cargoSeleccionado.id_cargo_balance_alumno, {
+        .get(
+          //this.uriTempPagos + "/" + this.cargoSeleccionado.id_cargo_balance_alumno, {
+          URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno, {
           headers: {
             "x-access-token": this.sesion.token
           }

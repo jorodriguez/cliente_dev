@@ -1,10 +1,11 @@
 import Vue from "vue";
+import URL from "../helpers/Urls";
 
 export default {
   name: "ReporteMensualidades",
   data() {
     return {      
-     uriTemp: "http://localhost:5000/reporte_mensualidades",     
+     uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
      listaSucursales : [],
      listaCargos : [],      
      listaCargosResp : [],

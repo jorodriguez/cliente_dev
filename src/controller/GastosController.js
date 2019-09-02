@@ -4,6 +4,8 @@ import Datepicker from 'vuejs-datepicker';
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
 
+import URL from "../helpers/Urls";
+
 export default {
   name: "gastos",
   props: ['idalumno', 'requiere_factura'],
@@ -13,10 +15,15 @@ export default {
   }, 
   data() {
     return {
-      uriTempGastos: "http://localhost:5000/gastos",
+      /*uriTempGastos: "http://localhost:5000/gastos",
       uriTempHistoricoGastos: "http://localhost:5000/historico_gastos",      
       uriTempTiposGasto: "http://localhost:5000/tipos_gasto",
       uriTempFormasPagos: "http://localhost:5000/formas_pagos",
+      */
+      uriTempGastos: URL.GASTOS_BASE,
+      uriTempHistoricoGastos: URL.HISTORICO_GASTOS,
+      uriTempTiposGasto: URL.TIPOS_GASTO,
+      uriTempFormasPagos: URL.FORMAS_PAGO_BASE,
       
 
   /*    uriTempGastos: "https://api-ambiente-desarrollo.herokuapp.com/gastos",
