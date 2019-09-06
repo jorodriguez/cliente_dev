@@ -24,44 +24,103 @@
         </div>
         <h3>{{sucursal_seleccionada.sucursal}}</h3>
         <h5 class="text-muted">Mensualidades</h5>
-        
+
+        <!--
         <div class="row d-flex flex-row-reverse">
           <div class="custom-control custom-switch p-2">
-            <input type="checkbox" 
-                   v-model="verTodosCargos"
-                   v-on:click="toggleTodosCargos"
-                   class="custom-control-input" id="customSwitch1" />
+            <input
+              type="checkbox"
+              v-model="verTodosCargos"
+              v-on:click="toggleTodosCargos"
+              class="custom-control-input"
+              id="customSwitch1"
+            />
             <label class="custom-control-label" for="customSwitch1">Ver todas las mensualidades</label>
-          </div>          
+          </div>
+        </div>-->
+        <div class="row text-right">
+          Boton
         </div>
+        <vue-good-table
+          :columns="columnsCargos"
+          :rows="listaCargos"
+          :line-numbers="true"
+          @on-row-click="onRowClick"
+          @on-search="onSearch"
+          :search-options="{
+                        enabled: true,                        
+                        skipDiacritics: true,                        
+                        placeholder: 'Buscar'                       
+                    }"
+          :pagination-options="{
+                      enabled: true,
+                      mode: 'records',
+                      perPage: 10,
+                      position: 'bottom',
+                      //perPageDropdown: [3, 7, 9],
+                      dropdownAllowAll: false,
+                      setCurrentPage: 2,
+                      nextLabel: 'Siguiente',
+                      prevLabel: 'Anterior',
+                      rowsPerPageLabel: 'Registros por pagina',
+                      ofLabel: 'of',
+                      pageLabel: 'Pagina', // for 'pages' mode
+                      allLabel: 'Todos',
+              }"
+             
+        >
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'fecha_pago'">              
+              <span  v-bind:class="props.row.pagado ? '':'text-danger'">{{props.row.fecha_pago | moment("DD-MMM-YYYY") }}</span>
+            </span>
+            <span v-else-if="props.column.field == 'pagado'">              
+              <small class="fas fa-check-circle text-success text-small" v-if="props.row.pagado">Pagado</small>
+              <small class="fas fa-check-circle text-danger text-small" v-if="!props.row.pagado">¡Adeuda!</small>
+            </span>
+            <span v-else>{{props.formattedRow[props.column.field]}}</span>
+          </template>
+        </vue-good-table>
 
         <!-- Tabla de cargos -->
-        <div class="table-responsive">
+        <!-- <div class="table-responsive">
           <table class="table">
-            <thead>              
+            <thead>
               <th class="text-left">Alumno</th>
               <th class="text-left">Fecha de pago</th>
               <th class="text-left">Pago</th>
               <th class="text-left">Cargo</th>
-              <th  class="text-left">Factura </th>
+              <th class="text-left">Factura</th>
               <th></th>
             </thead>
-            <tr v-for="row in listaCargos" :key="row.id" class="text-left">              
-              <td>
-                <!--<button type="button" class="btn btn-link" title="Ver ">{{ row.nombre_alumno }}</button>-->                
-                <span  v-bind:class=" row.pagado ? '':'text-danger'" > <strong >{{row.nombre_alumno}}</strong> </span>
-              </td>
-              <td><span  v-bind:class=" row.pagado ? '':'text-danger'" > {{ row.fecha_pago | moment("DD-MMM-YYYY") }}</span></td>
-              <td class="text-left"> <span  v-bind:class=" row.pagado ? '':'text-danger'" > ${{formatPrice(row.pago)}} </span> </td>
-              <td class="text-left"> <span  v-bind:class=" row.pagado ? '':'text-danger'" > ${{formatPrice(row.cargo)}} </span> </td>              
-              <td> <span class="text-success" > <strong>{{row.identificador_factura}}</strong> </span> </td>
+            <tr v-for="row in listaCargos" :key="row.id" class="text-left">
               <td>                
-                <i class="fas fa-check-circle text-success text-small" v-if="row.pagado">Pagado</i>                 
-                <i class="fas fa-check-circle text-danger text-small" v-if="!row.pagado">¡Adeuda!</i>                 
+                <span v-bind:class=" row.pagado ? '':'text-danger'">
+                  <strong>{{row.nombre_alumno}}</strong>
+                </span>
+              </td>
+              <td>
+                <span
+                  v-bind:class=" row.pagado ? '':'text-danger'"
+                >{{ row.fecha_pago | moment("DD-MMM-YYYY") }}</span>
+              </td>
+              <td class="text-left">
+                <span v-bind:class=" row.pagado ? '':'text-danger'">${{formatPrice(row.pago)}}</span>
+              </td>
+              <td class="text-left">
+                <span v-bind:class=" row.pagado ? '':'text-danger'">${{formatPrice(row.cargo)}}</span>
+              </td>
+              <td>
+                <span class="text-success">
+                  <strong>{{row.identificador_factura}}</strong>
+                </span>
+              </td>
+              <td>
+                <i class="fas fa-check-circle text-success text-small" v-if="row.pagado">Pagado</i>
+                <i class="fas fa-check-circle text-danger text-small" v-if="!row.pagado">¡Adeuda!</i>
               </td>
             </tr>
           </table>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>

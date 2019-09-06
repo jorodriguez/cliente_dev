@@ -1,8 +1,13 @@
 import Vue from "vue";
 import URL from "../helpers/Urls";
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table';
 
 export default {
   name: "ReporteMensualidades",
+  components: {
+    VueGoodTable,
+  }, 
   data() {
     return {      
      uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
@@ -17,7 +22,40 @@ export default {
       filtrarCargos:null,
       verTodosCargos : false,      
       response: "",
-      mensaje: ""
+      mensaje: "",
+      columnsCargos: [ 
+        {
+          label: 'Alumno',
+          field: 'nombre_alumno',
+          filterable: true,
+        },
+        {
+          label: 'Fecha',
+          field: 'fecha_pago',
+          type: 'date',          
+          dateInputFormat: 'yyyy-MM-dd',
+          dateOutputFormat: 'MMM Do yy',
+        },
+        {
+          label: 'Pagos',
+          field: 'pago',
+        },
+        
+        {
+          label: 'Cargo',
+          field: 'cargo',
+          type: 'number'          
+        },
+        {
+          label: 'Factura',
+          field: 'identificador_factura'          
+        },
+        {
+          label: 'Pagado',
+          field: 'pagado',
+          type: 'boolean'          
+        },
+    ]
     };
   },
   mounted() {
@@ -89,7 +127,7 @@ export default {
         if(this.verTodosCargos){
           this.listaCargos = this.listaCargosResp;
         }else{
-           this.listaCargos = this.listaCargosResp.filter(row => row.pagado == true);
+           //this.listaCargos = this.listaCargosResp.filter(row => row.pagado == true);
         }
       
     };
@@ -113,6 +151,23 @@ export default {
       this.verTodosCargos = !this.verTodosCargos;
       
       this.filtrarCargos();      
-    }    
+    },
+    rowStyleClassFn(row) {
+      
+      return row.pagado ? 'fas fa-check-circle text-success text-small' : 'fas fa-check-circle text-danger text-small';
+    },
+    onRowClick(params) {
+      console.log(JSON.stringify(params));
+      // params.row - row object 
+      // params.pageIndex - index of this row on the current page.
+      // params.selected - if selection is enabled this argument 
+      // indicates selected or not
+      // params.event - click event
+    },
+    onSearch(params) {
+      console.log(JSON.stringify(params));
+      // params.searchTerm - term being searched for
+      // params.rowCount - number of rows that match search
+    }
   }
 };
