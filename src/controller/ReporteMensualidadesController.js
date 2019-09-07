@@ -14,6 +14,7 @@ export default {
      listaSucursales : [],
      listaCargos : [],      
      listaCargosResp : [],
+     rowSelection: [],
       usuarioSesion: {},      
       sesion: {},   
       sucursal_seleccionada:{id_sucursal:0,nombre:""},
@@ -25,9 +26,16 @@ export default {
       mensaje: "",
       columnsCargos: [ 
         {
+          label: 'Id',
+          field: 'id',
+          hidden:true
+        },
+        {
           label: 'Alumno',
           field: 'nombre_alumno',
           filterable: true,
+          thClass : 'text-center',
+          tdClass: 'text-center',
         },
         {
           label: 'Fecha',
@@ -35,25 +43,41 @@ export default {
           type: 'date',          
           dateInputFormat: 'yyyy-MM-dd',
           dateOutputFormat: 'MMM Do yy',
+          thClass : 'text-center',
+          tdClass: 'text-center',
+          filterable: true,
         },
         {
           label: 'Pagos',
           field: 'pago',
+          thClass : 'text-center',
+          tdClass: 'text-center',
+          filterable: true,
         },
         
         {
           label: 'Cargo',
           field: 'cargo',
-          type: 'number'          
+          type: 'number',
+          thClass : 'text-center',
+          tdClass: 'text-center',
+          filterable: true,       
         },
         {
           label: 'Factura',
-          field: 'identificador_factura'          
+          field: 'identificador_factura',
+          thClass : 'text-center',
+          tdClass: 'text-center',
+          filterable: true,
         },
         {
-          label: 'Pagado',
+          label: '',
           field: 'pagado',
-          type: 'boolean'          
+          type: 'boolean'    ,
+          width: '50px',
+          thClass : 'text-center',
+          tdClass: 'text-center',
+          filterable: true,
         },
     ]
     };
@@ -152,10 +176,7 @@ export default {
       
       this.filtrarCargos();      
     },
-    rowStyleClassFn(row) {
-      
-      return row.pagado ? 'fas fa-check-circle text-success text-small' : 'fas fa-check-circle text-danger text-small';
-    },
+   
     onRowClick(params) {
       console.log(JSON.stringify(params));
       // params.row - row object 
@@ -168,6 +189,14 @@ export default {
       console.log(JSON.stringify(params));
       // params.searchTerm - term being searched for
       // params.rowCount - number of rows that match search
-    }
+    },
+    selectAll(selected, selectedRows) {
+    	// do what you want here
+    	console.log(selected, selectedRows);
+    },
+    selectionChanged(params) {
+      this.rowSelection = params.selectedRows;
+      console.log("Seleccion "+JSON.stringify(this.rowSelection));
+  },
   }
 };

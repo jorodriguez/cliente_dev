@@ -39,14 +39,15 @@
           </div>
         </div>-->
         <div class="row text-right">
-          Boton
+          Meses
         </div>
         <vue-good-table
+        
           :columns="columnsCargos"
           :rows="listaCargos"
-          :line-numbers="true"
+          :line-numbers="true"          
           @on-row-click="onRowClick"
-          @on-search="onSearch"
+          @on-search="onSearch"          
           :search-options="{
                         enabled: true,                        
                         skipDiacritics: true,                        
@@ -63,19 +64,37 @@
                       nextLabel: 'Siguiente',
                       prevLabel: 'Anterior',
                       rowsPerPageLabel: 'Registros por pagina',
-                      ofLabel: 'of',
+                      ofLabel: 'de',
                       pageLabel: 'Pagina', // for 'pages' mode
                       allLabel: 'Todos',
               }"
-             
+              @on-selected-rows-change="selectionChanged"
+              :selectOptions="{
+                    enabled: true,
+                    selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
+                    selectionInfoClass: 'custom-class',
+                    selectionText: 'rows selected',
+                    clearSelectionText: 'clear',
+                    disableSelectInfo: true, // disable the select info panel on top
+                }"
+            @on-select-all="selectAll"
+                
         >
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'fecha_pago'">              
+            <span v-if="props.column.field == 'pago'">              
+                <span v-bind:class=" props.row.pagado ? 'text-success':'text-danger'">${{formatPrice(props.row.pago)}}</span>
+                <small v-if="(props.row.pago > 0 && props.row.pagado==false)" 
+                v-bind:class=" (props.row.pago > 0 && props.row.pagado==false) ? 'label info text-success':'text-danger'">Abono</small>
+            </span>
+            <span v-else-if="props.column.field == 'cargo'">              
+                <span v-bind:class="props.row.pagado ? '':'text-danger'">${{formatPrice(props.row.cargo)}}</span>
+            </span>
+            <span v-else-if="props.column.field == 'fecha_pago'">              
               <span  v-bind:class="props.row.pagado ? '':'text-danger'">{{props.row.fecha_pago | moment("DD-MMM-YYYY") }}</span>
             </span>
             <span v-else-if="props.column.field == 'pagado'">              
-              <small class="fas fa-check-circle text-success text-small" v-if="props.row.pagado">Pagado</small>
-              <small class="fas fa-check-circle text-danger text-small" v-if="!props.row.pagado">¡Adeuda!</small>
+              <small class="fas fa-check-circle text-success text-small" v-if="props.row.pagado" title="Pagado"></small>
+              <small class="fas fa-check-circle text-danger text-small" v-if="!props.row.pagado" title="¡Adeuda!"></small>
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
