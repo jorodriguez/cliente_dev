@@ -2,84 +2,117 @@ import Vue from "vue";
 import URL from "../helpers/Urls";
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
+import Popup from './Popup'
+import RecordatorioPago from './RecordatorioPago'
+import TABLE_CONFIG from "../helpers/DatatableConfig";
+import { throwStatement } from "babel-types";
 
 export default {
   name: "ReporteMensualidades",
   components: {
     VueGoodTable,
-  }, 
+    Popup,
+    RecordatorioPago
+  },
   data() {
-    return {      
-     uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
-     listaSucursales : [],
-     listaCargos : [],      
-     listaCargosResp : [],
-     rowSelection: [],
-      usuarioSesion: {},      
-      sesion: {},   
-      sucursal_seleccionada:{id_sucursal:0,nombre:""},
-      loadFunctionReporteMensualidades:null,
-      loadFunctionReporteMensualidadesSucursales:null,
-      filtrarCargos:null,
-      verTodosCargos : false,      
+    return {
+      uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
+      listaSucursales: [],
+      listaCargos: [],
+      listaCargosResp: [],
+      rowSelection: [],
+      listaCorreosEnviarRecordatorio: [],
+      usuarioSesion: {},
+      sesion: {},
+      sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
+      loadFunctionReporteMensualidades: null,
+      loadFunctionReporteMensualidadesSucursales: null,
+      filtrarCargos: null,
+      verTodosCargos: false,
       response: "",
-      mensaje: "",
-      columnsCargos: [ 
+      mensaje: "",      
+      TABLE_CONFIG: TABLE_CONFIG,
+      texto_recordatorio: "",
+      columnsCargos: [
         {
           label: 'Id',
           field: 'id',
-          hidden:true
+          hidden: true
         },
         {
           label: 'Alumno',
           field: 'nombre_alumno',
           filterable: true,
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
         },
         {
           label: 'Fecha',
           field: 'fecha_pago',
-          type: 'date',          
+          type: 'date',
           dateInputFormat: 'yyyy-MM-dd',
           dateOutputFormat: 'MMM Do yy',
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
           filterable: true,
         },
         {
           label: 'Pagos',
           field: 'pago',
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
           filterable: true,
         },
-        
+
         {
           label: 'Cargo',
           field: 'cargo',
           type: 'number',
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
-          filterable: true,       
+          filterable: true,
         },
         {
           label: 'Factura',
           field: 'identificador_factura',
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
           filterable: true,
         },
         {
           label: '',
           field: 'pagado',
-          type: 'boolean'    ,
+          type: 'boolean',
           width: '50px',
-          thClass : 'text-center',
+          thClass: 'text-center',
           tdClass: 'text-center',
           filterable: true,
+          filterOptions: {
+            filterDropdownItems: [
+              { value: 'false', text: 'Pagado' },
+              { value: 'true', text: 'Adeuda' },
+            ]
+          }
         },
-    ]
+        {
+          label: 'Correos',
+          field: 'correos',
+          hidden: true,
+          filterable: false,
+        },
+        {
+          label: 'nombre_padres',
+          field: 'nombre_padres',
+          hidden: true,
+          filterable: false,
+        },
+        {
+          label: 'tokens',
+          field: 'tokens',
+          hidden: true,
+          filterable: false,
+        }
+      ]
     };
   },
   mounted() {
@@ -101,7 +134,7 @@ export default {
     this.loadFunctionReporteMensualidades = function (id_sucursal) {
       this.$http
         .get(
-          this.uriTemp+"/"+id_sucursal,
+          this.uriTemp + "/" + id_sucursal,
           {
             headers: {
               "x-access-token": this.sesion.token
@@ -146,37 +179,37 @@ export default {
         );
     };
 
-    this.filtrarCargos = ()=>{
-      
-        if(this.verTodosCargos){
-          this.listaCargos = this.listaCargosResp;
-        }else{
-           //this.listaCargos = this.listaCargosResp.filter(row => row.pagado == true);
-        }
-      
+    this.filtrarCargos = () => {
+
+      if (this.verTodosCargos) {
+        this.listaCargos = this.listaCargosResp;
+      } else {
+        //this.listaCargos = this.listaCargosResp.filter(row => row.pagado == true);
+      }
+
     };
 
-    
+
     this.loadFunctionReporteMensualidadesSucursales();
   },
   methods: {
-    verListaMensualidadesFacturadas(row_sucursal){
-        console.log("row sucursal "+JSON.stringify(row_sucursal));
-        this.sucursal_seleccionada = row_sucursal;
-        this.loadFunctionReporteMensualidades(row_sucursal.id_sucursal);
+    verListaMensualidadesFacturadas(row_sucursal) {
+      console.log("row sucursal " + JSON.stringify(row_sucursal));
+      this.sucursal_seleccionada = row_sucursal;
+      this.loadFunctionReporteMensualidades(row_sucursal.id_sucursal);
 
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-    toggleTodosCargos(){
-      console.log("Ver todos los cargos "+this.verTodosCargos);
+    toggleTodosCargos() {
+      console.log("Ver todos los cargos " + this.verTodosCargos);
       this.verTodosCargos = !this.verTodosCargos;
-      
-      this.filtrarCargos();      
+
+      this.filtrarCargos();
     },
-   
+
     onRowClick(params) {
       console.log(JSON.stringify(params));
       // params.row - row object 
@@ -191,12 +224,56 @@ export default {
       // params.rowCount - number of rows that match search
     },
     selectAll(selected, selectedRows) {
-    	// do what you want here
-    	console.log(selected, selectedRows);
+      // do what you want here
+      //console.log("Seleccion de Todos " + selected);
+      //console.log(JSON.stringify(selectedRows));      
+      //console.log("Seleccion "+JSON.stringify(selected));      
     },
+
     selectionChanged(params) {
+      /*    params.selectedRows.filter(e=>e.vgtSelected).forEach(e=>{        
+               if(e.pagado){
+                 e.vgtSelected = false;
+               }
+          });      
+    */
       this.rowSelection = params.selectedRows;
-      console.log("Seleccion "+JSON.stringify(this.rowSelection));
-  },
+      //console.log("Seleccion " + JSON.stringify(this.rowSelection[0]));
+    },
+    confirmarEnvio() {
+      console.log("Seleccion " + this.rowSelection);
+      this.$http
+      .get(
+        URL.INFO_CONFIGURACION,
+        {
+          headers: {
+            "x-access-token": this.sesion.token
+          }
+        }
+      )
+      .then(
+        result => {          
+          if (result.data != null) {            
+            this.texto_recordatorio = result.data.mensaje_recordatorio_pago;
+          }
+        },
+        error => {
+          console.error(error);
+        }
+      );
+
+      //this.rowSelection.map(obj=> ({ ...obj, opt: 'false' }))     
+
+      $("#confirmarRecordatorioEnvioRecibo").modal("show");
+
+    },
+    enviarRecordatorio(){
+      //this.rowSelection.
+      //$("#confirmarRecordatorioEnvioRecibo").modal("show");
+    },
+    procesarListaCorreo(lista){
+
+        return lista!=null ? lista.join(","):"";
+    }
   }
 };

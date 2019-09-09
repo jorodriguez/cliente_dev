@@ -48,6 +48,12 @@ const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 
 const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
 
+//-recordatorio
+const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
+
+const INFO_CONFIGURACION = BASE + '/configuracion';
+const ENVIAR_RECORDATORIO_PAGO_ALUMNO = BASE + '/enviar_recordatorio_pago';
+
 const URL = {    
     LOGIN : BASE+'/auth/login',    
     ASISTENCIA_BASE : ASISTENCIA_BASE,
@@ -97,7 +103,11 @@ const URL = {
     REPORTE_GASTOS_GLOBAL : REPORTE_GASTOS_GLOBAL,
 
     REPORTE_MENSUALIDADES : REPORTE_MENSUALIDADES,
+    INFO_CORREO_ALUMNOS: INFO_CORREO_ALUMNOS,
     
+    INFO_CONFIGURACION:INFO_CONFIGURACION,
+
+    ENVIAR_RECORDATORIO_PAGO_ALUMNO : ENVIAR_RECORDATORIO_PAGO_ALUMNO
 
 }
 
