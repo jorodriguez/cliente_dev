@@ -76,20 +76,23 @@
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
           <div slot="selected-row-actions">
-            <button class="btn btn-primary" v-on:click="confirmarEnvio">Aviso de pago</button>
+            <button class="btn btn-primary" v-on:click="iniciarEnvio">Aviso de pago</button>
           </div>
         </vue-good-table>
 
         <Popup id="confirmarRecordatorioEnvioRecibo" show_button_close="true">
           <div slot="header">Confirmar envio de recordatorio</div>
           <div slot="content">
+            <p class="text-danger">{{mensaje}}</p>
             <div class="row">              
-              <div class="col">                
-                <label>Nota de recordatorio</label>
+              <div class="col text-left">     
+                 <label for="validationTextarea"><strong>Nota de recordatorio<span class="text-danger">*</span></strong></label>                           
                 <textarea
-                  v-model="texto_recordatorio"
-                  class="form-control"
+                  class="form-control text-primary" 
+                  id="validationTextarea" placeholder="Nota de recordatorio de pago"
+                  v-model="texto_recordatorio"                  
                   style="width:100%;heigth:100%"
+                  required
                 ></textarea>
               </div>
             </div>
@@ -126,9 +129,7 @@
                       sorteable:false,
                       thClass: 'text-center',
                       tdClass: 'text-center',
-                },{
-                  label:'opt',                  
-                }
+                },
                 ]"
                   :rows="rowSelection"
                   :line-numbers="false"
@@ -136,8 +137,7 @@
                   :search-options="{enabled:true}"
                   :sort-options="{enabled: false}"
                    max-height="200px"
-                  :fixed-header="true"
-                  
+                  :fixed-header="true"                  
                 >
                   <template slot="table-row" slot-scope="props">
                     <span v-if="props.column.field == 'correos'">
@@ -155,7 +155,7 @@
             </div>
           </div>
           <div slot="footer">
-            <button class="btn btn-primary" v-on:click="confirmarEnvio">Enviar recordatorio</button>
+            <button class="btn btn-primary" v-on:click="enviarRecordatorio">Enviar recordatorio</button>
           </div>
         </Popup>
 

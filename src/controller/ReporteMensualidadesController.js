@@ -27,10 +27,14 @@ export default {
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
       loadFunctionReporteMensualidades: null,
       loadFunctionReporteMensualidadesSucursales: null,
+      enviarRecordatorioFunction: null,
       filtrarCargos: null,
       verTodosCargos: false,
+      respuesta: "",
+      isLoading: false,
+      estatus_respuesta: false,
       response: "",
-      mensaje: "",      
+      mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,
       texto_recordatorio: "",
       columnsCargos: [
@@ -189,6 +193,56 @@ export default {
 
     };
 
+    this.enviarRecordatorioFunction = function (id_alumno, nombre_padres) {
+      $("#encabezado_notificador_principal").empty();
+      //$("#encabezado_notificador_principal").append("<p>Enviando aviso a "+nombre_padres+"</p>");
+      $("#cuerpo_notificador_principal").append(
+        "<div id='msg_send_" + id_alumno + "' class='small'>" +
+        "<div id='spiner_" + id_alumno + "' class='spinner-border text-info' role='status'>" +
+        "<span class='sr-only'></span>" +
+        "</div>Enviando aviso a " + nombre_padres + "</div>");
+      if (id_alumno == null) {
+        $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle  text-danger'>No Enviado debido a un error en la validación previa</span>");
+      } else {
+        let respuesta = "";
+        let estatus_respuesta = false;
+        this.$http
+          .put(
+            URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO + "/" + id_alumno, {
+              nota: this.texto_recordatorio,
+              nota_escrita: true //poner un checkbox
+            },
+            {
+              headers: {
+                "x-access-token": this.sesion.token
+              }
+            }
+          )
+          .then(
+            result => {
+              if (result.data != null) {
+                console.log(JSON.stringify(result.data));
+                respuesta = result.data.respuesta;
+                estatus_respuesta = result.data.estatus;
+                //$("#alert_principal").empty();             
+                $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' >" + respuesta + "</i>");
+                $("#spiner_" + id_alumno).removeClass();
+              } else {
+                //$("#alert_principal").empty();
+                //$("#alert_principal").append("<p>Error..</p>");
+                $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i>");
+                $("#spiner_" + id_alumno).removeClass();
+              }
+            },
+            error => {
+              console.error(error);
+              //$("#alert_principal").empty();
+              $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'>Error " + error + "</span>");
+              $("#spiner_" + id_alumno).removeClass();
+            }
+          );
+      };
+    }
 
     this.loadFunctionReporteMensualidadesSucursales();
   },
@@ -238,42 +292,67 @@ export default {
           });      
     */
       this.rowSelection = params.selectedRows;
+      console.log("Seleccion");
       //console.log("Seleccion " + JSON.stringify(this.rowSelection[0]));
     },
-    confirmarEnvio() {
+    iniciarEnvio() {
       console.log("Seleccion " + this.rowSelection);
+      this.mensaje = "";
       this.$http
-      .get(
-        URL.INFO_CONFIGURACION,
-        {
-          headers: {
-            "x-access-token": this.sesion.token
+        .get(
+          URL.INFO_CONFIGURACION,
+          {
+            headers: {
+              "x-access-token": this.sesion.token
+            }
           }
-        }
-      )
-      .then(
-        result => {          
-          if (result.data != null) {            
-            this.texto_recordatorio = result.data.mensaje_recordatorio_pago;
+        )
+        .then(
+          result => {
+            if (result.data != null) {
+              this.texto_recordatorio = result.data.mensaje_recordatorio_pago;
+            }
+          },
+          error => {
+            console.error(error);
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        );
 
       //this.rowSelection.map(obj=> ({ ...obj, opt: 'false' }))     
 
       $("#confirmarRecordatorioEnvioRecibo").modal("show");
 
     },
-    enviarRecordatorio(){
-      //this.rowSelection.
-      //$("#confirmarRecordatorioEnvioRecibo").modal("show");
-    },
-    procesarListaCorreo(lista){
+    enviarRecordatorio() {
 
-        return lista!=null ? lista.join(","):"";
+      console.log("" + JSON.stringify(this.rowSelection));
+      this.mensaje = "";
+
+      if (this.texto_recordatorio == "" || this.texto_recordatorio == null) {
+        this.mensaje = "La nota de recordatorio es requerida";
+        return;
+      }
+
+      let count = this.rowSelection.filter(e => e.correos != null).length;
+      if (count == 0) {
+        this.mensaje = "No existen registros con direcciones de correos registradas.";
+      } else {
+        let that = this;
+        $('#id_notificador_principal').removeClass("hide");
+        this.rowSelection.filter(e => e.correos != null).forEach(function (element) {
+          //this.rowSelection.forEach(function (element) {
+          console.log(element);
+          console.log(" enviando " + element.id_alumno);
+          setTimeout(function () { }, 5000);
+          that.enviarRecordatorioFunction(element.id_alumno, element.nombres_padres);
+        });
+        $("#confirmarRecordatorioEnvioRecibo").modal("hide");
+      }
+
+    },
+    procesarListaCorreo(lista) {
+
+      return lista != null ? lista.join(",") : "X";
     }
   }
 };
