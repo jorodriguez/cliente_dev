@@ -194,15 +194,12 @@ export default {
     };
 
     this.enviarRecordatorioFunction = function (id_alumno, nombre_padres) {
-      $("#encabezado_notificador_principal").empty();
-      //$("#encabezado_notificador_principal").append("<p>Enviando aviso a "+nombre_padres+"</p>");
-      $("#cuerpo_notificador_principal").append(
-        "<div id='msg_send_" + id_alumno + "' class='small'>" +
-        "<div id='spiner_" + id_alumno + "' class='spinner-border text-info' role='status'>" +
-        "<span class='sr-only'></span>" +
-        "</div>Enviando aviso a " + nombre_padres + "</div>");
+       
+      $("#cuerpo_notificador_principal").append("<span id='spiner_"+id_alumno+"' class='spinner-border'/> <span id='msg_send_"+id_alumno+"' >Enviando a " + nombre_padres + "</span>");
+      
       if (id_alumno == null) {
-        $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle  text-danger'>No Enviado debido a un error en la validación previa</span>");
+        $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'>No Enviado debido a un error en la validación previa</span><br/>");
+        $("#spiner_"+id_alumno).remove();
       } else {
         let respuesta = "";
         let estatus_respuesta = false;
@@ -224,21 +221,18 @@ export default {
                 console.log(JSON.stringify(result.data));
                 respuesta = result.data.respuesta;
                 estatus_respuesta = result.data.estatus;
-                //$("#alert_principal").empty();             
-                $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' >" + respuesta + "</i>");
-                $("#spiner_" + id_alumno).removeClass();
-              } else {
-                //$("#alert_principal").empty();
-                //$("#alert_principal").append("<p>Error..</p>");
-                $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i>");
-                $("#spiner_" + id_alumno).removeClass();
+                
+                $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' > " + respuesta + "</i><br/>");                
+                $("#spiner_"+id_alumno).remove();
+              } else {                
+                $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i><br/>");                
+                $("#spiner_"+id_alumno).remove();
               }
             },
             error => {
-              console.error(error);
-              //$("#alert_principal").empty();
-              $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'>Error " + error + "</span>");
-              $("#spiner_" + id_alumno).removeClass();
+              console.error(error);              
+              $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'> Error " + error + "</span><br/>");              
+              $("#spiner_"+id_alumno).remove();
             }
           );
       };
@@ -339,11 +333,14 @@ export default {
       } else {
         let that = this;
         $('#id_notificador_principal').removeClass("hide");
+        $('#texto_notificador_principal').empty();
+        $('#texto_notificador_principal').append("<p>Enviando Avisos</p>");
+        $("#encabezado_notificador_principal").text("Enviando Avisos ");
         this.rowSelection.filter(e => e.correos != null).forEach(function (element) {
           //this.rowSelection.forEach(function (element) {
           console.log(element);
           console.log(" enviando " + element.id_alumno);
-          setTimeout(function () { }, 5000);
+          setTimeout(function () { }, 5000);          
           that.enviarRecordatorioFunction(element.id_alumno, element.nombres_padres);
         });
         $("#confirmarRecordatorioEnvioRecibo").modal("hide");
