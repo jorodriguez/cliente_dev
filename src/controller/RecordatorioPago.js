@@ -1,20 +1,18 @@
 
 import Vue from "vue";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 
 export default {
   name: "enviar-recordatorio-pago",  
+  mixins:[operacionesApi],
   template:`<button class="btn btn-primary" v-on:click="enviar()" > 
                 <span  v-if="loading" class="spinner-border spinner-border-sm"></span>
                  Enviar  
            </button>`,
   props: ['id_alumno'],
   data() {
-    return {      
-      //uriTempBalance: "http://localhost:5000/balance",           
-      //uriTempBalance: "https://api-ambiente-desarrollo.herokuapp.com/balance",            
-      //uriTempBalance: "https://api-ambiente-produccion.herokuapp.com/balance",            
+    return {            
       balanceAlumno : {total_adeudo:0},
       usuarioSesion: {},
       sesion: {},              
@@ -42,32 +40,20 @@ export default {
         
   },
   methods: {
-      enviar(){                  
+      enviar(){                          
         this.loading = true;
-          this.$http
-          .get(
-            URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO+"/"+this.id_alumno,
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
-            }
-          )
-          .then(
-            result => {          
-              console.log("result.data "+JSON.stringify(result.data));
-              if (result.data != null) {                           
-                this.respuesta = result.data.respuesta;
-                this.estatus = result.data.estatus;
-                this.loading = false;
-              }
-            },
-            error => {
-              console.error(error);
+        this.get(
+          URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO+"/"+this.id_alumno,
+          this.sesion.token,
+          (result) => {          
+            console.log("result.data "+JSON.stringify(result.data));
+            if (result.data != null) {                           
+              this.respuesta = result.data.respuesta;
+              this.estatus = result.data.estatus;
               this.loading = false;
             }
-          );
-
+          }
+        );
       }
   },  
 };

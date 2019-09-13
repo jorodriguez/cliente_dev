@@ -3,26 +3,18 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
 import URL from "../helpers/Urls";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
   name: "CrecimientoGlobal",
   components: {
     SignoutComponent,
   },
+  mixins:[operacionesApi],
   data() {
     return {
       uriTempBalanceCrecimientoGlobal: URL.BALANCE_CRECIMIENTO_GLOBAL, //"http://localhost:5000/balance_crecimiento_global",
       uriTempBalanceAlumnosIngreso: URL.ALUMNOS_CRECIMIENTO_MES, // "http://localhost:5000/alumnos_crecimiento_mes",
-      
-
-      /*uriTempBalanceCrecimientoGlobal: "https://api-ambiente-desarrollo.herokuapp.com/balance_crecimiento_global",      
-      uriTempBalanceAlumnosIngreso: "https://api-ambiente-desarrollo.herokuapp.com/alumnos_crecimiento_mes",      
-    */
-
-   /*uriTempBalanceCrecimientoGlobal: "https://api-ambiente-produccion.herokuapp.com/balance_crecimiento_global",      
-   uriTempBalanceAlumnosIngreso: "https://api-ambiente-produccion.herokuapp.com/alumnos_crecimiento_mes",      
-*/
       usuarioSesion: {},
       sesion: {},
       mes_seleccionado: {},
@@ -50,26 +42,16 @@ export default {
     }
 
     this.loadFunctionCrecimientoGlobal = function () {
-      this.$http
-        .get(
-          this.uriTempBalanceCrecimientoGlobal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        this.uriTempBalanceCrecimientoGlobal,
+        this.sesion.token,
+        (result) => {
+          console.log("Consulta " + result.data);
+          if (result.data != null) {
+            this.listaCrecimientoGlobal = result.data;              
           }
-        )
-        .then(
-          result => {
-            console.log("Consulta " + result.data);
-            if (result.data != null) {
-              this.listaCrecimientoGlobal = result.data;              
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.loadFunctionAlumnosCrecimiento = function () {
@@ -77,24 +59,14 @@ export default {
         || this.mes_seleccionado.numero_anio != null
         || this.mes_seleccionado.numero_mes != null) {
 
-        this.$http
-          .get(
+          this.get(
             this.uriTempBalanceAlumnosIngreso + "/" + this.mes_seleccionado.numero_anio + "/" + this.mes_seleccionado.numero_mes,
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
-            }
-          )
-          .then(
+            this.sesion.token,
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {
                 this.listaNuevosAlumno = result.data;                
               }
-            },
-            error => {
-              console.error(error);
             }
           );
       };

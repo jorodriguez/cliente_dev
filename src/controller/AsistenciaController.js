@@ -8,10 +8,7 @@ export default {
   name: "Asistencia",
   mixins:[operacionesApi],
   data() {
-    return {
-      // uriTemp: "http://localhost:5000/asistencia",
-      //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
-      //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
+    return {      
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -51,31 +48,7 @@ export default {
             this.actualizarComboFiltro();
           }
         });
-
-      /*this.$http
-        .get(
-          //URL.ASISTENCIA +"/alumnos_por_recibidos" +"/" + this.usuarioSesion.co_sucursal,
-          URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
-          }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("Consulta " + this.response);
-            if (this.response != null) {
-              this.lista = this.response;
-              this.filtrarAlumnosPorGrupo(this.grupoDefault);
-              this.actualizarComboFiltro();
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );*/
+    
     };
 
     //Funcion get alumnos salida
@@ -92,29 +65,7 @@ export default {
           }
         }
       );
-
-      /* this.$http
-         .get(
-           //   this.uriTemp + "/alumnos_recibidos" + "/" + this.usuarioSesion.co_sucursal,
-           URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
-           {
-             headers: {
-               "x-access-token": this.sesion.token
-             }
-           }
-         )
-         .then(
-           result => {
-             this.response = result.data;
-             console.log("Consulta " + this.response);
-             if (this.response != null) {
-               this.listaRecibidos = this.response;
-             }
-           },
-           error => {
-             console.error(error);
-           }
-         );*/
+     
     };
 
     this.actualizarComboFiltro = () => {
@@ -166,7 +117,9 @@ export default {
         }
 
         this.post(
-          URL.ASISTENCIA_ENTRADA_ALUMNOS, { ids: ids, genero: this.usuarioSesion.id },
+          URL.ASISTENCIA_ENTRADA_ALUMNOS, 
+          { ids: ids, genero: this.usuarioSesion.id },
+          this.sesion.token,
           (result) => {
             this.response = result.data;
             console.log("insertados " + this.response);
@@ -180,33 +133,7 @@ export default {
             }
           }
         );
-
-        /* this.$http
-           .post(         
-             URL.ASISTENCIA_ENTRADA_ALUMNOS, { ids: ids, genero: this.usuarioSesion.id },
-             {
-               headers: {
-                 "x-access-token": this.sesion.token
-               }
-             }
-           )
-           .then(
-             result => {
-               this.response = result.data;
-               console.log("insertados " + this.response);
-               if (this.response != null) {
-                 this.lista = this.response;
-                 this.mensaje = "Se registro la entrada";
-                 this.loadFunction();
-                 this.loadFunctionAlumnosSalida();
-                 this.listaSeleccion = [];
-                 this.listaSeleccionSalida = [];
-               }
-             },
-             error => {
-               console.error(error);
-             }
-           );*/
+       
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }
@@ -243,6 +170,7 @@ export default {
         this.post(
           URL.ASISTENCIA_SALIDA_ALUMNOS,
           { ids: ids, genero: this.usuarioSesion.id },
+          this.sesion.token,
           (result) => {
             this.response = result.data;
             if (this.response != null) {
@@ -255,36 +183,7 @@ export default {
               this.listaSeleccion = [];
             }
           }
-        );
-
-        /* this.$http
-           .post(
-             //this.uriTemp + "/salidaAlumnos",
-             URL.ASISTENCIA_SALIDA_ALUMNOS,
-             { ids: ids, genero: this.usuarioSesion.id },
-             {
-               headers: {
-                 "x-access-token": this.sesion.token
-               }
-             }
-           )
-           .then(
-             result => {
-               this.response = result.data;
-               if (this.response != null) {
-                 this.lista = this.response;
-                 this.mensaje = "Se registro la salida de los alumnos";
-                 console.log("Se registro la salida");
-                 this.loadFunction();
-                 this.loadFunctionAlumnosSalida();
-                 this.listaSeleccionSalida = [];
-                 this.listaSeleccion = [];
-               }
-             },
-             error => {
-               console.error(error);
-             }
-           );*/
+        );        
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }

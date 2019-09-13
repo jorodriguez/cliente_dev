@@ -283,7 +283,7 @@
               <tbody v-for="row in listaCargosAlumnos" :key="row.id">
                 <tr v-if="row.checked" :class="row.es_facturable ? 'bg-info text-white':''">
                   <td>
-                    <span class="small">{{row.nombre_cargo}} {{row.es_facturable}}</span>
+                    <span class="small">{{row.nombre_cargo}}</span>
                   </td>
                   <td>
                     <input

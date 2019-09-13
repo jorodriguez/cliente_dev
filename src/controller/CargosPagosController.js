@@ -3,44 +3,29 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { isRegExp } from "util";
 import { timingSafeEqual } from "crypto";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
-
 
 export default {
   name: "cargos-pagos",
-  props: ['idalumno','requiere_factura'],
-
+  props: ['idalumno', 'requiere_factura'],
+  mixins: [operacionesApi],
   data() {
     return {
-     // uriTempPagos: "http://localhost:5000/pagos",
-     // uriTempFormasPagos: "http://localhost:5000/formas_pagos",
-    //  uriTempCargos: "http://localhost:5000/cargos",
-    
-
-      /*uriTempPagos: "https://api-ambiente-desarrollo.herokuapp.com/pagos",
-      uriTempFormasPagos: "https://api-ambiente-desarrollo.herokuapp.com/formas_pagos",
-      uriTempCargos: "https://api-ambiente-desarrollo.herokuapp.com/cargos",      
-      */
-/*
-      uriTempPagos: "https://api-ambiente-produccion.herokuapp.com/pagos",
-      uriTempFormasPagos: "https://api-ambiente-produccion.herokuapp.com/formas_pagos",
-      uriTempCargos: "https://api-ambiente-produccion.herokuapp.com/cargos", 
-  */    
       cargo: {
         cantidad: 1,
-        cat_cargo: {id:-1,nombre:"",descripcion:"",precio:0,escribir_cantidad:false},        
-        total_cargo:0
-      },      
+        cat_cargo: { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false },
+        total_cargo: 0
+      },
       pago: {
         pago_total: 0,
-        cat_forma_pago: {id:-1,nombre:"",permite_factura:false},        
-        identificador_factura:"",
-        nota_pago:""
+        cat_forma_pago: { id: -1, nombre: "", permite_factura: false },
+        identificador_factura: "",
+        nota_pago: ""
       },
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
-      escribir_folio_factura:false,
-      existen_montos_facturables:false,
+      escribir_folio_factura: false,
+      existen_montos_facturables: false,
       total_cargos: 0,
       total_pagos: 0,
       seleccionTodos: false,
@@ -74,83 +59,52 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
 
     this.loadFunctionCargosAlumno = function () {
-      this.$http
-        .get(
-          //this.uriTempCargos + "/" + this.idalumno,
-          URL.CARGOS_BASE + "/" + this.idalumno,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+
+      this.get(
+        URL.CARGOS_BASE + "/" + this.idalumno,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          console.log("====  " + JSON.stringify(this.response));
+          if (this.response != null) {
+            this.listaCargosAlumnos = this.response;
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("====  " + JSON.stringify(this.response));
-            if (this.response != null) {
-              this.listaCargosAlumnos = this.response;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     //Catalogos de cargos
     this.loadFunctionCatCargos = function () {
       this.listaCargos = [];
-      this.$http
-        .get(
-          //this.uriTempCargos,
-          URL.CARGOS_BASE,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        URL.CARGOS_BASE,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          console.log("Consulta del catalogo de cargos" + this.response);
+          if (this.response != null) {
+            this.listaCargos = this.response;
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("Consulta del catalogo de cargos" + this.response);
-            if (this.response != null) {
-              this.listaCargos = this.response;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.loadFunctionCatFormasPago = function () {
       this.listaFormasPago = [];
       if (this.listaFormasPago.length == 0) {
         console.log("Iniciando consulta de formas pago");
-        this.$http
-          .get(            
-            //this.uriTempFormasPagos,
-            URL.FORMAS_PAGO_BASE,
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
+
+        this.get(
+          URL.FORMAS_PAGO_BASE,
+          this.sesion.token,
+          result => {
+            this.response = result.data;
+            console.log("Consulta del catalogo de formas pago" + this.response);
+            if (this.response != null) {
+              this.listaFormasPago = this.response;
             }
-          )
-          .then(
-            result => {
-              this.response = result.data;
-              console.log("Consulta del catalogo de formas pago" + this.response);
-              if (this.response != null) {
-                this.listaFormasPago = this.response;
-              }
-            },
-            error => {
-              console.error(error);
-            }
-          );
+          }
+        );
       } else {
         console.log("La lista de formas de pago ya esta cargada ");
       }
@@ -171,7 +125,7 @@ export default {
   methods: {
     iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
-      this.cargo.cat_cargo = {id:-1,nombre:"",descripcion:"",precio:0,escribir_cantidad:false};
+      this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false };
       this.cargo.cantidad = 1;
       this.cargo.nota = '';
       this.mensaje = "";
@@ -179,11 +133,11 @@ export default {
       this.loadFunctionCatCargos();
       $('#modal_cargo').modal('show');
     },
-    calcularTotalCargo(){       
-        if(!this.cargo.cat_cargo.escribir_cantidad){
-          this.cargo.cantidad = 1;
-        }
-        this.cargo.total_cargo = this.cargo.cantidad * this.cargo.cat_cargo.precio;
+    calcularTotalCargo() {
+      if (!this.cargo.cat_cargo.escribir_cantidad) {
+        this.cargo.cantidad = 1;
+      }
+      this.cargo.total_cargo = this.cargo.cantidad * this.cargo.cat_cargo.precio;
     },
     guardarCargo() {
       console.log("guardar cargos");
@@ -193,12 +147,12 @@ export default {
         return;
       }
 
-      if (this.cargo.cantidad == '' ) {
+      if (this.cargo.cantidad == '') {
         this.mensaje = 'Escriba la cantidad del cargo..';
         return;
       }
 
-      if (this.cargo.cantidad <= 0 ) {
+      if (this.cargo.cantidad <= 0) {
         this.mensaje = 'La cantidad no debe ser cero ó negativo..';
         return;
       }
@@ -207,38 +161,30 @@ export default {
       this.cargo.genero = this.usuarioSesion.id;
       this.cargo.id_alumno = this.idalumno;
 
-      this.$http
-        .post(
-          //this.uriTempCargos + "/registrar", this.cargo, {
-          URL.CARGO_REGISTRAR , this.cargo, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
+      this.post(
+        URL.CARGO_REGISTRAR,         
+        this.cargo,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
 
-            if (this.response != null) {
-              console.log("" + this.response);
-              this.mensaje = "Se agrego el cargo.";
-              this.seleccionTodos = false;
-              $("#modal_cargo").modal("hide");
-              this.loadFunctionCargosAlumno();
-              this.loadFunctionActualizarCargoGeneral();
-            }
-          },
-          error => {
-            console.error(error);
+          if (this.response != null) {
+            console.log("" + this.response);
+            this.mensaje = "Se agrego el cargo.";
+            this.seleccionTodos = false;
+            $("#modal_cargo").modal("hide");
+            this.loadFunctionCargosAlumno();
+            this.loadFunctionActualizarCargoGeneral();
           }
-        );
+        }
+      );
     },
     iniciarAgregarPago() {
       console.log("iniciar agregar pago ");
       this.pago.pago_total = Number(0);
       this.total_cargos = Number(0);
       this.pago.nota_pago = '';
-      this.pago.cat_forma_pago =  {id:-1,nombre:"",permite_factura:false};
+      this.pago.cat_forma_pago = { id: -1, nombre: "", permite_factura: false };
       this.pago.identificador_factura = "";
       this.facturado = false;
 
@@ -250,7 +196,7 @@ export default {
       }
 
       const montos_facturables = () => {
-        return this.listaCargosAlumnos.some(function (e) {          
+        return this.listaCargosAlumnos.some(function (e) {
           return (e.checked && e.es_facturable);
         });
       }
@@ -266,7 +212,7 @@ export default {
           }
         }
         this.pago.pago_total = this.total_cargos;
-        
+
         this.loadFunctionCatFormasPago();
 
         $('#modal_pago').modal('show');
@@ -302,20 +248,20 @@ export default {
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
       this.mensaje = "";
       var pass = true;
-     
+
       if (this.pago.cat_forma_pago.id == -1) {
 
-        this.mensaje = "Por favor seleccione la forma de pago.";       
+        this.mensaje = "Por favor seleccione la forma de pago.";
         $("#selectFormaPago").focus();
         return;
       }
-      
-      console.log("permit "+JSON.stringify(this.pago.cat_forma_pago));
 
-      if(this.pago.cat_forma_pago.permite_factura && 
-          this.escribir_folio_factura &&
-          this.existen_montos_facturables &&
-          this.pago.identificador_factura == ""){
+      console.log("permit " + JSON.stringify(this.pago.cat_forma_pago));
+
+      if (this.pago.cat_forma_pago.permite_factura &&
+        this.escribir_folio_factura &&
+        this.existen_montos_facturables &&
+        this.pago.identificador_factura == "") {
         //validar que escriban el folio
         this.mensaje = "Por favor escribe el folio de la factura";
         $("#inputIdentificadorFactura").focus();
@@ -329,11 +275,11 @@ export default {
               break;
             }
           }
-        }        
+        }
 
         if (!pass) {
           this.mensaje = "Por favor revise las cantidades, No pueden ir Ceros,Negativos ni espacios en blanco.";
-        } else {        
+        } else {
 
           var lista = this.listaCargosAlumnos
             .filter(e => e.checked)
@@ -369,38 +315,29 @@ export default {
             id_alumno: this.idalumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
-            cat_forma_pago: this.pago.cat_forma_pago.id,            
-            identificador_factura : this.pago.identificador_factura,            
+            cat_forma_pago: this.pago.cat_forma_pago.id,
+            identificador_factura: this.pago.identificador_factura,
             ids_cargos: ids_cargos,
             cargos_desglosados: cargos_desglosados,
             genero: this.usuarioSesion.id
           };
 
-          this.$http
-            .post(
-             // this.uriTempPagos + "/registrar", objEnvio, {
-              URL.PAGOS_REGISTRAR , objEnvio, {
-              headers: {
-                "x-access-token": this.sesion.token
+          this.post(
+            URL.PAGOS_REGISTRAR,
+            objEnvio,
+            this.sesion.token,
+            (result) => {
+              this.response = result.data;
+              if (this.response != null) {
+                console.log("" + this.response);
+                this.mensaje = "Se agrego el pago .";
+                this.seleccionTodos = false;
+                this.loadFunctionCargosAlumno();
+                this.loadFunctionActualizarCargoGeneral();
+                $("#modal_pago").modal("hide");
               }
-            })
-            .then(
-              result => {
-                this.response = result.data;
-
-                if (this.response != null) {
-                  console.log("" + this.response);
-                  this.mensaje = "Se agrego el pago .";
-                  this.seleccionTodos = false;
-                  this.loadFunctionCargosAlumno();
-                  this.loadFunctionActualizarCargoGeneral();
-                  $("#modal_pago").modal("hide");
-                }
-              },
-              error => {
-                console.error(error);
-              }
-            );
+            }
+          );
         }
       }
 
@@ -413,35 +350,23 @@ export default {
       this.cargoSeleccionado = item;
       console.log("this.cargoSeleccionado.id_cargo_balance_alumno " + this.cargoSeleccionado.id_cargo_balance_alumno);
 
-      this.$http
-        .get(
-          //this.uriTempPagos + "/" + this.cargoSeleccionado.id_cargo_balance_alumno, {
-          URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno, {
-          headers: {
-            "x-access-token": this.sesion.token
+      this.get(
+        URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
+        this.sesion.token,
+        result => {
+          this.response = result.data;
+          if (this.response != null) {
+            console.log("" + JSON.stringify(this.response));
+            this.listaPagosCargo = result.data;
+            $("#modal_detalle_cargo").modal("show");
           }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-
-            if (this.response != null) {
-              console.log("" + JSON.stringify(this.response));
-              this.listaPagosCargo = result.data;
-              $("#modal_detalle_cargo").modal("show");
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
-
-
+        }
+      );
     },
     seleccionarTodoPagos() {
       console.log("Toggle Seleccionar todos los cargos " + this.seleccionTodos);
       this.listaCargosAlumnos.forEach(element => {
-        if(!element.pagado){
+        if (!element.pagado) {
           element.checked = this.seleccionTodos;
         }
       });

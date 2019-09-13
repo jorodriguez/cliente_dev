@@ -4,8 +4,8 @@ import Vue from "vue";
 export default {
   name: "Popup", 
   template: `
-      <div :id="id == undefined ? [dynamicSlotName]: id" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
+      <div :id="id == undefined ? [dynamicSlotName]: id" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+      <div :class="size == undefined ? 'modal-dialog' : ('modal-dialog modal-'+size)" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
@@ -13,6 +13,7 @@ export default {
                     Header             
                 </slot>
             </h5>
+             
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -28,7 +29,7 @@ export default {
         </div>
       </div>
     </div>`,  
-    props: ["id", "show_button_close"],
+    props: ["id","size", "show_button_close"],
     data() {
         return {  }
     },

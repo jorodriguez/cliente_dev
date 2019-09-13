@@ -1,17 +1,15 @@
 
 import Vue from "vue";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 
 export default {
   name: "balance-alumno",  
+  mixins:[operacionesApi],
   template:'<span> {{ balanceAlumno.total_adeudo }} </span>',
   props: ['idalumno'],
   data() {
     return {      
-      //uriTempBalance: "http://localhost:5000/balance",           
-      //uriTempBalance: "https://api-ambiente-desarrollo.herokuapp.com/balance",            
-      //uriTempBalance: "https://api-ambiente-produccion.herokuapp.com/balance",            
       balanceAlumno : {total_adeudo:0},
       usuarioSesion: {},
       sesion: {},              
@@ -33,25 +31,18 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
     
     this.loadFunctionBalanceAlumno = function() {
-      this.$http
-        .get(URL.BALANCE_BASE +"/" +this.idalumno,            
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+
+      this.get(
+        URL.BALANCE_BASE +"/" +this.idalumno,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;            
+          if (this.response != null) {
+            this.balanceAlumno = this.response;
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;            
-            if (this.response != null) {
-              this.balanceAlumno = this.response;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
+    
     };    
 
     this.$root.$on('actualizacionPorCargoEvent', (text) => {

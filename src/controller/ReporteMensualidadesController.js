@@ -5,7 +5,7 @@ import { VueGoodTable } from 'vue-good-table';
 import Popup from './Popup'
 import RecordatorioPago from './RecordatorioPago'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
-import { throwStatement } from "babel-types";
+import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
   name: "ReporteMensualidades",
@@ -14,6 +14,7 @@ export default {
     Popup,
     RecordatorioPago
   },
+  mixins:[operacionesApi],
   data() {
     return {
       uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
@@ -136,51 +137,33 @@ export default {
     }
 
     this.loadFunctionReporteMensualidades = function (id_sucursal) {
-      this.$http
-        .get(
-          this.uriTemp + "/" + id_sucursal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+
+      this.get(
+        this.uriTemp + "/" + id_sucursal,
+        this.sesion.token,
+        (result) => {
+          console.log("Consulta " + result.data);
+          if (result.data != null) {
+            this.listaCargos = result.data;
+            this.listaCargosResp = result.data;
+            this.filtrarCargos();
           }
-        )
-        .then(
-          result => {
-            console.log("Consulta " + result.data);
-            if (result.data != null) {
-              this.listaCargos = result.data;
-              this.listaCargosResp = result.data;
-              this.filtrarCargos();
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.loadFunctionReporteMensualidadesSucursales = function () {
-      this.$http
-        .get(
-          this.uriTemp,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+
+      this.get(
+        this.uriTemp,
+        this.sesion.token,
+        result => {
+          console.log("Consulta cargos por sucursal" + result.data);
+          if (result.data != null) {
+            this.listaSucursales = result.data;
           }
-        )
-        .then(
-          result => {
-            console.log("Consulta cargos por sucursal" + result.data);
-            if (result.data != null) {
-              this.listaSucursales = result.data;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.filtrarCargos = () => {
@@ -203,38 +186,28 @@ export default {
       } else {
         let respuesta = "";
         let estatus_respuesta = false;
-        this.$http
-          .put(
-            URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO + "/" + id_alumno, {
-              nota: this.texto_recordatorio,
-              nota_escrita: true //poner un checkbox
-            },
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
-            }
-          )
-          .then(
-            result => {
-              if (result.data != null) {
-                console.log(JSON.stringify(result.data));
-                respuesta = result.data.respuesta;
-                estatus_respuesta = result.data.estatus;
-                
-                $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' > " + respuesta + "</i><br/>");                
-                $("#spiner_"+id_alumno).remove();
-              } else {                
-                $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i><br/>");                
-                $("#spiner_"+id_alumno).remove();
-              }
-            },
-            error => {
-              console.error(error);              
-              $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'> Error " + error + "</span><br/>");              
+
+        this.put(
+          URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO + "/" + id_alumno,
+          {
+            nota: this.texto_recordatorio,
+            nota_escrita: true //poner un checkbox
+          },
+          this.sesion.token,
+          (result) => {
+            if (result.data != null) {
+              console.log(JSON.stringify(result.data));
+              respuesta = result.data.respuesta;
+              estatus_respuesta = result.data.estatus;
+              
+              $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' > " + respuesta + "</i><br/>");                
+              $("#spiner_"+id_alumno).remove();
+            } else {                
+              $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i><br/>");                
               $("#spiner_"+id_alumno).remove();
             }
-          );
+          }
+        );
       };
     }
 
@@ -292,26 +265,15 @@ export default {
     iniciarEnvio() {
       console.log("Seleccion " + this.rowSelection);
       this.mensaje = "";
-      this.$http
-        .get(
-          URL.INFO_CONFIGURACION,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        URL.INFO_CONFIGURACION,
+        this.sesion.token,
+        result => {
+          if (result.data != null) {
+            this.texto_recordatorio = result.data.mensaje_recordatorio_pago;
           }
-        )
-        .then(
-          result => {
-            if (result.data != null) {
-              this.texto_recordatorio = result.data.mensaje_recordatorio_pago;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
-
+        }
+      );
       //this.rowSelection.map(obj=> ({ ...obj, opt: 'false' }))     
 
       $("#confirmarRecordatorioEnvioRecibo").modal("show");

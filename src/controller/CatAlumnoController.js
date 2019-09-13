@@ -49,31 +49,6 @@ export default {
           }
         });
     };
-
-    /* this.loadFunction = function () {
-       this.$http
-         .get(
-           URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal, {
-             headers: {
-               "x-access-token": this.sesion.token
-             }
-           })
-         .then(
-           result => {
-             this.response = result.data;
-             console.log("Consulta " + this.response);
-             if (this.response != null) {
-               this.lista = this.response;
-               this.listaRespaldo = this.response;
-             }
-           },
-           error => {
-             console.error(error);
-             console.log("Revisando la sesion " + JSON.stringify(error));
-           });
- 
-     };*/
-
     //traer grupos
     console.log("process.env.URL_GRUPOS " + process.env.URL_GRUPOS);
 
@@ -88,31 +63,6 @@ export default {
           }
         });
     };
-
-    /*this.loadFunctionGrupos = function () {
-      this.$http
-        .get(
-          //this.uriTempGrupos, {
-          URL.GRUPOS_BASE, {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
-          })
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("Grupos " + this.response);
-            if (this.response != null) {
-              this.listaGrupos = this.response;
-              // this.input.co_grupo =  (this.listaGrupos[0] || -1 );
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
-    };*/
-
     //validacion
     this.validacionGuardarFunction = () => {
       if (this.input == null) {
@@ -183,7 +133,7 @@ export default {
       console.log("Nuevo");
       this.operacion = "INSERT";
       this.input = {
-        id: 0,        
+        id: 0,
         co_sucursal: 0,
         co_grupo: 0,
         nombre: "",
@@ -207,8 +157,7 @@ export default {
 
       $("#modal_alumno").modal("show");
     },
-    guardar() {
-      //this.$http.get(process.env.ROOT_API+'/alumnos')
+    guardar() {      
       console.log("Insertar");
 
       if (!this.validacionGuardarFunction()) {
@@ -220,7 +169,8 @@ export default {
       this.input.genero = this.usuarioSesion.id;
 
       this.put(URL.ALUMNOS_BASE,
-        this.input, this.sesion.token,
+        this.input,
+        this.sesion.token,
         (result) => {
           this.response = result.data;
           console.log("this.response " + this.response);
@@ -229,24 +179,6 @@ export default {
           $("#modal_alumno").modal("hide");
         }
       );
-      /*this.$http
-        .post(URL.ALUMNOS_BASE, this.input, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("this.response " + this.response);
-            this.mensaje = "Se agregó el alumno";
-            this.loadFunction();
-            $("#modal_alumno").modal("hide");
-          },
-          error => {
-            console.error(error);
-          }
-        );*/
     },
     modificar() {
       console.log("Modificar el id " + this.input.id);
@@ -257,7 +189,8 @@ export default {
       }
 
       this.put(URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.input, this.sesion.token,
+        this.input, 
+        this.sesion.token,
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -268,29 +201,7 @@ export default {
           }
         }
       );
-
-      /*
-      this.$http
-        .put(URL.ALUMNOS_BASE + "/" + this.input.id, this.input, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        })
-        .then(
-          result => {
-            this.response = result.data;
-
-            if (this.response != null) {
-              console.log("" + this.response);
-              this.mensaje = "Se modificó el alumno";
-              this.loadFunction();
-              $("#modal_alumno").modal("hide");
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );*/
+ 
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
@@ -306,25 +217,6 @@ export default {
         }
       );
 
-      /* this.$http
-         .delete(URL.ALUMNOS_BASE + "/" + this.input.id, {
-           headers: {
-             "x-access-token": this.sesion.token
-           }
-         })
-         .then(
-           result => {
-             this.response = result.data;
- 
-             if (this.response != null) {
-               console.log("" + this.response);
-               this.loadFunction();
-             }
-           },
-           error => {
-             console.error(error);
-           }
-         );*/
     },
     select(rowSelect, operacion) {
       console.log("fila seleccionada " + rowSelect.adeuda);
