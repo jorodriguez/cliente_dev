@@ -4,11 +4,13 @@ import ActividadModel from "../models/ActividadModel";
 import { truncateSync } from "fs";
 //import fire from '../fire'
 import Vue from "vue";
+import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 
 
 export default {
     name: "Principal",
+    mixins:[operacionesApi],
     data() {
         return {
             usuarioSesion: {},
@@ -33,17 +35,17 @@ export default {
             validacion: null,
             mensajeToast: null,
             firebaseMessages: null,
-            
+
             uriTempAsistencia: URL.ASISTENCIA_BASE,
-            uriTempGrupos:  URL.GRUPOS_BASE,
+            uriTempGrupos: URL.GRUPOS_BASE,
             uriTempActividad: URL.ACTIVIDAD_BASE,
-            
+
 
             /*uriTempAsistencia: "https://api-ambiente-desarrollo.herokuapp.com/asistencia",
             uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos",
             uriTempActividad: "https://api-ambiente-desarrollo.herokuapp.com/actividad"      
             */
-            
+
             /*uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",
             uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
             uriTempActividad: "https://api-ambiente-produccion.herokuapp.com/actividad"      
@@ -53,7 +55,7 @@ export default {
     //FIXME: SESION
     mounted() {
         console.log("iniciando el Bienvenida ");
-       
+
         this.sesion = this.$session.get("usuario_sesion");
 
         if (!this.sesion || !this.sesion.usuario) {
@@ -62,66 +64,80 @@ export default {
             return;
         }
         this.usuarioSesion = this.sesion.usuario;
-         /*   
-        console.log("   "+fire);
-        fire.usePublicVapidKey("BPyjJFCz2SDWVfRU_t-o29Ru3dskbHSkKw6qUWyiZXgawNcjANKpd1kZU5dBNq4xZqkgx8LK6jEaYcjFj_enfOU"); 
-        fire.requestPermission().then(function() {
-            console.log('Notification permission granted.');
-            // TODO(developer): Retrieve an Instance ID token for use with FCM.
-            
-          }).catch(function(err) {
-            console.log('Unable to get permission to notify.', err);
-          });
-          
-          fire.getToken().then(function(currentToken) {
-              console.log("Current token "+currentToken);
-            if (currentToken) {
-              sendTokenToServer(currentToken);
-              updateUIForPushEnabled(currentToken);
-            } else {
-              // Show permission request.
-              console.log('No Instance ID token available. Request permission to generate one.');
-              // Show permission UI.
-              updateUIForPushPermissionRequired();
-              setTokenSentToServer(false);
-            }
-          }).catch(function(err) {
-            console.log('An error occurred while retrieving token. ', err);
-            showToken('Error retrieving Instance ID token. ', err);
-            setTokenSentToServer(false);
-          });
-        */
+        /*   
+       console.log("   "+fire);
+       fire.usePublicVapidKey("BPyjJFCz2SDWVfRU_t-o29Ru3dskbHSkKw6qUWyiZXgawNcjANKpd1kZU5dBNq4xZqkgx8LK6jEaYcjFj_enfOU"); 
+       fire.requestPermission().then(function() {
+           console.log('Notification permission granted.');
+           // TODO(developer): Retrieve an Instance ID token for use with FCM.
+           
+         }).catch(function(err) {
+           console.log('Unable to get permission to notify.', err);
+         });
+         
+         fire.getToken().then(function(currentToken) {
+             console.log("Current token "+currentToken);
+           if (currentToken) {
+             sendTokenToServer(currentToken);
+             updateUIForPushEnabled(currentToken);
+           } else {
+             // Show permission request.
+             console.log('No Instance ID token available. Request permission to generate one.');
+             // Show permission UI.
+             updateUIForPushPermissionRequired();
+             setTokenSentToServer(false);
+           }
+         }).catch(function(err) {
+           console.log('An error occurred while retrieving token. ', err);
+           showToken('Error retrieving Instance ID token. ', err);
+           setTokenSentToServer(false);
+         });
+       */
 
 
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
             this.listaRecibidos = [];
-            this.$http
-                .get(
-                    this.uriTempAsistencia +
-                    "/alumnos_recibidos" +
-                    "/" +
-                    this.usuarioSesion.co_sucursal,
-                    {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
+            this.get(
+                this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
+                    if (this.response != null) {
+                        //console.log(" ====>> " + JSON.stringify(this.response));
+                        this.listaAlumnos = this.response;
+                        this.actualizarComboFiltro();
+                        this.filtrarAlumnosPorGrupo(this.grupoDefault);
                     }
-                )
-                .then(
-                    result => {
-                        this.response = result.data;
-                        if (this.response != null) {
-                            //console.log(" ====>> " + JSON.stringify(this.response));
-                            this.listaAlumnos = this.response;
-                            this.actualizarComboFiltro();
-                            this.filtrarAlumnosPorGrupo(this.grupoDefault);
-                        }
-                    },
-                    error => {
-                        console.error(error);
-                    }
-                );
+                }
+            );
+
+            /* this.$http
+                 .get(
+                     this.uriTempAsistencia +
+                     "/alumnos_recibidos" +
+                     "/" +
+                     this.usuarioSesion.co_sucursal,
+                     {
+                         headers: {
+                             "x-access-token": this.sesion.token
+                         }
+                     }
+                 )
+                 .then(
+                     result => {
+                         this.response = result.data;
+                         if (this.response != null) {
+                             //console.log(" ====>> " + JSON.stringify(this.response));
+                             this.listaAlumnos = this.response;
+                             this.actualizarComboFiltro();
+                             this.filtrarAlumnosPorGrupo(this.grupoDefault);
+                         }
+                     },
+                     error => {
+                         console.error(error);
+                     }
+                 );*/
         };
 
         //toast
@@ -147,27 +163,42 @@ export default {
         };
 
         //actividades
-        this.$http
-            .get(this.uriTempActividad + "/catalogo_actividad", {
-                headers: {
-                    "x-access-token": this.sesion.token
-                }
-            })
-            .then(
-                result => {
-                    this.response = result.data;
-                    console.log("Consulta de actividades" + this.response);
-                    if (this.response != null) {
-                        if (this.response.length > 0) {
-                            this.listaActividades = this.response[0].catalogo_actividades;
-                        }
-                    }
-                },
-                error => {
-                    console.error(error);
-                }
-            );
 
+        this.get(
+            this.uriTempActividad + "/catalogo_actividad",
+            this.sesion.token,
+            (result) => {
+                this.response = result.data;
+                console.log("Consulta de actividades" + this.response);
+                if (this.response != null) {
+                    if (this.response.length > 0) {
+                        this.listaActividades = this.response[0].catalogo_actividades;
+                    }
+                }
+            },
+        );
+        /*
+                this.$http
+                    .get(this.uriTempActividad + "/catalogo_actividad", {
+                        headers: {
+                            "x-access-token": this.sesion.token
+                        }
+                    })
+                    .then(
+                        result => {
+                            this.response = result.data;
+                            console.log("Consulta de actividades" + this.response);
+                            if (this.response != null) {
+                                if (this.response.length > 0) {
+                                    this.listaActividades = this.response[0].catalogo_actividades;
+                                }
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    );
+                            */
         ///c
         this.validacion = function () {
             if (
@@ -319,6 +350,30 @@ export default {
 
             console.log("ENVO " + JSON.stringify(this.actividad));
 
+            this.post(
+                this.uriTempActividad + "/registrar",
+                this.actividad,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
+                    console.log("Actividades insertadas " + this.response);
+                    if (this.response != null) {
+                        var rowsAffected = this.response;
+                        if (rowsAffected > 0) {
+                            this.mensaje = "Se registro la actividad";
+                            this.listaAlumnosSeleccionados = [];
+                            this.limpiarFormularioActividad();
+
+                            $("[is_alumno]").removeClass("fas fa-check-circle text-danger");
+
+                            this.seleccionarTodos(false);
+                            $("#modal_actividad").modal("hide");
+                        }
+                    }
+                }
+            );
+
+                /*
             this.$http
                 .post(this.uriTempActividad + "/registrar", this.actividad, {
                     headers: {
@@ -346,7 +401,7 @@ export default {
                     error => {
                         console.error(error);
                     }
-                );
+                );*/
         },
         signout() {
             console.log("Signout ");
@@ -410,8 +465,24 @@ export default {
                 }
 
                 console.log("IDS " + ids);
+                
+                this.post(
+                        this.uriTempAsistencia + "/salidaAlumnos",
+                        { ids: ids, genero: this.usuarioSesion.id },
+                        this.sesion.token,
+                        (result) => {
+                            this.response = result.data;
+                            console.log("Response " + this.response);
+                            if (this.response != null) {
+                                this.lista = this.response;
+                                this.mensaje = "Se registro la salida de los alumnos";
+                                $("#confirmar_salida_modal").modal("hide");
+                                this.loadFunctionAlumnosDentro();
+                            }
+                        }
+                );
 
-                this.$http
+               /* this.$http
                     .post(
                         this.uriTempAsistencia + "/salidaAlumnos",
                         { ids: ids, genero: this.usuarioSesion.id },
@@ -438,12 +509,12 @@ export default {
                     ).catch((e) => {
                         $("#confirmar_salida_modal").modal("hide");
                         this.mensajeToast("Sucedió un error inesperado");
-                    });
+                    });*/
             } else {
                 this.mensajeToast("Seleccione al menos un alumno de la lista");
                 //this.mensaje = "Seleccione al menos un alumno de la lista";
             }
-        }       
+        }
 
     }
 };

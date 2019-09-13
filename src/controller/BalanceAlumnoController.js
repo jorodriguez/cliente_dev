@@ -43,8 +43,7 @@ export default {
         )
         .then(
           result => {
-            this.response = result.data;
-            console.log("BALANCE====  " + JSON.stringify(this.response));
+            this.response = result.data;            
             if (this.response != null) {
               this.balanceAlumno = this.response;
             }
@@ -59,7 +58,7 @@ export default {
       console.log("ACTUALIZACION POR CARGO NUEVO");
       this.loadFunctionBalanceAlumno();
     });
-        this.loadFunctionBalanceAlumno();
+    this.loadFunctionBalanceAlumno();
   },
   methods: {
       
