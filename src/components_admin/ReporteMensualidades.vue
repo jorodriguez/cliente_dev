@@ -24,6 +24,27 @@
         </div>
         <h3>{{sucursal_seleccionada.sucursal}}</h3>
         <h5 class="text-muted">Mensualidades</h5>
+        <div class="row">
+          <div class="form-group">
+            <select
+              id="meses"
+              v-model="mes_seleccionado"
+              v-on:change="cambiarMes"
+              class="form-control"
+              placeholder="Mes"
+            >
+              <option                
+                v-bind:value="null"
+                v-bind:key="-1"
+              >Mes Actual</option>
+              <option
+                v-for="p in listaMesesConAdeudo"
+                v-bind:value="p.anio_mes"
+                v-bind:key="p.anio_mes"
+              >{{p.anio_mes}} ({{ p.no_pagados }})</option>
+            </select>
+          </div>
+        </div>
 
         <vue-good-table
           :columns="columnsCargos"
@@ -34,7 +55,7 @@
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
           @on-selected-rows-change="selectionChanged"
-          :selectOptions="TABLE_CONFIG.SELECT_OPTIONS"
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
           @on-select-all="selectAll"
         >
           <template slot="table-row" slot-scope="props">
@@ -84,13 +105,19 @@
           <div slot="header">Confirmar envio de recordatorio</div>
           <div slot="content">
             <p class="text-danger">{{mensaje}}</p>
-            <div class="row">              
-              <div class="col text-left">     
-                 <label for="validationTextarea"><strong>Nota de recordatorio<span class="text-danger">*</span></strong></label>                           
+            <div class="row">
+              <div class="col text-left">
+                <label for="validationTextarea">
+                  <strong>
+                    Nota de recordatorio
+                    <span class="text-danger">*</span>
+                  </strong>
+                </label>
                 <textarea
-                  class="form-control text-primary" 
-                  id="validationTextarea" placeholder="Nota de recordatorio de pago"
-                  v-model="texto_recordatorio"                  
+                  class="form-control text-primary"
+                  id="validationTextarea"
+                  placeholder="Nota de recordatorio de pago"
+                  v-model="texto_recordatorio"
                   style="width:100%;heigth:100%"
                   required
                 ></textarea>
@@ -98,7 +125,9 @@
             </div>
             <div class="row">
               <div class="container">
-                <small class="text-danger">La notificación se enviará a las direcciones de correo válidas.</small>
+                <small
+                  class="text-danger"
+                >La notificación se enviará a las direcciones de correo válidas.</small>
                 <vue-good-table
                   class="table"
                   :columns="[{
@@ -136,8 +165,8 @@
                   :select-options="{enabled:false}"
                   :search-options="{enabled:true}"
                   :sort-options="{enabled: false}"
-                   max-height="200px"
-                  :fixed-header="true"                  
+                  max-height="200px"
+                  :fixed-header="true"
                 >
                   <template slot="table-row" slot-scope="props">
                     <span v-if="props.column.field == 'correos'">

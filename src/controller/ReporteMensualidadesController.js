@@ -23,11 +23,14 @@ export default {
       listaCargosResp: [],
       rowSelection: [],
       listaCorreosEnviarRecordatorio: [],
+      listaMesesConAdeudo:[],
       usuarioSesion: {},
+      mes_seleccionado : null,
       sesion: {},
-      sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
+      sucursal_seleccionada: { id_sucursal: 0, nombre: "" },      
       loadFunctionReporteMensualidades: null,
-      loadFunctionReporteMensualidadesSucursales: null,
+      loadFunctionReporteMensualidadesSucursales: null,      
+      loadFunctionMesesConAdeudo: null,      
       enviarRecordatorioFunction: null,
       filtrarCargos: null,
       verTodosCargos: false,
@@ -145,17 +148,21 @@ export default {
           console.log("Consulta " + result.data);
           if (result.data != null) {
             this.listaCargos = result.data;
-            this.listaCargosResp = result.data;
-            this.filtrarCargos();
+            
           }
         }
       );
     };
 
     this.loadFunctionReporteMensualidadesSucursales = function () {
+      let  url = this.uriTemp;
+      
+      if(this.mes_seleccionado != null){
+        url+"/"+this.mes_seleccionado
+      }
 
       this.get(
-        this.uriTemp,
+        url,
         this.sesion.token,
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
@@ -164,16 +171,6 @@ export default {
           }
         }
       );
-    };
-
-    this.filtrarCargos = () => {
-
-      if (this.verTodosCargos) {
-        this.listaCargos = this.listaCargosResp;
-      } else {
-        //this.listaCargos = this.listaCargosResp.filter(row => row.pagado == true);
-      }
-
     };
 
     this.enviarRecordatorioFunction = function (id_alumno, nombre_padres) {
@@ -211,6 +208,19 @@ export default {
       };
     }
 
+    this.loadFunctionMesesConAdeudo = (id_sucursal) =>{
+      this.get(
+        this.uriTemp+"/"+id_sucursal+"/meses",
+        this.sesion.token,
+        result => {
+          console.log("Consulta meses con adeudo" + result.data);
+          if (result.data != null) {
+            this.listaMesesConAdeudo = result.data;
+          }
+        }
+      );
+    };
+    
     this.loadFunctionReporteMensualidadesSucursales();
   },
   methods: {
@@ -218,6 +228,7 @@ export default {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
       this.sucursal_seleccionada = row_sucursal;
       this.loadFunctionReporteMensualidades(row_sucursal.id_sucursal);
+      this.loadFunctionMesesConAdeudo(row_sucursal.id_sucursal);
 
     },
     formatPrice(value) {
@@ -230,7 +241,9 @@ export default {
 
       this.filtrarCargos();
     },
-
+    cambiarMes(){
+      this.loadFunctionReporteMensualidadesSucursales();
+    },
     onRowClick(params) {
       console.log(JSON.stringify(params));
       // params.row - row object 

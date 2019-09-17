@@ -24,6 +24,14 @@ const TABLE_CONFIG = {
         clearSelectionText: 'Limpiar ',
         disableSelectInfo: true, // disable the select info panel on top
     },
+    NO_SELECT_OPTIONS:{
+        enabled: false,
+        selectOnCheckboxOnly: false, // only select when checkbox is clicked instead of the row
+        selectionInfoClass: 'custom-class',
+        selectionText: 'Registro(s)',
+        clearSelectionText: 'Limpiar ',
+        disableSelectInfo: true, // disable the select info panel on top
+    },
     SEARCH_OPTIONS : {
         enabled: true,                        
         //  skipDiacritics: true,                        
