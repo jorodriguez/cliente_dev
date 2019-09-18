@@ -16,36 +16,58 @@
             >
               <div class="card-body" v-bind:style="{'background-color':row.class_color}">
                 <h6 class="text-uppercase">{{row.sucursal}}</h6>
-                <small>Mensualidades</small>
-                <h4 class="display-5">{{row.pagos_facturados}} de {{row.cargos_pagados}}</h4>
+                <small class="badge badge-info " style="background-color: gray"> {{row.total_cargos}}</small>
+                <small>Mensualidades </small>                
+                <!--<small>{{formatNumeroMes(row.numero_mes)}}</small>-->
+                <!--<h4 class="display-5">{{row.pagos_facturados}} de {{row.cargos_pagados}}</h4>-->
               </div>
             </div>
           </div>
         </div>
         <h3>{{sucursal_seleccionada.sucursal}}</h3>
         <h5 class="text-muted">Mensualidades</h5>
-        <div class="row">
-          <div class="form-group">
-            <select
-              id="meses"
-              v-model="mes_seleccionado"
-              v-on:change="cambiarMes"
-              class="form-control"
-              placeholder="Mes"
-            >
-              <option                
-                v-bind:value="null"
-                v-bind:key="-1"
-              >Mes Actual</option>
-              <option
-                v-for="p in listaMesesConAdeudo"
-                v-bind:value="p.anio_mes"
-                v-bind:key="p.anio_mes"
-              >{{p.anio_mes}} ({{ p.no_pagados }})</option>
-            </select>
+         <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td
+                    v-for="row in listaMeses"
+                    :key="row.id"
+                    class="border pointer"
+                    v-on:click="verCargosPorMes(row)"
+                    title="Clic para ver la lista de cargos."
+                  >
+                    <h6>
+                      <strong>{{row.mes_anio}}</strong>
+                    </h6>
+                    <p
+                      v-bind:class="row.cargos_no_pagados > 1 ? 'text-muted text-danger':'text-muted'"
+                    >{{ formatNumeroMes(row.numero_mes) }} ({{ row.cargos_no_pagados }} pendientes)</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-
+<!--
+        <div class="d-flex flex-row-reverse d-highlight">
+          <div class="bd-highlight">
+            <div class="form-group">
+              <select
+                id="meses"
+                v-model="mes_seleccionado"
+                v-on:change="cambiarMes"
+                class="form-control"
+                placeholder="Mes"
+              >
+                <option
+                  v-for="p in listaMeses"
+                  v-bind:value="p.anio_mes"
+                  v-bind:key="p.anio_mes"
+                >{{ formatNumeroMes(p.numero_mes) }} ({{ p.cargos_no_pagados }} pendientes)</option>
+              </select>
+            </div>
+          </div>
+        </div>-->
         <vue-good-table
           :columns="columnsCargos"
           :rows="listaCargos"
@@ -185,6 +207,73 @@
           </div>
           <div slot="footer">
             <button class="btn btn-primary" v-on:click="enviarRecordatorio">Enviar recordatorio</button>
+          </div>
+        </Popup>
+
+        <Popup id="detallePago" v-if="pago_seleccionado != null" show_button_close="true">
+          <div slot="header">Detalle de registro</div>
+          <div slot="content">            
+            <div class="row">
+              <div class="container">
+                 <table class="table table-striped text-left">
+                   <tr>
+                     <td class="font-weight-bold"> Estatus</td>                     
+                     <td>
+                         <span v-if="pago_seleccionado.pagado" class="text-success">                         
+                         <strong>PAGADO <i class="fas fa-check-circle text-success text-small"></i></strong> 
+                       </span>
+                        <span v-else class="text-danger"> 
+                          <strong>PENDIENTE</strong>
+                        </span>
+                       </td>
+                   </tr> 
+                   
+                   <tr>
+                     <td class="font-weight-bold"> Alumno </td>                     
+                     <td>{{pago_seleccionado.nombre_alumno}}</td>
+                   </tr> 
+                   <tr>
+                     <td class="font-weight-bold">Fecha de cargo </td>                     
+                     <td>
+                       <span :class="pago_seleccionado.pagado ? '':'text-danger'">{{ pago_seleccionado.fecha_cargo | moment("DD-MMM-YYYY") }} </span> </td>
+                   </tr>
+                   <tr>
+                     <td class="font-weight-bold">Fecha de pago </td>                     
+                     <td> 
+                       <span v-if="pago_seleccionado.pagado">                         
+                         {{ pago_seleccionado.fecha_pago | moment("DD-MMM-YYYY") }} 
+                       </span>
+                        <span v-else class="text-danger"> 
+                          PENDIENTE
+                        </span>
+                    </td>
+                   </tr>
+                   <tr>
+                     <td class="font-weight-bold">Cargo </td>                     
+                     <td> <span :class="pago_seleccionado.pagado ? '':'text-danger'"> {{ pago_seleccionado.nombre_cargo }} </span></td> 
+                   </tr>
+                   <tr class="font-weight-bold">
+                     <td>Monto </td>                     
+                     <td><span :class="pago_seleccionado.pagado ? '':'text-danger'"> {{ formatPrice(pago_seleccionado.cargo) }} </span></td>
+                   </tr>
+                   <tr v-if="pago_seleccionado.pagado">
+                     <td class="font-weight-bold">Factura </td>                     
+                     <td> 
+                       <span v-if="pago_seleccionado.identificador_factura != ''" >{{ pago_seleccionado.identificador_factura }}</span>
+                       <span v-else class="text-muted small" >Sin Registro</span>
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="font-weight-bold">Forma Pago </td>                     
+                     <td> {{ pago_seleccionado.forma_pago }} </td>
+                   </tr>
+                                     
+                 </table>
+                 
+              </div>
+            </div>
+          </div>
+          <div slot="footer">            
           </div>
         </Popup>
 

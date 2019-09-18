@@ -6,6 +6,7 @@ import Popup from './Popup'
 import RecordatorioPago from './RecordatorioPago'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import { castNumMonthToSpanish } from "../helpers/UtilsDate";
 
 export default {
   name: "ReporteMensualidades",
@@ -14,7 +15,7 @@ export default {
     Popup,
     RecordatorioPago
   },
-  mixins:[operacionesApi],
+  mixins: [operacionesApi],
   data() {
     return {
       uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
@@ -23,14 +24,15 @@ export default {
       listaCargosResp: [],
       rowSelection: [],
       listaCorreosEnviarRecordatorio: [],
-      listaMesesConAdeudo:[],
+      listaMeses: [],
       usuarioSesion: {},
-      mes_seleccionado : null,
+      mes_seleccionado: null,
+      pago_seleccionado : null,
       sesion: {},
-      sucursal_seleccionada: { id_sucursal: 0, nombre: "" },      
-      loadFunctionReporteMensualidades: null,
-      loadFunctionReporteMensualidadesSucursales: null,      
-      loadFunctionMesesConAdeudo: null,      
+      sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
+      loadFunctionReporteContadoresMesSucursal: null,
+      loadFunctionReporteMensualidadesSucursal: null,
+      loadFunctionMeses: null,
       enviarRecordatorioFunction: null,
       filtrarCargos: null,
       verTodosCargos: false,
@@ -55,7 +57,7 @@ export default {
           tdClass: 'text-center',
         },
         {
-          label: 'Fecha',
+          label: 'Fecha Pago',
           field: 'fecha_pago',
           type: 'date',
           dateInputFormat: 'yyyy-MM-dd',
@@ -65,7 +67,7 @@ export default {
           filterable: true,
         },
         {
-          label: 'Pagos',
+          label: 'Pago',
           field: 'pago',
           thClass: 'text-center',
           tdClass: 'text-center',
@@ -139,47 +141,48 @@ export default {
       return;
     }
 
-    this.loadFunctionReporteMensualidades = function (id_sucursal) {
-
+    //para mostrar las sucursales
+    this.loadFunctionReporteContadoresSucursalesMesActual= function () {
       this.get(
-        this.uriTemp + "/" + id_sucursal,
+        this.uriTemp,
         this.sesion.token,
-        (result) => {
-          console.log("Consulta " + result.data);
+        result => {
+          console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
-            this.listaCargos = result.data;
-            
+            this.listaSucursales = result.data;               
+            if(this.listaSucursales != null && this.listaSucursales.length > 0){
+              if(this.mes_seleccionado == null){
+                this.mes_seleccionado = this.listaSucursales[0].anio_mes;
+              }           
+            } 
           }
         }
       );
     };
 
-    this.loadFunctionReporteMensualidadesSucursales = function () {
-      let  url = this.uriTemp;
-      
-      if(this.mes_seleccionado != null){
-        url+"/"+this.mes_seleccionado
-      }
 
+    this.loadFunctionReporteMensualidadesSucursal = function (id_sucursal) {
+      console.log("sucr "+id_sucursal+" mes "+this.mes_seleccionado);
       this.get(
-        url,
+        this.uriTemp + "/" + id_sucursal+"/"+this.mes_seleccionado,
         this.sesion.token,
-        result => {
-          console.log("Consulta cargos por sucursal" + result.data);
+        (result) => {
+          console.log("Consulta " + result.data);
           if (result.data != null) {
-            this.listaSucursales = result.data;
+            this.listaCargos = result.data;
+
           }
         }
       );
     };
 
     this.enviarRecordatorioFunction = function (id_alumno, nombre_padres) {
-       
-      $("#cuerpo_notificador_principal").append("<span id='spiner_"+id_alumno+"' class='spinner-border'/> <span id='msg_send_"+id_alumno+"' >Enviando a " + nombre_padres + "</span>");
-      
+
+      $("#cuerpo_notificador_principal").append("<span id='spiner_" + id_alumno + "' class='spinner-border'/> <span id='msg_send_" + id_alumno + "' >Enviando a " + nombre_padres + "</span>");
+
       if (id_alumno == null) {
         $("#msg_send_" + id_alumno).append("<span class='exclamation-triangle text-danger'>No Enviado debido a un error en la validación previa</span><br/>");
-        $("#spiner_"+id_alumno).remove();
+        $("#spiner_" + id_alumno).remove();
       } else {
         let respuesta = "";
         let estatus_respuesta = false;
@@ -196,40 +199,39 @@ export default {
               console.log(JSON.stringify(result.data));
               respuesta = result.data.respuesta;
               estatus_respuesta = result.data.estatus;
-              
-              $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' > " + respuesta + "</i><br/>");                
-              $("#spiner_"+id_alumno).remove();
-            } else {                
-              $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i><br/>");                
-              $("#spiner_"+id_alumno).remove();
+
+              $("#msg_send_" + id_alumno).append("<i class='" + (estatus_respuesta == true ? "fas fa-check text-primary" : "exclamation-triangle  text-danger") + "' > " + respuesta + "</i><br/>");
+              $("#spiner_" + id_alumno).remove();
+            } else {
+              $("#msg_send_" + id_alumno).append("<i class='exclamation-triangle text-danger'>Error</i><br/>");
+              $("#spiner_" + id_alumno).remove();
             }
           }
         );
       };
     }
 
-    this.loadFunctionMesesConAdeudo = (id_sucursal) =>{
+    this.loadFunctionReporteContadoresMesSucursal = function(id_sucursal)  {
       this.get(
-        this.uriTemp+"/"+id_sucursal+"/meses",
+        this.uriTemp + "/" + id_sucursal,
         this.sesion.token,
         result => {
           console.log("Consulta meses con adeudo" + result.data);
           if (result.data != null) {
-            this.listaMesesConAdeudo = result.data;
+            this.listaMeses = result.data;          
           }
         }
       );
     };
-    
-    this.loadFunctionReporteMensualidadesSucursales();
+
+    this.loadFunctionReporteContadoresSucursalesMesActual();
   },
   methods: {
-    verListaMensualidadesFacturadas(row_sucursal) {
+    async verListaMensualidadesFacturadas(row_sucursal) {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
-      this.sucursal_seleccionada = row_sucursal;
-      this.loadFunctionReporteMensualidades(row_sucursal.id_sucursal);
-      this.loadFunctionMesesConAdeudo(row_sucursal.id_sucursal);
-
+      this.sucursal_seleccionada = row_sucursal;      
+      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id_sucursal);            
+      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);     
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
@@ -241,11 +243,20 @@ export default {
 
       this.filtrarCargos();
     },
-    cambiarMes(){
-      this.loadFunctionReporteMensualidadesSucursales();
+    formatNumeroMes(num_mes){
+      return castNumMonthToSpanish(num_mes).es;
+    },
+    cambiarMes() {
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
+    },
+    verCargosPorMes(row){
+      this.mes_seleccionado = row.anio_mes;
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));
+      this.pago_seleccionado = params.row;
+      $("#detallePago").modal("show");
       // params.row - row object 
       // params.pageIndex - index of this row on the current page.
       // params.selected - if selection is enabled this argument 
@@ -315,7 +326,7 @@ export default {
           //this.rowSelection.forEach(function (element) {
           console.log(element);
           console.log(" enviando " + element.id_alumno);
-          setTimeout(function () { }, 5000);          
+          setTimeout(function () { }, 5000);
           that.enviarRecordatorioFunction(element.id_alumno, element.nombres_padres);
         });
         $("#confirmarRecordatorioEnvioRecibo").modal("hide");
