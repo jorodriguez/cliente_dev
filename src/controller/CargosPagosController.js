@@ -5,9 +5,13 @@ import { isRegExp } from "util";
 import { timingSafeEqual } from "crypto";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import Popup from './Popup'
 
 export default {
   name: "cargos-pagos",
+  components :{
+    Popup
+  },
   props: ['idalumno', 'requiere_factura'],
   mixins: [operacionesApi],
   data() {
@@ -189,11 +193,7 @@ export default {
       this.facturado = false;
 
       this.mensaje = "";
-      const existeSeleccionAlumno = () => {
-        return this.listaCargosAlumnos.some(function (e) {
-          return e.checked;
-        });
-      }
+     
 
       const montos_facturables = () => {
         return this.listaCargosAlumnos.some(function (e) {
@@ -203,7 +203,7 @@ export default {
 
       this.existen_montos_facturables = montos_facturables();
 
-      if (existeSeleccionAlumno()) {
+      if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
           var element = this.listaCargosAlumnos[i];
           if (element.checked) {
@@ -340,7 +340,6 @@ export default {
           );
         }
       }
-
     },
     verDetalleCargo(item) {
 
@@ -371,9 +370,40 @@ export default {
         }
       });
     },
+    iniciarEliminacionCargo(){
+      if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
+        $("#eliminarCargoAlumno").modal("show");
+      }
+    },
+
+    aqui me quede falta enviar la lista de ids de cargos
+    confirmarEliminacion(){
+      //ids, motivo,genero
+      this.put(
+        URL.cargos_desglosados,
+        {ids:[],
+
+        }
+        this.sesion.token,
+        result => {
+          this.response = result.data;
+          if (this.response != null) {
+            console.log("" + JSON.stringify(this.response));
+            this.listaPagosCargo = result.data;
+            $("#modal_detalle_cargo").modal("show");
+          }
+        }
+      );
+    },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
   },
 };
+
+function existeSeleccionAlumno(lista) {
+  return lista.some(function (e) {
+    return e.checked;
+  });
+}

@@ -6,11 +6,19 @@
     >* Este alumno requiere de facturación.</p>
     <div class="row">
       <div class="col text-left">
-        <button
-          type="button"
-          class="btn btn-danger"
-          v-on:click="iniciarAgregarCargo()"
-        >Agregar Cargo</button>
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-danger"
+            v-on:click="iniciarAgregarCargo()"
+          >Agregar Cargo</button>
+          <button
+            type="button"
+            v-on:click="iniciarEliminacionCargo()"
+            class="btn btn-secondary"
+            title="Eliminar cargo(s) selecionado(s)"
+          >Eliminar Cargo</button>
+        </div>
       </div>
       <div class="col text-right">
         <div class="btn-group">
@@ -71,12 +79,13 @@
               <span class="small font-weight-bold text-success">${{row.total_pagado}}</span>
             </strong>
           </td>
-          <td>
-            <span
+          <td style="width: 180px;">
+            <span class="d-inline-block small" style="width: 100%;" :title="row.nota">{{row.nota}}</span>
+            <!--<span
               class="d-inline-block text-truncate small"
-              style="max-width: 120px;"
+              style="width: 120px;"
               :title="row.nota"
-            >{{row.nota}}</span>
+            >{{row.nota}}</span>-->
           </td>
           <td></td>
         </tr>
@@ -368,7 +377,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Detalle del cargo </h5>
+            <h5 class="modal-title">Detalle del cargo</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -377,29 +386,37 @@
           <div class="modal-body text-left">
             <table class="table">
               <tr>
-                <td><strong>Fecha</strong></td>
+                <td>
+                  <strong>Fecha</strong>
+                </td>
                 <td>{{cargoSeleccionado.fecha | moment("DD-MMM-YY h:mm:ss a")}}</td>
               </tr>
               <tr>
-                <td><strong>Concepto</strong></td>
+                <td>
+                  <strong>Concepto</strong>
+                </td>
                 <td>
                   <span
-                    v-if="!cargoSeleccionado.pagado"                    
+                    v-if="!cargoSeleccionado.pagado"
                   >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}}</span>
                   <span
                     v-else-if="cargoSeleccionado.pagado"
-                    class=" tachado"
+                    class="tachado"
                   >{{cargoSeleccionado.cantidad}} {{cargoSeleccionado.nombre_cargo}}</span>
                 </td>
               </tr>
               <tr>
-                <td><strong>Total</strong></td>
+                <td>
+                  <strong>Total</strong>
+                </td>
                 <td>
                   <label class="font-weight-bold text-danger">${{cargoSeleccionado.total}}</label>
                 </td>
               </tr>
               <tr>
-                <td><strong>Pagado</strong></td>
+                <td>
+                  <strong>Pagado</strong>
+                </td>
                 <td>
                   <label class="font-weight-bold text-success">$ {{cargoSeleccionado.total_pagado}}</label>
                   <i v-if="cargoSeleccionado.pagado" class="fas fa-check-circle text-success"></i>
@@ -407,7 +424,9 @@
                 </td>
               </tr>
               <tr>
-                <td><strong>Nota</strong></td>
+                <td>
+                  <strong>Nota</strong>
+                </td>
                 <td>
                   <textarea v-model="cargoSeleccionado.nota" disabled class="form-control"></textarea>
                 </td>
@@ -415,7 +434,7 @@
             </table>
             <div class="text-center">
               <p>Pagos Realizados</p>
-            </div>            
+            </div>
             <div class="row">
               <table class="table">
                 <thead>
@@ -457,6 +476,23 @@
       </div>
     </div>
     <!-- DETALLE CARGO -->
+
+  <!-- ELIMINAR CARGO -->
+        <Popup id="eliminarCargoAlumno"  show_button_close="true">
+          <div slot="header">Eliminar cargo</div>
+          <div slot="content">            
+            <div class="row">
+              <div class="container">
+                 
+              </div>
+            </div>
+          </div>
+          <div slot="footer">            
+          </div>
+        </Popup>
+  <!-- ELIMINAR CARGO -->
+      
+
   </div>
 </template>
 
