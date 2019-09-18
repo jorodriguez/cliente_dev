@@ -255,7 +255,7 @@ export default {
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));
-      this.pago_seleccionado = params.row;
+      this.pago_seleccionado = params.row ;
       $("#detallePago").modal("show");
       // params.row - row object 
       // params.pageIndex - index of this row on the current page.
