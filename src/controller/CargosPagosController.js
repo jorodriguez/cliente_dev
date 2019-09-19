@@ -5,9 +5,13 @@ import { isRegExp } from "util";
 import { timingSafeEqual } from "crypto";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import Popup from './Popup'
 
 export default {
   name: "cargos-pagos",
+  components: {
+    Popup
+  },
   props: ['idalumno', 'requiere_factura'],
   mixins: [operacionesApi],
   data() {
@@ -43,7 +47,8 @@ export default {
       loadFunctionActualizarCargoGeneral: null,
       mensajeToast: null,
       response: "",
-      mensaje: ""
+      mensaje: "",
+      motivo_eliminacion: ""
     };
   },
   mounted() {
@@ -162,7 +167,7 @@ export default {
       this.cargo.id_alumno = this.idalumno;
 
       this.post(
-        URL.CARGO_REGISTRAR,         
+        URL.CARGO_REGISTRAR,
         this.cargo,
         this.sesion.token,
         (result) => {
@@ -189,11 +194,7 @@ export default {
       this.facturado = false;
 
       this.mensaje = "";
-      const existeSeleccionAlumno = () => {
-        return this.listaCargosAlumnos.some(function (e) {
-          return e.checked;
-        });
-      }
+
 
       const montos_facturables = () => {
         return this.listaCargosAlumnos.some(function (e) {
@@ -203,7 +204,7 @@ export default {
 
       this.existen_montos_facturables = montos_facturables();
 
-      if (existeSeleccionAlumno()) {
+      if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
           var element = this.listaCargosAlumnos[i];
           if (element.checked) {
@@ -340,7 +341,6 @@ export default {
           );
         }
       }
-
     },
     verDetalleCargo(item) {
 
@@ -364,12 +364,55 @@ export default {
       );
     },
     seleccionarTodoPagos() {
+
       console.log("Toggle Seleccionar todos los cargos " + this.seleccionTodos);
+
       this.listaCargosAlumnos.forEach(element => {
         if (!element.pagado) {
           element.checked = this.seleccionTodos;
         }
       });
+    },
+    iniciarEliminacionCargo() {
+      if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
+        this.motivo_eliminacion = "";
+        $("#eliminarCargoAlumno").modal("show");
+      }
+    },
+    confirmarEliminacion() {
+      if (this.motivo_eliminacion == "") {
+        this.mensaje = "Escribe el motivo de eliminaciòn";
+      } else {
+
+        var lista = this.listaCargosAlumnos
+          .filter(e => e.checked)
+          .map(e => e.id_cargo_balance_alumno);
+        console.log(JSON.stringify(lista));
+
+        //ids, motivo,genero
+        this.put(
+          URL.CARGOS_BASE + "/" + this.idalumno,
+          {
+            ids: lista,
+            motivo: this.motivo_eliminacion,
+            genero: this.usuarioSesion.id
+          },
+          this.sesion.token,
+          result => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.mensaje = "Se elimino correctamente";
+              this.seleccionTodos = false;
+              this.loadFunctionCargosAlumno();
+              this.loadFunctionActualizarCargoGeneral();
+              $("#eliminarCargoAlumno").modal("hide");
+            }
+          }
+        );
+
+      }
+
+
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
@@ -377,3 +420,9 @@ export default {
     },
   },
 };
+
+function existeSeleccionAlumno(lista) {
+  return lista.some(function (e) {
+    return e.checked;
+  });
+}

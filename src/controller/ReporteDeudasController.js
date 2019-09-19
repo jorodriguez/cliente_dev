@@ -3,14 +3,20 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
 import ReporteMensualidades from "../components_admin/ReporteMensualidades";
+//import AlumnosCargos from "../components_admin/AlumnosCargos";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import { VueGoodTable } from 'vue-good-table';
+import Popup from './Popup'
+import TABLE_CONFIG from "../helpers/DatatableConfig";
 
 export default {
   name: "ReporteDeudas",
   components: {
     SignoutComponent,
-    ReporteMensualidades
+    ReporteMensualidades,    
+    VueGoodTable,
+    Popup
   },
   mixins: [operacionesApi],
   data() {
@@ -42,7 +48,46 @@ export default {
       reporteIngresoMenosGastos: null,
       alumno_seleccionado: { id: 0, nombre: "" },
       response: "",
-      mensaje: ""
+      mensaje: "",
+      TABLE_CONFIG: TABLE_CONFIG,  
+      columnsAlumnos: [
+        {
+          label: 'Id',
+          field: 'id',
+          hidden: true
+        },
+        {
+          label: '',
+          field: 'foto',
+          filterable: false,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Alumno',
+          field: 'nombre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Apellidos',
+          field: 'apellidos',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Adeuda',
+          field: 'total_adeudo',                   
+        },
+        {
+          label: 'Adeuda',
+          field: 'adeuda',         
+          hidden: true
+        },
+          
+      ]
     };
   },
   mounted() {
@@ -254,5 +299,6 @@ export default {
       this.$session.clear();
       this.$router.push("/");
     },
+  
   }
 };
