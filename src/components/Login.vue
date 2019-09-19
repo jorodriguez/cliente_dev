@@ -2,7 +2,7 @@
   <div class="login container">
   
     <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="100"/>
-  
+   
     
     <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal"></h1>
@@ -23,15 +23,13 @@
         v-on:keyup.enter="login()"
         required
       >
-      <!--  -->     
-      <!--<button class="btn btn-lg btn-primary btn-block"  :disabled="loading">
-        Entrar       
-      </button>      -->
+          
       <a class="btn btn-lg btn-primary btn-block text-white "  
             v-on:click="login()"  
             :disabled="loading">
         Entrar       
       </a> 
+      <small class="text-muted">(v180919)</small>
       <br>
       <br>
       
