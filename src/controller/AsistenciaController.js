@@ -1,16 +1,14 @@
 
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 
 export default {
   name: "Asistencia",
+  mixins:[operacionesApi],
   data() {
-    return {
-     // uriTemp: "http://localhost:5000/asistencia",
-      //uriTemp:'https://api-ambiente-desarrollo.herokuapp.com/asistencia',
-      //uriTemp:'https://api-ambiente-produccion.herokuapp.com/asistencia',
+    return {      
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -38,57 +36,36 @@ export default {
 
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function () {
-      this.$http
-        .get(
-          //URL.ASISTENCIA +"/alumnos_por_recibidos" +"/" + this.usuarioSesion.co_sucursal,
-          URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          console.log("Consulta " + this.response);
+          if (this.response != null) {
+            this.lista = this.response;
+            this.filtrarAlumnosPorGrupo(this.grupoDefault);
+            this.actualizarComboFiltro();
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("Consulta " + this.response);
-            if (this.response != null) {
-              this.lista = this.response;
-              this.filtrarAlumnosPorGrupo(this.grupoDefault);
-              this.actualizarComboFiltro();
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        });
+    
     };
 
     //Funcion get alumnos salida
     this.loadFunctionAlumnosSalida = function () {
       this.listaRecibidos = [];
-      this.$http
-        .get(
-          //   this.uriTemp + "/alumnos_recibidos" + "/" + this.usuarioSesion.co_sucursal,
-          URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+
+      this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          console.log("Consulta " + this.response);
+          if (this.response != null) {
+            this.listaRecibidos = this.response;
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            console.log("Consulta " + this.response);
-            if (this.response != null) {
-              this.listaRecibidos = this.response;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
+     
     };
 
     this.actualizarComboFiltro = () => {
@@ -139,33 +116,24 @@ export default {
           ids.push(elem.id);
         }
 
-        this.$http
-          .post(
-            //this.uriTemp + "/entradaAlumnos", { ids: ids, genero: this.usuarioSesion.id },
-            URL.ASISTENCIA_ENTRADA_ALUMNOS , { ids: ids, genero: this.usuarioSesion.id },
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
+        this.post(
+          URL.ASISTENCIA_ENTRADA_ALUMNOS, 
+          { ids: ids, genero: this.usuarioSesion.id },
+          this.sesion.token,
+          (result) => {
+            this.response = result.data;
+            console.log("insertados " + this.response);
+            if (this.response != null) {
+              this.lista = this.response;
+              this.mensaje = "Se registro la entrada";
+              this.loadFunction();
+              this.loadFunctionAlumnosSalida();
+              this.listaSeleccion = [];
+              this.listaSeleccionSalida = [];
             }
-          )
-          .then(
-            result => {
-              this.response = result.data;
-              console.log("insertados " + this.response);
-              if (this.response != null) {
-                this.lista = this.response;
-                this.mensaje = "Se registro la entrada";
-                this.loadFunction();
-                this.loadFunctionAlumnosSalida();
-                this.listaSeleccion = [];
-                this.listaSeleccionSalida = [];
-              }
-            },
-            error => {
-              console.error(error);
-            }
-          );
+          }
+        );
+       
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }
@@ -199,34 +167,23 @@ export default {
           ids.push(elem.id);
         }
 
-        this.$http
-          .post(
-            //this.uriTemp + "/salidaAlumnos",
-            URL.ASISTENCIA_SALIDA_ALUMNOS,
-            { ids: ids, genero: this.usuarioSesion.id },
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
+        this.post(
+          URL.ASISTENCIA_SALIDA_ALUMNOS,
+          { ids: ids, genero: this.usuarioSesion.id },
+          this.sesion.token,
+          (result) => {
+            this.response = result.data;
+            if (this.response != null) {
+              this.lista = this.response;
+              this.mensaje = "Se registro la salida de los alumnos";
+              console.log("Se registro la salida");
+              this.loadFunction();
+              this.loadFunctionAlumnosSalida();
+              this.listaSeleccionSalida = [];
+              this.listaSeleccion = [];
             }
-          )
-          .then(
-            result => {
-              this.response = result.data;
-              if (this.response != null) {
-                this.lista = this.response;
-                this.mensaje = "Se registro la salida de los alumnos";
-                console.log("Se registro la salida");
-                this.loadFunction();
-                this.loadFunctionAlumnosSalida();
-                this.listaSeleccionSalida = [];
-                this.listaSeleccion = [];
-              }
-            },
-            error => {
-              console.error(error);
-            }
-          );
+          }
+        );        
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }

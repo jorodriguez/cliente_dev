@@ -56,6 +56,18 @@
           aria-selected="false"
         >Mensualidades</a>
       </li>
+      <!--
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-alumnos-cargos-tab"
+          data-toggle="pill"
+          href="#pills-alumnos-cargos"
+          role="tab"
+          aria-controls="pills-alumnos-cargos"
+          aria-selected="false"
+        >Alumnos</a>
+      </li>-->
     </ul>
     <div class="tab-content" id="pills-tabContent">
       <div
@@ -105,7 +117,55 @@
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
-            <div class="table-responsive">
+
+            <vue-good-table
+              :columns="columnsAlumnos"
+              :rows="listaBalancesAlumnosPorSucursal"
+              :line-numbers="true"                            
+              :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
+              :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
+              :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
+            >
+              <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'nombre'">
+                  <button
+                    type="button"
+                    class="btn btn-link"
+                    title="Ver datos del alumno"
+                    v-on:click="verPerfil(props.row)"
+                  >
+                    {{ props.row.nombre }}
+                    <sup
+                      v-if="props.row.nuevo_ingreso"
+                      class="badge badge-pill badge-warning"
+                    >
+                      <i>Nuevo Ingreso</i>
+                    </sup>
+                    <span class="text-danger">{{props.row.adeuda ? '*':''}}</span>
+                  </button>
+                </span>
+
+                <span v-else-if="props.column.field == 'foto'">
+                  <img
+                    :src="props.row.foto != '' ? props.row.foto :'https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg' "
+                    width="50"
+                    height="50"
+                    alt="..."
+                    class="rounded-circle"
+                    v-on:click="verPerfil(props.row)"
+                  />
+                </span>
+                <span v-else-if="props.column.field == 'total_adeudo'">
+                    <span v-if="props.row.total_adeudo > 0" class="text-danger">${{ props.row.total_adeudo }}</span>
+                    <span v-else>${{ props.row.total_adeudo }}</span>
+                </span>
+
+                <span v-else>{{props.formattedRow[props.column.field]}}</span>
+              </template>
+              <div slot="selected-row-actions"></div>
+            </vue-good-table>
+
+            <!--<div class="table-responsive">
               <table class="table">
                 <thead>
                   <th></th>
@@ -151,7 +211,7 @@
                   <td></td>
                 </tr>
               </table>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
@@ -239,7 +299,7 @@
               </div>
             </div>
 
-          <!-- PENDIENTE
+            <!-- PENDIENTE
             <div class="card mx-auto">
               Ingresos - gastos
               <div class="card-body">
@@ -349,6 +409,18 @@
           <ReporteMensualidades />
         </div>
       </div>
+      <!-- ALUMNO CARGOS -->
+
+      <!-- <div
+        class="tab-pane fade"
+        id="pills-alumnos-cargos"
+        role="tabpanel"
+        aria-labelledby="pills-alumnos-cargo-tab"
+      >
+        <div class="card">
+          <AlumnosCargos />
+        </div>
+      </div>-->
     </div>
 
     <!--- Detalle -->
