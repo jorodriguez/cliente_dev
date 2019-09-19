@@ -2,10 +2,11 @@
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
 import URL from "../helpers/Urls";
-
+import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
   name: "Actividad",
+  mixins:[operacionesApi],
   data() {
     return {
       usuarioSesion: {},
@@ -24,16 +25,6 @@ export default {
       uriTempAlumnos: URL.ALUMNOS_BASE, //"http://localhost:5000/alumnos",      
       uriTempAsistencia: URL.ASISTENCIA_BASE, // "http://localhost:5000/asistencia",
        
-           
-      /*uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/actividad/catalogo_actividad",
-      uriTempAlumnos: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
-      uriTempAsistencia: "https://api-ambiente-desarrollo.herokuapp.com/asistencia",     
-      */
-      
-      /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/actividad/catalogo_actividad",
-      uriTempAlumnos: "https://api-ambiente-produccion.herokuapp.com/alumnos",
-      uriTempAsistencia: "https://api-ambiente-produccion.herokuapp.com/asistencia",     
-     */
     };
   },
   //FIXME: SESION
@@ -51,26 +42,21 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
     
     this.loadFunction = function() {
-      this.$http
-        .get(this.uriTemp, {
-          headers: {
-            "x-access-token": this.sesion.token
-          }
-        }).then(
-          result => {
-            this.response = result.data;
-            console.log("Consulta de actividades" + this.response);
-            if (this.response != null) {
-              if (this.response.length > 0) {
-                this.listaActividades = this.response[0].catalogo_actividades;
-                console.log("  ===  " + JSON.stringify(this.listaActividades));                
-              }
+
+      this.get(
+        this.uriTemp,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          console.log("Consulta de actividades" + this.response);
+          if (this.response != null) {
+            if (this.response.length > 0) {
+              this.listaActividades = this.response[0].catalogo_actividades;
+              console.log("  ===  " + JSON.stringify(this.listaActividades));                
             }
-          },
-          error => {
-            console.error(error);
           }
-        );
+        }
+      );
     };
   
     this.loadFunction();

@@ -4,6 +4,7 @@ import Datepicker from 'vuejs-datepicker';
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
 import URL from "../helpers/Urls";
+import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
   name: "repote-gastos",
@@ -12,21 +13,11 @@ export default {
     Datepicker,
     VueGoodTable
   }, 
+  mixins:[operacionesApi],  
   data() {
-    return {
-      
+    return {      
       uriTempReporteGastos: URL.REPORTE_GASTOS, //"http://localhost:5000/reporte_gastos",
       uriTempReporteGastosGlobal: URL.REPORTE_GASTOS_GLOBAL, //"http://localhost:5000/reporte_gastos_global",            
-      
-     
-      /*uriTempReporteGastos: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos",
-      uriTempReporteGastosGlobal: "https://api-ambiente-desarrollo.herokuapp.com/reporte_gastos_global",            
-*/
-      
-     /*uriTempReporteGastos: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos",
-      uriTempReporteGastosGlobal: "https://api-ambiente-produccion.herokuapp.com/reporte_gastos_global",            
-      */
-     
       listaGastosPorSucursal: [],            
       listaGastosPorSucursalTrendMensual :[],
       listaGastosPorSucursalTipo:[],
@@ -41,16 +32,7 @@ export default {
       sesion: {},
       mensajeToast: null,
       response: "",
-      mensaje: "",
-      /*columns: [
-          {label:"Fecha",field:"fecha", type: 'date',dateInputFormat: 'YYYY-MM-DD',dateOutputFormat: 'DD-MMM-YY',sortable: true},
-          {label:"Gasto",
-                field:` 
-                <button v-on:click="seleccionarGasto(row,'UPDATE')" type="button" class="btn btn-link">
-                <span class="small">{{row.nombre_tipo_gasto}}</span>
-                </button>`,type: 'string',sortable: true},
-          {label:"Tipo de Pago",field:"nombre_tipo_pago",type: 'string',sortable: true},          
-      ]*/
+      mensaje: "",      
     };
   },
   mounted() {
@@ -71,98 +53,59 @@ export default {
     }
 
     this.loadFunctionReporteGastos = function () {
-      this.$http
-        .get(
-          this.uriTempReporteGastos,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        this.uriTempReporteGastos,
+        this.sesion.token,
+        result => {            
+          if (result.data != null) {
+            this.listaGastosPorSucursal =result.data;
           }
-        )
-        .then(
-          result => {            
-            if (result.data != null) {
-              this.listaGastosPorSucursal =result.data;
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.loadFunctionReporteGastosPorSucursalTrend = function (id_sucursal) {
-      this.$http
-        .get(
-          this.uriTempReporteGastos+"/"+id_sucursal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
+
+      this.get(
+        this.uriTempReporteGastos+"/"+id_sucursal,
+        this.sesion.token,
+        result => {                      
+          if (result.data != null) {
+            this.listaGastosPorSucursalTrendMensual = result.data ;
+            if(this.listaGastosPorSucursalTrendMensual  != null && this.listaGastosPorSucursalTrendMensual.length > 0){
+              this.mes_seleccionado = this.listaGastosPorSucursalTrendMensual[0];
+              this.loadFunctionReporteGastosTipoYSucursal(id_sucursal,this.mes_seleccionado.anio_mes);
             }
           }
-        )
-        .then(
-          result => {                      
-            if (result.data != null) {
-              this.listaGastosPorSucursalTrendMensual = result.data ;
-              if(this.listaGastosPorSucursalTrendMensual  != null && this.listaGastosPorSucursalTrendMensual.length > 0){
-                this.mes_seleccionado = this.listaGastosPorSucursalTrendMensual[0];
-                this.loadFunctionReporteGastosTipoYSucursal(id_sucursal,this.mes_seleccionado.anio_mes);
-              }
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        }
+      );
     };
 
     this.loadFunctionReporteGastosTipoYSucursal = function (id_sucursal,mes_anio) {
       this.listaFormasPago = [];
-      
-        this.$http
-          .get(            
-            this.uriTempReporteGastos+"/"+id_sucursal+"/"+mes_anio,
-            {
-              headers: {
-                "x-access-token": this.sesion.token
-              }
-            }
-          )
-          .then(
-            result => {                            
-              if (result.data != null) {
-                this.listaGastosPorSucursalTipo = result.data;                
-              }
-            },
-            error => {
-              console.error(error);
-            }
-          );      
+  
+      this.get(
+        this.uriTempReporteGastos+"/"+id_sucursal+"/"+mes_anio,
+        this.sesion.token,
+        (result) => {                            
+          if (result.data != null) {
+            this.listaGastosPorSucursalTipo = result.data;                
+          }
+        }
+      );
     };
 
     this.loadFunctionGastosGlobal = function () {
-      this.$http
-        .get(
-          this.uriTempReporteGastosGlobal,
-          {
-            headers: {
-              "x-access-token": this.sesion.token
-            }
+      this.get(
+        this.uriTempReporteGastosGlobal,
+        this.sesion.token,
+        (result) => {
+          this.response = result.data;
+          if (this.response != null) {
+            this.listaGastosGlobal = this.response;              
           }
-        )
-        .then(
-          result => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.listaGastosGlobal = this.response;              
-            }
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        } 
+      );
     };
 
     this.mensajeToast = mensaje => {

@@ -10,9 +10,11 @@ import Datepicker from 'vuejs-datepicker';
 import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 import URL from "../helpers/Urls";
+import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
     name: "perfil-alumno",
+    mixins:[operacionesApi],
     components: {
         Datepicker,        
         CargosPagos,
@@ -67,25 +69,6 @@ export default {
             uriTempValoresEsperados:URL.VALORES_ESPERADOS, // "http://localhost:5000/valores_esperados",
             uriTempDatosFacturacion: URL.DATOS_FACTURADOS, // "http://localhost:5000/datos_facturacion",            
             uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
-           
-
-           /* uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/alumnos",
-            uriTempGrupos: "https://api-ambiente-desarrollo.herokuapp.com/grupos",
-            uriTempFamiliar: "https://api-ambiente-desarrollo.herokuapp.com/familiar",
-            uriTempParentesco: "https://api-ambiente-desarrollo.herokuapp.com/parentesco",            
-            uriTempServicios: "https://api-ambiente-desarrollo.herokuapp.com/servicios",
-            uriTempValoresEsperados: "https://api-ambiente-desarrollo.herokuapp.com/valores_esperados",
-            uriTempDatosFacturacion: "https://api-ambiente-desarrollo.herokuapp.com/datos_facturacion",            
-         */
-
-            /*uriTemp: "https://api-ambiente-produccion.herokuapp.com/alumnos",
-            uriTempGrupos: "https://api-ambiente-produccion.herokuapp.com/grupos",
-            uriTempFamiliar: "https://api-ambiente-produccion.herokuapp.com/familiar",
-            uriTempParentesco: "https://api-ambiente-produccion.herokuapp.com/parentesco",            
-            uriTempServicios: "https://api-ambiente-produccion.herokuapp.com/servicios",
-            uriTempValoresEsperados: "https://api-ambiente-produccion.herokuapp.com/valores_esperados",
-            uriTempDatosFacturacion: "https://api-ambiente-produccion.herokuapp.com/datos_facturacion",            
-*/
             response: "",
             mensaje: "",
             sesion: {},
@@ -123,163 +106,111 @@ export default {
         } else {
             console.log("this.uriTemp  " + this.uriTemp);
 
-            this.$http
-                .get(this.uriTemp + "/id/" + this.id, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-                })
-                .then(
-                    result => {
-                        this.alumno = result.data;
+            this.get(
+                this.uriTemp + "/id/" + this.id,
+                this.sesion.token,
+                (result) => {
+                    this.alumno = result.data;
+                    if (this.alumno.formato_inscripcion == null)
+                        this.alumno.formato_inscripcion = {};
 
-                        if (this.alumno.formato_inscripcion == null)
-                            this.alumno.formato_inscripcion = {};
+                    if (this.alumno.co_datos_facturacion != null){
+                        this.datos_facturacion = this.alumno.datos_facturacion;
+                    }                                      
+                 }
+            );
 
-                        if (this.alumno.co_datos_facturacion != null){
-                            this.datos_facturacion = this.alumno.datos_facturacion;
-                        }                                      
-                            
-                        //console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
+            this.loadFamiliaresFuncion = () => {
 
-                        //this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
-                        //this.loadCatalogoFunction(this.uriTempValoresEsperados + "/" + this.alumno.formato_inscripcion.id,this.listaValoresEsperados);  
-
-                    },
-                    error => {
-                        console.error(error);
+                this.get(
+                    this.uriTempFamiliar + "/" + this.id,
+                    this.sesion.token,
+                    (result) => {
+                        this.response = result.data;
+                        if (this.response != null) {
+                            this.listaFamiliares = this.response;
+                        }
                     }
                 );
-            this.loadFamiliaresFuncion = () => {
-                this.$http
-                    .get(this.uriTempFamiliar + "/" + this.id, {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaFamiliares = this.response;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
             };
 
             // Parentesco         
             this.loadCatalogoParentescoFuncion = () => {
-                this.$http
-                    .get(this.uriTempParentesco + "/" + this.id, {
-                        headers: {
-                            "x-access-token": this.sesion.token
+                this.get(
+                    this.uriTempParentesco + "/" + this.id,
+                    this.sesion.token,
+                    (result) => {
+                        this.response = result.data;
+                        if (this.response != null) {
+                            this.listaParentesco = this.response;
                         }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaParentesco = this.response;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
+                    }
+                );
             };
 
           
             //traer sevicios            
             this.loadServiciosFunction = ()=>{
-            this.$http
-                .get(this.uriTempServicios, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-                })
-                .then(
-                    result => {
+
+                this.get(
+                    this.uriTempServicios,
+                    this.sesion.token,
+                    (result) => {
                         this.response = result.data;
                         if (this.response != null) {
                             this.listaServicios = this.response;
                             console.log("Servicios " + this.listaServicios);
                         }
-                    },
-                    error => {
-                        console.error(error);
                     }
                 );
             };
 
 
             this.loadValoresEsperadosFunction = (id_formato) => {
-                this.$http
-                    .get(this.uriTempValoresEsperados + "/" + id_formato, {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaValoresEsperados = this.response;
+                this.get(
+                    this.uriTempValoresEsperados + "/" + id_formato,
+                    this.sesion.token,
+                    (result) => {
+                        this.response = result.data;
+                        if (this.response != null) {
+                            this.listaValoresEsperados = this.response;
 
-                                console.log("Valores esperados " + this.listaValoresEsperados);
-                            }
-                        },
-                        error => {
-                            console.error(error);
+                            console.log("Valores esperados " + this.listaValoresEsperados);
                         }
-                    );
+                    }
+                );
             };
 
             //grupos
             this.loadFunctionGrupos = function () {
-                this.$http
-                    .get(this.uriTempGrupos, {
-                        headers: {
-                            "x-access-token": this.sesion.token
+
+                this.get(
+                    this.uriTempGrupos,
+                    this.sesion.token,
+                    (result) => {
+                        this.response = result.data;
+                        console.log("Grupos " + this.response);
+                        if (this.response != null) {
+                            this.listaGrupos = this.response;
                         }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            console.log("Grupos " + this.response);
-                            if (this.response != null) {
-                                this.listaGrupos = this.response;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
+                    }
+                );
             };
 
 
             this.loadFunctionPosiblesFamiliares = function (id_parentesco,apellidos_alumno,id_sucursal) {
-                this.$http
-                    .get(this.uriTempFamiliar+"/"+id_parentesco+"/"+apellidos_alumno+"/"+id_sucursal, {
-                        headers: {
-                            "x-access-token": this.sesion.token
+                this.get(
+                    this.uriTempFamiliar+"/"+id_parentesco+"/"+apellidos_alumno+"/"+id_sucursal,
+                    this.sesion.token,
+                    (result) => {
+                        this.response = result.data;
+                        console.log("Posibles padres " + this.response);
+                        if (this.response != null) {
+                            this.listaPosiblesPadres = this.response;
+                            console.log(JSON.stringify(this.listaPosiblesPadres));
                         }
-                    })
-                    .then(
-                        result => {
-                            this.response = result.data;
-                            console.log("Posibles padres " + this.response);
-                            if (this.response != null) {
-                                this.listaPosiblesPadres = this.response;
-                                console.log(JSON.stringify(this.listaPosiblesPadres));
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                        }
-                    );
+                    }
+                );
             };
 
             this.validacionGuardarFunction = ()=>{
@@ -356,25 +287,19 @@ export default {
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
-            this.$http
-                .put(this.uriTemp + "/" + this.alumno.id, this.alumno, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-                })
-                .then(
-                    result => {
-                        this.response = result.data;
+            this.put(
+                this.uriTemp + "/" + this.alumno.id, 
+                this.alumno,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
 
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            this.mensaje = "Se actualizaron los datos del alumno.";
-                        }
-                    },
-                    error => {
-                        console.error(error);
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        this.mensaje = "Se actualizaron los datos del alumno.";
                     }
-                );
+                }
+            );
         },
         iniciarAgregarFamiliar() {
             this.operacion = "INSERT";
@@ -420,28 +345,16 @@ export default {
             $("#modal_confirmar_resetear_clave").modal("show");
         },
         confirmarResetClave(){
-            this.$http
-            .get(this.uriTempResetClaveFamiliar + "/" + this.familiar.id, 
-            {
-                headers: {
-                    "x-access-token": this.sesion.token
-                }
-            })
-            .then(
+            this.get(
+                this.uriTempResetClaveFamiliar + "/" + this.familiar.id, 
+                this.sesion.token,
                 result => {
                     this.response = result.data;
-
                     if (this.response != null) {
                         console.log("" + this.response);
                         this.mensaje = "Se envio un correo con la nueva contraseña al usuario.";
-
-                        $("#modal_confirmar_resetear_clave").modal("hide");
-
-                        //this.loadFamiliaresFuncion();
+                        $("#modal_confirmar_resetear_clave").modal("hide");                 
                     }
-                },
-                error => {
-                    console.error(error);
                 }
             );
         },
@@ -462,30 +375,24 @@ export default {
             console.log("== " + JSON.stringify(this.familiar));
             this.familiar.genero = this.usuarioSesion.id;
 
-            this.$http
-                .post(this.uriTempFamiliar + "/" + this.alumno.id, this.familiar, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-                })
-                .then(
-                    result => {
-                        let respuesta = result.data;
-                        console.log(JSON.stringify(respuesta));
+            this.post(
+                this.uriTempFamiliar + "/" + this.alumno.id, 
+                this.familiar,
+                this.sesion.token,
+                (result) => {
+                    let respuesta = result.data;
+                    console.log(JSON.stringify(respuesta));
 
-                        if (respuesta != null) {                            
-                            this.mensaje = respuesta.mensaje;
-                            if(respuesta.estatus){
-                                $("#modal_familiar").modal("hide");
+                    if (respuesta != null) {                            
+                        this.mensaje = respuesta.mensaje;
+                        if(respuesta.estatus){
+                            $("#modal_familiar").modal("hide");
 
-                                this.loadFamiliaresFuncion();
-                            }                            
-                        }
-                    },
-                    error => {
-                        console.error(error);
+                            this.loadFamiliaresFuncion();
+                        }                            
                     }
-                );
+                }
+            );
         },
         modificarFamiliar() {
             console.log("modificar familiar");
@@ -501,64 +408,47 @@ export default {
             }
             this.familiar.genero = this.usuarioSesion.id;
 
-            this.$http
-                .put(this.uriTempFamiliar + "/" + this.familiar.id, this.familiar, {
-                    headers: {
-                        "x-access-token": this.sesion.token
+            this.put(
+                this.uriTempFamiliar + "/" + this.familiar.id,
+                this.familiar,
+                this.sesion.token,
+                (result) => {                                       
+                    if (result.data != null) {
+                        console.log("" + this.response);
+                        if (result.data.estatus) {                                
+                            this.mensaje = this.response.mensaje;
+                            this.loadFamiliaresFuncion();
+                            $("#modal_familiar").modal("hide");
+                        } 
                     }
-                })
-                .then(
-                    result => {
-                        //probar mensaje en la vista
-                        
-                        if (result.data != null) {
-                            console.log("" + this.response);
-                            if (result.data.estatus) {                                
-                                this.mensaje = this.response.mensaje;
-                                this.loadFamiliaresFuncion();
-                                $("#modal_familiar").modal("hide");
-                            } 
-                        }
-                    },
-                    error => {
-                        console.error(error);
-                    }
-                );
+                }
+            );
         },
         eliminarFamiliar() {
             this.familiar.genero = this.usuarioSesion.id;
 
             console.log("Eliminar familiar " + JSON.stringify(this.familiar));
 
-            this.$http
-                .put(
-                    this.uriTempFamiliar + "/eliminar/" + this.familiar.id_relacion,
-                    this.familiar,
-                    {
-                        headers: {
-                            "x-access-token": this.sesion.token
-                        }
-                    }
-                )
-                .then(
-                    result => {
-                        this.response = result.data;
+            this.put(
+                this.uriTempFamiliar + "/eliminar/" + this.familiar.id_relacion,
+                this.familiar,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
 
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            if (this.response == 0 || this.response == null) {
-                                this.mensaje = "Sucedió un error inesperado";
-                            } else {
-                                this.mensaje = "Se actualizaron los datos de familiar.";
-                                this.loadFamiliaresFuncion();
-                                $("#modal_eliminar_familiar").modal("hide");
-                            }
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        if (this.response == 0 || this.response == null) {
+                            this.mensaje = "Sucedió un error inesperado";
+                        } else {
+                            this.mensaje = "Se actualizaron los datos de familiar.";
+                            this.loadFamiliaresFuncion();
+                            $("#modal_eliminar_familiar").modal("hide");
                         }
-                    },
-                    error => {
-                        console.error(error);
                     }
-                );
+                }
+            );
+
         },
         guardarDatosFacturacion(){            
             if(
@@ -583,30 +473,23 @@ export default {
             this.datos_facturacion.genero  = this.usuarioSesion.id;
             this.datos_facturacion.id_alumno = this.id;
 
-            this.$http
-                .post(this.uriTempDatosFacturacion, this.datos_facturacion, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-            })
-                .then(
-                    result => {
-                        this.response = result.data;
+            this.post(
+                this.uriTempDatosFacturacion, 
+                this.datos_facturacion,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
 
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            if (this.response == 0 || this.response == null) {
-                                this.mensaje = "Sucedió un error inesperado";
-                            } else {
-                                this.mensaje = "Se actualizaron los datos de facturación.";                                                                
-                            }
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        if (this.response == 0 || this.response == null) {
+                            this.mensaje = "Sucedió un error inesperado";
+                        } else {
+                            this.mensaje = "Se actualizaron los datos de facturación.";                                                                
                         }
-                    },
-                    error => {
-                        console.error(error);
                     }
+                }
             );
-
         },
         iniciarHabilitarDesabilitarDatosFacturacion(){
             
@@ -627,29 +510,23 @@ export default {
         },
         habilitarDesabilitarDatosFacturacion(){           
 
-            this.$http
-                .put(this.uriTempDatosFacturacion,  { id_alumno :this.id ,factura : this.alumno.factura,genero:this.usuarioSesion.id}, {
-                    headers: {
-                        "x-access-token": this.sesion.token
-                    }
-            })
-                .then(
-                    result => {
-                        this.response = result.data;
+            this.put(
+                this.uriTempDatosFacturacion,  
+                { id_alumno :this.id ,factura : this.alumno.factura,genero:this.usuarioSesion.id},
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
 
-                        if (this.response != null) {
-                            console.log("" + this.response);
-                            if (this.response == 0 || this.response == null) {
-                                this.mensaje = "Sucedió un error inesperado";
-                            } else {
-                                this.mensaje = "Se actualizaron los datos de facturación.";                                                                
-                            }
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        if (this.response == 0 || this.response == null) {
+                            this.mensaje = "Sucedió un error inesperado";
+                        } else {
+                            this.mensaje = "Se actualizaron los datos de facturación.";                                                                
                         }
-                    },
-                    error => {
-                        console.error(error);
                     }
-            );    
+                }
+            );
         },
         cargarTabInscripcion(){
             console.log("Inscripcion Tab load");
@@ -677,4 +554,4 @@ export default {
             }
         }     
     }
-};
+};  

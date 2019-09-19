@@ -1,5 +1,7 @@
 <template>
   <div class="principal">
+   
+
     <small class="font-weight-bold h6">
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
        <button
