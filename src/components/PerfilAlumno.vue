@@ -22,7 +22,7 @@
                     <span class="text-danger">*</span>
                   </label>
                   <select
-                    v-model="familiar.co_parentesco"
+                    v-model="co_parentesco_seleccionado"
                     v-on:change="seleccionarParentesco"
                     class="form-control"
                     placeholder="Parentesco"
@@ -32,10 +32,10 @@
                     <option
                       id="selectParentesco"
                       v-for="p in listaParentesco"
-                      v-bind:value="p.id"
+                      v-bind:value="p"
                       v-bind:key="p.id"
-                    >{{ p.nombre }}</option>
-                  </select>
+                    >{{ p.nombre }}  </option>
+                  </select>                  
                 </div>
                 <div class="form-group" v-else-if="operacion == 'UPDATE'">
                   <input type="text" v-model="familiar.parentesco" class="form-control" disabled>
