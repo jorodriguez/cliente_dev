@@ -1,8 +1,8 @@
 
  
- //const BASE = "http://localhost:5000" ;
+ const BASE = "http://localhost:5000" ;
  //const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
- const BASE = 'https://api-ambiente-produccion.herokuapp.com';
+ //const BASE = 'https://api-ambiente-produccion.herokuapp.com';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
