@@ -168,7 +168,7 @@ export default {
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
       this.input.genero = this.usuarioSesion.id;
 
-      this.put(URL.ALUMNOS_BASE,
+      this.post(URL.ALUMNOS_BASE,
         this.input,
         this.sesion.token,
         (result) => {
