@@ -1,4 +1,4 @@
-# magic
+# App vue js
 
 > Proyecto cliente para gestión de procesos de guarderia estancia y kinder
 
