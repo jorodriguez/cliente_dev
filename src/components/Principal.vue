@@ -1,8 +1,6 @@
 <template>
   <div class="principal">
-   
-
-    <small class="font-weight-bold h6">
+       <small class="font-weight-bold h6">
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
        <button
         type="button"       
@@ -74,7 +72,7 @@
       <div class="col">
         <button
           type="button"
-          class="btn btn-outline-info "                           
+          class="btn btn-danger "                           
           v-on:click="iniciarRegistrarSalida()"
         >
          <!--<i class="fas fa-arrow-right"></i>-->
@@ -139,14 +137,7 @@
                       v-bind:key="alumnoItem.id"
                       class="d-flex align-content-top flex-wrap"
                     >
-                      <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
-                        <!--<img
-                          src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                          width="20"
-                          height="20"
-                          alt="..."
-                          class="rounded-circle"
-                        >-->
+                      <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">                      
 
                         <!--v-on:click="removeToListAlumno(alumnoItem)" -->
                         {{alumnoItem.nombre_alumno}}

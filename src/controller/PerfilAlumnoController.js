@@ -325,12 +325,7 @@ export default {
             this.co_parentesco_seleccionado = {id:-1,cat_genero:-1};
             this.loadCatalogoParentescoFuncion();
         },
-        seleccionarParentesco(){
-               /*this.loadFunctionPosiblesFamiliares(                
-                        this.familiar.co_parentesco,
-                        this.alumno.apellidos,
-                        this.usuarioSesion.co_sucursal
-                        );*/
+        seleccionarParentesco(){              
                 this.loadFunctionPosiblesFamiliares(
                         this.co_parentesco_seleccionado.id,
                         this.alumno.apellidos,
