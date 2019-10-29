@@ -29,7 +29,7 @@
             :disabled="loading">
         Entrar       
       </a> 
-      <small class="text-muted">(v180919)</small>
+      <small class="text-muted">(v281019)</small>
       <br>
       <br>
       
