@@ -205,13 +205,13 @@ export default {
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
-
+      
       this.remove(URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.input, this.sesion.token,
-        (result) => {
-          this.response = result.data;
-          if (this.response != null) {
-            console.log("" + this.response);
+        this.sesion.token,
+        (result) => {      
+          console.log(" "+result.data);    
+          if ( result.data != null) {
+            console.log("" +  result.data);
             this.loadFunction();
           }
         }

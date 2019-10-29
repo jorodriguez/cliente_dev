@@ -28,8 +28,9 @@ export default {
                 id: 0,
                 id_relacion: -1,
                 co_alumno: -1,
-                co_parentesco: -1,                
+                co_parentesco: -1,                      
                 parentesco: "",
+                cat_genero : -1,          
                 nombre: "",
                 telefono: "",
                 fecha_nacimiento: null,
@@ -45,7 +46,8 @@ export default {
             listaPosiblesPadres:[],
             familiarRelacionado:null,
             mensaje_facturacion : "",
-            display: true,          
+            display: true,         
+            co_parentesco_seleccionado : {id:-1,cat_genero:-1}, 
             requiere_datos_facturacion:false,  
             datos_facturacion : {
                             rfc:"",
@@ -141,6 +143,7 @@ export default {
                     this.sesion.token,
                     (result) => {
                         this.response = result.data;
+                        console.log(" ======>>> "+JSON.stringify(this.response));
                         if (this.response != null) {
                             this.listaParentesco = this.response;
                         }
@@ -308,7 +311,9 @@ export default {
                 id_relacion: -1,
                 co_alumno: -1,
                 co_parentesco: -1,
+                cat_genero:-1,
                 parentesco: "",
+                cat_genero: -1,
                 nombre: "",
                 telefono: "",
                 fecha_nacimiento: null,
@@ -317,12 +322,12 @@ export default {
             };
             this.mensaje = '';
             this.familiarRelacionado = null;
+            this.co_parentesco_seleccionado = {id:-1,cat_genero:-1};
             this.loadCatalogoParentescoFuncion();
         },
-        seleccionarParentesco(){
-          
-            this.loadFunctionPosiblesFamiliares(
-                        this.familiar.co_parentesco,
+        seleccionarParentesco(){              
+                this.loadFunctionPosiblesFamiliares(
+                        this.co_parentesco_seleccionado.id,
                         this.alumno.apellidos,
                         this.usuarioSesion.co_sucursal
                         );
@@ -360,9 +365,9 @@ export default {
         },
         agregarFamiliar() {
             console.log("Agregar familiar ");
-
+            console.log(" JONS "+JSON.stringify(this.co_parentesco_seleccionado));
             if (
-                this.familiar.co_parentesco == -1 ||
+                this.co_parentesco_seleccionado.id == -1 ||
                 this.familiar.nombre == "" ||
                 this.familiar.telefono == "" ||
                 this.familiar.correo == "" 
@@ -372,8 +377,10 @@ export default {
                 return;
             }
 
-            console.log("== " + JSON.stringify(this.familiar));
             this.familiar.genero = this.usuarioSesion.id;
+            this.familiar.co_parentesco = this.co_parentesco_seleccionado.id;
+            this.familiar.cat_genero = this.co_parentesco_seleccionado.cat_genero_default;
+            console.log("== " + JSON.stringify(this.familiar));
 
             this.post(
                 this.uriTempFamiliar + "/" + this.alumno.id, 
@@ -397,8 +404,7 @@ export default {
         modificarFamiliar() {
             console.log("modificar familiar");
 
-            if (
-                this.familiar.co_parentesco == -1 ||
+            if (                
                 this.familiar.nombre == "" ||
                 this.familiar.telefono == "" ||
                 this.familiar.correo == "" 
