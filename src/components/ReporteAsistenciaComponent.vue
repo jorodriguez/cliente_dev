@@ -1,17 +1,20 @@
 <template>
-  <div>
+  <div id="reporte-asistencia">
     <div class="card">
       <div class="card-body">                
         <h5 class="text-muted">Asistencias </h5>       
          <div class="alert alert-warning">{{mensaje}}</div>
          <div v-if="loading" class="h4">Cargando...</div>
          <div class="row">
+           <!--
              <datepicker
                   name="fecha_reporte"
-                  v-model="fecha"
+                  v-model="fecha"                  
                   input-class="form-control"               
-                ></datepicker>
+             ></datepicker>
+             -->
          </div>
+         
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistencia"

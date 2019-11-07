@@ -1,12 +1,12 @@
 <template>
   <div>   
     hola
-    <reporte-asistencia></reporte-asistencia>
+    <ReporteAsistenciaComponent/>
   </div>
 </template>
 
 <script >
-
+import Vue from "vue";
 import ReporteAsistenciaComponent from './ReporteAsistenciaComponent';
 
 export default {

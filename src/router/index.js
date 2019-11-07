@@ -13,7 +13,7 @@ import Gastos from '@/components/Gastos'
 import CambiarSucursal from '@/components/CambiarSucursal'
 import ReporteAsistencia from '@/components/ReporteAsistencia'
 
-import Home from '@/components/Home'
+
 import VueSession from 'vue-session'
 
 Vue.use(Router);

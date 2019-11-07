@@ -23,7 +23,8 @@ export default {
       columnas:COLUMNS_TABLE_ASISTENCIA,
       TABLE_CONFIG:TABLE_CONFIG,
       mensaje: "",
-      loading:Boolean
+      loading:Boolean,
+      loadFunction:null
     };
   },
   mounted() {
@@ -39,20 +40,24 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
     this.fecha = new Date();
     this.loadFunction = function () {
+      console.log("invocando el api "+this.usuarioSesion.co_sucursal+"  "+this.fecha);
+      console.log(" "+URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha);
       this.loading = true;
       this.get(
-        URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+fecha,
+        URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha,
         this.sesion.token,
         (result) => {
+          console.log("Respuesta Api");
           this.response = result.data;
           console.log("Consulta " + this.response);
           if (this.response != null) {
             this.lista = this.response;                        
           }
-          this.loading = true;
+          this.loading = false;
         });    
     };
-   // this.loadFunction();
+
+    this.loadFunction();
     
   },
   methods: {
