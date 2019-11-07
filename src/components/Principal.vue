@@ -17,7 +17,10 @@
       </router-link>
       <router-link to="/Asistencia" class="btn btn-lg  btn-success">        
         Asistencias        
-      </router-link>             
+      </router-link>     
+       <router-link to="/ReporteAsistencias" class="btn btn-lg  btn-primary">        
+        Lista Asistencias
+      </router-link>        
       <!-- btn-head-->
       <button
         type="button"
