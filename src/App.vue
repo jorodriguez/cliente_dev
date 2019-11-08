@@ -12,7 +12,11 @@
       <span id="texto_notificador_principal"></span>
     </button>
     <!--app principal -->
+
+
     <router-view />
+  
+  
     <!-- app principal -->
     <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
       <div slot="header">
@@ -63,10 +67,11 @@
 </template>
 
 <script>
+/*
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
-;
+;*/
 import Popup from "./controller/Popup";
 
 export default {
