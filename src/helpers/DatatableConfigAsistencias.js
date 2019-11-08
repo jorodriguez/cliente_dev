@@ -13,7 +13,7 @@ const COLUMNS_TABLE_ASISTENCIA =
         hidden: true
       },
       {
-        label: 'Foto',
+        label: '',
         field: 'foto',
         filterable: false,
         thClass: 'text-center',
@@ -24,7 +24,7 @@ const COLUMNS_TABLE_ASISTENCIA =
         field: 'nombre_alumno',
         filterable: true,
         thClass: 'text-center',
-        tdClass: 'text-center',
+        tdClass: 'text-left',
       },
       {
         label: 'Apellidos',
@@ -32,6 +32,7 @@ const COLUMNS_TABLE_ASISTENCIA =
         filterable: true,
         thClass: 'text-center',
         tdClass: 'text-center',
+        hidden: true
       },
       {
         label: 'Id_grupo',
@@ -43,37 +44,45 @@ const COLUMNS_TABLE_ASISTENCIA =
         field: 'nombre_grupo',
         filterable: true,
         thClass: 'text-center',
-        tdClass: 'text-center',
+        tdClass: 'text-center',        
+        
       },
       {
         label: 'Fecha',
-        field: 'fecha',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM Do yy',
+        field: 'fecha',                
         thClass: 'text-center',
         tdClass: 'text-center',
         filterable: false,
+        hidden:true
       },    
       {
         label: 'Entrada',
-        field: 'hora_entrada',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd hh:mm:ss',
-        dateOutputFormat: 'hh:mm',
+        field: 'hora_entrada', 
         thClass: 'text-center',
         tdClass: 'text-center',
         filterable: true,
       },
       {
         label: 'Salida',
-        field: 'hora_salida',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd hh:mm:ss',
-        dateOutputFormat: 'hh:mm',
+        field: 'hora_salida',                
         thClass: 'text-center',
         tdClass: 'text-center',
         filterable: true,
+      },
+      {
+        label: 'Tiempo',
+        field: 'tiempo',                
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        filterable: true,
+      },
+      {
+        label: '',
+        field: 'alerta_tiempo',                
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        filterable: true,
+        hidden:true
       },
 ];
 

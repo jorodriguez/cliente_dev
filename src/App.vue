@@ -63,6 +63,10 @@
 </template>
 
 <script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+;
 import Popup from "./controller/Popup";
 
 export default {

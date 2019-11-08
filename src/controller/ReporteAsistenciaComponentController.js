@@ -39,6 +39,7 @@ export default {
     }
     this.usuarioSesion = this.sesion.usuario;
     this.fecha = new Date();
+    this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
     this.loadFunction = function () {
       console.log("invocando el api "+this.usuarioSesion.co_sucursal+"  "+this.fecha);
       console.log(" "+URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha);
@@ -46,12 +47,10 @@ export default {
       this.get(
         URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha,
         this.sesion.token,
-        (result) => {
-          console.log("Respuesta Api");
-          this.response = result.data;
+        (result) => {          
           console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;                        
+          if (result.data != null) {
+            this.listaAsistencia = result.data;                        
           }
           this.loading = false;
         });    
