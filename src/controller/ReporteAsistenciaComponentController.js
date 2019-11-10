@@ -40,7 +40,8 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
     this.fecha = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
-    this.loadFunction = function () {
+
+    this.loadFunction = ()=> {
       console.log("invocando el api "+this.usuarioSesion.co_sucursal+"  "+this.fecha);
       console.log(" "+URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha);
       this.loading = true;
@@ -61,7 +62,11 @@ export default {
   },
   methods: {
     cambiarFecha(){
-        this.loadFunction();
+         this.$nextTick(() => {
+           console.log(this.fecha)
+           this.loadFunction();
+         });
+        
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));

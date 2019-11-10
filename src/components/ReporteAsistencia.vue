@@ -1,37 +1,41 @@
 <template>
-  <div>   
-      <div class="text-left">
+  <div>
+    <h1>Lista de Asistencia</h1>      
+      (<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
+    <div class="text-left">      
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
     </div>
-    <ReporteAsistenciaComponent/>
+    <ReporteAsistenciaComponent />
   </div>
 </template>
 
 <script >
 import Vue from "vue";
-import ReporteAsistenciaComponent from './ReporteAsistenciaComponent';
+import ReporteAsistenciaComponent from "./ReporteAsistenciaComponent";
 
 export default {
   name: "ReporteAsistencia",
-  components:{
+  components: {
     ReporteAsistenciaComponent
   },
-  props: {
-    
-  },
+  props: {},
   data() {
-    return {
-      
-    };
+    return {sesion:null,usuarioSesion:{}};
   },
-  mounted() {  
+  mounted() {
     console.log("Iniciando el componente");
-  },
-  methods: {
-    
-  }
-};
+     console.log("iniciando el componente reporte de asistencia ");
+    this.sesion = this.$session.get("usuario_sesion");
 
+    if (!this.sesion || !this.sesion.usuario) {
+      console.log("No tiene sesion");
+      //this.$router.push("/");      
+      return;
+    }
+    this.usuarioSesion = this.sesion.usuario;
+  },
+  methods: {}
+};
 </script>

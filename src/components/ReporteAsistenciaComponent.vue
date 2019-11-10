@@ -1,19 +1,25 @@
 <template>
-  <div id="reporte-asistencia">
+  <div id="reporte-asistencia">    
     <div class="card">
       <div class="card-body">
-        <h5 class="text-muted">Asistencias</h5>
         <div v-if="mensaje" class="alert alert-warning">{{mensaje}}</div>
         <div v-if="loading" class="h4">
           <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Cargando...</span>
           </div>
         </div>
-        <div class="row ">
-          <div class="col-4">
-          <datepicker name="fecha" v-model="fecha" input-class="form-control" @selected="cambiarFecha()"></datepicker>
+        <div class="row">
+          <div class="col">
+            <div class="float-right">
+              <datepicker
+                name="fecha"
+                v-model="fecha"
+                input-class="form-control"
+                @selected="cambiarFecha"
+              ></datepicker>
+            </div>
           </div>
-        </div>        
+        </div>
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistencia"
@@ -48,17 +54,18 @@
             </span>
             <span v-else-if="props.column.field == 'tiempo'">
               <span :class="props.row.alerta_tiempo ? 'text-danger':'text-success'">
-                <i :class="props.row.alerta_tiempo ? 'fas fa-clock':'fas fa-clock'"></i>
-                {{props.row.tiempo}} 
+                <i :class="props.row.alerta_tiempo ? 'fas fa-clock':''"></i>
+                {{props.row.alerta_tiempo ? props.row.tiempo:""}}
               </span>
             </span>
-            <span v-else-if="props.column.field == 'hora_salida'">                            
+            <span v-else-if="props.column.field == 'hora_salida'">
               <span :class="props.row.hora_salida != null ? 'text-primary':'text-muted'">
                 {{props.row.hora_salida != null ? props.row.hora_salida:''}}
                 <i
                   :class="props.row.hora_salida != null ? 'fas fa-check':''"
                 ></i>
-              </span> | {{props.row.hora_sale}}
+              </span>
+             
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
