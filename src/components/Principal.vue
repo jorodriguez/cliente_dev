@@ -14,16 +14,9 @@
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
      <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
-     <div class="btn-group">
-        <router-link   to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>
-        <button type="button" class="btn btn-success btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-       <div class="dropdown-menu">
-          <router-link to="/ReporteAsistencias" class="dropdown-item">Lista Asistencias</router-link>
-        </div>
-      </div>     
-      <!-- btn-head-->
+     <router-link   to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>
+     <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>
+           <!-- btn-head-->
       <button
         type="button"
         data-toggle="modal"
