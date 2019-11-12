@@ -419,7 +419,7 @@
                       <div class="col col-md-6">
                         <div class="form-group">
                           <label for="inputHoraEntrada">
-                            Hora Entrada
+                            Hora Entrada <span class="text-muted small">(Pe. 08:00)</span>
                             <span class="text-danger">*</span>
                           </label>
                           <input
@@ -435,7 +435,7 @@
                       <div class="col col-md-6">
                         <div class="form-group">
                           <label for="inputHoraSalida">
-                            Hora Salida
+                            Hora Salida <span class="text-muted small">(Pe. 18:00)</span>
                             <span class="text-danger">*</span>
                           </label>
                           <input

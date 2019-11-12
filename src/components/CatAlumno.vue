@@ -107,7 +107,7 @@
                 <div class="row">
                   <div class="col-sm-6">
                     <label>
-                      Hora Entrada
+                      Hora Entrada <small class="text-muted">(Pe. 08:00)</small>
                       <span class="text-danger">*</span>
                     </label>
                     <input
@@ -120,7 +120,7 @@
                   </div>
                   <div class="col-sm-6">
                     <label>
-                      Hora Salida
+                      Hora Salida <small class="text-muted">(Pe. 20:00)</small>
                       <span class="text-danger">*</span>
                     </label>
                     <input
