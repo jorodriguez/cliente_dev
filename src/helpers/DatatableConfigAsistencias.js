@@ -84,6 +84,13 @@ const COLUMNS_TABLE_ASISTENCIA =
         filterable: true,
         hidden:true
       },
+      {
+        label: '',    
+        field:'grafica',    
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        filterable: false        
+      },
 ];
 
 

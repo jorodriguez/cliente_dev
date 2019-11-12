@@ -64,9 +64,12 @@
                 <i
                   :class="props.row.hora_salida != null ? 'fas fa-check':''"
                 ></i>
-              </span>
-             
+              </span>             
             </span>
+            <span v-else-if="props.column.field == 'grafica'">
+              <GraficaCalendarioAsistencia :idalumno="props.row.id_alumno"></GraficaCalendarioAsistencia >
+            </span>
+            
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
         </vue-good-table>

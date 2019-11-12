@@ -5,12 +5,13 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource';
 import VueSessionStorage from 'vue-sessionstorage'
+import VueGoogleCharts from 'vue-google-charts'
 
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
+Vue.use(VueGoogleCharts);
 Vue.config.productionTip = false
-
 
 /* eslint-disable */
 new Vue({

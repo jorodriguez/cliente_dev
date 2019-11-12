@@ -6,11 +6,12 @@ import { VueGoodTable } from 'vue-good-table';
 import Datepicker from 'vuejs-datepicker';
 import COLUMNS_TABLE_ASISTENCIA  from "../helpers/DatatableConfigAsistencias";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
+import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
 
 export default {
   name: "reporte-asistencia",
   components: {
-    Datepicker,VueGoodTable
+    Datepicker,VueGoodTable,GraficaCalendarioAsistencia
   },
   mixins:[operacionesApi],
   data() {
