@@ -7,10 +7,18 @@ import VueResource from 'vue-resource';
 import VueSessionStorage from 'vue-sessionstorage'
 import VueGoogleCharts from 'vue-google-charts'
 
+import FunctionalCalendar from 'vue-functional-calendar';
+
+
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
 Vue.use(VueGoogleCharts);
+/*
+Vue.use(FunctionalCalendar, {
+  dayNames: ['Moa', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+});*/
+
 Vue.config.productionTip = false
 
 /* eslint-disable */
