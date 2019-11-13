@@ -11,6 +11,7 @@ Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
 Vue.use(VueGoogleCharts);
+
 Vue.config.productionTip = false
 
 /* eslint-disable */

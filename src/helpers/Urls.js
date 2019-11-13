@@ -62,6 +62,8 @@ const URL = {
     ASISTENCIA_SALIDA_ALUMNOS : ASISTENCIA_BASE + '/salidaAlumnos',
     ASISTENCIA_REPORTE : ASISTENCIA_BASE + '/reporte/',
     ASISTENCIA_REPORTE_POR_ALUMNO : ASISTENCIA_BASE + '/reporte_por_alumno/', //id_alumno y numero_mes
+    ASISTENCIA_REPORTE_MES_ALUMNO : ASISTENCIA_BASE + '/reporte_mes_alumno/', //id_alumno y numero_mes
+    
     
 
     BALANCE_BASE : BALANCE_BASE,
