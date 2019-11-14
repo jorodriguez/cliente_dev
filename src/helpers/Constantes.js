@@ -1,0 +1,7 @@
+
+const CONSTANTES = {
+    EVENTO_LOGIN:"LOGIN_GENERAL",
+    EVENTO_LOGIN_ADMIN:"LOGIN_ADMIN",
+};
+
+export default CONSTANTES;

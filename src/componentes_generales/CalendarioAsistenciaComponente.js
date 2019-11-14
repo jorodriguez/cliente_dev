@@ -16,8 +16,16 @@ export default {
               <div class="spinner-grow spinner-grow-sm" role="status" v-if="loading">
                   <span class="sr-only">Cargando...</span>
               </div>            
-              <table>
-              <tr>                 
+              <table>             
+              <tr>
+              <th>D</th>
+              <th>L</th>
+              <th>M</th>
+              <th>M</th>
+              <th>J</th>
+              <th>V</th>                
+              <th>S</th>                
+            </tr>              
                 <template v-for="index in iteraciones">
                 <tr>
                   <template v-for="data in getIndices(index)">
@@ -34,7 +42,7 @@ export default {
             </span>`,
   props: ['idalumno'],
   data() {
-    return {     
+    return {
       fechasAsistencias: [],
       lista: [],
       iteraciones: [],
@@ -68,16 +76,21 @@ export default {
         URL.ASISTENCIA_REPORTE_MES_ALUMNO + `${this.idalumno}`,
         this.sesion.token,
         (result) => {
-          if (result.data != null) {
-            this.lista = result.data;
-            if (this.lista.length > 0) {
-              this.numero_semanas = this.lista.length / 7;
-              this.iteraciones = [...Array(this.numero_semanas).keys()];
+          try {
+            if (result.data != null) {
+              this.lista = result.data;
+              if (this.lista.length > 0) {
+                this.numero_semanas = parseInt(this.lista.length / 7);
 
+                console.log("this.numero_semanas "+this.numero_semanas);
+
+                this.iteraciones = [...Array(this.numero_semanas).keys()];
+
+              }
+              //this.fechasAsistencias = convertToDataGraphic(this.lista);           
+              this.loading = false;
             }
-            //this.fechasAsistencias = convertToDataGraphic(this.lista);           
-            this.loading = false;
-          }
+          } catch (e) { console.log("XXX error " + e); }
         }
       );
     };
