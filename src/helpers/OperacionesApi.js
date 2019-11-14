@@ -101,7 +101,7 @@ const operacionesApi = {
   }
 };
 
-export { operacionesApi };
+export  { operacionesApi };
 
 
 
