@@ -16,6 +16,7 @@
         <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
         <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
       --> 
+      <MenuPrincipal></MenuPrincipal>
     
     <router-view />
 
@@ -73,10 +74,11 @@ $(function () {
 })
 ;*/
 import Popup from "./controller/Popup";
+import MenuPrincipal from "./components/navBar";
 
 export default {
   components: {
-    Popup
+    Popup,MenuPrincipal
   },
   name: "App",
   methods: {

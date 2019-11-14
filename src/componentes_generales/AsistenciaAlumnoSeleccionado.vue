@@ -1,11 +1,21 @@
 <template>
-  <div id="id_gastos">
-   
-
+  <div id="asistencia_alumno_seleccionado">
+    <ListaAsistenciaComponente idalumno=""></ListaAsistenciaComponente>
   </div>
 </template>
 
-<script src="../controller/GastosController.js"></script>
+<script >
+import ListaAsistenciaComponente from "./ListaAsistenciaComponente";
+export default {
+  name: "asistencia-alumno-seleccionado",
+  components: {
+    ListaAsistenciaComponente
+  },
+  data() {
+    
+  }
+};
+</script>
 
 
 <style scoped>
