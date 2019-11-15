@@ -251,17 +251,18 @@
                 </div>
               </div>
             </div>
-            <div class="container m-3 scroll-div">
+            <div class=" m-1 jumbotron scroll-horas-extra-div ">
               <table
-                class="table "
-                v-for="alumnoItem in getListaAlumnosHorasExtras()"
-                v-bind:key="alumnoItem.id"                
+                class="tabl"                             
               >
-              <tr>
+              <tr 
+                   v-for="alumnoItem in listaAlumnos"
+                    v-bind:key="alumnoItem.id"  >
                 <td>{{alumnoItem.nombre_alumno}}</td>
                 <td>{{alumnoItem.tiempo_expirado.hours}}:{{alumnoItem.tiempo_expirado.minutes}}</td>
                 <td>
-                  <button :class="alumnoItem.calcular_horas_extras ? 'btn btn-secondary':'btn btn-warning' " @click="calcularHorasExtras(alumnoItem)">
+                  <button :class="alumnoItem.calcular_horas_extras ? 'btn btn-secondary btn-sm':'btn btn-warning btn-sm' " 
+                  @click="calcularHorasExtras(alumnoItem)">
                       Horas extras
                   </button>
                   </td>
@@ -324,6 +325,12 @@
 .scroll-div {
   width: 100%;
   height: 75px;
+  overflow-y: scroll;
+}
+
+.scroll-horas-extra-div {
+  width: 100%;
+  height: 200px;
   overflow-y: scroll;
 }
 

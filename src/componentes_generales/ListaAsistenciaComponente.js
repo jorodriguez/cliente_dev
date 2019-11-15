@@ -7,8 +7,6 @@ import COLUMNS_TABLE_ASISTENCIA_ALUMNO  from "../helpers/DatatableAlumnoAsistenc
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { GChart } from "vue-google-charts";
 
-
-//https://vuejsexamples.com/vuejs-functional-calendar-component/
 export default {
   name: "lista-asistencia-alumno",
   components: {
