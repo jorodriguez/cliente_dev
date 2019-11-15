@@ -72,6 +72,7 @@
     </div>
 
     <div class="jumbotron m-1">
+      <button class="btn btn-sm">re</button>
       <div class="media">
         <div class="row overflow-auto">
           <div
@@ -80,20 +81,25 @@
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
           >
-            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
+            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">               
               <img
                 src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                 width="35"
                 height="35"
                 alt="..."
                 class="rounded-circle"
-              />
-              <!--<i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>-->
+              />                                          
               <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
-
-              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
-              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>              
+              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>              
+               <span v-if="alumnoItem.calcular_tiempo_extra" class="badge badge-pill badge-warning text-wrap" style="width: 2rem;" >
+                        <small><i class="fas fa-plus"></i></small>
+                        <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}} </span>
+                        <span  class="text-muted" >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                        {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" >min</span>
+              </span>
             </small>
+          
           </div>
         </div>
       </div>
@@ -239,7 +245,7 @@
                     v-for="alumnoItem in listaAlumnos"
                     v-bind:key="alumnoItem.id"
                     class="d-flex align-content-top flex-wrap"
-                  >
+                  >                    
                     <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                       {{alumnoItem.nombre_alumno}}
                       <i
@@ -251,19 +257,56 @@
                 </div>
               </div>
             </div>
+            <h6>
+              <small> 
+                <span class="badge badge-pill badge-warning">{{listaAlumnosSeleccionadosCalculoHoraExtra ? listaAlumnosSeleccionadosCalculoHoraExtra.length:0 }}</span> Alumnos con horas extras
+                </small>
+            </h6>
             <div class="container m-3 scroll-div">
-              <table
+              <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
+                <span class="sr-only">Cargando...</span>
+              </div>
+              <!--<div class="row justify-content-md-center">
+                <div class="col-6 border" 
+                    v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
+                    v-bind:key="alumnoItem.id" >
+                    <span >{{alumnoItem.nombre_alumno}}</span>
+                    <small><i class="fas fa-plus"></i></small>
+                    <span class="text-danger">{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
+                      <div class="custom-control custom-switch">
+                     <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />                     
+                      <label class="custom-control-label" :for="alumnoItem.id">                                                
+                        <small>                         
+                        
+                        </small>                        
+                     </label>
+                      </div>
+                </div>                    
+              </div>-->
+               <table              
                 class="table "
-                v-for="alumnoItem in getListaAlumnosHorasExtras()"
+                v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                 v-bind:key="alumnoItem.id"                
               >
               <tr>
                 <td>{{alumnoItem.nombre_alumno}}</td>
-                <td>{{alumnoItem.tiempo_expirado.hours}}:{{alumnoItem.tiempo_expirado.minutes}}</td>
+                <td>                   
+                  <div class="badge badge-pill badge-warning"   >
+                    <small><i class="fas fa-plus"></i></small>
+                    <span >{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}} </span>
+                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
+                    </div>
+                    </td>
                 <td>
-                  <button :class="alumnoItem.calcular_horas_extras ? 'btn btn-secondary':'btn btn-warning' " @click="calcularHorasExtras(alumnoItem)">
-                      Horas extras
-                  </button>
+                  <div class="custom-control custom-switch">
+                      <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />
+                      <label class="custom-control-label" :for="alumnoItem.id">                                                
+                        <small></small>
+                     </label>
+                  </div>                                  
                   </td>
               </tr>
               </table>

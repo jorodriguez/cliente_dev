@@ -18,6 +18,7 @@ export default {
             response: "",
             listaAlumnos: [],
             listaAlumnosSeleccionados: [],
+            listaAlumnosSeleccionadosCalculoHoraExtra: [],
             listaGrupos: [],
             listaGruposFiltrados: [],
             grupoDefault: { id: -1, nombre: "Todos" },
@@ -34,10 +35,12 @@ export default {
             seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
+            loadFunctionAlumnosParaSalir: null,
             firebaseMessages: null,
             uriTempAsistencia: URL.ASISTENCIA_BASE,
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempActividad: URL.ACTIVIDAD_BASE,
+            loaderAsistencia: false
         };
     },
     //FIXME: SESION
@@ -67,6 +70,15 @@ export default {
                         this.filtrarAlumnosPorGrupo(this.grupoDefault);
                     }
                 }
+            );
+        };
+
+        this.loadFunctionAlumnosParaSalir = function (listaIdsAsistenciasSalida, handler) {
+
+            this.get(
+                URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,
+                this.sesion.token,
+                handler
             );
         };
 
@@ -317,7 +329,22 @@ export default {
         iniciarRegistrarSalida() {
             var existeSeleccion = this.existeSeleccionAlumno();
             if (existeSeleccion) {
+                //revisar horas extras salida alumnos
+                // ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA
+                //listaAlumnosSeleccionadosCalculoHoraExtra
+                this.loaderAsistencia = true;
+                const idsAsistencias = this.listaAlumnos
+                    .filter(e => e.seleccionado)
+                    .map(item => item.id);
+
                 $("#confirmar_salida_modal").modal("show");
+                this.loadFunctionAlumnosParaSalir(idsAsistencias,
+                    (result) => {
+                        if (result.data != null) {
+                            this.listaAlumnosSeleccionadosCalculoHoraExtra = result.data;
+                            this.loaderAsistencia = false;
+                        }
+                    });
             } else {
                 this.mensajeToast("Seleccione al menos un alumno de la lista");
             }
@@ -342,9 +369,9 @@ export default {
                 console.log("IDS " + lista);
                 this.post(
                     this.uriTempAsistencia + "/salidaAlumnos",
-                    { listaSalida:lista, genero: this.usuarioSesion.id },
+                    { listaSalida: lista, genero: this.usuarioSesion.id },
                     this.sesion.token,
-                    (result) => {                        
+                    (result) => {
                         console.log("Response " + result.data);
                         if (result.data != null) {
                             this.lista = result.data;
@@ -359,12 +386,12 @@ export default {
                 //this.mensaje = "Seleccione al menos un alumno de la lista";
             }
         },
-        calcularHorasExtras(alumnoItem){
+        calcularHorasExtras(alumnoItem) {
             alumnoItem.calcular_horas_extra = !alumnoItem.calcular_horas_extra;
-            console.log(" alumnoItem "+alumnoItem.nombre_alumno);
+            console.log(" alumnoItem " + alumnoItem.nombre_alumno);
         },
-        getListaAlumnosHorasExtras(){
-           return this.listaAlumnos.filter(e=>e.calcular_horas_extra);
+        getListaAlumnosHorasExtras() {
+            return this.listaAlumnos.filter(e => e.calcular_horas_extra);
         }
     }
 };

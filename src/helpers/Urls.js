@@ -60,6 +60,7 @@ const URL = {
     ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal
     ASISTENCIA_ENTRADA_ALUMNOS : ASISTENCIA_BASE + '/entradaAlumnos',
     ASISTENCIA_SALIDA_ALUMNOS : ASISTENCIA_BASE + '/salidaAlumnos',
+    ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA : ASISTENCIA_BASE+'/salidaAlumnos/alumno_tiempo_extra/',//parametro lista asistencias
     ASISTENCIA_REPORTE : ASISTENCIA_BASE + '/reporte/',
     ASISTENCIA_REPORTE_POR_ALUMNO : ASISTENCIA_BASE + '/reporte_por_alumno/', //id_alumno y numero_mes
     ASISTENCIA_REPORTE_MES_ALUMNO : ASISTENCIA_BASE + '/reporte_mes_alumno/', //id_alumno y numero_mes
