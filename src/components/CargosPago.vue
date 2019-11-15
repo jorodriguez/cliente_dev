@@ -9,13 +9,13 @@
         <div class="btn-group">
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-success"
             v-on:click="iniciarAgregarCargo()"
           >Agregar Cargo</button>
           <button
             type="button"
             v-on:click="iniciarEliminacionCargo()"
-            class="btn btn-secondary"
+            class="btn btn-danger"
             title="Eliminar cargo(s) selecionado(s)"
           >Eliminar Cargo</button>
         </div>
@@ -26,7 +26,7 @@
             type="button"
             v-on:click="iniciarAgregarPago()"
             class="btn btn-success"
-          >Agregar Pago</button>
+          >Efectuar Pago</button>
         </div>
       </div>
     </div>

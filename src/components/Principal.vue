@@ -13,10 +13,10 @@
 
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
-     <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
-     <router-link   to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>
-     <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>
-           <!-- btn-head-->
+      <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
+      <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>
+      <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>
+      <!-- btn-head-->
       <button
         type="button"
         data-toggle="modal"
@@ -250,6 +250,23 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="container m-3 scroll-div">
+              <table
+                class="table "
+                v-for="alumnoItem in getListaAlumnosHorasExtras()"
+                v-bind:key="alumnoItem.id"                
+              >
+              <tr>
+                <td>{{alumnoItem.nombre_alumno}}</td>
+                <td>{{alumnoItem.tiempo_expirado.hours}}:{{alumnoItem.tiempo_expirado.minutes}}</td>
+                <td>
+                  <button :class="alumnoItem.calcular_horas_extras ? 'btn btn-secondary':'btn btn-warning' " @click="calcularHorasExtras(alumnoItem)">
+                      Horas extras
+                  </button>
+                  </td>
+              </tr>
+              </table>
             </div>
           </div>
           <div class="modal-footer">
