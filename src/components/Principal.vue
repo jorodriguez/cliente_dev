@@ -26,7 +26,12 @@
       <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
     </div>
     <div class="row">
-      <div class="col text-left">
+     
+    </div>
+
+    <div class="container scroll-panel-salida-div bg-gradient-dark rounded border">
+      <div class="row">
+        <div class="col text-left">
         <div class="dropdown">
           <button
             class="btn btn-link btn-sm dropdown-toggle"
@@ -52,26 +57,33 @@
           </div>
         </div>
       </div>
-      <div class="col">
+       <div class="col">
         <button
           type="button"
           class="btn btn-link btn-sm"
           :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
           v-on:click="toggleSeleccionVisibles()"
         >
-          <!--<i class="fas fa-user-check"></i>-->
-          Seleccionar
+            Seleccionar
         </button>
       </div>
-      <div class="col">
-        <button type="button" class="btn btn-danger" v-on:click="iniciarRegistrarSalida()">
-          <!--<i class="fas fa-arrow-right"></i>-->
-          Salida
+      <div class="col text-right">
+      <div class="btn-group" role="group" aria-label="Basic example">
+       <button type="button" class="btn btn-danger rounded" v-on:click="iniciarRegistrarSalida()">
+                <i class="fas fa-hand-holding-heart"></i>
+              <span style="font-size:12px;">Salida</span>
         </button>
+        <button type="button" class="btn btn-light border text-info " v-on:click="loadFunctionAlumnosDentro()">
+          <i class="fas fa-sync "></i>       
+        </button>
+  
+</div>
+        
       </div>
-    </div>
+     
+      </div>
+<br/> 
 
-    <div class="jumbotron m-1">
       <div class="media">
         <div class="row overflow-auto">
           <div
@@ -80,20 +92,25 @@
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
           >
-            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
+            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">               
               <img
                 src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
                 width="35"
                 height="35"
                 alt="..."
                 class="rounded-circle"
-              />
-              <!--<i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>-->
+              />                                          
               <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
-
-              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
-              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>              
+              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>              
+               <span v-if="alumnoItem.calcular_tiempo_extra" class="badge badge-pill badge-warning text-wrap" style="width: 2rem;" >
+                        <small><i class="fas fa-plus"></i></small>
+                        <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}} </span>
+                        <span  class="text-muted" >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                        {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" >min</span>
+              </span>
             </small>
+          
           </div>
         </div>
       </div>
@@ -239,7 +256,7 @@
                     v-for="alumnoItem in listaAlumnos"
                     v-bind:key="alumnoItem.id"
                     class="d-flex align-content-top flex-wrap"
-                  >
+                  >                    
                     <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                       {{alumnoItem.nombre_alumno}}
                       <i
@@ -251,20 +268,60 @@
                 </div>
               </div>
             </div>
-            <div class=" m-1 jumbotron scroll-horas-extra-div ">
-              <table
-                class="tabl"                             
+
+            <h6>
+              <small> 
+                <span class="badge badge-pill badge-warning">{{listaAlumnosSeleccionadosCalculoHoraExtra ? listaAlumnosSeleccionadosCalculoHoraExtra.length:0 }}</span> Alumnos con horas extras
+                </small>
+            </h6>
+            <div class="container m-3 scroll-horas-extra-div">
+              <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
+                <span class="sr-only">Cargando...</span>
+              </div>
+              <!--<div class="row justify-content-md-center">
+                <div class="col-6 border" 
+                    v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
+                    v-bind:key="alumnoItem.id" >
+                    <span >{{alumnoItem.nombre_alumno}}</span>
+                    <small><i class="fas fa-plus"></i></small>
+                    <span class="text-danger">{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
+                      <div class="custom-control custom-switch">
+                     <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />                     
+                      <label class="custom-control-label" :for="alumnoItem.id">                                                
+                        <small>                         
+                        
+                        </small>                        
+                     </label>
+                      </div>
+                </div>                    
+              </div>-->
+
+               <table              
+                class="table "
+                            
               >
-              <tr 
-                   v-for="alumnoItem in listaAlumnos"
-                    v-bind:key="alumnoItem.id"  >
+              <tr  v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
+                v-bind:key="alumnoItem.id"   
+                   >
                 <td>{{alumnoItem.nombre_alumno}}</td>
-                <td>{{alumnoItem.tiempo_expirado.hours}}:{{alumnoItem.tiempo_expirado.minutes}}</td>
+                <td>                   
+                  <div class="badge badge-pill badge-warning"   >
+                    <small><i class="fas fa-plus"></i></small>
+                    <span >{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}} </span>
+                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
+                    </div>
+                    </td>
                 <td>
-                  <button :class="alumnoItem.calcular_horas_extras ? 'btn btn-secondary btn-sm':'btn btn-warning btn-sm' " 
-                  @click="calcularHorasExtras(alumnoItem)">
-                      Horas extras
-                  </button>
+
+                  <div class="custom-control custom-switch">
+                      <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />
+                      <label class="custom-control-label" :for="alumnoItem.id">                                                
+                        <small></small>
+                     </label>
+                  </div>                                  
                   </td>
               </tr>
               </table>
@@ -272,11 +329,10 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-
             <button
               type="button"
-              :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
-              class="btn btn-success"
+              :disabled="this.listaAlumnos == null || this.listaAlumnos == [] || loaderAsistencia"
+              class="btn btn-success" 
               v-on:click="registrarSalida()"
             >
               Confirmar Salida
@@ -333,6 +389,14 @@
   height: 200px;
   overflow-y: scroll;
 }
+
+.scroll-panel-salida-div {
+  width: 100%;
+  height: 400px;
+  /*overflow-y: scroll;*/ 
+  overflow-y: hidden;
+}
+
 
 #toast-container {
   z-index: 9999999;
