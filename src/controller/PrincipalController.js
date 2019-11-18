@@ -333,7 +333,7 @@ export default {
                 const idsAsistencias = this.listaAlumnos
                     .filter(e => e.seleccionado)
                     .map(item => item.id);
-                    console.log(" === > "+idsAsistencias);
+                console.log(" === > " + idsAsistencias);
 
                 $("#confirmar_salida_modal").modal("show");
                 this.loadFunctionAlumnosParaSalir(idsAsistencias,
@@ -354,39 +354,36 @@ export default {
             var existeSeleccion = this.existeSeleccionAlumno();
             console.log("seleccion " + existeSeleccion);
 
-            var existeSeleccionCalculoHorasExtras = existeSeleccion(this.listaAlumnosSeleccionadosCalculoHoraExtra);
+            var existeSeleccionCalculoHorasExtras = verificarExisteSeleccion(this.listaAlumnosSeleccionadosCalculoHoraExtra);
 
             if (existeSeleccion) {
                 var lista = [];
-/*
+                let listaCalcularHorasExtras = [];
+
                 for (var i = 0; i < this.listaAlumnos.length; i++) {
                     var elem = this.listaAlumnos[i];
                     if (elem.seleccionado) {
                         lista.push(elem.id);
                     }
-                }*/
+                }
 
-                 listaCalcularHorasExtras = listaSalida.map(function (obj) {
-                    if(obj.seleccionado){
-                        return obj.id;
-                    }                        
-                });
-
-                aqui me quede falta envair al API
-                console.log("Alumnos para horas extras "+JSON.stringify(listaCalcularHorasExtras));
-                /*
-                this.listaAlumnos.forEach(e=>{
-                    if(e.seleccionado){
-                        lista.push(e.id);
+                if (existeSeleccionCalculoHorasExtras) {
+            
+                    for (var i = 0; i < this.listaAlumnosSeleccionadosCalculoHoraExtra.length; i++) {
+                        var elem = this.listaAlumnosSeleccionadosCalculoHoraExtra[i];
+                        if (elem.seleccionado) {
+                            listaCalcularHorasExtras.push(elem.id);
+                        }
                     }
-                });*/
 
+                }
                 //existeSeleccionCalculoHorasExtras
 
                 console.log("IDS " + lista);
+                console.log("Salida para calculo de horas ",listaCalcularHorasExtras  );
                 this.post(
                     this.uriTempAsistencia + "/salidaAlumnos",
-                    { listaSalida: lista,listaCalcularHorasExtras:listaCalcularHorasExtras, genero: this.usuarioSesion.id },
+                    { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
                     this.sesion.token,
                     (result) => {
                         console.log("Response " + result.data);
@@ -414,7 +411,7 @@ export default {
 };
 
 
-function existeSeleccion(lista){
+function verificarExisteSeleccion(lista) {
     return lista.some(function (e) {
         return e.seleccionado;
     });
