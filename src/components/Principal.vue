@@ -28,7 +28,7 @@
     </div>
     <div class="row"></div>
 
-    <div class="container scroll-panel-salida-div bg-gradient-dark rounded border">
+    <div class="container scroll-panel-salida-div bg-light rounded border">
       <div class="row">
         <div class="col text-left">
           <div class="dropdown">
