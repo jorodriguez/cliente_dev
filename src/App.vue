@@ -16,7 +16,7 @@
         <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
         <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
       --> 
-      <MenuPrincipal></MenuPrincipal>
+     <!-- <MenuPrincipal></MenuPrincipal>-->
     
     <router-view />
 
