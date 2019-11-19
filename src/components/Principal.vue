@@ -4,7 +4,7 @@
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
       <button
         type="button"
-        class="btn btn-sm btn-warning"
+        class="btn btn-sm btn-danger"
         v-on:click="signout()"
       >
         <i class="fas fa-power-off" v-on:click="signout()"></i>
@@ -24,7 +24,7 @@
         v-on:click="initRegistroActividad()"
       >Actividad</button>
       <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
-      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-success">Asistencia/Personal</router-link>
+      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-success">Asistencia/Miss</router-link>
     </div>
     <div class="row"></div>
 
@@ -68,14 +68,16 @@
           <div class="btn-group" role="group" aria-label="Basic example">
             <button
               type="button"
-              class="btn btn-danger rounded"
+              class="btn btn-warning rounded"
+              title="Salida de alumno"
               v-on:click="iniciarRegistrarSalida()"
             >
               <i class="fas fa-hand-holding-heart"></i>
-              <span style="font-size:12px;">Salida</span>
+              <span style="font-size:12px;">Salida Alumnos</span>
             </button>
             <button
               type="button"
+              title="Actualizar lista de alumno"
               class="btn btn-light border text-info"
               v-on:click="loadFunctionAlumnosDentro()"
             >
@@ -309,6 +311,11 @@
               </div>-->
 
               <table class="table">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td><small>Aplicar Cargos</small></td>
+                                    </tr>
                 <tr
                   v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                   v-bind:key="alumnoItem.id"
