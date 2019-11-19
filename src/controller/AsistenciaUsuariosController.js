@@ -85,6 +85,7 @@ export default {
         this.usuarioSeleccionado = item;
         this.comentario = '';
         this.operacion = "ENTRADA";
+        this.mensaje = '';
         $("#popup_entrada").modal("show");
 
     },  
@@ -110,6 +111,7 @@ export default {
       this.usuarioAsistenciaSeleccionado = item;
       this.comentario = '';
       this.operacion = 'SALIDA';
+      this.mensaje = '';
       $("#popup_salida").modal("show");
     },
 

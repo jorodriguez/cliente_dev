@@ -13,6 +13,11 @@
     <div class="row">
       <div class="col">
         <h4>Entrada</h4>
+         <div v-if="loaderPorEntrar" class="h4">
+          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
         <vue-good-table
           :columns="COLUMNAS_ENTRADA"
           :rows="listaPorEntrar"
@@ -38,6 +43,11 @@
       </div>
       <div class="col">
         <h4>Salida</h4>
+        <div v-if="loaderPorSalir" class="h4">
+          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
         <vue-good-table
           :columns="COLUMNAS_SALIDA"
           :rows="listaPorSalir"
