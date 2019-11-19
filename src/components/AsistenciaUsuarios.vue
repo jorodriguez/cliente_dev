@@ -1,6 +1,6 @@
 <template>
   <div id="id_asistencia_maestras">
-    <h1>Asistencia Personal</h1>
+    <h1>Asistencias Miss</h1>
     <!--<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)-->
     <div class="row">
       <div class="col-auto mr-auto">
