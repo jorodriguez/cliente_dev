@@ -24,7 +24,7 @@
         v-on:click="initRegistroActividad()"
       >Actividad</button>
       <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
-      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-success">Asistencia/Miss</router-link>
+      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-danger" style="background-color:#ea0075" >Asistencia/Miss</router-link>
     </div>
     <div class="row"></div>
 
@@ -425,4 +425,7 @@
 #toast-container {
   z-index: 9999999;
 }
+
+.fondo-rosa { background-color: "#e83e8c" !important; }
+
 </style>
