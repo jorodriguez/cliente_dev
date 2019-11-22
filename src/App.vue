@@ -1,7 +1,7 @@
 
 <template>
   <div id="app">
-    <span style="aligng:left">
+    <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
     

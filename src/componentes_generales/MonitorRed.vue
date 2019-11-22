@@ -15,21 +15,23 @@
         </span>-->
       </div>
     </offline>
-    
-    <span v-if="senial" @click="clicMonitor()"><i class="fas fa-signal"  ></i></span>
-    <span v-else class="bg-danger text-white h3" @click="clicMonitor()"><i class="fas fa-signal text-white"></i> Sin señal de Internet <i class="far fa-frown" ></i></span>
+     <span v-if="senial"></span>
+    <span v-else class="bg-danger text-white h3" @click="clicMonitor()"><i class="fas fa-exclamation-triangle  text-white"></i> Sin señal de Internet <i class="far fa-frown" ></i></span>
 
     <Popup id="id_monitor_red" size="md" show_button_close="true">
       <div slot="header">
         <p>Monitor de Red</p>
       </div>
       <div slot="content">
-        <div class="row">
-          <div class="container overflow-auto">
-            <h2>
-              <span v-if="senial"><i class="fas fa-signal text-info" ></i>Señal de internet Ok </span>
-              <span v-else><i class="fas fa-signal text-red" style="color:red"></i> Sin señal de Internet <i class="far fa-frown text-danger" /></span>
-            </h2>
+        <div class=" text-center">
+          <div class="container text-center">
+            
+              <span v-if="senial" ><i class="fas fa-signal text-info" ></i><h2> Señal de internet Ok </h2></span>
+              <div v-else  class="row">
+                  <span class="h2"><i class="fas fa-signal text-red" style="color:red"></i>Sin señal de Internet <i class="far fa-frown text-danger" /></span>
+                  <span class="text-muted">Esta ventana se cerrará cuando la señal de restaure. </span>
+              </div>
+            
           </div>
         </div>
       </div>
@@ -50,7 +52,7 @@ export default {
   },
   data(){
       return{
-          senial:false
+          senial:Boolean
       }
   },
   methods: {
