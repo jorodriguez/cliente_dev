@@ -1,6 +1,10 @@
 
 <template>
   <div id="app">
+    <span style="aligng:left">
+      <MonitorRed></MonitorRed>
+    </span>
+    
     <button
       id="id_notificador_principal"
       type="button"
@@ -16,6 +20,8 @@
         <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
         <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
       --> 
+    
+
      <!-- <MenuPrincipal></MenuPrincipal>-->
     
     <router-view />
@@ -64,6 +70,10 @@
       </div>
       <div slot="footer"></div>
     </Popup>
+
+
+  
+
   </div>
 </template>
 
@@ -75,10 +85,11 @@ $(function () {
 ;*/
 import Popup from "./controller/Popup";
 import MenuPrincipal from "./components/navBar";
+import MonitorRed from "./componentes_generales/MonitorRed";
 
 export default {
   components: {
-    Popup,MenuPrincipal
+    Popup,MenuPrincipal,MonitorRed
   },
   name: "App",
   methods: {
