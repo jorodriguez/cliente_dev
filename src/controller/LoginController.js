@@ -1,10 +1,12 @@
 
 import URL from "../helpers/Urls";
+import Constantes from "../helpers/Constantes";
+import CONSTANTES from "../helpers/Constantes";
 
 export default {
   name: "Login",
   props: {
-    loading: { type: Boolean }
+    loading: true 
   },
   data() {
     return {
@@ -40,19 +42,24 @@ export default {
       }
 
       var data = { correo: this.input.correo, password: this.input.password };
-      
+      this.loading = true;
       this.$http.post(URL.LOGIN, data).then(
         result => {
-          console.log("En el login");
+          console.log("En el login");          
           this.response = result.data;
+         this.loading = false;
           if (this.response.auth) {
             this.$session.set("usuario_sesion", this.response);
             this.$session.set("jwt", this.response.token);
             console.log("JSON "+JSON.stringify(this.response));
             if(this.response.usuario.permiso_gerente){
-              this.$router.replace({ path: "/ReporteAdmin" });
+              console.log("Mandar evento para admin");              
+              this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN_ADMIN);
+              this.$router.replace({ path: "/ReporteAdmin" });              
             }else{
-              this.$router.replace({ path: "/principal" });
+              console.log("Mandar evento para usuario general");              
+              this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN);
+              this.$router.replace({ path: "/principal" });              
             }
             
           } else {
@@ -61,6 +68,8 @@ export default {
           }
         },
         error => { //FIXME: modificar la contestacion del API
+
+          this.loading = false;
           //console.log(JSON.stringify(error));
           if (!error.auth) {
             this.mensajeToast("El usuario o la clave son incorrectas.");

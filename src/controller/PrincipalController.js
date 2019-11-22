@@ -18,6 +18,7 @@ export default {
             response: "",
             listaAlumnos: [],
             listaAlumnosSeleccionados: [],
+            listaAlumnosSeleccionadosCalculoHoraExtra: [],
             listaGrupos: [],
             listaGruposFiltrados: [],
             grupoDefault: { id: -1, nombre: "Todos" },
@@ -34,10 +35,12 @@ export default {
             seleccionarTodosVisibles: false,
             validacion: null,
             mensajeToast: null,
+            loadFunctionAlumnosParaSalir: null,
             firebaseMessages: null,
             uriTempAsistencia: URL.ASISTENCIA_BASE,
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempActividad: URL.ACTIVIDAD_BASE,
+            loaderAsistencia: false
         };
     },
     //FIXME: SESION
@@ -52,36 +55,6 @@ export default {
             return;
         }
         this.usuarioSesion = this.sesion.usuario;
-        /*   
-       console.log("   "+fire);
-       fire.usePublicVapidKey("BPyjJFCz2SDWVfRU_t-o29Ru3dskbHSkKw6qUWyiZXgawNcjANKpd1kZU5dBNq4xZqkgx8LK6jEaYcjFj_enfOU"); 
-       fire.requestPermission().then(function() {
-           console.log('Notification permission granted.');
-           // TODO(developer): Retrieve an Instance ID token for use with FCM.
-           
-         }).catch(function(err) {
-           console.log('Unable to get permission to notify.', err);
-         });
-         
-         fire.getToken().then(function(currentToken) {
-             console.log("Current token "+currentToken);
-           if (currentToken) {
-             sendTokenToServer(currentToken);
-             updateUIForPushEnabled(currentToken);
-           } else {
-             // Show permission request.
-             console.log('No Instance ID token available. Request permission to generate one.');
-             // Show permission UI.
-             updateUIForPushPermissionRequired();
-             setTokenSentToServer(false);
-           }
-         }).catch(function(err) {
-           console.log('An error occurred while retrieving token. ', err);
-           showToken('Error retrieving Instance ID token. ', err);
-           setTokenSentToServer(false);
-         });
-       */
-
 
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
@@ -92,12 +65,20 @@ export default {
                 (result) => {
                     this.response = result.data;
                     if (this.response != null) {
-                        //console.log(" ====>> " + JSON.stringify(this.response));
                         this.listaAlumnos = this.response;
                         this.actualizarComboFiltro();
                         this.filtrarAlumnosPorGrupo(this.grupoDefault);
                     }
                 }
+            );
+        };
+
+        this.loadFunctionAlumnosParaSalir = function (listaIdsAsistenciasSalida, handler) {
+
+            this.get(
+                URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,
+                this.sesion.token,
+                handler
             );
         };
 
@@ -344,10 +325,24 @@ export default {
             console.log("toggleSeleccionVisibles ");
             this.toggleSeleccionarTodosVisibles();
         },
+
         iniciarRegistrarSalida() {
             var existeSeleccion = this.existeSeleccionAlumno();
             if (existeSeleccion) {
+                this.loaderAsistencia = true;
+                const idsAsistencias = this.listaAlumnos
+                    .filter(e => e.seleccionado)
+                    .map(item => item.id);
+                console.log(" === > " + idsAsistencias);
+
                 $("#confirmar_salida_modal").modal("show");
+                this.loadFunctionAlumnosParaSalir(idsAsistencias,
+                    (result) => {
+                        if (result.data != null) {
+                            this.listaAlumnosSeleccionadosCalculoHoraExtra = result.data;
+                            this.loaderAsistencia = false;
+                        }
+                    });
             } else {
                 this.mensajeToast("Seleccione al menos un alumno de la lista");
             }
@@ -357,29 +352,43 @@ export default {
             console.log("Registrar salida");
 
             var existeSeleccion = this.existeSeleccionAlumno();
+            console.log("seleccion " + existeSeleccion);
+
+            var existeSeleccionCalculoHorasExtras = verificarExisteSeleccion(this.listaAlumnosSeleccionadosCalculoHoraExtra);
 
             if (existeSeleccion) {
-
-                var ids = [];
+                var lista = [];
+                let listaCalcularHorasExtras = [];
 
                 for (var i = 0; i < this.listaAlumnos.length; i++) {
                     var elem = this.listaAlumnos[i];
                     if (elem.seleccionado) {
-                        ids.push(elem.id);
+                        lista.push(elem.id);
                     }
                 }
 
-                console.log("IDS " + ids);
+                if (existeSeleccionCalculoHorasExtras) {
+            
+                    for (var i = 0; i < this.listaAlumnosSeleccionadosCalculoHoraExtra.length; i++) {
+                        var elem = this.listaAlumnosSeleccionadosCalculoHoraExtra[i];
+                        if (elem.seleccionado) {
+                            listaCalcularHorasExtras.push(elem.id);
+                        }
+                    }
 
+                }
+                //existeSeleccionCalculoHorasExtras
+
+                console.log("IDS " + lista);
+                console.log("Salida para calculo de horas ",listaCalcularHorasExtras  );
                 this.post(
                     this.uriTempAsistencia + "/salidaAlumnos",
-                    { ids: ids, genero: this.usuarioSesion.id },
+                    { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
                     this.sesion.token,
                     (result) => {
-                        this.response = result.data;
-                        console.log("Response " + this.response);
-                        if (this.response != null) {
-                            this.lista = this.response;
+                        console.log("Response " + result.data);
+                        if (result.data != null) {
+                            this.lista = result.data;
                             this.mensaje = "Se registro la salida de los alumnos";
                             $("#confirmar_salida_modal").modal("hide");
                             this.loadFunctionAlumnosDentro();
@@ -390,7 +399,20 @@ export default {
                 this.mensajeToast("Seleccione al menos un alumno de la lista");
                 //this.mensaje = "Seleccione al menos un alumno de la lista";
             }
+        },
+        calcularHorasExtras(alumnoItem) {
+            alumnoItem.calcular_horas_extra = !alumnoItem.calcular_horas_extra;
+            console.log(" alumnoItem " + alumnoItem.nombre_alumno);
+        },
+        getListaAlumnosHorasExtras() {
+            return this.listaAlumnos.filter(e => e.calcular_horas_extra);
         }
-
     }
 };
+
+
+function verificarExisteSeleccion(lista) {
+    return lista.some(function (e) {
+        return e.seleccionado;
+    });
+}

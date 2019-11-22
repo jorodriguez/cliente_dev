@@ -6,9 +6,9 @@ import URL from "../helpers/Urls";
 
 export default {
   name: "Asistencia",
-  mixins:[operacionesApi],
+  mixins: [operacionesApi],
   data() {
-    return {      
+    return {
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
@@ -48,7 +48,7 @@ export default {
             this.actualizarComboFiltro();
           }
         });
-    
+
     };
 
     //Funcion get alumnos salida
@@ -65,7 +65,7 @@ export default {
           }
         }
       );
-     
+
     };
 
     this.actualizarComboFiltro = () => {
@@ -117,7 +117,7 @@ export default {
         }
 
         this.post(
-          URL.ASISTENCIA_ENTRADA_ALUMNOS, 
+          URL.ASISTENCIA_ENTRADA_ALUMNOS,
           { ids: ids, genero: this.usuarioSesion.id },
           this.sesion.token,
           (result) => {
@@ -133,7 +133,7 @@ export default {
             }
           }
         );
-       
+
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }
@@ -160,16 +160,16 @@ export default {
       console.log("Registrar salida");
 
       if (this.listaSeleccionSalida.length > 0) {
-        var ids = [];
+        var listaSalida = [];
 
         for (var i = 0; i < this.listaSeleccionSalida.length; i++) {
           var elem = this.listaSeleccionSalida[i];
-          ids.push(elem.id);
+          listaSalida.push({ id: elem.id, calcular_horas_extra: elem.calcular_horas_extra });
         }
 
         this.post(
           URL.ASISTENCIA_SALIDA_ALUMNOS,
-          { ids: ids, genero: this.usuarioSesion.id },
+          { listaSalida: listaSalida, genero: this.usuarioSesion.id },
           this.sesion.token,
           (result) => {
             this.response = result.data;
@@ -183,7 +183,7 @@ export default {
               this.listaSeleccion = [];
             }
           }
-        );        
+        );
       } else {
         this.mensaje = "Seleccione al menos un alumno de la lista";
       }

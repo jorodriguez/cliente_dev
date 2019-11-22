@@ -24,12 +24,12 @@
         required
       >
           
-      <a class="btn btn-lg btn-primary btn-block text-white "  
+      <a :class="loading ? 'btn btn-lg btn-primary btn-block text-white disabled':'btn btn-lg btn-primary btn-block text-white'"  
             v-on:click="login()"  
-            :disabled="loading">
-        Entrar       
+            >
+       <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span> {{loading ? 'Validando..':'Entrar'}}       
       </a> 
-      <small class="text-muted">(v291019)</small>
+      <small class="text-muted">(v181121)</small>
       <br>
       <br>
       

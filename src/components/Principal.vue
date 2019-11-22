@@ -1,86 +1,93 @@
 <template>
   <div class="principal">
-       <small class="font-weight-bold h6">
+    <small class="font-weight-bold h6">
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-       <button
-        type="button"       
-        class="btn btn-sm btn-warning"     
-        v-on:click="signout()"   
+      <button
+        type="button"
+        class="btn btn-sm btn-danger"
+        v-on:click="signout()"
       >
         <i class="fas fa-power-off" v-on:click="signout()"></i>
-       </button>
+      </button>
     </small>
-    
+
     <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-lg  btn-info">        
-        Alumnos
-      </router-link>
-      <router-link to="/Asistencia" class="btn btn-lg  btn-success">        
-        Asistencias        
-      </router-link>             
+      <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
+      <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
+      <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>
+      <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      
       <!-- btn-head-->
       <button
         type="button"
         data-toggle="modal"
-        class="btn btn-success btn-lg "
+        class="btn btn-success btn-lg"
         v-on:click="initRegistroActividad()"
-      >        
-        Actividad
-      </button>
-      <router-link to="/Gastos" class="btn btn-lg  btn-primary">        
-        Gastos        
-      </router-link>
+      >Actividad</button>
+      <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
+      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-danger" style="background-color:#ea0075" >Asistencia/Miss</router-link>
     </div>
-    <div class="row">
-      <div class="col text-left">
-        <div class="dropdown">
+    <div class="row"></div>
+
+    <div class="container scroll-panel-salida-div bg-light rounded border">
+      <div class="row">
+        <div class="col text-left">
+          <div class="dropdown">
+            <button
+              class="btn btn-link btn-sm dropdown-toggle"
+              type="button"
+              id="dropdownMenu2"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >{{grupoSeleccionado.nombre}}</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button
+                class="dropdown-item"
+                v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+                type="button"
+              >{{grupoDefault.nombre}}</button>
+              <button
+                class="dropdown-item"
+                v-for="grupoItem in listaGrupos"
+                v-bind:key="grupoItem.id"
+                v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+                type="button"
+              >{{grupoItem.nombre}}</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
           <button
-            class="btn btn-link btn-sm dropdown-toggle"
             type="button"
-            id="dropdownMenu2"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >{{grupoSeleccionado.nombre}}</button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            class="btn btn-link btn-sm"
+            :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
+            v-on:click="toggleSeleccionVisibles()"
+          >Seleccionar</button>
+        </div>
+        <div class="col text-right">
+          <div class="btn-group" role="group" aria-label="Basic example">
             <button
-              class="dropdown-item"
-              v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
               type="button"
-            >{{grupoDefault.nombre}}</button>
+              class="btn btn-warning rounded"
+              title="Salida de alumno"
+              v-on:click="iniciarRegistrarSalida()"
+            >
+              <i class="fas fa-hand-holding-heart"></i>
+              <span style="font-size:12px;">Salida Alumnos</span>
+            </button>
             <button
-              class="dropdown-item"
-              v-for="grupoItem in listaGrupos"
-              v-bind:key="grupoItem.id"
-              v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
               type="button"
-            >{{grupoItem.nombre}}</button>
+              title="Actualizar lista de alumno"
+              class="btn btn-light border text-info"
+              v-on:click="loadFunctionAlumnosDentro()"
+            >
+              <i class="fas fa-sync"></i>
+            </button>
           </div>
         </div>
       </div>
-      <div class="col">
-        <button
-          type="button"
-          class="btn btn-link btn-sm"
-          :disabled="this.listaAlumnos == null || this.listaAlumnos == []"
-          v-on:click="toggleSeleccionVisibles()"
-        >
-          <!--<i class="fas fa-user-check"></i>-->
-          Seleccionar
-        </button>
-      </div>
-      <div class="col">
-        <button
-          type="button"
-          class="btn btn-danger "                           
-          v-on:click="iniciarRegistrarSalida()"
-        >
-         <!--<i class="fas fa-arrow-right"></i>-->
-        Salida</button>
-      </div>
-    </div>
+      <br />
 
-    <div class="jumbotron m-1">
       <div class="media">
         <div class="row overflow-auto">
           <div
@@ -96,12 +103,23 @@
                 height="35"
                 alt="..."
                 class="rounded-circle"
-              >
-              <!--<i v-on:click="addToListAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>-->
+              />
               <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
-
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
               <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+              <span
+                v-if="alumnoItem.calcular_tiempo_extra"
+                class="badge badge-pill badge-warning text-wrap"
+                style="width: 2rem;"
+              >
+                <small>
+                  <i class="fas fa-plus"></i>
+                </small>
+                <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                <span class="text-muted">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
+                {{alumnoItem.tiempo_extra.minutes}}
+                <span class="text-muted">min</span>
+              </span>
             </small>
           </div>
         </div>
@@ -115,7 +133,8 @@
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
-      data-keyboard="false" data-backdrop="static" 
+      data-keyboard="false"
+      data-backdrop="static"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -137,8 +156,7 @@
                       v-bind:key="alumnoItem.id"
                       class="d-flex align-content-top flex-wrap"
                     >
-                      <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">                      
-
+                      <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                         <!--v-on:click="removeToListAlumno(alumnoItem)" -->
                         {{alumnoItem.nombre_alumno}}
                         <i
@@ -228,7 +246,8 @@
       role="dialog"
       aria-labelledby="mySmallModalLabel"
       aria-hidden="true"
-      data-keyboard="false" data-backdrop="static" 
+      data-keyboard="false"
+      data-backdrop="static"
       id="confirmar_salida_modal"
     >
       <div class="modal-dialog">
@@ -239,7 +258,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">            
+          <div class="modal-body">
             <div class="container jumbotron m-1 scroll-div">
               <div class="media">
                 <div class="row">
@@ -248,7 +267,7 @@
                     v-bind:key="alumnoItem.id"
                     class="d-flex align-content-top flex-wrap"
                   >
-                    <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">                                          
+                    <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                       {{alumnoItem.nombre_alumno}}
                       <i
                         v-on:click="toggleSelectAlumno(alumnoItem)"
@@ -259,13 +278,85 @@
                 </div>
               </div>
             </div>
+
+            <h6>
+              <small>
+                <span
+                  class="badge badge-pill badge-warning"
+                >{{listaAlumnosSeleccionadosCalculoHoraExtra ? listaAlumnosSeleccionadosCalculoHoraExtra.length:0 }}</span> Alumnos con horas extras
+              </small>
+            </h6>
+            <div class="container m-3 scroll-horas-extra-div">
+              <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
+                <span class="sr-only">Cargando...</span>
+              </div>
+              <!--<div class="row justify-content-md-center">
+                <div class="col-6 border" 
+                    v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
+                    v-bind:key="alumnoItem.id" >
+                    <span >{{alumnoItem.nombre_alumno}}</span>
+                    <small><i class="fas fa-plus"></i></small>
+                    <span class="text-danger">{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
+                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
+                      <div class="custom-control custom-switch">
+                     <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />                     
+                      <label class="custom-control-label" :for="alumnoItem.id">                                                
+                        <small>                         
+                        
+                        </small>                        
+                     </label>
+                      </div>
+                </div>                    
+              </div>-->
+
+              <table class="table">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td><small>Aplicar Cargos</small></td>
+                                    </tr>
+                <tr
+                  v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
+                  v-bind:key="alumnoItem.id"
+                >
+                  <td>{{alumnoItem.nombre_alumno}}</td>
+                  <td>
+                    <div class="badge badge-pill badge-warning">
+                      <small>
+                        <i class="fas fa-plus"></i>
+                      </small>
+                      <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                      <span
+                        class="text-muted"
+                        style="font-size:12px;"
+                      >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
+                      {{alumnoItem.tiempo_extra.minutes}}
+                      <span class="text-muted" style="font-size:12px;">min</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-switch">
+                      <input
+                        :id="alumnoItem.id"
+                        v-model="alumnoItem.seleccionado"
+                        type="checkbox"
+                        class="custom-control-input"
+                      />
+                      <label class="custom-control-label" :for="alumnoItem.id">
+                        <small></small>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            
             <button
               type="button"
-              :disabled="this.listaAlumnos == null || this.listaAlumnos == []"              
+              :disabled="this.listaAlumnos == null || this.listaAlumnos == [] || loaderAsistencia"
               class="btn btn-success"
               v-on:click="registrarSalida()"
             >
@@ -285,7 +376,7 @@
       aria-live="assertive"
       aria-atomic="true"
       class="toast border-warning"
-       data-delay="1000"
+      data-delay="1000"
       data-autohide="true"
     >
       <div class="toast-header p-1 mb-1 bg-warning text-dark">
@@ -318,7 +409,23 @@
   overflow-y: scroll;
 }
 
+.scroll-horas-extra-div {
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+}
+
+.scroll-panel-salida-div {
+  width: 100%;
+  height: 400px;
+  /*overflow-y: scroll;*/
+  overflow-y: hidden;
+}
+
 #toast-container {
   z-index: 9999999;
 }
+
+.fondo-rosa { background-color: "#e83e8c" !important; }
+
 </style>
