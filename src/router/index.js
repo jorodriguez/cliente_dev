@@ -12,6 +12,7 @@ import ReporteGastos from '@/components_admin/ReporteGastos'
 import Gastos from '@/components/Gastos'
 import CambiarSucursal from '@/components/CambiarSucursal'
 import ReporteAsistencia from '@/components/ReporteAsistencia'
+import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistenciasFaltasSucursalMes'
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
 
 
@@ -35,6 +36,7 @@ const router = new Router({
     { path: '/ReporteGastos', name: 'ReporteGastos', component:ReporteGastos },
     { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal},
     { path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia},
+    { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes},
     { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios},    
     {path: '*', redirect: '/'}
   ]

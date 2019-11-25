@@ -1,6 +1,6 @@
 
-//const BASE = "http://localhost:5000" ;
-const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
+const BASE = "http://localhost:5000" ;
+//const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = 'https://api-ambiente-produccion.herokuapp.com';
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -64,6 +64,8 @@ const URL = {
     ASISTENCIA_REPORTE : ASISTENCIA_BASE + '/reporte/',
     ASISTENCIA_REPORTE_POR_ALUMNO : ASISTENCIA_BASE + '/reporte_por_alumno/', //id_alumno y numero_mes
     ASISTENCIA_REPORTE_MES_ALUMNO : ASISTENCIA_BASE + '/reporte_mes_alumno/', //id_alumno y numero_mes
+    ASISTENCIA_REPORTE_MES_SUCURSAL : ASISTENCIA_BASE + '/reporte_mes_sucursal/', //id_sucursal y numero_mes
+    ASISTENCIA_MENSUAL_ALUMNO : ASISTENCIA_BASE + '/mensual/', //id_alumno
     
     //Asistencia Usuarios
     ASISTENCIA_USUARIO_BASE:ASISTENCIA_USUARIO_BASE,

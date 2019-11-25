@@ -1,17 +1,14 @@
 <template>
   <div class="asistencia container">
-    <!--<div class="text-left">
-      <router-link to="/principal">
-        <i class="fas fa-arrow-circle-left text-gray"  style="font-size:20px;"></i>
-      </router-link>
-    </div>-->
-
     <h1>Asistencias</h1>
      <span>{{this.mensaje}}</span>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
+       <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Asistencias/Dia</router-link>      
+       <router-link to="/ReporteAsistenciasSucursalMes" class="btn btn-lg btn-success">Asistencias/Mes</router-link>      
+
     </div>   
     <nav>
       <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
