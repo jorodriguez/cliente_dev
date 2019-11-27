@@ -30,7 +30,7 @@ const COLUMNS_TABLE_ASISTENCIA_ALUMNO =
         filterable: true,
       },     
       {
-        label: 'CArgos',
+        label: 'Cargos',
         field: 'cargos_extras',                
         thClass: 'text-center',
         tdClass: 'text-center',

@@ -77,7 +77,8 @@ const COLUMNS_TABLE_ASISTENCIA_MES =
         field:'opciones',    
         thClass: 'text-center',
         tdClass: 'text-center',
-        filterable: false        
+        filterable: false,
+        hidden:true 
       },
 ];
 
