@@ -1,24 +1,24 @@
 <template>
   <div>
-    <h1>Lista de Asistencia</h1>      
+    <h1>Lista de Faltas Mensual</h1>      
       (<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
     <div class="text-left">      
       <router-link to="/Asistencia" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
     </div>
-    <ReporteAsistenciaComponent />
+    <ReporteAsistenciasFaltasSucursalMesComponent />
   </div>
 </template>
 
 <script >
 import Vue from "vue";
-import ReporteAsistenciaComponent from "./ReporteAsistenciaComponent";
+import ReporteAsistenciasFaltasSucursalMesComponent from "./ReporteAsistenciasFaltasSucursalMesComponent";
 
 export default {
   name: "ReporteAsistencia",
   components: {
-    ReporteAsistenciaComponent
+    ReporteAsistenciasFaltasSucursalMesComponent
   },
   props: {},
   data() {
@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     console.log("Iniciando el componente");
-     console.log("iniciando el componente reporte de asistencia ");
+     console.log("iniciando el componente reporte de asistencia por sucursal mensual ");
     this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {

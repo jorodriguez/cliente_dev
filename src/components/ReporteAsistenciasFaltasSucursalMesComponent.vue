@@ -11,12 +11,7 @@
         <div class="row">
           <div class="col">
             <div class="float-right">
-              <datepicker
-                name="fecha"
-                v-model="fecha"
-                input-class="form-control"
-                @selected="cambiarFecha"
-              ></datepicker>
+             
             </div>
           </div>
         </div>
@@ -43,41 +38,52 @@
             <span v-if="props.column.field == 'foto'">
               <img :src="props.row.foto" alt class="rounded-circle" width="50" height="50" />
             </span>
-            <span v-else-if="props.column.field == 'nombre_alumno'">
-              <span>
-                {{props.row.nombre_alumno}}
-                <span class="text-muted">{{props.row.apellido_alumno}}</span>
+            <span v-else-if="props.column.field == 'nombre'">
+              <span :class="props.row.numero_asistencias == 0 ? 'font-weight-bold text-danger':''" >
+                {{props.row.nombre}}
+                <span >{{props.row.apellidos}}</span>
               </span>
             </span>
             <span v-else-if="props.column.field == 'nombre_grupo'">
               <span class="badge badge-info text-wrap">{{props.row.nombre_grupo}}</span>
             </span>
-            <span v-else-if="props.column.field == 'tiempo'">
-              <span :class="props.row.alerta_tiempo ? 'text-danger':'text-success'">
-                <i :class="props.row.alerta_tiempo ? 'fas fa-clock':''"></i>
-                {{props.row.alerta_tiempo ? props.row.tiempo:""}}
-              </span>
+             <span v-else-if="props.column.field == 'numero_asistencias'">
+              <span :class="props.row.numero_asistencias == 0 ? 'font-weight-bold text-danger':''">{{props.row.numero_asistencias}}/{{props.row.num_dias_trabajados}}</span>
             </span>
-            <span v-else-if="props.column.field == 'hora_salida'">
-              <span :class="props.row.hora_salida != null ? 'text-primary':'text-muted'">
-                {{props.row.hora_salida != null ? props.row.hora_salida:''}}
-                <i
-                  :class="props.row.hora_salida != null ? 'fas fa-check':''"
-                ></i>
-              </span>             
+            <span v-else-if="props.column.field == 'num_dias_trabajados'">
+              <span :class="props.row.numero_asistencias == 0 ? 'font-weight-bold text-danger':''">{{props.row.num_dias_trabajados}}</span>
             </span>
-            <span v-else-if="props.column.field == 'grafica'">
-              <!--<GraficaCalendarioAsistencia :idalumno="props.row.id_alumno"></GraficaCalendarioAsistencia >-->
+            
+            <span v-else-if="props.column.field == 'opciones'">
+              <button class="btn btn-primary" @click="seleccionarAlumno(props.row)">Ver Detalle</button>
+              <!--<GraficaCalendarioAsistencia :idalumno="props.row.id"></GraficaCalendarioAsistencia >-->
             </span>
             
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
         </vue-good-table>
-       
+
       </div>
     </div>
+
+ 
+        <Popup id="grafica_asistencia_mes" v-if="alumno_seleccionado != null"  show_button_close="true">
+          <div slot="header">Asistencias y Faltas</div>
+          <div slot="content">            
+            <div class="row">
+              <div class="container">
+                <h3>{{alumno_seleccionado.nombre}}</h3>
+                <h6>{{alumno_seleccionado.nombre_grupo}}</h6>
+                Lista
+              </div>
+            </div>
+          </div>
+          <div slot="footer">            
+          </div>
+        </Popup>   
+
   </div>
 </template>
 
-<script src="../controller/ReporteAsistenciaComponentController.js" >
+<script src="../controller/ReporteAsistenciaSucursalMesComponentController.js" >
 </script>

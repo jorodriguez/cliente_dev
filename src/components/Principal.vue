@@ -15,7 +15,7 @@
       <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
       <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
       <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>
-      <router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      
+      <!--<router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      -->
       <!-- btn-head-->
       <button
         type="button"
