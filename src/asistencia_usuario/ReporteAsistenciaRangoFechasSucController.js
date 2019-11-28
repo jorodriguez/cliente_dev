@@ -5,13 +5,15 @@ import URL from "../helpers/Urls";
 import { VueGoodTable } from 'vue-good-table';
 import Datepicker from 'vuejs-datepicker';
 import COLUMNS_TABLE_ASISTENCIA_SUCURSAL  from "../helpers/DatatableConfigAsistenciasSucursal";
+import COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE  from "../helpers/DatatableConfigAsistenciaUsuarioDetalle";
+import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
   components: {
-    Datepicker,VueGoodTable
+    Datepicker,VueGoodTable,Popup
   },
   mixins:[operacionesApi],
   data() {
@@ -20,12 +22,14 @@ export default {
       sesion: {}, 
       fecha_inicio:Date,
       fecha_fin:Date,
-      listaAsistenciaSucursal: [],                                    
+      listaAsistenciaSucursal: [],    
+      listaAsistenciaUsuario:[],                               
       usuario_seleccionado:{},
       columnas:COLUMNS_TABLE_ASISTENCIA_SUCURSAL,
+      columnasUsuario:COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE,
       TABLE_CONFIG:TABLE_CONFIG,
       mensaje: "",
-      loading:Boolean,
+      loading:false,
       loadFunctionAsistenciaSuc:null
     };
   },
@@ -58,6 +62,21 @@ export default {
         });    
     };
 
+    this.loadFunctionAsistenciaUsuario = ()=> {      
+      console.log(" "+URL.ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA);
+      this.loading = true;
+      this.get(
+        URL.ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA + this.usuario_seleccionado.id+"/"+this.fecha_inicio+"/"+this.fecha_fin,
+        this.sesion.token,
+        (result) => {          
+          console.log("Consulta " + JSON.stringify(result.data));
+          if (result.data != null) {
+            this.listaAsistenciaUsuario = result.data;                        
+          }
+          this.loading = false;
+        });    
+    };
+
     //this.loadFunctionAsistenciaSuc();
     
   },
@@ -77,6 +96,10 @@ export default {
     },
     verDetalleUsuario(item){
         //cargar detalle de las faltas por usuario 
+        this.usuario_seleccionado = item;
+        this.loadFunctionAsistenciaUsuario();
+        $("#popup_detalle_asistencia").modal("show");
+        
     }   
   }   
 };
