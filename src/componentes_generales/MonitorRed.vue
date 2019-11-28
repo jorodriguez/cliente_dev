@@ -1,4 +1,4 @@
-<template>
+    <template>
   <span>
     <!-- @detected-condition fires when the connectivity status of the device changes -->
     <offline @detected-condition="handleConnectivityChange">
