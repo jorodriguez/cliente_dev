@@ -3,11 +3,17 @@
     <h1>Asistencias Miss</h1>
     <!--<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)-->
     <div class="row">
-      <div class="col-auto mr-auto">
-        <router-link to="/principal" class="btn btn-secondary btn-lg">
-          <i class="fas fa-arrow-circle-left text-gray"></i>
+      <div class="col-1">
+        <router-link to="/principal" class="btn btn-secondary btn-lg">        
+          <i class="fas fa-arrow-circle-left text-gray"></i>          
         </router-link>
-      </div>
+        </div>
+        <div class="col-11 text-right ">
+        <router-link to="/AsistenciasUsuarioSucursal" class="btn btn-primary btn-lg">
+          Reporte de Asistencias
+        </router-link>
+        </div>        
+      
     </div>
     <br />
     <div class="row">
