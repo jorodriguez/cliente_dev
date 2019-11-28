@@ -1,5 +1,15 @@
 <template>
   <div id="reporte-asistencia-miss-rango-fecha">    
+  <div>
+    <h1>Reporte de Asistencias Miss</h1>      
+      (<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
+    <div class="text-left">      
+      <router-link to="/AsistenciasUsuarios" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+      </router-link>
+    </div>
+   
+  </div>
     <div class="card">
       <div class="card-body">
         <div v-if="mensaje" class="alert alert-warning">{{mensaje}}</div>
@@ -9,26 +19,31 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
-            <div class="float-center">              
-              <datepicker
+        <div class="row">
+        <div class="col text-right">
+           <label>Fecha de Inicio</label>
+           </div>
+           <div class="col text-left">
+            <datepicker
                 name="fecha_inicio"
                 v-model="fecha_inicio"
                 input-class="form-control"
                 @selected="cambiarFechaInicio"
               ></datepicker>
             </div>
+            <div class="col text-right">
+          <label>Fecha de Fin</label>
           </div>
           <div class="col">
-            <div class="float-center">
-             <datepicker
+ <datepicker
                 name="fecha_fin"
                 v-model="fecha_fin"
                 input-class="form-control"
                 @selected="cambiarFechaFin"
               ></datepicker>
             </div>
-          </div>
+        </div>
+        
           <div class="col">
             <button class="btn btn-primary" @click="cargarRegistros" >Cargar</button>
           </div>
@@ -47,12 +62,18 @@
           
 
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'count_dias_asistencia'">
+            <span v-if="props.column.field == 'count_dias_asistencia'" class="text-center">
                 <span>{{props.row.count_dias_asistencia}}/{{props.row.dias_trabajo}} </span>
             </span>              
             <span v-else-if="props.column.field == 'usuario'">     
               <button  class="btn btn-link" @click="verDetalleUsuario(props.row)">
                 <span>{{props.row.usuario}}</span>
+              </button>         
+            </span>
+            <span v-else-if="props.column.field == 'count_dias_faltas'">     
+              <button class="btn btn-link " @click="verDetalleUsuario(props.row)">
+                <span v-if="props.row.count_dias_faltas > 0" class="text-danger font-weight-bold" >{{props.row.count_dias_faltas}}</span>
+                <span v-else > {{props.row.count_dias_faltas}}</span>
               </button>         
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
@@ -62,10 +83,18 @@
     </div>
 <!-- popup para detalle de asistencias en el rango de fechas seleccionado -->
   <Popup id="popup_detalle_asistencia" show_button_close="true" size='lg'>
-      <div slot="header">Registro de asistencias de </div>
+      <div slot="header">Registro de asistencias </div>
       <div slot="content">
+      <div class="container">
+      <table class="table border" v-if="usuario_seleccionado != null">
+        <tr>
+        <td><strong>{{usuario_seleccionado.usuario}}</strong></td>
+        <td>Horario de Entrada :<strong> {{usuario_seleccionado.hora_entrada}} </strong></td>
+        <td>Horario de Salida :<strong> {{usuario_seleccionado.hora_salida}} </strong></td>
+        </tr>
+      </table>
        
-        <div class="container">
+        
          <vue-good-table
           :columns="columnasUsuario"
           :rows="listaAsistenciaUsuario"
@@ -77,11 +106,16 @@
           <template slot="table-header-row" slot-scope="props">
             <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>
           </template>
-<!--
+
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'count_dias_asistencia'">
-                <span>{{props.row.count_dias_asistencia}}/{{props.row.dias_trabajo}} </span>
-            </span>              
+            <span v-if="props.column.field == 'fecha_rango'">
+                <span>{{props.row.fecha_rango}}</span>
+                <span class="badge badge-danger" v-if="props.row.dia_asueto">Asueto</span>
+            </span> 
+            <span v-else-if="props.column.field == 'hora_entrada'">
+                <span>{{props.row.hora_entrada}}</span>
+                <span class="badge badge-danger" v-if="props.row.falta">faltó</span>
+            </span>            
             
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>-->

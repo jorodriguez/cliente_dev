@@ -15,17 +15,17 @@ const COLUMNS_TABLE_ASISTENCIA_SUCURSAL =
         filterable: true,
       },            
       {
-        label: 'Dias Asistencia(s)',
+        label: 'Asistencias',
         field: 'count_dias_asistencia',
         thClass: 'text-center',
-        tdClass: 'text-left',        
+        tdClass: 'text-center font-weight-bold',        
         filterable: true,
       },
       {
-        label: 'Dias Faltas',
+        label: 'Faltas',
         field: 'count_dias_faltas',        
         thClass: 'text-center',
-        tdClass: 'text-center',        
+        tdClass: 'text-center font-weight-bold',        
         filterable: true,
       },
       {
@@ -35,7 +35,19 @@ const COLUMNS_TABLE_ASISTENCIA_SUCURSAL =
         tdClass: 'text-center',
         filterable: false,
         hidden:true
-      }      
+      },
+      {
+        label: 'hora_entrada',
+        field: 'hora_entrada',                        
+        filterable: false,
+        hidden:true
+      } ,
+      {
+        label: 'hora_salida',
+        field: 'hora_salida',                        
+        filterable: false,
+        hidden:true
+      }         
 ];
 
 

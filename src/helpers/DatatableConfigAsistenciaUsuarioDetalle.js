@@ -27,30 +27,36 @@ const COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE =
         field: 'hora_salida',
         filterable: true,
         thClass: 'text-center',
-        tdClass: 'text-center',        
+        tdClass: 'text-center ',        
       },
       {
-        label: 'comentario_entrada',
+        label: 'Comentario entrada',
         field: 'comentario_entrada',
         filterable: false,
-        thClass: 'text-center',
-        tdClass: 'text-center',        
+        thClass: 'text-center ',
+        tdClass: 'text-center small',        
       },
       {
-        label: 'comentario_salida',
+        label: 'Comentario salida',
         field: 'comentario_salida',
         filterable: false,
         thClass: 'text-center',
-        tdClass: 'text-center',        
+        tdClass: 'text-center small',        
       },
       {
-        label: 'falra',
+        label: 'falta',
         field: 'falta',
         filterable: false,
         thClass: 'text-center',
         tdClass: 'text-center',
         hidden:true          
       },
+      {
+        label: 'dia_asueto',
+        field: 'dia_asueto',
+        hidden:true          
+      },
+      
      
 ];
 

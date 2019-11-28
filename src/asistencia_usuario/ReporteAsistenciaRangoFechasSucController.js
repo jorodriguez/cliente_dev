@@ -24,7 +24,7 @@ export default {
       fecha_fin:Date,
       listaAsistenciaSucursal: [],    
       listaAsistenciaUsuario:[],                               
-      usuario_seleccionado:{},
+      usuario_seleccionado:null,
       columnas:COLUMNS_TABLE_ASISTENCIA_SUCURSAL,
       columnasUsuario:COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE,
       TABLE_CONFIG:TABLE_CONFIG,
