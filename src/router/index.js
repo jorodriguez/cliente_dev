@@ -14,7 +14,7 @@ import CambiarSucursal from '@/components/CambiarSucursal'
 import ReporteAsistencia from '@/components/ReporteAsistencia'
 import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistenciasFaltasSucursalMes'
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
-
+import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsistenciaRangoFechasSuc'
 
 import VueSession from 'vue-session'
 
@@ -38,6 +38,7 @@ const router = new Router({
     { path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia},
     { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes},
     { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios},    
+    { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc},        
     {path: '*', redirect: '/'}
   ]
 })

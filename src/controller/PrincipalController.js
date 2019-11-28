@@ -72,7 +72,7 @@ export default {
                 }
             );
         };
-
+        
         this.loadFunctionAlumnosParaSalir = function (listaIdsAsistenciasSalida, handler) {
 
             this.get(
