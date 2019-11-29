@@ -109,10 +109,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-
-          <div class="modal-body text-left">
-            {{mensaje}}
+          </div>         
+          <div class="modal-body text-left">           
             <label for="selectTipoCargo">
               Cargo
               <span class="text-danger">*</span>
@@ -121,7 +119,7 @@
               v-model="cargo.cat_cargo"
               class="form-control"
               placeholder="Cargo"
-              v-on:change="calcularTotalCargo()"
+              @change="onChangeCargo()"
               required
               autofocus
             >
@@ -132,8 +130,20 @@
                 v-bind:key="p.id"
               >{{ p.nombre }}</option>
             </select>
+        
+          <div class="form-group" v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha">
+              <label for="inputFechaCargo">
+                Fecha                 
+              </label>
+             <datepicker
+                name="fecha_cargo"
+                v-model="cargo.fecha_cargo"
+                input-class="form-control"
+                @selected="cambiarFechaCargo"                
+              ></datepicker>
+          </div>
 
-            <div class="form-group" v-if="cargo.cat_cargo.escribir_cantidad">
+            <div class="form-group" v-if="cargo.cat_cargo.id != -1">
               <label for="inputCargo">
                 Cantidad
                 <span class="text-danger">*</span>
@@ -143,11 +153,29 @@
                 type="number"
                 v-model="cargo.cantidad"
                 class="form-control"
+                :disabled="!cargo.cat_cargo.escribir_cantidad"
                 placeholder="Cantidad"
                 min="1"
                 max="999"
-                v-on:change="calcularTotalCargo()"
+                @change="calcularTotalCargo()"
                 maxlength="3"
+              />
+            </div>
+              <div class="form-group" v-if="cargo.cat_cargo.id != -1">
+              <label for="inputMonto">
+                Monto $
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                id="inputMonto"
+                type="number"
+                v-model="cargo.monto"
+                class="form-control"
+                :disabled="!cargo.cat_cargo.escribir_monto"
+                placeholder="Monto"
+                min="1"                
+                @change="calcularTotalCargo()"
+                maxlength="6"
               />
             </div>
             <div class="form-group">
@@ -166,7 +194,7 @@
               </div>
               <div class="col col-md-3 text-secondary bg-ligth">
                 <strong>
-                  <span class="h4">{{formatPrice(cargo.cat_cargo.precio)}}</span>
+                  <span class="h4">{{formatPrice(cargo.monto)}}</span>
                 </strong>
               </div>
             </div>
