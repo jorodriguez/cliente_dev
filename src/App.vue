@@ -1,10 +1,23 @@
 
 <template>
   <div id="app">
+    <!--position="top left" -->
+    <notifications group="notificacion_principal">
+      <!--<template slot="body" slot-scope="props">
+        <div>
+          <a class="title"><h5>{{props.item.title}}</h5></a>
+          <a class="close" @click="props.close">
+            <i class="fa fa-fw fa-close"></i>
+          </a>
+          <div v-html="props.item.text"></div>
+        </div>
+      </template>-->
+    </notifications>
+
     <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
-    
+
     <button
       id="id_notificador_principal"
       type="button"
@@ -15,15 +28,14 @@
       <!--<span class="spinner-border" > </span>  -->
       <span id="texto_notificador_principal"></span>
     </button>
-   <!--
+    <!--
         <router-link to="/CatAlumno" class="dash-nav-item">Alumnos</router-link>
         <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
         <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
-      --> 
-    
+    -->
 
-     <!-- <MenuPrincipal></MenuPrincipal>-->
-    
+    <!-- <MenuPrincipal></MenuPrincipal>-->
+
     <router-view />
 
     <!-- app principal -->
@@ -70,10 +82,6 @@
       </div>
       <div slot="footer"></div>
     </Popup>
-
-
-  
-
   </div>
 </template>
 
@@ -89,7 +97,9 @@ import MonitorRed from "./componentes_generales/MonitorRed";
 
 export default {
   components: {
-    Popup,MenuPrincipal,MonitorRed
+    Popup,
+    MenuPrincipal,
+    MonitorRed
   },
   name: "App",
   methods: {
