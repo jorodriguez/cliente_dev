@@ -109,41 +109,58 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>         
-          <div class="modal-body text-left">           
-            <label for="selectTipoCargo">
-              Cargo
-              <span class="text-danger">*</span>
-            </label>
-            <select
-              v-model="cargo.cat_cargo"
-              class="form-control"
-              placeholder="Cargo"
-              @change="onChangeCargo()"
-              required
-              autofocus
-            >
-              <option
-                id="selectCargo"
-                v-for="p in listaCargos"
-                v-bind:value="p"
-                v-bind:key="p.id"
-              >{{ p.nombre }}</option>
-            </select>
-        
-          <div class="form-group" v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha">
-              <label for="inputFechaCargo">
-                Fecha                 
-              </label>
-             <datepicker
-                name="fecha_cargo"
-                v-model="cargo.fecha_cargo"
-                input-class="form-control"
-                @selected="cambiarFechaCargo"                
-              ></datepicker>
           </div>
+          <div class="modal-body text-left">
+            <div class="form-group">
+              <label for="selectTipoCargo">
+                Cargo
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                v-model="cargo.cat_cargo"
+                class="form-control"
+                placeholder="Cargo"
+                @change="onChangeCargo()"
+                required
+                autofocus
+              >
+                <option
+                  id="selectCargo"
+                  v-for="p in listaCargos"
+                  v-bind:value="p"
+                  v-bind:key="p.id"
+                >{{ p.nombre }}</option>
+              </select>
+            </div>
+            <div
+              class="form-group"
+              v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
+            >
+              <label for="inputMensualidadCargo">
+                Seleccione el Mes correspondiente al cargo
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                v-model="cargo.fecha_cargo"
+                class="form-control"
+                placeholder="Cargo"
+                @change="onChangeMensualidad()"
+              >
+                <option
+                  id="selectMesAdeuda"
+                  v-for="p in listaMesesAdeuda"
+                  v-bind:value="p"
+                  v-bind:key="p.fecha"
+                >
+                  <span :class="p.cargo_registrado ? 'text-muted':''">{{ p.nombre_mes }}</span>
+                </option>
+              </select>
+            </div>
 
-            <div class="form-group" v-if="cargo.cat_cargo.id != -1">
+            <div
+              class="form-group"
+              v-if="cargo.cat_cargo.id != -1 &&  cargo.cat_cargo.escribir_cantidad"
+            >
               <label for="inputCargo">
                 Cantidad
                 <span class="text-danger">*</span>
@@ -153,7 +170,6 @@
                 type="number"
                 v-model="cargo.cantidad"
                 class="form-control"
-                :disabled="!cargo.cat_cargo.escribir_cantidad"
                 placeholder="Cantidad"
                 min="1"
                 max="999"
@@ -161,7 +177,8 @@
                 maxlength="3"
               />
             </div>
-              <div class="form-group" v-if="cargo.cat_cargo.id != -1">
+
+            <div class="form-group" v-if="cargo.cat_cargo.id != -1">
               <label for="inputMonto">
                 Monto $
                 <span class="text-danger">*</span>
@@ -173,7 +190,7 @@
                 class="form-control"
                 :disabled="!cargo.cat_cargo.escribir_monto"
                 placeholder="Monto"
-                min="1"                
+                min="1"
                 @change="calcularTotalCargo()"
                 maxlength="6"
               />
@@ -188,7 +205,7 @@
                 placeholder="Escriba una nota"
               />
             </div>
-            <div class="row">
+            <!--  <div class="row">
               <div class="col col-md-8 text-right">
                 <span class="h4 text-secondary">{{cargo.cantidad}} X</span>
               </div>
@@ -198,7 +215,7 @@
                 </strong>
               </div>
             </div>
-            <div class="row">
+          <div class="row">
               <div class="col col-md-8 text-right">
                 <span class="h4">Total</span>
               </div>
@@ -207,7 +224,7 @@
                   <span class="h4 text-white">{{formatPrice(cargo.total_cargo)}}</span>
                 </strong>
               </div>
-            </div>
+            </div>-->
           </div>
 
           <div class="modal-footer">
@@ -505,25 +522,26 @@
     </div>
     <!-- DETALLE CARGO -->
 
-  <!-- ELIMINAR CARGO -->
-        <Popup id="eliminarCargoAlumno"  show_button_close="true">
-          <div slot="header">Eliminar cargo</div>
-          <div slot="content">
-          {{mensaje}}            
-            <div class="row">
-              <div class="container">
-                 <label>motivo <span class="text-danger">*</span></label>
-                <textarea v-model="motivo_eliminacion" class="form-control" required></textarea>
-              </div>
-            </div>
+    <!-- ELIMINAR CARGO -->
+    <Popup id="eliminarCargoAlumno" show_button_close="true">
+      <div slot="header">Eliminar cargo</div>
+      <div slot="content">
+        {{mensaje}}
+        <div class="row">
+          <div class="container">
+            <label>
+              motivo
+              <span class="text-danger">*</span>
+            </label>
+            <textarea v-model="motivo_eliminacion" class="form-control" required></textarea>
           </div>
-          <div slot="footer">    
-              <button v-on:click="confirmarEliminacion()" class="btn btn-danger ">Eliminar</button>
-          </div>
-        </Popup>
-  <!-- ELIMINAR CARGO -->
-      
-
+        </div>
+      </div>
+      <div slot="footer">
+        <button v-on:click="confirmarEliminacion()" class="btn btn-danger">Eliminar</button>
+      </div>
+    </Popup>
+    <!-- ELIMINAR CARGO -->
   </div>
 </template>
 

@@ -2,15 +2,16 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
+//import AlumnoApi from "./AlumnoApi";
 import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
-import Notificaciones from '../helpers/Notificaciones'
+import CONSTANTES from '../helpers/Constantes';
 
 export default {
   name: "cargos-pagos",
   components: {
-    Popup,Datepicker
+    Popup, Datepicker
   },
   props: ['idalumno', 'requiere_factura'],
   mixins: [operacionesApi],
@@ -36,15 +37,17 @@ export default {
       usuarioSesion: {},
       sesion: {},
       item: AlumnoModel,
+      alumno: null,
       listaCargosAlumnos: [],
       listaCargos: [],
       listaPagos: [],
       listaSeleccionSalida: [],
       listaPagosCargo: [],
       listaFormasPago: [],
+      listaMesesAdeuda: [],
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
-      loadFunctionActualizarCargoGeneral: null,      
+      loadFunctionActualizarCargoGeneral: null,
       response: "",
       mensaje: "",
       motivo_eliminacion: ""
@@ -114,10 +117,25 @@ export default {
       }
     };
 
+
+    this.loadFunctionMesesAdeuda = function () {
+      console.log("Iniciando consulta de meses adeuda");
+
+      this.get(
+        URL.MESES_ADEUDA + this.idalumno,
+        this.sesion.token,
+        results => {
+          console.log("Consulta de meses " + results.data);
+          if (results.data != null) {
+            this.listaMesesAdeuda = results.data;
+          }
+        }
+      );
+    };
+
     this.loadFunctionActualizarCargoGeneral = function () {
       this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
     }
- 
 
     this.loadFunctionCargosAlumno();
     //this.loadFunctionCatCargos();
@@ -125,28 +143,53 @@ export default {
   methods: {
     iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
-      this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false,seleccionar_fecha:false };
+      this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false, seleccionar_fecha: false };
       this.cargo.cantidad = 1;
       this.cargo.monto = 1;
       this.cargo.nota = '';
-      this.cargo.fecha_cargo = undefined;
-      this.mensaje = "";      
+      this.cargo.mes_seleccionado = undefined;
+      this.mensaje = "";
       this.cargo.total_cargo = 0;
+      /*
+          AlumnoApi.getAlumnoById(
+                    this.idalumno,
+                    this.sesion.token,
+                    result => {
+                      this.alumno = result;
+                    })*/
+
+      this.get(
+        URL.ALUMNOS_BASE + "/id/" + this.idalumno,
+        this.sesion.token,
+        (result) => {
+          this.alumno = result.data;         
+          console.log("==== >>"+JSON.stringify(this.alumno));
+        }
+      );
+
+
       this.loadFunctionCatCargos();
       //Cargar colegiatura e inscripcion del alumno seleccionado y asignarla al monto al cambiar el cargo
 
       $('#modal_cargo').modal('show');
     },
-    onChangeCargo(){
-      console.log("cargo.cat_cargo "+JSON.stringify(this.cargo.cat_cargo));
+    onChangeCargo() {
+      console.log("cargo.cat_cargo " + JSON.stringify(this.cargo.cat_cargo));
       if (!this.cargo.cat_cargo.escribir_cantidad) {
         this.cargo.cantidad = 1;
       }
       this.cargo.monto = this.cargo.cat_cargo.precio;
       this.calcularTotalCargo();
+
+      console.log("????? "+JSON.stringify(CONSTANTES));
+      //cargar mensualidades si se selecciono la mensualidad
+      if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_MENSUALIDAD && this.listaMesesAdeuda == []) {
+        this.cargo.monto = this.alumno.costo_colegiatura;
+        this.loadFunctionMesesAdeuda();
+      }
     },
     calcularTotalCargo() {
-      console.log("recalcular total ");  
+      console.log("recalcular total ");
       if (this.cargo.cantidad == undefined) {
         this.cargo.cantidad = 1;
       }
@@ -156,43 +199,44 @@ export default {
       }
 
       this.cargo.total_cargo = (this.cargo.cantidad * this.cargo.monto);
-      console.log("total calculado "+this.cargo.total_cargo );
-      console.log("precio de cargo "+this.cargo.precio );
+      console.log("total calculado " + this.cargo.total_cargo);
+      console.log("precio de cargo " + this.cargo.precio);
     },
     guardarCargo() {
       console.log("guardar cargos");
       if (this.cargo.cat_cargo.id == -1) {
-        console.log("cargo");       
-        this.$notificacion.error('Seleccione el cargo', 'Seleccione un cargo de la lista.');     
+        console.log("cargo");
+        this.$notificacion.error('Seleccione el cargo', 'Seleccione un cargo de la lista.');
         return;
       }
 
-      if (this.cargo.cat_cargo.seleccionar_fecha 
-            && (this.cargo.fecha_cargo == undefined || this.cargo.fecha_cargo == '' || this.cargo.fecha_cargo == null)) {        
-        this.$notificacion.error('Escriba la fecha del monto..', '');     
+      if (this.cargo.cat_cargo.seleccionar_fecha
+        && (this.cargo.mes_seleccionado == undefined
+          || this.cargo.mes_seleccionado == '' || this.cargo.mes_seleccionado == null)) {
+        this.$notificacion.error('Seleccione un mes de la lista ..', '');
         return;
       }
 
       if (this.cargo.cat_cargo.escribir_cantidad
-          && this.cargo.cantidad == undefined || this.cargo.cantidad == '') {
-            this.$notificacion.error('Escriba la cantidad del cargo..','');        
+        && this.cargo.cantidad == undefined || this.cargo.cantidad == '') {
+        this.$notificacion.error('Escriba la cantidad del cargo..', '');
         return;
       }
 
       if (this.cargo.cantidad <= 0) {
-        this.$notificacion.error('La cantidad no debe ser cero ó negativo..','');                
+        this.$notificacion.error('La cantidad no debe ser cero ó negativo..', '');
         return;
       }
 
-      if (this.cargo.cat_cargo.escribir_monto 
-            && (this.cargo.monto == undefined || this.cargo.monto == '' && this.cargo.monto == null )) {        
-        this.$notificacion.error('Escriba el monto..','');                
+      if (this.cargo.cat_cargo.escribir_monto
+        && (this.cargo.monto == undefined || this.cargo.monto == '' && this.cargo.monto == null)) {
+        this.$notificacion.error('Escriba el monto..', '');
         return;
       }
 
-      if (this.cargo.cat_cargo.escribir_monto && this.cargo.monto <= 0 ) {          
-          this.$notificacion.error('El monto no debe ser cero ó negativo..','');                
-          return;
+      if (this.cargo.cat_cargo.escribir_monto && this.cargo.monto <= 0) {
+        this.$notificacion.error('El monto no debe ser cero ó negativo..', '');
+        return;
       }
 
       console.log("invocar");
@@ -207,8 +251,8 @@ export default {
           this.response = result.data;
 
           if (this.response != null) {
-            console.log("" + this.response);            
-            this.$notificacion.info("Se agrego el cargo","");
+            console.log("" + this.response);
+            this.$notificacion.info("Se agrego el cargo", "");
             this.seleccionTodos = false;
             $("#modal_cargo").modal("hide");
             this.loadFunctionCargosAlumno();
@@ -251,8 +295,8 @@ export default {
 
         $('#modal_pago').modal('show');
 
-      } else {        
-        this.$notificacion.info("Seleccione al menos un cargo","");        
+      } else {
+        this.$notificacion.info("Seleccione al menos un cargo", "");
       }
     },
     reacalcularTotales() {
@@ -289,7 +333,7 @@ export default {
         $("#selectFormaPago").focus();
         return;
       }
-     if (this.pago.cat_forma_pago.permite_factura &&
+      if (this.pago.cat_forma_pago.permite_factura &&
         this.escribir_folio_factura &&
         this.existen_montos_facturables &&
         this.pago.identificador_factura == "") {
@@ -445,11 +489,12 @@ export default {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-    cambiarFechaCargo(){
-      this.$nextTick(() => {
-        console.log(this.cargo.fecha_cargo);        
-      });     
- },
+    onChangeMensualidad() {
+      if (this.cargo.mes_seleccionado.cargo_registrado)
+        this.mensaje = "El cargo ya fué registrado para este mes..";
+      this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
+
+    }
   },
 };
 
