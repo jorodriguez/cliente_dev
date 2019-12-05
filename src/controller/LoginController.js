@@ -1,6 +1,7 @@
 
 import URL from "../helpers/Urls";
-import CONSTANTES from "../helpers/ConstantesHelp";
+import  CONSTANTES  from "../helpers/Constantes";
+
 
 export default {
   name: "Login",

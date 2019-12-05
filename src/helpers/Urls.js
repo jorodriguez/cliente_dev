@@ -85,7 +85,7 @@ const URL = {
     PAGOS_REGISTRAR : PAGOS_BASE + '/registrar',
     CARGOS_BASE : CARGOS_BASE,
     CARGO_REGISTRAR : CARGOS_BASE + '/registrar',
-    MESES_ADEUDA : CARGOS_BASE+ '/meses_adeuda/',
+    MESES_ADEUDA : CARGOS_BASE + '/meses_adeuda/',  //id_alumno
     
     FORMAS_PAGO_BASE : FORMAS_PAGO_BASE,
 

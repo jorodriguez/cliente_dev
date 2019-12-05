@@ -33,7 +33,9 @@
 
 <script>
 
-import Constantes from '../helpers/ConstantesHelp'
+
+import CONSTANTES from "../helpers/Constantes";
+
 
 export default {
   name: "menu-principal",
@@ -57,7 +59,7 @@ export default {
       }
     };
 
-    this.$root.$on(Constantes.EVENTO_LOGIN, text => {
+    this.$root.$on(CONSTANTES.EVENTO_LOGIN, text => {
       console.log("ACTUALIZACION POR LOGIN OK "+text);
       this.revisarSesion();
     });
