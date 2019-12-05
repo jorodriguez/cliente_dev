@@ -6,7 +6,9 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
-import CONSTANTES from '../helpers/Constantes';
+//import * as CONSTANTES from "../helpers/Constantes.js";
+import  CONSTANTES  from "../helpers/Constantes";
+//import TABLE_CONFIG from "../helpers/DatatableConfig";
 
 export default {
   name: "cargos-pagos",
@@ -147,7 +149,7 @@ export default {
       this.cargo.cantidad = 1;
       this.cargo.monto = 1;
       this.cargo.nota = '';
-      this.cargo.mes_seleccionado = undefined;
+      this.cargo.fecha_cargo = undefined;
       this.mensaje = "";
       this.cargo.total_cargo = 0;
       /*
@@ -181,12 +183,20 @@ export default {
       this.cargo.monto = this.cargo.cat_cargo.precio;
       this.calcularTotalCargo();
 
-      console.log("????? "+JSON.stringify(CONSTANTES));
+      console.log(" ID_CARGO_MENSUALIDAD "+JSON.stringify(CONSTANTES));
+       let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
       //cargar mensualidades si se selecciono la mensualidad
-      if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_MENSUALIDAD && this.listaMesesAdeuda == []) {
+      if (this.cargo.cat_cargo.id == id_cargo_mes && this.listaMesesAdeuda.length == 0) {
         this.cargo.monto = this.alumno.costo_colegiatura;
         this.loadFunctionMesesAdeuda();
       }
+    },
+    onChangeMensualidad() {
+      if (this.cargo.mes_seleccionado.cargo_registrado){
+        this.mensaje = "El cargo ya fué registrado para este mes..";
+        this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
+      }
+
     },
     calcularTotalCargo() {
       console.log("recalcular total ");
@@ -211,11 +221,13 @@ export default {
       }
 
       if (this.cargo.cat_cargo.seleccionar_fecha
-        && (this.cargo.mes_seleccionado == undefined
-          || this.cargo.mes_seleccionado == '' || this.cargo.mes_seleccionado == null)) {
+        && (this.cargo.fecha_cargo == undefined
+          || this.cargo.fecha_cargo == '' || this.cargo.fecha_cargo == null)) {
         this.$notificacion.error('Seleccione un mes de la lista ..', '');
         return;
       }
+
+      console.log("Fecha seleccionada "+JSON.stringify(this.cargo.fecha_cargo));
 
       if (this.cargo.cat_cargo.escribir_cantidad
         && this.cargo.cantidad == undefined || this.cargo.cantidad == '') {
@@ -255,6 +267,7 @@ export default {
             this.$notificacion.info("Se agrego el cargo", "");
             this.seleccionTodos = false;
             $("#modal_cargo").modal("hide");
+            this.listaMesesAdeuda = [];
             this.loadFunctionCargosAlumno();
             this.loadFunctionActualizarCargoGeneral();
           }
@@ -271,8 +284,6 @@ export default {
       this.facturado = false;
 
       this.mensaje = "";
-
-
       const montos_facturables = () => {
         return this.listaCargosAlumnos.some(function (e) {
           return (e.checked && e.es_facturable);
@@ -489,12 +500,7 @@ export default {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-    onChangeMensualidad() {
-      if (this.cargo.mes_seleccionado.cargo_registrado)
-        this.mensaje = "El cargo ya fué registrado para este mes..";
-      this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
-
-    }
+   
   },
 };
 

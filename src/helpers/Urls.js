@@ -87,7 +87,7 @@ const URL = {
 
     CARGOS_BASE : CARGOS_BASE,    
     CARGO_REGISTRAR : CARGOS_BASE + '/registrar',
-    MESES_ADEUDA : CARGOS_BASE + '/cargos/meses_adeuda/',  //id_alumno 
+    MESES_ADEUDA : CARGOS_BASE + '/meses_adeuda/',  //id_alumno 
     
     GRUPOS_BASE : GRUPOS_BASE,
     GASTOS_BASE : GASTOS_BASE,
