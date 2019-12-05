@@ -135,9 +135,9 @@
             <div
               class="form-group"
               v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
-            >
+               >
               <label for="inputMensualidadCargo">
-                Seleccione el Mes correspondiente 
+                Seleccione el mes correspondiente 
                 <span class="text-danger">*</span>
               </label>
               <select
@@ -153,7 +153,7 @@
                   v-bind:key="p.fecha_mes"
                   :disabled="p.cargo_registrado"
                 >
-                  <span :class="p.cargo_registrado ? 'text-muted':''">{{ p.nombre_mes }} - {{p.cargo_registrado}} </span>
+                  <span :class="p.cargo_registrado ? 'text-muted':''">{{ p.nombre_mes }} </span>
                 </option>
               </select>
             </div>

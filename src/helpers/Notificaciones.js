@@ -1,9 +1,10 @@
 
 import Vue from 'vue'
-
+import Noty from 'noty';
 // constantes de configuracion de goof table
 const notificacion = {
   error: function (titulo,descripcion) {
+  
     Vue.notify({
       group: 'notificacion_principal',
       title: (titulo || '¡Atención!'),
@@ -12,7 +13,7 @@ const notificacion = {
       speed: 1000,
       type: 'error',
       position: 'top center'
-    });  
+    });
   },
   info: function (titulo,descripcion) {
     Vue.notify({

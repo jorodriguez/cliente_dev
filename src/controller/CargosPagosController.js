@@ -51,9 +51,7 @@ export default {
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
       loadFunctionMesesAdeuda:null,
-      response: "",
-      mensaje: "",
-      motivo_eliminacion: ""
+       motivo_eliminacion: ""
     };
   },
   mounted() {
@@ -69,15 +67,12 @@ export default {
     this.usuarioSesion = this.sesion.usuario;
 
     this.loadFunctionCargosAlumno = function () {
-
       this.get(
         URL.CARGOS_BASE + "/" + this.idalumno,
         this.sesion.token,
-        (result) => {
-          this.response = result.data;
-          console.log("====  " + JSON.stringify(this.response));
-          if (this.response != null) {
-            this.listaCargosAlumnos = this.response;
+        (result) => {                    
+          if (result.data != null) {
+            this.listaCargosAlumnos = result.data;
           }
         }
       );
@@ -90,10 +85,9 @@ export default {
         URL.CARGOS_BASE,
         this.sesion.token,
         (result) => {
-          this.response = result.data;
-          console.log("Consulta del catalogo de cargos" + this.response);
-          if (this.response != null) {
-            this.listaCargos = this.response;
+           console.log("Consulta del catalogo de cargos" + result.data);
+          if (result.data != null) {
+            this.listaCargos = result.data;
           }
         }
       );
@@ -108,10 +102,9 @@ export default {
           URL.FORMAS_PAGO_BASE,
           this.sesion.token,
           result => {
-            this.response = result.data;
-            console.log("Consulta del catalogo de formas pago" + this.response);
-            if (this.response != null) {
-              this.listaFormasPago = this.response;
+            console.log("Consulta del catalogo de formas pago" + result.data);
+            if (result.data != null) {
+              this.listaFormasPago = result.data;
             }
           }
         );
@@ -144,7 +137,7 @@ export default {
     //this.loadFunctionCatCargos();
   },
   methods: {
-    iniciarAgregarCargo() {
+    async iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
       this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false, seleccionar_fecha: false };
       this.cargo.cantidad = 1;
@@ -161,15 +154,14 @@ export default {
                       this.alumno = result;
                     })*/
 
-      this.get(
+     await this.get(
         URL.ALUMNOS_BASE + "/id/" + this.idalumno,
         this.sesion.token,
         (result) => {
-          this.alumno = result.data;         
+         this.alumno = result.data;         
           console.log("==== >>"+JSON.stringify(this.alumno));
         }
       );
-
 
       this.loadFunctionCatCargos();
       //Cargar colegiatura e inscripcion del alumno seleccionado y asignarla al monto al cambiar el cargo
@@ -184,18 +176,22 @@ export default {
       this.cargo.monto = this.cargo.cat_cargo.precio;
       this.calcularTotalCargo();
 
-      console.log(" ID_CARGO_MENSUALIDAD "+JSON.stringify(CONSTANTES));
        let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
       //cargar mensualidades si se selecciono la mensualidad
-      if (this.cargo.cat_cargo.id == id_cargo_mes && this.listaMesesAdeuda.length == 0) {
+      if (this.cargo.cat_cargo.id == id_cargo_mes) {
         this.cargo.monto = this.alumno.costo_colegiatura;
-        this.loadFunctionMesesAdeuda();
+        if(this.listaMesesAdeuda.length == 0){
+          this.loadFunctionMesesAdeuda();
+        }        
+      }else{
+          if(this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION){
+            this.cargo.monto = this.alumno.costo_inscripcion ;
+          }
       }
     },
     onChangeMensualidad() {
       if (this.cargo.mes_seleccionado.cargo_registrado){
-        this.mensaje = "El cargo ya fué registrado para este mes..";
-        this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
+          this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
       }
 
     },
@@ -224,7 +220,7 @@ export default {
       if (this.cargo.cat_cargo.seleccionar_fecha
         && (this.cargo.fecha_cargo == undefined
           || this.cargo.fecha_cargo == '' || this.cargo.fecha_cargo == null)) {
-        this.$notificacion.error('Seleccione un mes de la lista ..', '');
+        this.$notificacion.error('Seleccione el mes al cual corresponde el cargo de mensualidad.', '');
         return;
       }
 
@@ -232,23 +228,23 @@ export default {
 
       if (this.cargo.cat_cargo.escribir_cantidad
         && this.cargo.cantidad == undefined || this.cargo.cantidad == '') {
-        this.$notificacion.error('Escriba la cantidad del cargo..', '');
+        this.$notificacion.error('Escriba la cantidad del cargo.', '');
         return;
       }
 
       if (this.cargo.cantidad <= 0) {
-        this.$notificacion.error('La cantidad no debe ser cero ó negativo..', '');
+        this.$notificacion.error('La cantidad no debe ser cero ó negativo.', '');
         return;
       }
 
       if (this.cargo.cat_cargo.escribir_monto
         && (this.cargo.monto == undefined || this.cargo.monto == '' && this.cargo.monto == null)) {
-        this.$notificacion.error('Escriba el monto..', '');
+        this.$notificacion.error('Escriba el monto.', '');
         return;
       }
 
       if (this.cargo.cat_cargo.escribir_monto && this.cargo.monto <= 0) {
-        this.$notificacion.error('El monto no debe ser cero ó negativo..', '');
+        this.$notificacion.error('El monto no debe ser cero ó negativo.', '');
         return;
       }
 
@@ -261,10 +257,7 @@ export default {
         this.cargo,
         this.sesion.token,
         (result) => {
-          this.response = result.data;
-
-          if (this.response != null) {
-            console.log("" + this.response);
+          if (result.data != null) {
             this.$notificacion.info("Se agrego el cargo", "");
             this.seleccionTodos = false;
             $("#modal_cargo").modal("hide");
@@ -335,12 +328,12 @@ export default {
     },
     guardarPago() {
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
-      this.mensaje = "";
+      
       var pass = true;
 
       if (this.pago.cat_forma_pago.id == -1) {
-
-        this.mensaje = "Por favor seleccione la forma de pago.";
+        this.$notificacion.warn("Por favor seleccione la forma de pago", "Seleccione una forma de pago de la lista.");
+        this.mensaje = ".";
 
         $("#selectFormaPago").focus();
         return;
@@ -349,8 +342,8 @@ export default {
         this.escribir_folio_factura &&
         this.existen_montos_facturables &&
         this.pago.identificador_factura == "") {
-        //validar que escriban el folio
-        this.mensaje = "Por favor escribe el folio de la factura";
+        //validar que escriban el folio       
+        this.$notificacion.warn("Por favor escribe el folio de la factura", "Por favor escribe el folio de la factura.");
         $("#inputIdentificadorFactura").focus();
         return;
       } else {
@@ -365,7 +358,8 @@ export default {
         }
 
         if (!pass) {
-          this.mensaje = "Por favor revise las cantidades, No pueden ir Ceros,Negativos ni espacios en blanco.";
+          this.$notificacion.warn("Por favor revise las cantidades", "No pueden ir Ceros, Negativos ni espacios en blanco.");
+   
         } else {
 
           var lista = this.listaCargosAlumnos
@@ -413,12 +407,11 @@ export default {
             URL.PAGOS_REGISTRAR,
             objEnvio,
             this.sesion.token,
-            (result) => {
-              this.response = result.data;
-              if (this.response != null) {
-                console.log("" + this.response);
-                this.mensaje = "Se agrego el pago .";
-                this.seleccionTodos = false;
+            (result) => {             
+              if (result.data != null) {
+                console.log("" + result.data);                
+                this.$notificacion.warn("Se agregó el pago ", "");
+                 this.seleccionTodos = false;
                 this.loadFunctionCargosAlumno();
                 this.loadFunctionActualizarCargoGeneral();
                 $("#modal_pago").modal("hide");
@@ -431,18 +424,14 @@ export default {
     verDetalleCargo(item) {
 
       console.log("Ver detalle cargo " + item.id_cargo_balance_alumno);
-      console.log(JSON.stringify(item));
 
       this.cargoSeleccionado = item;
-      console.log("this.cargoSeleccionado.id_cargo_balance_alumno " + this.cargoSeleccionado.id_cargo_balance_alumno);
-
-      this.get(
+       this.get(
         URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
         this.sesion.token,
         result => {
-          this.response = result.data;
-          if (this.response != null) {
-            console.log("" + JSON.stringify(this.response));
+          if (result.data != null) {
+            console.log("" + JSON.stringify(result.data));
             this.listaPagosCargo = result.data;
             $("#modal_detalle_cargo").modal("show");
           }
@@ -463,11 +452,13 @@ export default {
       if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
         this.motivo_eliminacion = "";
         $("#eliminarCargoAlumno").modal("show");
+      }else{
+        this.$notificacion.error("Seleccione al menos un cargo para eliminar", "");
       }
     },
     confirmarEliminacion() {
       if (this.motivo_eliminacion == "") {
-        this.mensaje = "Escribe el motivo de eliminaciòn";
+         this.$notificacion.warn("Escribe el motivo de eliminación", "");
       } else {
 
         var lista = this.listaCargosAlumnos
@@ -485,12 +476,12 @@ export default {
           },
           this.sesion.token,
           result => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.mensaje = "Se elimino correctamente";
+            if (result.data != null) {
+              this.$notificacion.info("Se elimino correctamente", "");              
               this.seleccionTodos = false;
               this.loadFunctionCargosAlumno();
               this.loadFunctionActualizarCargoGeneral();
+              this.loadFunctionMesesAdeuda();
               $("#eliminarCargoAlumno").modal("hide");
             }
           }
