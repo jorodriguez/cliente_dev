@@ -6,7 +6,7 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
-import CONSTANTES from '../helpers/Constantes';
+import CONSTANTES from '../helpers/ConstantesHelp';
 
 export default {
   name: "cargos-pagos",
@@ -48,6 +48,7 @@ export default {
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
+      loadFunctionMesesAdeuda:null,
       response: "",
       mensaje: "",
       motivo_eliminacion: ""

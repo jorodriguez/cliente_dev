@@ -33,7 +33,7 @@
 
 <script>
 
-import Constantes from '../helpers/Constantes'
+import Constantes from '../helpers/ConstantesHelp'
 
 export default {
   name: "menu-principal",
