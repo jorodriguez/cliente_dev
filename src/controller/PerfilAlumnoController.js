@@ -222,7 +222,8 @@ export default {
                 }else{          
                  
                   if(this.alumno.nombre == ''){
-                    this.mensaje = "* Escribe un nombre";
+                    //this.mensaje = "* Escribe un nombre";
+                    this.$notificacion.error('Login', 'Escribe el nombre.');            
                     return false;
                   }
                   if(this.alumno.apellidos == ''){

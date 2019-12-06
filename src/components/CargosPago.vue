@@ -255,10 +255,7 @@
             </button>
           </div>
 
-          <div class="modal-body text-left">
-            <p>
-              <span class="text-danger">{{mensaje}}</span>
-            </p>
+          <div class="modal-body text-left">            
 
             <label for="selectFormaPago">
               Forma de Pago
@@ -526,8 +523,7 @@
     <!-- ELIMINAR CARGO -->
     <Popup id="eliminarCargoAlumno" show_button_close="true">
       <div slot="header">Eliminar cargo</div>
-      <div slot="content">
-        {{mensaje}}
+      <div slot="content">        
         <div class="row">
           <div class="container">
             <label>

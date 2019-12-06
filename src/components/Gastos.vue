@@ -91,7 +91,7 @@
             </div>
 
             <div class="modal-body text-left">
-              <p class="text-danger">{{mensaje}}</p>
+              <!--<p class="text-danger">{{mensaje}}</p>-->
               
               <label>
                   Fecha 
@@ -203,8 +203,7 @@
               </button>
             </div>
 
-            <div class="modal-body text-left">
-              {{mensaje}}
+            <div class="modal-body text-left">             
               ¿Confirma eliminar el gasto de <strong>{{gasto.nombre_tipo_gasto}}</strong> del <strong>{{gasto.fecha | moment("DD-MMM-YY")}}</strong> por $<strong>{{gasto.gasto}}</strong>?
             </div>
             <div class="modal-footer">

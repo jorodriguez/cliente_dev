@@ -7,8 +7,7 @@
             <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
     </div>
-    <br />
-    <div class="text-danger">{{mensaje}}</div>
+    <br />    
     <div class="card">
       <div class="card-body">
         <table class="table table-dashed text-left">
@@ -117,9 +116,7 @@
           </router-link>             
           </div>
           <div class="modal-body">
-            <p>
-              {{mensaje}}              
-            </p>           
+            {{mensaje}}
           </div>
           <div class="modal-footer">
             <router-link :to="{ name: 'CatAlumno', params: {} }" class="btn btn-primary"

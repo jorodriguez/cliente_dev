@@ -67,10 +67,9 @@ export default {
     }
   },
   methods: {
-    iniciarCambioSucursal() {
-      this.mensaje = "";
-      if (this.sucursal_seleccionada == null || this.sucursal_seleccionada == undefined || this.sucursal_seleccionada.id == -1) {
-        this.mensaje = "Selecciona la sucursal destino.";
+    iniciarCambioSucursal() {      
+      if (this.sucursal_seleccionada == null || this.sucursal_seleccionada == undefined || this.sucursal_seleccionada.id == -1) {        
+        this.$notificacion.info("Selecciona la sucursal destino", "Es requerida la sucursal destino.");
         $("#id_sucursal_destino").focus();
       } else {
         $("#modal_confirmar_cambio_sucursal").modal("show");
@@ -93,6 +92,7 @@ export default {
             console.log("Se cambio de sucursal sin problemas ");
             this.mensaje = "Se realizó el cambio de sucursal del Alumno(a) " + this.alumno.nombre + " " + this.alumno.apellidos
               + ", de " + this.alumno.nombre_sucursal + " a " + this.sucursal_seleccionada.nombre + ".";
+              
           } else {
             console.log("Existieron problemas para cambiar de sucursal ");
             this.mensaje = `Existió un error al intentar realizar el cambio de sucursal, por favor contacta al equipo de soporte para notificar este detalle.`;

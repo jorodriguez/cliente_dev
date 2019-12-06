@@ -1,6 +1,7 @@
 import AlumnoModel from "../models/AlumnoModel";
 import Datepicker from 'vuejs-datepicker';
 import URL from "../helpers/Urls";
+import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 
 export default {
@@ -64,7 +65,8 @@ export default {
         });
     };
     //validacion
-    this.validacionGuardarFunction = () => {
+    //this.validacionGuardarFunction = validacionDatosAlumno;
+    /*this.validacionGuardarFunction = () => {
       if (this.input == null) {
         return false;
       } else {
@@ -72,58 +74,61 @@ export default {
         console.log("this.input.fecha_nacimiento " + this.input.fecha_nacimiento);
 
         if (this.input.nombre == '') {
-          this.mensaje = "* Escribe un nombre";
+          //this.mensaje = "* Escribe un nombre";
+          this.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
           return false;
         }
         if (this.input.apellidos == '') {
-          this.mensaje = "* Escribe un nombre";
+          //this.mensaje = "* Escribe el apellido";
+          this.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');
           return false;
         }
         if (this.input.fecha_nacimiento == null || this.input.fecha_nacimiento == '') {
-          this.mensaje = "* Selecciona la fecha de nacimiento";
+          //this.mensaje = "* Selecciona la fecha de nacimiento";
+          this.$notificacion.error('Selecciona la fecha de nacimiento', 'La fecha de nacimiento es requerida.');
           return false;
         }
 
         if (this.input.sexo == '') {
-          this.mensaje = "* Selecciona el sexo";
+          //this.mensaje = "* Selecciona el sexo";
+          this.$notificacion.error('Seleciona el sexo', 'El dato de sexo es requerido.');
           return false;
         }
 
         if (this.input.co_grupo == 0) {
-          this.mensaje = "Selecciona un grupo";
+          //this.mensaje = "Selecciona un grupo";
+          this.$notificacion.error('Selecciona el grupo', 'El grupo es requerido.');
           return false;
         }
 
         if (this.input.hora_entrada == null || this.input.hora_salida == null
           || this.input.hora_entrada == '' || this.input.hora_salida == '') {
-          this.mensaje = "* Selecciona la hora de entrada y salida";
+          //this.mensaje = "* Selecciona la hora de entrada y salida";
+          this.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');
           return false;
         }
 
-        /* if(this.input.hora_entrada > this.input.hora_salida){
-           this.mensaje = "* La hora de entrada es mayor a la hora de salida.";
-           return false;
-         }*/
-
-
         if (this.input.minutos_gracia == null || this.input.minutos_gracia == '') {
-          this.mensaje = "* Escribe los minutos de gracia";
+          //this.mensaje = "* Escribe los minutos de gracia";
+          this.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.');
           return false;
         }
 
         if (this.input.costo_inscripcion == null || this.input.costo_inscripcion == '') {
-          this.mensaje = "* Escribe el costo de incripción";
+          //this.mensaje = "* Escribe el costo de incripción";
+          this.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
           return false;
         }
 
         if (this.input.fecha_inscripcion == null || this.input.fecha_inscripcion == '') {
-          this.mensaje = "* Selecciona la fecha de inscripción";
+          //this.mensaje = "* Selecciona la fecha de inscripción";
+          this.$notificacion.error('Selecciona la fecha de inscripción', 'Selecciona la fecha de inscripción.');
           return false;
         }
 
         return true;
       }
-    }
+    }*/
 
     this.loadFunction();
     this.loadFunctionGrupos();
@@ -158,9 +163,9 @@ export default {
       $("#modal_alumno").modal("show");
     },
     guardar() {      
-      console.log("Insertar");
-
-      if (!this.validacionGuardarFunction()) {
+      console.log("Insertar");      
+      if (!validacionDatosAlumno(this.input)) {
+      //if(!validacionDatosAlumno(this.input)){
         console.log("No paso la validacion");
         return;
       }
@@ -174,7 +179,8 @@ export default {
         (result) => {
           this.response = result.data;
           console.log("this.response " + this.response);
-          this.mensaje = "Se agregó el alumno";
+          //this.mensaje = "Se agregó el alumno";
+          this.$notificacion.info('Registro de alumno', 'Se registró el alumno.');
           this.loadFunction();
           $("#modal_alumno").modal("hide");
         }
@@ -183,7 +189,8 @@ export default {
     modificar() {
       console.log("Modificar el id " + this.input.id);
 
-      if (!this.validacionGuardarFunction()) {
+      //if (!this.validacionGuardarFunction()) {
+      if(!validacionDatosAlumno(this.input)){ 
         console.log("No paso la validacion");
         return;
       }
@@ -195,7 +202,8 @@ export default {
           this.response = result.data;
           if (this.response != null) {
             console.log("" + this.response);
-            this.mensaje = "Se modificó el alumno";
+            //this.mensaje = "Se modificó el alumno";
+            this.$notificacion.info('Modificación de alumno', 'Se actualizarón los datos del alumno.');
             this.loadFunction();
             $("#modal_alumno").modal("hide");
           }
@@ -212,6 +220,7 @@ export default {
           console.log(" "+result.data);    
           if ( result.data != null) {
             console.log("" +  result.data);
+            this.$notificacion.error('Registro de Baja de alumno', 'Se registro la baja del alumno '+this.input.nombre+'.');
             this.loadFunction();
           }
         }
@@ -224,7 +233,8 @@ export default {
       this.input = rowSelect;
       this.mensaje = "";
       if (operacion == 'DELETE' && this.input.adeuda) {
-        this.mensaje = "No se puede eliminar por que tiene deudas.";
+        //this.mensaje = "No se puede eliminar por que tiene deudas.";
+        this.$notificacion.warn('Baja de alumno', 'No es posible dar de baja el alumno por motivos de deuda activa.');
         return;
       } else {
         $("#modal_eliminar_alumno").modal("show");

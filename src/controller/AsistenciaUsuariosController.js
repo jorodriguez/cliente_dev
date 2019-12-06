@@ -25,8 +25,7 @@ export default {
       listaPorEntrar: [],                      
       listaPorSalir: [],
       response: "",
-      operacion:"",
-      mensaje: "",
+      operacion:"",      
       comentario:"",
       loaderPorEntrar:false,
       loaderPorSalir:false,
@@ -84,8 +83,7 @@ export default {
     seleccionarUsuario(item){
         this.usuarioSeleccionado = item;
         this.comentario = '';
-        this.operacion = "ENTRADA";
-        this.mensaje = '';
+        this.operacion = "ENTRADA";        
         $("#popup_entrada").modal("show");
 
     },  
@@ -98,8 +96,8 @@ export default {
           (result) => {            
             console.log("insertados " + result.data);
             if (result.data != null) {
-              this.lista = result.data;
-              this.mensaje = "Se registro la entrada ";
+              this.lista = result.data;              
+              this.$notificacion.info("Entrada", "Se registró la entrada.");
               $("#popup_entrada").modal("hide");
               this.loadFunctionPorEntrar();
               this.loadFunctionPorSalir();              
@@ -110,8 +108,7 @@ export default {
     seleccionarUsuarioAsistencia(item){
       this.usuarioAsistenciaSeleccionado = item;
       this.comentario = '';
-      this.operacion = 'SALIDA';
-      this.mensaje = '';
+      this.operacion = 'SALIDA';      
       $("#popup_salida").modal("show");
     },
 
@@ -125,8 +122,8 @@ export default {
         (result) => {            
           console.log("insertados " + result.data);
           if (result.data != null) {
-            this.lista = result.data;
-            this.mensaje = "Se registro la salida ";
+            this.lista = result.data;            
+            this.$notificacion.info("Salida", "Se registró la salida.");
             $("#popup_salida").modal("hide");
             this.loadFunctionPorEntrar();
             this.loadFunctionPorSalir();              

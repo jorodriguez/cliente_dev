@@ -27,7 +27,7 @@
               </button>
             </div>
             <div class="modal-body text-left">
-              <span class="text-danger text-sm">{{mensaje}}</span>
+              <!--<span class="text-danger text-sm">{{mensaje}}</span>-->
               <div>
                 <label>
                   Nombre

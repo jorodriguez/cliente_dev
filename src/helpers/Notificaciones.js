@@ -1,6 +1,6 @@
 
 import Vue from 'vue'
-import Noty from 'noty';
+
 // constantes de configuracion de goof table
 const notificacion = {
   error: function (titulo,descripcion) {

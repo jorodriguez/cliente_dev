@@ -82,8 +82,7 @@
     <!-- MODAL PARA REGISTRO DE ASISTENCIA -->
     <Popup id="popup_entrada" show_button_close="true">
       <div slot="header">Registro de entrada</div>
-      <div slot="content">
-        {{mensaje}}
+      <div slot="content">        
         <div class="container">
           <table class="table">
             <tr>
@@ -105,8 +104,7 @@
 
     <Popup id="popup_salida" show_button_close="true">
       <div slot="header">Registro de salida</div>
-      <div slot="content">
-        {{mensaje}}
+      <div slot="content">        
         <div class="container">
           <table class="table">
             <tr>

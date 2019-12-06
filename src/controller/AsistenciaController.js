@@ -19,8 +19,7 @@ export default {
       listaFiltroGrupos: [],
       grupoSeleccionado: { id: -1, nombre: '' },
       grupoDefault: { id: -1, nombre: 'Todos' },
-      response: "",
-      mensaje: ""
+      response: "",      
     };
   },
   mounted() {
@@ -89,8 +88,7 @@ export default {
       console.log("Add ");
       this.listaSeleccion.push(itemSelected);
       var pos = this.lista.indexOf(itemSelected);
-      var elementoEliminado = this.lista.splice(pos, 1);
-      this.mensaje = "";
+      var elementoEliminado = this.lista.splice(pos, 1);      
     },
     removeToList(itemSelected) {
       console.log("Remove " + itemSelected.nombre);
@@ -125,7 +123,7 @@ export default {
             console.log("insertados " + this.response);
             if (this.response != null) {
               this.lista = this.response;
-              this.mensaje = "Se registro la entrada";
+              this.$notificacion.info("Registro de entrada", "Se registro la entrada.");              
               this.loadFunction();
               this.loadFunctionAlumnosSalida();
               this.listaSeleccion = [];
@@ -134,15 +132,14 @@ export default {
           }
         );
 
-      } else {
-        this.mensaje = "Seleccione al menos un alumno de la lista";
+      } else {        
+        this.$notificacion.warn("Seleccione al menos un alumno", "");              
       }
     },
     addToListSalida(itemSelected) {
       this.listaSeleccionSalida.push(itemSelected);
       var pos = this.listaRecibidos.indexOf(itemSelected);
-      var elementoEliminado = this.listaRecibidos.splice(pos, 1);
-      this.mensaje = "";
+      var elementoEliminado = this.listaRecibidos.splice(pos, 1);      
     },
     removeToListSalida(itemSelected) {
       console.log("Remove en lista de salida" + itemSelected.nombre);
@@ -174,8 +171,8 @@ export default {
           (result) => {
             this.response = result.data;
             if (this.response != null) {
-              this.lista = this.response;
-              this.mensaje = "Se registro la salida de los alumnos";
+              this.lista = this.response;              
+              this.$notificacion.info("Registro de salida", "Se registro la salida de los alumnos.");              
               console.log("Se registro la salida");
               this.loadFunction();
               this.loadFunctionAlumnosSalida();
@@ -184,8 +181,8 @@ export default {
             }
           }
         );
-      } else {
-        this.mensaje = "Seleccione al menos un alumno de la lista";
+      } else {        
+        this.$notificacion.warn("Seleccione al menos un alumno", "");              
       }
     },
     filtrarAlumnosPorGrupo(grupoItem) {

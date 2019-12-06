@@ -37,8 +37,7 @@ export default {
         from: new Date(Date.now() + 8640000)
       },
       usuarioSesion: {},
-      sesion: {},
-      mensajeToast: null,
+      sesion: {},      
       response: "",
       mensaje: "",
     };
@@ -111,12 +110,6 @@ export default {
         }
       );
     };
-
-    this.mensajeToast = mensaje => {
-      $("#toast_msg").text(mensaje);
-      $("#toast_id").toast("show");
-    };
-
     this.loadFunctionGastosMensuales();
     this.loadFunctionCargarListaTiposGasto();
     this.loadFunctionCatFormasPago();
@@ -132,7 +125,7 @@ export default {
         gasto: 0,
         observaciones: ""
       };
-      this.mensaje = "";
+      //this.mensaje = "";
       this.operacion = 'INSERT';
       $('#modal_gasto').modal('show');
 
@@ -144,7 +137,8 @@ export default {
         this.gasto.fecha == null || this.gasto.fecha == '' ||
         this.gasto.gasto == 0 || this.gasto.gasto == ''
       ) {
-        this.mensaje = 'Escriba los datos requeridos.';
+       // this.mensaje = 'Escriba los datos requeridos.';
+        this.$notificacion.error('Datos requeridos', 'Escriba los datos requeridos.');
         return;
       }
 
@@ -160,7 +154,8 @@ export default {
             this.response = result.data;
             if (this.response != null) {
               console.log("" + this.response);
-              this.mensaje = "Se agrego el gasto.";
+              //this.mensaje = "Se agrego el gasto.";
+              this.$notificacion.info('Registro', 'Se registró un nuevo gasto.');
               $("#modal_gasto").modal("hide");
               this.loadFunctionGastosMensuales();
             }
@@ -176,7 +171,8 @@ export default {
             this.response = result.data;
             if (this.response != null) {
               console.log("" + this.response);
-              this.mensaje = "Se modifico el gasto.";
+              //this.mensaje = "Se modifico el gasto.";
+              this.$notificacion.info('Modificación', 'Se modificó el registro.');
               $("#modal_gasto").modal("hide");
               this.loadFunctionGastosMensuales();
             }
@@ -216,7 +212,8 @@ export default {
           this.response = result.data;
           if (this.response != null) {
             console.log("" + this.response);
-            this.mensaje = "Se agrego el gasto.";
+            //this.mensaje = "Se agrego el gasto.";
+            this.$notificacion.info('Eliminacion del gasto', 'Se eliminó el gasto.');
             $("#modal_eliminar").modal("hide");
             this.loadFunctionGastosMensuales();
           }

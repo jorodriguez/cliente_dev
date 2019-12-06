@@ -13,9 +13,7 @@ export default {
       balanceAlumno : {total_adeudo:0},
       usuarioSesion: {},
       sesion: {},              
-      loadFunctionBalanceAlumno:null,     
-      response: "",
-      mensaje: ""
+      loadFunctionBalanceAlumno:null,        
     };
   },
   mounted() {
@@ -35,10 +33,9 @@ export default {
       this.get(
         URL.BALANCE_BASE +"/" +this.idalumno,
         this.sesion.token,
-        (result) => {
-          this.response = result.data;            
-          if (this.response != null) {
-            this.balanceAlumno = this.response;
+        (result) => {          
+          if (result.data != null) {
+            this.balanceAlumno = result.data;
           }
         }
       );

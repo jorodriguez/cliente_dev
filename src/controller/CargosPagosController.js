@@ -2,13 +2,10 @@
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
-//import AlumnoApi from "./AlumnoApi";
 import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
-//import * as CONSTANTES from "../helpers/Constantes.js";
 import  CONSTANTES  from "../helpers/Constantes";
-//import TABLE_CONFIG from "../helpers/DatatableConfig";
 
 export default {
   name: "cargos-pagos",

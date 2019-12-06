@@ -15,29 +15,22 @@ export default {
         password: "",
         mensajeToast: null
       },
-      response: "",      
-      //uriTemp : URL.LOGIN,
-      //uriTemp: "http://localhost:5000/auth/login"    
-      //uriTemp: "https://api-ambiente-desarrollo.herokuapp.com/auth/login"
-      //uriTemp: "https://api-ambiente-produccion.herokuapp.com/auth/login"
+      response: "",        
     };
   },
   mounted() {
     //console.log("iniciando login "+process.env.ROOT_API);
     console.log("URL BASE "+URL.LOGIN);
     this.$session.clear();
-    //toast
-    this.mensajeToast = mensaje => {
-      $("#toast_msg").text(mensaje);
-      $("#toast_id").toast("show");
-    };
+
   },
   methods: {
     login() {
       console.log("login con rest ");
 
       if (!this.input.correo || !this.input.password) {
-        this.mensajeToast("Escribe tu usuario y tu clave.");
+        //this.mensajeToast("Escribe tu usuario y tu clave.");
+        this.$notificacion.error('Validación', 'Escribe tu usuario y clave de acceso.');
         return;
       }
 
@@ -62,9 +55,8 @@ export default {
               this.$router.replace({ path: "/principal" });              
             }
             
-          } else {
-            this.mensajeToast("No se encuentra el usuario..");
-            this.response = "No se encuentra el usuario..";
+          } else {            
+            this.$notificacion.error('Login', 'No se encuentra el usuario.');            
           }
         },
         error => { //FIXME: modificar la contestacion del API
@@ -72,7 +64,7 @@ export default {
           this.loading = false;
           //console.log(JSON.stringify(error));
           if (!error.auth) {
-            this.mensajeToast("El usuario o la clave son incorrectas.");
+            this.$notificacion.error('Login', 'El usuario o la clave son incorrectas.');            
           }
           //this.response = error;
         }
