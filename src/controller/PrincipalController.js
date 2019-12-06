@@ -224,7 +224,8 @@ export default {
                 this.limpiarFormularioActividad();
                 $("#modal_actividad").modal("show");
             } else {
-                this.mensajeToast("Seleccione al menos un alumno");
+               // this.mensajeToast("Seleccione al menos un alumno");
+                this.$notificacion.warn('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
             }
             console.log("init registro actividad");
 
@@ -238,19 +239,22 @@ export default {
 
             if (!existeSeleccion) {
                 console.log("Seleccione al menos un alumno");
-                this.mensajeToast("Seleccione al menos un alumno");
+              
+                this.$notificacion.warn('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
                 return;
             }
 
             if (!this.actividadSelecionada.id) {
                 console.log("Seleccione la actividad");
-                this.mensajeToast("Seleccione la actividad");
+                //this.mensajeToast("Seleccione la actividad");
+                this.$notificacion.warn('Seleccione la actividad', 'Seleccione la actividad que desea registras.');
                 return;
             }
 
             if (!this.validacion()) {
                 console.log("complete los campos");
-                this.mensajeToast("Complete los campos");
+                //this.mensajeToast("Complete los campos");
+                this.$notificacion.warn('Complete los campos', 'Complete todos los campos requeridos.');
                 return;
             }
 
@@ -276,7 +280,8 @@ export default {
                     if (this.response != null) {
                         var rowsAffected = this.response;
                         if (rowsAffected > 0) {
-                            this.mensaje = "Se registro la actividad";
+                            //this.mensaje = "Se registro la actividad";
+                            this.$notificacion.info('Actividad Regisrada', 'Se registro la actividad.');
                             this.listaAlumnosSeleccionados = [];
                             this.limpiarFormularioActividad();
 
@@ -319,7 +324,8 @@ export default {
         toggleSeleccionVisibles() {
             if (this.listaAlumnos == null || this.listaAlumnos.length == 0) {
                 console.log("No existen alumnos seleccionados");
-                this.mensajeToast("No existen alumnos seleccionados");
+                //this.mensajeToast("No existen alumnos seleccionados");
+                this.$notificacion.warn('Sin Selección', 'No existen alumnos seleccionados.');
                 return;
             }
             console.log("toggleSeleccionVisibles ");
@@ -344,7 +350,8 @@ export default {
                         }
                     });
             } else {
-                this.mensajeToast("Seleccione al menos un alumno de la lista");
+               // this.mensajeToast("Seleccione al menos un alumno de la lista");
+                this.$notificacion.error('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
             }
 
         },
@@ -389,14 +396,16 @@ export default {
                         console.log("Response " + result.data);
                         if (result.data != null) {
                             this.lista = result.data;
-                            this.mensaje = "Se registro la salida de los alumnos";
+                           // this.mensaje = "Se registro la salida de los alumnos";
+                            this.$notificacion.info('Salida de alumno', 'Se registro la salida.');
                             $("#confirmar_salida_modal").modal("hide");
                             this.loadFunctionAlumnosDentro();
                         }
                     }
                 );
             } else {
-                this.mensajeToast("Seleccione al menos un alumno de la lista");
+                //this.mensajeToast("Seleccione al menos un alumno de la lista");
+                this.$notificacion.error('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
                 //this.mensaje = "Seleccione al menos un alumno de la lista";
             }
         },

@@ -64,73 +64,7 @@ export default {
           }
         });
     };
-    //validacion
-    //this.validacionGuardarFunction = validacionDatosAlumno;
-    /*this.validacionGuardarFunction = () => {
-      if (this.input == null) {
-        return false;
-      } else {
-
-        console.log("this.input.fecha_nacimiento " + this.input.fecha_nacimiento);
-
-        if (this.input.nombre == '') {
-          //this.mensaje = "* Escribe un nombre";
-          this.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
-          return false;
-        }
-        if (this.input.apellidos == '') {
-          //this.mensaje = "* Escribe el apellido";
-          this.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');
-          return false;
-        }
-        if (this.input.fecha_nacimiento == null || this.input.fecha_nacimiento == '') {
-          //this.mensaje = "* Selecciona la fecha de nacimiento";
-          this.$notificacion.error('Selecciona la fecha de nacimiento', 'La fecha de nacimiento es requerida.');
-          return false;
-        }
-
-        if (this.input.sexo == '') {
-          //this.mensaje = "* Selecciona el sexo";
-          this.$notificacion.error('Seleciona el sexo', 'El dato de sexo es requerido.');
-          return false;
-        }
-
-        if (this.input.co_grupo == 0) {
-          //this.mensaje = "Selecciona un grupo";
-          this.$notificacion.error('Selecciona el grupo', 'El grupo es requerido.');
-          return false;
-        }
-
-        if (this.input.hora_entrada == null || this.input.hora_salida == null
-          || this.input.hora_entrada == '' || this.input.hora_salida == '') {
-          //this.mensaje = "* Selecciona la hora de entrada y salida";
-          this.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');
-          return false;
-        }
-
-        if (this.input.minutos_gracia == null || this.input.minutos_gracia == '') {
-          //this.mensaje = "* Escribe los minutos de gracia";
-          this.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.');
-          return false;
-        }
-
-        if (this.input.costo_inscripcion == null || this.input.costo_inscripcion == '') {
-          //this.mensaje = "* Escribe el costo de incripción";
-          this.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
-          return false;
-        }
-
-        if (this.input.fecha_inscripcion == null || this.input.fecha_inscripcion == '') {
-          //this.mensaje = "* Selecciona la fecha de inscripción";
-          this.$notificacion.error('Selecciona la fecha de inscripción', 'Selecciona la fecha de inscripción.');
-          return false;
-        }
-
-        return true;
-      }
-    }*/
-
-    this.loadFunction();
+     this.loadFunction();
     this.loadFunctionGrupos();
   },
   methods: {

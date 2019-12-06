@@ -4,13 +4,12 @@ import AlumnoModel from "../models/AlumnoModel";
 import FormatoModel from "../models/FormatoModel";
 import FamiliarModel from "../models/FamiliarModel";
 import Utils from "../models/FormatoUtils";
-
 import Datepicker from 'vuejs-datepicker';
-//import CargosPagosController from './CargosPagosController'
 import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
 
 export default {
     name: "perfil-alumno",
@@ -216,7 +215,7 @@ export default {
                 );
             };
 
-            this.validacionGuardarFunction = ()=>{
+           /* this.validacionGuardarFunction = ()=>{
                 if(this.alumno==null){
                   return false;        
                 }else{          
@@ -268,7 +267,7 @@ export default {
         
                   return true;
                 }
-            }
+            }*/
 
           //  this.loadFamiliaresFuncion();
             this.loadFunctionGrupos();                      
@@ -284,8 +283,9 @@ export default {
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
 
-            if(!this.validacionGuardarFunction){
-                
+           // if(!this.validacionGuardarFunction){
+            if(!validacionDatosAlumno(this.alumno)){
+                console.log("No paso la validacion ");
                 return;
             }           
             this.alumno.genero = this.usuarioSesion.id;
@@ -300,7 +300,8 @@ export default {
 
                     if (this.response != null) {
                         console.log("" + this.response);
-                        this.mensaje = "Se actualizaron los datos del alumno.";
+                        //this.mensaje = "Se actualizaron los datos del alumno.";
+                        this.$notificacion.info('Actualización de registro', 'Se actualizaron los datos del alumno.');
                     }
                 }
             );
@@ -358,7 +359,8 @@ export default {
                     this.response = result.data;
                     if (this.response != null) {
                         console.log("" + this.response);
-                        this.mensaje = "Se envio un correo con la nueva contraseña al usuario.";
+                        //this.mensaje = "Se envio un correo con la nueva contraseña al usuario.";
+                        this.$notificacion.info('Envio de notificación', 'Se envio una notificación con la nueva contraseña al usuario.');
                         $("#modal_confirmar_resetear_clave").modal("hide");                 
                     }
                 }
@@ -373,8 +375,9 @@ export default {
                 this.familiar.telefono == "" ||
                 this.familiar.correo == "" 
             ) {
-                this.mensaje = "Escribe los valores requeridos";
-                this.mensajeToast("Escribe los valores requeridos");
+                //this.mensaje = "Escribe los valores requeridos";
+                //this.mensajeToast("Escribe los valores requeridos");
+                this.$notificacion.info('Validación', 'Escribe los valores requeridos.');
                 return;
             }
 
@@ -410,7 +413,9 @@ export default {
                 this.familiar.telefono == "" ||
                 this.familiar.correo == "" 
             ) {
-                this.mensajeToast("Escribe los valores requeridos");
+               // this.mensajeToast("Escribe los valores requeridos");
+                this.$notificacion.info('Validación', 'Escribe los valores requeridos.');
+               
                 return;
             }
             this.familiar.genero = this.usuarioSesion.id;
@@ -423,7 +428,8 @@ export default {
                     if (result.data != null) {
                         console.log("" + this.response);
                         if (result.data.estatus) {                                
-                            this.mensaje = this.response.mensaje;
+                            //this.mensaje = this.response.mensaje;
+                            this.$notificacion.info('Información', this.response.mensaje);
                             this.loadFamiliaresFuncion();
                             $("#modal_familiar").modal("hide");
                         } 
@@ -448,7 +454,8 @@ export default {
                         if (this.response == 0 || this.response == null) {
                             this.mensaje = "Sucedió un error inesperado";
                         } else {
-                            this.mensaje = "Se actualizaron los datos de familiar.";
+                           // this.mensaje = "Se actualizaron los datos de familiar.";
+                            this.$notificacion.info('Modificación del registro', 'Se actualizaron los datos de familiar.');
                             this.loadFamiliaresFuncion();
                             $("#modal_eliminar_familiar").modal("hide");
                         }
@@ -472,7 +479,10 @@ export default {
                || this.datos_facturacion.telefono_contacto == ""   
                || this.datos_facturacion.correo_contacto == ""
             ){
-                this.mensaje = "Escribe los valores requeridos.";
+                //this.mensaje = "Escribe los valores requeridos.";
+                this.$notificacion.warn('Escribe los valores', 'Escribe los valores requeridos.');
+                           
+                
                 return;
             }
 
@@ -490,9 +500,12 @@ export default {
                     if (this.response != null) {
                         console.log("" + this.response);
                         if (this.response == 0 || this.response == null) {
-                            this.mensaje = "Sucedió un error inesperado";
+                            //this.mensaje = "Sucedió un error inesperado";
+                            this.$notificacion.error('Error', 'Sucedió un error inesperado.');
+                
                         } else {
-                            this.mensaje = "Se actualizaron los datos de facturación.";                                                                
+                           // this.mensaje = "Se actualizaron los datos de facturación.";      
+                            this.$notificacion.info('Actualización', 'Se actualizaron los datos de facturación');                                                          
                         }
                     }
                 }
@@ -527,9 +540,11 @@ export default {
                     if (this.response != null) {
                         console.log("" + this.response);
                         if (this.response == 0 || this.response == null) {
-                            this.mensaje = "Sucedió un error inesperado";
+                            //this.mensaje = "Sucedió un error inesperado";
+                            this.$notificacion.info('Error', 'Sucedió un error inesperado');
                         } else {
-                            this.mensaje = "Se actualizaron los datos de facturación.";                                                                
+                            //this.mensaje = "Se actualizaron los datos de facturación.";     
+                            this.$notificacion.info('Actualización', 'Se actualizaron los datos de facturación.');                                                           
                         }
                     }
                 }
