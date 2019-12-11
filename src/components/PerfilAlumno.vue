@@ -464,6 +464,7 @@
                         min="0"
                         required
                       >
+                      min {{alumno.minutos_gracia}}
                     </div>
 
                     <div class="form-group">

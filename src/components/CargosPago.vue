@@ -62,12 +62,12 @@
               <span
                 v-if="!row.pagado"
                 class="small"
-              >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}}{{row.cantidad > 1 ? "s":""}}</span>
+              >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}}{{row.cantidad > 1 ? "s":""}} {{row.texto_ayuda != null ? row.texto_ayuda:''}}</span>
               <span
                 v-else-if="row.pagado"
                 class="small tachado"
-              >{{row.cantidad}} {{row.nombre_cargo}}</span>
-            </button>
+              >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}} {{row.texto_ayuda != null ? row.texto_ayuda:''}}</span>
+            </button>            
           </td>
           <td>
             <strong>
@@ -312,7 +312,7 @@
                   placeholder="Folio de factura"
                 />
               </div>
-              <div class="col-md-6" v-if="requiere_factura">
+              <!--<div class="col-md-6" v-if="requiere_factura">
                 <label for="inputNotaPago">Nota</label>
                 <input
                   id="inputNotaPago"
@@ -321,7 +321,21 @@
                   class="form-control"
                   placeholder="Nota "
                 />
-              </div>
+              </div>-->
+            </div>
+            <div
+              class="form-row"              
+            >           
+             <div class="col-md-12" v-if="requiere_factura"> 
+                <label for="inputNotaPago">Nota</label>
+                <input
+                  id="inputNotaPago"
+                  type="text"
+                  v-model="pago.nota_pago"
+                  class="form-control"
+                  placeholder="Escribir nota "
+                />            
+             </div>
             </div>
 
             <table class="table">
@@ -441,11 +455,11 @@
                 <td>
                   <span
                     v-if="!cargoSeleccionado.pagado"
-                  >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}}</span>
+                  >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}} {{texto_ayuda != null ? texto_ayuda:'' }}</span>
                   <span
                     v-else-if="cargoSeleccionado.pagado"
                     class="tachado"
-                  >{{cargoSeleccionado.cantidad}} {{cargoSeleccionado.nombre_cargo}}</span>
+                  >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}} {{cargoSeleccionado.texto_ayuda != null ? cargoSeleccionado.texto_ayuda:'' }}</span>
                 </td>
               </tr>
               <tr>
