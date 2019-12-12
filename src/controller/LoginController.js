@@ -19,7 +19,7 @@ export default {
     };
   },
   mounted() {
-    //console.log("iniciando login "+process.env.ROOT_API);
+    console.log("iniciando login "+process.env);
     console.log("URL BASE "+URL.LOGIN);
     this.$session.clear();
 
