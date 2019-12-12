@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 //
 const BASE = process.env.URL_API || "http://localhost:5000" ;
 //const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = 'https://api-ambiente-produccion.herokuapp.com';
+=======
+
+//const BASE = process.env.URL_API || "http://localhost:5000" ;
+const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
+//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+>>>>>>> 71ed3b41af5b66b77296614a753c1a7a8dd9fc40
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';

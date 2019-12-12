@@ -43,10 +43,11 @@ export const validacionDatosAlumno = (alumno) =>{
         Vue.prototype.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');
         return false;
       }
-
+      console.log("alumno.minutos_gracia "+alumno.minutos_gracia);
       if (alumno.minutos_gracia == null || alumno.minutos_gracia == '') {
         //this.mensaje = "* Escribe los minutos de gracia";
-        Vue.prototype.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.');
+        console.log("alumno.minutos_gracia "+alumno.minutos_gracia);
+        Vue.prototype.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.'+alumno.minutos_gracia);
         return false;
       }
 
