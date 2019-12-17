@@ -26,6 +26,7 @@ var Alumno = new Vue({
         costo_colegiatura: "",
         minutos_gracia: "",        
         fecha_reinscripcion: null,
+        fecha_limite_pago_mensualidad:null,
         foto: "",
         visible:false,
         genero: 1

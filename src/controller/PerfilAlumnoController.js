@@ -9,7 +9,7 @@ import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
-import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
+import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
 
 export default {
     name: "perfil-alumno",
@@ -214,63 +214,8 @@ export default {
                     }
                 );
             };
-
-           /* this.validacionGuardarFunction = ()=>{
-                if(this.alumno==null){
-                  return false;        
-                }else{          
-                 
-                  if(this.alumno.nombre == ''){
-                    //this.mensaje = "* Escribe un nombre";
-                    this.$notificacion.error('Login', 'Escribe el nombre.');            
-                    return false;
-                  }
-                  if(this.alumno.apellidos == ''){
-                    this.mensaje = "* Escribe un nombre";
-                    return false;
-                  }
-                  if(this.alumno.fecha_nacimiento == null){
-                    this.mensaje = "* Selecciona la fecha de nacimiento";
-                    return false;
-                  }
-        
-                  if(this.alumno.sexo == ''){
-                    this.mensaje = "* Selecciona el sexo";
-                    return false;
-                  }                  
-        
-                  if(this.alumno.co_grupo == 0 ){
-                    this.mensaje = "Selecciona un grupo";
-                    return false;
-                  }
-                 
-                  if(this.alumno.hora_entrada == null || this.alumno.hora_salida == null
-                      || this.alumno.hora_entrada == '' || this.alumno.hora_salida == ''){            
-                    this.mensaje = "* Selecciona la hora de entrada y salida";
-                    return false;
-                  }
-        
-                  if(this.alumno.minutos_gracia == null || this.alumno.minutos_gracia == ''){
-                    this.mensaje = "* Escribe los minutos de gracia";
-                    return false;
-                  }
-                  
-                  if(this.alumno.costo_inscripcion == null || this.alumno.costo_inscripcion == ''){            
-                    this.mensaje = "* Escribe el costo de incripción";
-                    return false;
-                  }
-                                                 
-                  if(this.alumno.fecha_reinscripcion == null){
-                    this.mensaje = "* Selecciona la fecha de reinscripción";
-                    return false;
-                  }        
-        
-                  return true;
-                }
-            }*/
-
-          //  this.loadFamiliaresFuncion();
-            this.loadFunctionGrupos();                      
+         
+           this.loadFunctionGrupos();                      
         }
    
         this.mensajeToast = mensaje => {
@@ -288,6 +233,12 @@ export default {
                 console.log("No paso la validacion ");
                 return;
             }           
+            //validacion anexa
+            if(!validacionFechaLimitePagoAlumno(this.alumno)){
+                console.log("No paso la validacion de fecha limite de pago");
+                return;
+            }
+
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
@@ -318,7 +269,7 @@ export default {
                 cat_genero: -1,
                 nombre: "",
                 telefono: "",
-                fecha_nacimiento: null,
+                fecha_nacimiento: null,                
                 correo: "",
                 genero: 0
             };

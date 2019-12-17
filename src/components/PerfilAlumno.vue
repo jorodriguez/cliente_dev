@@ -498,6 +498,19 @@
                         required
                       >
                     </div>
+                    <div class="form-group">
+                      <label for="inputFechaLimitePago">
+                        Fecha limite pago 
+                        <span class="text-danger">*</span>
+                      </label>
+                       <datepicker
+                        id="inputFechaLimitePagoColegiatura"
+                        v-model="alumno.fecha_limite_pago_mensualidad"
+                        input-class="form-control"
+                        required
+                      ></datepicker>                     
+                      
+                    </div>                    
 
                     <div class="form-group">
                       <label for="inputNota">Nota</label>
