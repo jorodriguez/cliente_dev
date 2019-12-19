@@ -464,7 +464,7 @@
                         min="0"
                         required
                       >
-                      min {{alumno.minutos_gracia}}
+                      
                     </div>
 
                     <div class="form-group">
@@ -498,6 +498,7 @@
                         required
                       >
                     </div>
+                    <!--
                     <div class="form-group">
                       <label for="inputFechaLimitePago">
                         Fecha limite pago 
@@ -510,7 +511,7 @@
                         required
                       ></datepicker>                     
                       
-                    </div>                    
+                    </div>  -->                  
 
                     <div class="form-group">
                       <label for="inputNota">Nota</label>

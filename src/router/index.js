@@ -15,7 +15,7 @@ import ReporteAsistencia from '@/components/ReporteAsistencia'
 import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistenciasFaltasSucursalMes'
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
 import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsistenciaRangoFechasSuc'
-import Informes from '@/informes/Informes'
+//import Informes from '@/informes/Informes'
 
 import VueSession from 'vue-session'
 
@@ -40,7 +40,7 @@ const router = new Router({
     { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes},
     { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios},    
     { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc},        
-    { path: '/Informes', name: 'Informes', component: Informes},        
+  //  { path: '/Informes', name: 'Informes', component: Informes},        
     {path: '*', redirect: '/'}
   ]
 })

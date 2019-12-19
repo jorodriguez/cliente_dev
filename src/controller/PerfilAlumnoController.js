@@ -235,10 +235,10 @@ export default {
                 return;
             }           
             //validacion anexa
-            if(!validacionFechaLimitePagoAlumno(this.alumno)){
+           /* if(!validacionFechaLimitePagoAlumno(this.alumno)){
                 console.log("No paso la validacion de fecha limite de pago");
                 return;
-            }
+            }*/
 
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
