@@ -29,7 +29,7 @@
             >
        <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span> {{loading ? 'Validando..':'Entrar'}}       
       </a> 
-      <small class="text-muted">(v191211)</small>
+      <small class="text-muted">(hot181219)</small>
 
       <br>
       <br>

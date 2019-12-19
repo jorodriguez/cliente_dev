@@ -5,8 +5,8 @@
 
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
-const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
-//const BASE =  'https://api-ambiente-produccion.herokuapp.com';
+//const BASE = 'https://api-ambiente-desarrollo.herokuapp.com'
+const BASE =  'https://api-ambiente-produccion.herokuapp.com';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
