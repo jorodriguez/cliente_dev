@@ -66,6 +66,7 @@
                   name="fecha_nacmiento"
                   v-model="input.fecha_nacimiento"
                   input-class="form-control"
+                  :bootstrap-styling="true"
                   required
                 ></datepicker>
 
@@ -162,6 +163,7 @@
                   name="fecha_inscripcion"
                   v-model="input.fecha_inscripcion"
                   input-class="form-control"
+                  :bootstrap-styling="true"
                   required
                 ></datepicker>
 

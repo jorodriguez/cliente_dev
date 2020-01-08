@@ -107,7 +107,9 @@
                     v-model="familiar.fecha_nacimiento"
                     v-bind:input-class="familiarRelacionado != null ? 'form-control text-success':'form-control'"
                     name="fecha_nacimiento"
-                    v-bind:disabled="familiarRelacionado != null"                    
+                    v-bind:disabled="familiarRelacionado != null"      
+                    :bootstrap-styling="true"              
+                    :language="es"
                     required
                   ></datepicker>                  
                 </div>
@@ -364,6 +366,8 @@
                         id="inputFechaNacimientoAlumno"
                         v-model="alumno.fecha_nacimiento"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>
@@ -500,15 +504,19 @@
                     </div>
                     <div class="form-group">
                       <label for="inputFechaLimitePago">
-                        Fecha limite pago 
+                        Fecha límite pago 
                         <span class="text-danger">*</span>
                       </label>
                        <datepicker
                         id="inputFechaLimitePagoColegiatura"
                         v-model="alumno.fecha_limite_pago_mensualidad"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
                         required
-                      ></datepicker>                     
+                      >
+                      </datepicker>                     
                       
                     </div>                    
 
@@ -546,6 +554,9 @@
                         id="inputInscripcion"
                         v-model="alumno.fecha_inscripcion"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>
@@ -559,6 +570,9 @@
                         id="inputFReinscripcion"
                         v-model="alumno.fecha_reinscripcion"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>

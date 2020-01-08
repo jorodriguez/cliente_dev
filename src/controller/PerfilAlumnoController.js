@@ -9,6 +9,7 @@ import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {en, es} from 'vuejs-datepicker/dist/locale'
 import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
 
 export default {
@@ -81,6 +82,8 @@ export default {
             mensajeToast: null,
             initFamiliar: null,
             operacion: "",
+            disableDaysFechaLimitePago:{days:[6,0]},
+            es:es,
             usuarioSesion: {}
         };
     },
