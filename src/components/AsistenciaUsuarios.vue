@@ -81,17 +81,16 @@
 
     <!-- MODAL PARA REGISTRO DE ASISTENCIA -->
     <Popup id="popup_entrada" show_button_close="true">
-      <div slot="header">Registro de entrada</div>
+      <div slot="header">Entrada</div>
       <div slot="content">        
         <div class="container">
           <table class="table">
             <tr>
-              <td>{{usuarioSeleccionado.nombre}}</td>
+              <td><h3>{{usuarioSeleccionado.nombre}}</h3></td>
             </tr>
             <tr>
-              <td>
-                <label>Comentario</label>
-                <textarea v-model="comentario" class="form-control" />
+              <td>                
+                <textarea v-model="comentario" class="form-control" placeholder="Escriba algún comentario" />
               </td>
             </tr>
           </table>
@@ -103,20 +102,19 @@
     </Popup>
 
     <Popup id="popup_salida" show_button_close="true">
-      <div slot="header">Registro de salida</div>
+      <div slot="header">Salida</div>
       <div slot="content">        
         <div class="container">
           <table class="table">
             <tr>
-              <td><h4> {{usuarioAsistenciaSeleccionado.nombre}} </h4></td>
+              <td><h3> {{usuarioAsistenciaSeleccionado.nombre}} </h3></td>
             </tr>
             <tr>
-              <td><h5 class="text-muted"> ENTRADA:{{usuarioAsistenciaSeleccionado.hora_asistencia_entrada}}</h5></td>
+              <td><h5 class="text-muted"> Entró a las <strong>{{usuarioAsistenciaSeleccionado.hora_asistencia_entrada}}.</strong></h5></td>
             </tr>
             <tr>
-              <td>
-                <label>Comentario</label>
-                <textarea v-model="comentario" class="form-control" />
+              <td>                
+                <textarea v-model="comentario" class="form-control noresize" placeholder="Escriba algún comentario" />
               </td>
             </tr>
           </table>

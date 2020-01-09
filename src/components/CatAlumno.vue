@@ -9,7 +9,7 @@
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
     </div>
     <br />
-    <form>
+    <!--<form>-->
       <div
         id="modal_alumno"
         class="modal"
@@ -66,7 +66,8 @@
                   name="fecha_nacmiento"
                   v-model="input.fecha_nacimiento"
                   input-class="form-control"
-                  :bootstrap-styling="true"
+                  :bootstrap-styling="true"              
+                  :language="es"
                   required
                 ></datepicker>
 
@@ -164,6 +165,8 @@
                   v-model="input.fecha_inscripcion"
                   input-class="form-control"
                   :bootstrap-styling="true"
+                              
+                    :language="es"
                   required
                 ></datepicker>
 
@@ -209,7 +212,7 @@
           </div>
         </div>
       </div>
-    </form>
+   <!-- </form>-->
 
     <!-- ELIMINAR MODAL -->
     <div

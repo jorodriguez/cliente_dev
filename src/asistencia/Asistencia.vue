@@ -114,7 +114,7 @@
         type="button"
         class="btn btn-success btn-block"
         v-on:click="registrarEntrada()"
-      >Confirmar</button>
+      >Confirmar Entrada</button>
     </div>
   </div>
 </template>

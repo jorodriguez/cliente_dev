@@ -3,6 +3,7 @@ import Datepicker from 'vuejs-datepicker';
 import URL from "../helpers/Urls";
 import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {en, es} from 'vuejs-datepicker/dist/locale'
 
 export default {
   name: "Alumno",
@@ -24,6 +25,7 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje: "",
+      es:es
     };
   },
   mounted() {
