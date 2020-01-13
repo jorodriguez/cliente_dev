@@ -44,10 +44,10 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }
     console.log("alumno.minutos_gracia " + alumno.minutos_gracia);
-    if (alumno.minutos_gracia == null || alumno.minutos_gracia == '') {
+    if (alumno.minutos_gracia ===null || alumno.minutos_gracia === '') {
       //this.mensaje = "* Escribe los minutos de gracia";
       console.log("alumno.minutos_gracia " + alumno.minutos_gracia);
-      Vue.prototype.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.' + alumno.minutos_gracia);
+      Vue.prototype.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.');
       return false;
     }
 
@@ -60,6 +60,12 @@ export const validacionDatosAlumno = (alumno) => {
     if (alumno.fecha_inscripcion == null || alumno.fecha_inscripcion == '') {
       //this.mensaje = "* Selecciona la fecha de inscripción";
       Vue.prototype.$notificacion.error('Selecciona la fecha de inscripción', 'Selecciona la fecha de inscripción.');
+      return false;
+    }
+
+    if (alumno.fecha_limite_pago_mensualidad == null || alumno.fecha_limite_pago_mensualidad == '') {
+      //this.mensaje = "* Selecciona la fecha de inscripción";
+      Vue.prototype.$notificacion.error('Selecciona la fecha de pago', 'Selecciona la fecha de pago.');
       return false;
     }
 
@@ -76,7 +82,7 @@ export const validacionFechaLimitePagoAlumno = (alumno) => {
 
     if (alumno.fecha_limite_pago_mensualidad == null
       || alumno.fecha_limite_pago_mensualidad == '') {
-        Vue.prototype.$notificacion.error('Selecciona la fecha límite de pago de mensualidad', 'Selecciona la fecha de fecha límite de mensualida.');
+        Vue.prototype.$notificacion.error('Selecciona la fecha de pago de mensualidad', 'Selecciona la fecha de fecha de pago de la mensualidad.');
       return false;
     }
     return true;

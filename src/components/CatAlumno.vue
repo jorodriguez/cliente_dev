@@ -196,6 +196,25 @@
                   required
                 />
 
+                <div class="form-group">
+                      <label for="inputFechaLimitePago">
+                        Fecha Pago 
+                        <span class="text-danger">*</span>
+                      </label>
+                       <datepicker
+                        id="inputFechaLimitePagoColegiatura"
+                        v-model="input.fecha_limite_pago_mensualidad"
+                        input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
+                        required
+                      >
+                      </datepicker>                     
+                      
+                    </div>                    
+
+
                 <label>Nota</label>
                 <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
               </div>

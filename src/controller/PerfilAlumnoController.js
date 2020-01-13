@@ -8,6 +8,7 @@ import Datepicker from 'vuejs-datepicker';
 import CargosPagos from '../components/CargosPago.vue'
 import BalanceAlumno from './BalanceAlumnoController'
 import URL from "../helpers/Urls";
+import Popup from './Popup';
 import { operacionesApi } from "../helpers/OperacionesApi";
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
@@ -18,7 +19,8 @@ export default {
     components: {
         Datepicker,        
         CargosPagos,
-        BalanceAlumno
+        BalanceAlumno,
+        Popup
     },    
     data() {
         return {
@@ -82,7 +84,7 @@ export default {
             mensajeToast: null,
             initFamiliar: null,
             operacion: "",
-            disableDaysFechaLimitePago:{days:[6,0]},
+            disableDaysFechaLimitePago:{days:[6,0],to: new Date()},
             es:es,
             usuarioSesion: {}
         };
@@ -255,6 +257,7 @@ export default {
                     if (this.response != null) {
                         console.log("" + this.response);
                         //this.mensaje = "Se actualizaron los datos del alumno.";
+                        $("#popup_captura_fecha_pago").modal("hide");
                         this.$notificacion.info('Actualización de registro', 'Se actualizaron los datos del alumno.');
                     }
                 }
@@ -528,6 +531,13 @@ export default {
                 console.log("Carga de lista de familiares");
                 this.loadFamiliaresFuncion();
             }
-        }     
+        },
+        iniciarCapturaFechaPago(){
+            $("#popup_captura_fecha_pago").modal("show");
+        },        
+        cancelarModificarFechaPago(){
+            this.alumno.fecha_limite_pago_mensualidad = null;
+            $("#popup_captura_fecha_pago").modal("hide");
+        }
     }
 };  

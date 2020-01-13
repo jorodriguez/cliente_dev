@@ -222,6 +222,10 @@
         </div>
         <div class="w-100"/>
       </div>
+
+      <div  v-if="alumno.fecha_limite_pago_mensualidad == null" class="alert alert-warning">
+       <i class="far fa-hand-point-right"></i><strong>Hola!</strong> por favor captura la fecha de pago de la mensualidad.<button @click="iniciarCapturaFechaPago()" class="btn btn-link"> Clic aquí para capturar</button>          
+      </div>
       <div class="row">
         <div class="col">
           
@@ -467,8 +471,7 @@
                         placeholder="Min. Gracia"
                         min="0"
                         required
-                      >
-                      min {{alumno.minutos_gracia}}
+                      >                   
                     </div>
 
                     <div class="form-group">
@@ -504,7 +507,7 @@
                     </div>
                     <div class="form-group">
                       <label for="inputFechaLimitePago">
-                        Fecha límite pago 
+                        Fecha Pago 
                         <span class="text-danger">*</span>
                       </label>
                        <datepicker
@@ -1230,6 +1233,45 @@
       </div>
     </div>
     <!-- MODAL TOAST -->
+
+    <!-- captura de fecha de pago-->
+
+      <Popup id="popup_captura_fecha_pago"   :show_button_close="false">
+          <div slot="header">Fecha de pago</div>
+          <div slot="content">            
+            <div class="row">
+              <div class="container">
+                <div class="form-group">
+                      <label for="inputFechaLimitePago1">
+                        Fecha Pago 
+                        <span class="text-danger">*</span>
+                      </label>
+                       <datepicker
+                        id="inputFechaLimitePagoColegiatura1"
+                        v-model="alumno.fecha_limite_pago_mensualidad"
+                        input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
+                        required
+                      >
+                      </datepicker>                       
+              </div>
+            </div>
+          </div>
+          </div>
+          <div slot="footer">            
+            <button
+                      class="btn btn-secondary"
+                      v-on:click="cancelarModificarFechaPago()"                      
+                    >Cancelar</button>  
+               <button
+                      class="btn btn-primary"
+                      v-on:click="modificar()"                      
+                    >Guardar</button>            
+          </div>
+        </Popup>   
+
   </div>
 </template>
 

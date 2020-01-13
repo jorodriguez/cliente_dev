@@ -25,7 +25,8 @@ export default {
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje: "",
-      es:es
+      es:es,
+      disableDaysFechaLimitePago:{days:[6,0],to: new Date()},
     };
   },
   mounted() {
@@ -92,7 +93,7 @@ export default {
         costo_colegiatura: "",
         minutos_gracia: "",
         fecha_inscripcion: null,
-        fecha_limite_pago_mensualidad:null,
+        fecha_limite_pago:null,
         foto: "",
         genero: 1
       };
