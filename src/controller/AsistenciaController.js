@@ -35,10 +35,12 @@ export default {
 
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function () {
+      console.log("Invocando LoadFuncion");
       this.get(
         URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
         this.sesion.token,
         (result) => {
+          console.log("resultado "+JSON.stringify(result))
           this.response = result.data;
           console.log("Consulta " + this.response);
           if (this.response != null) {
@@ -192,9 +194,11 @@ export default {
 
       if (this.grupoSeleccionado.id == -1) {
         console.log("sinfiltro");
-        this.lista.forEach(element => {
-          element.visible = true;
-        });
+        if(this.lista != null && this.lista != undefined && this.lista != []){
+          this.lista.forEach(element => {
+            element.visible = true;
+          });
+        }        
       } else {
         console.log("Filtrar por grupo " + grupoItem.nombre);
         this.lista.forEach(element => {
