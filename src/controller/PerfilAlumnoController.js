@@ -85,6 +85,7 @@ export default {
             initFamiliar: null,
             operacion: "",
             disableDaysFechaLimitePago:{days:[6,0],to: new Date()},
+            fecha_memento : null,
             es:es,
             usuarioSesion: {}
         };
@@ -237,12 +238,7 @@ export default {
             if(!validacionDatosAlumno(this.alumno)){
                 console.log("No paso la validacion ");
                 return;
-            }           
-            //validacion anexa
-            if(!validacionFechaLimitePagoAlumno(this.alumno)){
-                console.log("No paso la validacion de fecha limite de pago");
-                return;
-            }
+            }                     
 
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
@@ -256,13 +252,37 @@ export default {
 
                     if (this.response != null) {
                         console.log("" + this.response);
-                        //this.mensaje = "Se actualizaron los datos del alumno.";
-                        $("#popup_captura_fecha_pago").modal("hide");
+                        //this.mensaje = "Se actualizaron los datos del alumno.";                        
                         this.$notificacion.info('Actualización de registro', 'Se actualizaron los datos del alumno.');
                     }
                 }
             );
         },
+
+        modificarFechaLimitePago(){
+              //validacion anexa
+              if(!validacionFechaLimitePagoAlumno(this.alumno)){
+                console.log("No paso la validacion de fecha limite de pago");
+                return;
+            }
+
+            this.put(
+                this.uriTemp + "/fecha_limite_pago/" + this.alumno.id, 
+                this.alumno,
+                this.sesion.token,
+                (result) => {
+                    this.response = result.data;
+
+                    if (this.response != null) {
+                        console.log("" + this.response);
+                        //this.mensaje = "Se actualizaron los datos del alumno.";
+                        $("#popup_captura_fecha_pago").modal("hide");
+                        this.$notificacion.info('Actualización la fecha límite de pago', '');
+                    }
+                }
+            );
+        },
+
         iniciarAgregarFamiliar() {
             this.operacion = "INSERT";
             this.familiar = {
@@ -533,10 +553,11 @@ export default {
             }
         },
         iniciarCapturaFechaPago(){
+            this.fecha_memento = this.alumno.fecha_limite_pago_mensualidad;
             $("#popup_captura_fecha_pago").modal("show");
         },        
         cancelarModificarFechaPago(){
-            this.alumno.fecha_limite_pago_mensualidad = null;
+            this.alumno.fecha_limite_pago_mensualidad = this.fecha_memento;
             $("#popup_captura_fecha_pago").modal("hide");
         }
     }

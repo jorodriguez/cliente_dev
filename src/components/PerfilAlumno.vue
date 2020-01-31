@@ -203,7 +203,7 @@
         </div>
         <div class="col text-center">
           <img
-            src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+            :src="alumno.foto"
             alt
             class="rounded-circle"
             width="50"
@@ -513,11 +513,11 @@
                        <datepicker
                         id="inputFechaLimitePagoColegiatura"
                         v-model="alumno.fecha_limite_pago_mensualidad"
+                        @click.native="iniciarCapturaFechaPago()"
                         input-class="form-control"
-                        :bootstrap-styling="true"
-                        :disabled-dates="disableDaysFechaLimitePago"
-                        :language="es"
-                        required
+                        :bootstrap-styling="true"                        
+                         disabled 
+                        :language="es"                        
                       >
                       </datepicker>                     
                       
@@ -1250,8 +1250,7 @@
                         id="inputFechaLimitePagoColegiatura1"
                         v-model="alumno.fecha_limite_pago_mensualidad"
                         input-class="form-control"
-                        :bootstrap-styling="true"
-                        :disabled-dates="disableDaysFechaLimitePago"
+                        :bootstrap-styling="true"                        
                         :language="es"
                         required
                       >
@@ -1267,7 +1266,7 @@
                     >Cancelar</button>  
                <button
                       class="btn btn-primary"
-                      v-on:click="modificar()"                      
+                      v-on:click="modificarFechaLimitePago()"                      
                     >Guardar</button>            
           </div>
         </Popup>   

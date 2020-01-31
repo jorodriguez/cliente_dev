@@ -205,8 +205,7 @@
                         id="inputFechaLimitePagoColegiatura"
                         v-model="input.fecha_limite_pago_mensualidad"
                         input-class="form-control"
-                        :bootstrap-styling="true"
-                        :disabled-dates="disableDaysFechaLimitePago"
+                        :bootstrap-styling="true"                        
                         :language="es"
                         required
                       >
