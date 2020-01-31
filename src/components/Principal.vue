@@ -98,7 +98,7 @@
           >
             <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
               <img
-                src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                :src="alumnoItem.foto"
                 width="35"
                 height="35"
                 alt="..."

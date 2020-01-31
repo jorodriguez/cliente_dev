@@ -305,7 +305,7 @@
             <tr v-for="row in lista" :key="row.id">
               <td class="text-right">
                 <img
-                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                  :src="row.foto"
                   width="50"
                   height="50"
                   v-on:click="verPerfil(row)"

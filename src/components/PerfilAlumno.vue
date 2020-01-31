@@ -1237,27 +1237,21 @@
     <!-- captura de fecha de pago-->
 
       <Popup id="popup_captura_fecha_pago"   :show_button_close="false">
-          <div slot="header">Fecha de pago</div>
-          <div slot="content">            
-            <div class="row">
-              <div class="container">
-                <div class="form-group">
-                      <label for="inputFechaLimitePago1">
-                        Fecha Pago 
-                        <span class="text-danger">*</span>
-                      </label>
-                       <datepicker
+          <div slot="header">Fecha de pago <strong> {{alumno.nombre}} {{alumno.apellidos}}</strong></div>
+          <div slot="content">                                      
+            <div class="row justify-content-md-center">
+              <span>* Seleccione la fecha límite de pago</span>
+              <datepicker
                         id="inputFechaLimitePagoColegiatura1"
                         v-model="alumno.fecha_limite_pago_mensualidad"
                         input-class="form-control"
                         :bootstrap-styling="true"                        
                         :language="es"
+                        :inline="true"
+                        :full-month-name="true"
                         required
-                      >
-                      </datepicker>                       
-              </div>
-            </div>
-          </div>
+              > </datepicker>        
+              </div>                                    
           </div>
           <div slot="footer">            
             <button
@@ -1267,7 +1261,7 @@
                <button
                       class="btn btn-primary"
                       v-on:click="modificarFechaLimitePago()"                      
-                    >Guardar</button>            
+                    >Seleccionar</button>            
           </div>
         </Popup>   
 
