@@ -327,7 +327,7 @@
               </td>
               <td class="hidden-xs">{{ row.apellidos }}</td>
               <td>
-                <span class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
+                <span :style="row.color ? 'background-color:'+row.color:'' " class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
               </td>
               <td>{{ row.hora_entrada }}</td>
               <td>{{ row.hora_salida }}</td>

@@ -34,6 +34,22 @@
             v-bind:key="item.id"
             class="d-flex flex-wrap align-content-center"
           >
+            <ItemCapsulaAlumno :texto="item.nombre" 
+                              :foto="item.foto"
+                               :color="item.color"
+                              :seleccion="removeToList"
+                              :value="item" >
+              <span slot="cuerpo">
+                <button
+                  type="button"
+                  class="btn btn-link btn-xs text-white"
+                  v-on:click="removeToList(item)"
+                >
+                  <span class="badge badge-pill badge-danger">x</span>
+                </button>
+              </span>
+            </ItemCapsulaAlumno>
+            <!--
             <small class="badge badge-pill badge-info border border-white">
               <img
                 :src="item.foto"
@@ -51,6 +67,7 @@
                 <span class="badge badge-pill badge-danger">x</span>
               </button>
             </small>
+            -->
           </div>
         </div>
       </div>
@@ -90,7 +107,17 @@
         <!--<p>Seleccione para registrar entrada</p>-->
         <div class="row">
           <div v-for="item in lista" v-bind:key="item.id">
-            <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
+            <div v-if="item.visible" class="d-flex align-content-center flex-wrap">              
+              <ItemCapsulaAlumno
+                :texto="item.nombre"
+                :foto="item.foto"                
+                :color="item.color"           
+                :seleccion="addToList"
+                :value="item"
+              >
+                <span  slot="cuerpo"></span>
+              </ItemCapsulaAlumno>
+              <!--
               <small
                 class="badge badge-pill badge-warning border border-primary"
                 v-on:click="addToList(item)"
@@ -103,7 +130,7 @@
                   class="rounded-circle"
                 />
                 <i>{{item.nombre}}</i>
-              </small>
+              </small>-->
             </div>
           </div>
         </div>

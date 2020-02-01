@@ -201,7 +201,7 @@
           </a>
           -->
         </div>
-        <div class="col text-center">
+        <div class="col text-center">          
           <img
             :src="alumno.foto"
             alt
@@ -213,12 +213,19 @@
             {{alumno.nombre}}
             {{alumno.apellidos}}
           </p>
+          <p>
+            <small>{{alumno.nombre_grupo}}</small>
+          </p>
         </div>
         <div class="col text-center">
-          <span class="text-danger card font-weight-bold h6">
-            Balance $
-            <balance-alumno :idalumno="id"></balance-alumno>
-          </span>
+          <div class="text-danger card font-weight-bold h6">
+            <div class="card-body">
+            Balance
+            <p>
+            $<balance-alumno :idalumno="id" mostrarfecha="true"></balance-alumno>
+            </p>
+            </div>
+          </div>
         </div>
         <div class="w-100"/>
       </div>
@@ -299,7 +306,7 @@
                   role="tab"
                   aria-controls="pills-servicios"
                   aria-selected="false"
-                >Pagos</a>
+                >Pagos  </a>
               </li>
               <li class="nav-item">
                 <a

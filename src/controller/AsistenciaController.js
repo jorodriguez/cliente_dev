@@ -3,10 +3,12 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
 
 export default {
   name: "Asistencia",
   mixins: [operacionesApi],
+  components:{ItemCapsulaAlumno},
   data() {
     return {
       usuarioSesion: {},

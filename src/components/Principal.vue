@@ -13,7 +13,6 @@
 
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
-      <router-link to="/Informes" class="btn btn-lg btn-success">Informes</router-link>
       <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>
       <!--<router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      -->
       <!-- btn-head-->
@@ -24,7 +23,11 @@
         v-on:click="initRegistroActividad()"
       >Actividad</button>
       <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
-      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-danger" style="background-color:#ea0075" >Asistencia/Miss</router-link>
+      <router-link
+        to="/AsistenciasUsuarios"
+        class="btn btn-lg btn-danger"
+        style="background-color:#ea0075"
+      >Asistencia/Miss</router-link>
     </div>
     <div class="row"></div>
 
@@ -96,14 +99,35 @@
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
           >
+            <ItemCapsulaAlumno
+              v-if="alumnoItem.visible"
+              :texto="alumnoItem.nombre_alumno"
+              :foto="alumnoItem.foto"
+              :color="alumnoItem.color"
+              :seleccion="toggleSelectAlumno"
+              :value="alumnoItem"
+            >
+              <span slot="cuerpo">
+                <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
+                <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+                <span
+                  v-if="alumnoItem.calcular_tiempo_extra"
+                  class="badge badge-pill badge-warning text-wrap"
+                  style="width: 2rem;"
+                >
+                  <small>
+                    <i class="fas fa-plus"></i>
+                  </small>
+                  <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                  <span class="text-muted">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
+                  {{alumnoItem.tiempo_extra.minutes}}
+                  <span class="text-muted">min</span>
+                </span>
+              </span>
+            </ItemCapsulaAlumno>
+            <!--
             <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
-              <img
-                :src="alumnoItem.foto"
-                width="35"
-                height="35"
-                alt="..."
-                class="rounded-circle"
-              />
+              <img :src="alumnoItem.foto" width="35" height="35" alt="..." class="rounded-circle" />
               <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
               <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
@@ -120,7 +144,7 @@
                 {{alumnoItem.tiempo_extra.minutes}}
                 <span class="text-muted">min</span>
               </span>
-            </small>
+            </small>-->
           </div>
         </div>
       </div>
@@ -267,14 +291,33 @@
                     v-bind:key="alumnoItem.id"
                     class="d-flex align-content-top flex-wrap"
                   >
-                    <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
+                  <!--
+                    <ItemCapsulaAlumno
+                      v-if="alumnoItem.seleccionado"                      
+                      :texto="alumnoItem.nombre_alumno"
+                      :foto="alumnoItem.foto"
+                      :color="alumnoItem.color"
+                      :seleccion="toggleSelectAlumno"
+                      :value="alumnoItem"                      
+                    >
+                      <span slot="cuerpo">
+                         <i
+                        v-on:click="toggleSelectAlumno(alumnoItem)"
+                        class="fas fa-minus-circle text-danger"
+                      ></i>
+                      </span>
+                    </ItemCapsulaAlumno>-->
+                    
+                    <span :style="alumnoItem.color == '' ? '':'background-color:'+alumnoItem.color" 
+                          class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
                       {{alumnoItem.nombre_alumno}}
                       <i
                         v-on:click="toggleSelectAlumno(alumnoItem)"
                         class="fas fa-minus-circle text-danger"
                       ></i>
                     </span>
-                  </div>
+                    
+                                      </div>
                 </div>
               </div>
             </div>
@@ -290,32 +333,14 @@
               <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
                 <span class="sr-only">Cargando...</span>
               </div>
-              <!--<div class="row justify-content-md-center">
-                <div class="col-6 border" 
-                    v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
-                    v-bind:key="alumnoItem.id" >
-                    <span >{{alumnoItem.nombre_alumno}}</span>
-                    <small><i class="fas fa-plus"></i></small>
-                    <span class="text-danger">{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
-                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
-                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
-                      <div class="custom-control custom-switch">
-                     <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />                     
-                      <label class="custom-control-label" :for="alumnoItem.id">                                                
-                        <small>                         
-                        
-                        </small>                        
-                     </label>
-                      </div>
-                </div>                    
-              </div>-->
-
               <table class="table">
                 <tr>
                   <td></td>
                   <td></td>
-                  <td><small>Aplicar Cargos</small></td>
-                                    </tr>
+                  <td>
+                    <small>Aplicar Cargos</small>
+                  </td>
+                </tr>
                 <tr
                   v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                   v-bind:key="alumnoItem.id"
@@ -332,7 +357,10 @@
                         style="font-size:12px;"
                       >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
                       {{alumnoItem.tiempo_extra.minutes}}
-                      <span class="text-muted" style="font-size:12px;">min</span>
+                      <span
+                        class="text-muted"
+                        style="font-size:12px;"
+                      >min</span>
                     </div>
                   </td>
                   <td>
@@ -426,6 +454,7 @@
   z-index: 9999999;
 }
 
-.fondo-rosa { background-color: "#e83e8c" !important; }
-
+.fondo-rosa {
+  background-color: "#e83e8c" !important;
+}
 </style>

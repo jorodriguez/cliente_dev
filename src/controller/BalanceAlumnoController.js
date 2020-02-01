@@ -6,8 +6,15 @@ import URL from "../helpers/Urls";
 export default {
   name: "balance-alumno",  
   mixins:[operacionesApi],
-  template:'<span> {{ balanceAlumno.total_adeudo }} </span>',
-  props: ['idalumno'],
+  template:`
+      <span> 
+        {{ balanceAlumno.total_adeudo }} 
+        <br/>
+        <small class="text-muted" v-if="mostrarfecha">Paga {{balanceAlumno.fecha_limite_pago_mensualidad}}</small>
+      </span>
+      
+      `,
+  props: ['idalumno','mostrarfecha'],
   data() {
     return {      
       balanceAlumno : {total_adeudo:0},
