@@ -53,6 +53,8 @@ const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
 const INFO_CONFIGURACION = BASE + '/configuracion';
 const ENVIAR_RECORDATORIO_PAGO_ALUMNO = BASE + '/enviar_recordatorio_pago';
 
+const REPORTE_MENSUALIDAD_BASE = '/mensualidad';
+
 const URL = {    
     LOGIN : BASE+'/auth/login',    
     ASISTENCIA_BASE : ASISTENCIA_BASE,
@@ -86,6 +88,8 @@ const URL = {
     CARGOS_BASE : CARGOS_BASE,
     CARGO_REGISTRAR : CARGOS_BASE + '/registrar',
     MESES_ADEUDA : CARGOS_BASE + '/meses_adeuda/',  //id_alumno
+
+    MENSUALIDAD_VENCE_SEMANA_ACTUAL : REPORTE_MENSUALIDAD_BASE + '/vence_semana_actual/',//id_sucursal
     
     FORMAS_PAGO_BASE : FORMAS_PAGO_BASE,
 

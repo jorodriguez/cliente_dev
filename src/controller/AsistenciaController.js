@@ -20,7 +20,7 @@ export default {
       listaSeleccionSalida: [],
       listaFiltroGrupos: [],
       grupoSeleccionado: { id: -1, nombre: '' },
-      grupoDefault: { id: -1, nombre: 'Todos' },
+      grupoDefault: { id: -1, nombre: 'Todos',color:'gray' },
       response: "",      
     };
   },
@@ -76,7 +76,7 @@ export default {
       this.lista.filter(function (item) {
         var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
         if (i <= -1) {
-          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
+          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo,color:item.color });
         }
         return null;
       });

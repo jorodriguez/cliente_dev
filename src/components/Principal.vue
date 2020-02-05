@@ -1,5 +1,9 @@
 <template>
   <div class="principal">
+    <div class="row text-left">
+      <IndicadorMensualidades></IndicadorMensualidades>
+    </div>
+
     <small class="font-weight-bold h6">
       {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
       <button
@@ -10,6 +14,8 @@
         <i class="fas fa-power-off" v-on:click="signout()"></i>
       </button>
     </small>
+    
+  
 
     <div class="p-1 mb-1 text-white">
       <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>

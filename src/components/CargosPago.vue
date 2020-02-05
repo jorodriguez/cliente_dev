@@ -80,12 +80,7 @@
             </strong>
           </td>
           <td style="width: 180px;">
-            <span class="d-inline-block small" style="width: 100%;" :title="row.nota">{{row.nota}}</span>
-            <!--<span
-              class="d-inline-block text-truncate small"
-              style="width: 120px;"
-              :title="row.nota"
-            >{{row.nota}}</span>-->
+            <span class="d-inline-block small" style="width: 100%;" :title="row.nota">{{row.nota}}</span>            
           </td>
           <td></td>
         </tr>
@@ -205,27 +200,7 @@
                 class="form-control"
                 placeholder="Escriba una nota"
               />
-            </div>
-            <!--  <div class="row">
-              <div class="col col-md-8 text-right">
-                <span class="h4 text-secondary">{{cargo.cantidad}} X</span>
-              </div>
-              <div class="col col-md-3 text-secondary bg-ligth">
-                <strong>
-                  <span class="h4">{{formatPrice(cargo.monto)}}</span>
-                </strong>
-              </div>
-            </div>
-          <div class="row">
-              <div class="col col-md-8 text-right">
-                <span class="h4">Total</span>
-              </div>
-              <div class="col col-md-3 bg-danger">
-                <strong>
-                  <span class="h4 text-white">{{formatPrice(cargo.total_cargo)}}</span>
-                </strong>
-              </div>
-            </div>-->
+            </div>           
           </div>
 
           <div class="modal-footer">
@@ -311,17 +286,7 @@
                   class="form-control font-weight-bold text-primary"
                   placeholder="Folio de factura"
                 />
-              </div>
-              <!--<div class="col-md-6" v-if="requiere_factura">
-                <label for="inputNotaPago">Nota</label>
-                <input
-                  id="inputNotaPago"
-                  type="text"
-                  v-model="pago.nota_pago"
-                  class="form-control"
-                  placeholder="Nota "
-                />
-              </div>-->
+              </div>             
             </div>
             <div
               class="form-row"              
@@ -511,16 +476,7 @@
                     <td>
                       <label class="font-weight-bold text-info">{{row.nombre_forma_pago}}</label>
                     </td>
-                    <td>{{row.identificador_factura}}</td>
-                    <!--<td>
-                      <input
-                        type="text"
-                        v-model="row.nota"
-                        disabled
-                        class="form-control"
-                        placeholder="Sin nota"
-                      >
-                    </td>-->
+                    <td>{{row.identificador_factura}}</td>                   
                   </tr>
                 </tbody>
               </table>

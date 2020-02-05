@@ -34,9 +34,10 @@
         <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
     -->
 
-    <!-- <MenuPrincipal></MenuPrincipal>-->
+    <MenuPrincipal></MenuPrincipal>  
 
     <router-view />
+
 
     <!-- app principal -->
     <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
@@ -86,11 +87,6 @@
 </template>
 
 <script>
-/*
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-;*/
 import Popup from "./controller/Popup";
 import MenuPrincipal from "./components/navBar";
 import MonitorRed from "./componentes_generales/MonitorRed";

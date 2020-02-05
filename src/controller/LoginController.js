@@ -46,11 +46,11 @@ export default {
             this.$session.set("jwt", this.response.token);
             console.log("JSON "+JSON.stringify(this.response));
             if(this.response.usuario.permiso_gerente){
-              console.log("Mandar evento para admin");              
+              console.log("Mandar evento para admin");                            
               this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN_ADMIN);
               this.$router.replace({ path: "/ReporteAdmin" });              
             }else{
-              console.log("Mandar evento para usuario general");              
+              console.log("Mandar evento para usuario general");                            
               this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN);
               this.$router.replace({ path: "/principal" });              
             }

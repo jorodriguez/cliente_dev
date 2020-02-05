@@ -34,11 +34,13 @@
             v-bind:key="item.id"
             class="d-flex flex-wrap align-content-center"
           >
-            <ItemCapsulaAlumno :texto="item.nombre" 
-                              :foto="item.foto"
-                               :color="item.color"
-                              :seleccion="removeToList"
-                              :value="item" >
+            <ItemCapsulaAlumno
+              :texto="item.nombre"
+              :foto="item.foto"
+              :color="item.color"
+              :seleccion="removeToList"
+              :value="item"
+            >
               <span slot="cuerpo">
                 <button
                   type="button"
@@ -49,25 +51,6 @@
                 </button>
               </span>
             </ItemCapsulaAlumno>
-            <!--
-            <small class="badge badge-pill badge-info border border-white">
-              <img
-                :src="item.foto"
-                width="35"
-                height="35"
-                alt="..."
-                class="rounded-circle"
-              />
-              <i>{{item.nombre}}</i>
-              <button
-                type="button"
-                class="btn btn-link btn-xs text-white"
-                v-on:click="removeToList(item)"
-              >
-                <span class="badge badge-pill badge-danger">x</span>
-              </button>
-            </small>
-            -->
           </div>
         </div>
       </div>
@@ -75,9 +58,28 @@
     <div class="border" />
     <div class="border" />
     <div class="border" />
-    <!--<div class="container jumbotron m-1">-->
+    <!--<div class="container jumbotron m-1">-->    
+    <div class="card border" style="background-color:#E9E9E9;">      
+      <h4><strong>{{grupoSeleccionado.nombre}}</strong></h4>
+      <div class="col-sm" >
+        <span
+          :style="grupoDefault.color != null ? 'background-color:'+grupoDefault.color: ''"
+          class="badge badge-info text-wrap"
+          v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+        >Todos</span>
+        <button                    
+          :style="grupoItem.color != null ? 'background-color:'+grupoItem.color: ''"
+          class="badge badge-info text-wrap"
+          v-for="grupoItem in listaFiltroGrupos"
+          v-bind:key="grupoItem.id"
+          v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+        >{{grupoItem.nombre}}</button>
+      </div>
+    </div>
+
     <div class="card border" style="background-color:#E9E9E9;">
-      <div class="row">
+      
+      <!--<div class="row">
         <div class="dropdown">
           <button
             class="btn btn-link dropdown-toggle"
@@ -103,34 +105,21 @@
           </div>
         </div>
       </div>
+      -->
       <div class="card-body" style="background-color:#E9E9E9;">
         <!--<p>Seleccione para registrar entrada</p>-->
         <div class="row">
           <div v-for="item in lista" v-bind:key="item.id">
-            <div v-if="item.visible" class="d-flex align-content-center flex-wrap">              
+            <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
               <ItemCapsulaAlumno
                 :texto="item.nombre"
-                :foto="item.foto"                
-                :color="item.color"           
+                :foto="item.foto"
+                :color="item.color"
                 :seleccion="addToList"
                 :value="item"
               >
-                <span  slot="cuerpo"></span>
+                <span slot="cuerpo"></span>
               </ItemCapsulaAlumno>
-              <!--
-              <small
-                class="badge badge-pill badge-warning border border-primary"
-                v-on:click="addToList(item)"
-              >
-                <img
-                  :src="item.foto"
-                  width="35"
-                  height="35"
-                  alt="..."
-                  class="rounded-circle"
-                />
-                <i>{{item.nombre}}</i>
-              </small>-->
             </div>
           </div>
         </div>
