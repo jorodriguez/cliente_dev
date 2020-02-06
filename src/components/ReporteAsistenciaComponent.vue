@@ -49,8 +49,8 @@
                 <span class="text-muted">{{props.row.apellido_alumno}}</span>
               </span>
             </span>
-            <span v-else-if="props.column.field == 'nombre_grupo'">
-              <span class="badge badge-info text-wrap">{{props.row.nombre_grupo}}</span>
+            <span v-else-if="props.column.field == 'nombre_grupo'">              
+              <span :style="props.column.field != null ? 'background-color:'+props.row.color : ''" class="badge badge-info text-wrap">{{props.row.nombre_grupo}}</span>
             </span>
             <span v-else-if="props.column.field == 'tiempo'">
               <span :class="props.row.alerta_tiempo ? 'text-danger':'text-success'">

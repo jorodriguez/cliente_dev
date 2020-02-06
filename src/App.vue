@@ -17,26 +17,28 @@
     <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
-
+<!--
     <button
       id="id_notificador_principal"
-      type="button"
-      class="btn btn-link btn-small hide"
+      type="button"      
       data-toggle="modal"
       data-target="#detalle_notificacion_principal"
-    >
-      <!--<span class="spinner-border" > </span>  -->
+      
+    >      
       <span id="texto_notificador_principal"></span>
-    </button>
-    <!--
-        <router-link to="/CatAlumno" class="dash-nav-item">Alumnos</router-link>
-        <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
-        <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
-    -->
+    </button>   -->
 
-    <!-- <MenuPrincipal></MenuPrincipal>-->
-
-    <router-view />
+    
+  <MenuSidebar></MenuSidebar>           
+    <div class="main-content">
+      <MenuEncabezado />
+      <Header/>
+      <div class="container-fluid">        
+          <!--<div class="col-xl-12 mb-12 mb-xl-0">           -->
+              <router-view />           
+        <!--</div>-->
+      </div>      
+    </div>
 
     <!-- app principal -->
     <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
@@ -86,19 +88,18 @@
 </template>
 
 <script>
-/*
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-;*/
 import Popup from "./controller/Popup";
-import MenuPrincipal from "./components/navBar";
+import MenuEncabezado from "./components/menuEncabezado";
+import MenuSidebar from "./components/menuSidebar";
+import Header from "./components/header";
 import MonitorRed from "./componentes_generales/MonitorRed";
 
 export default {
   components: {
     Popup,
-    MenuPrincipal,
+    MenuSidebar,
+    MenuEncabezado,
+    Header,
     MonitorRed
   },
   name: "App",
@@ -119,7 +120,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 10px;
+  /*color: #2c3e50; */
 }
 </style>

@@ -1,12 +1,12 @@
 
 import URL from "../helpers/Urls";
-import  CONSTANTES  from "../helpers/Constantes";
+import CONSTANTES from "../helpers/Constantes";
 
 
 export default {
   name: "Login",
   props: {
-    loading: true 
+    loading: true
   },
   data() {
     return {
@@ -15,13 +15,14 @@ export default {
         password: "",
         mensajeToast: null
       },
-      response: "",        
+      response: "",
     };
   },
   mounted() {
     //console.log("iniciando login "+process.env.ROOT_API);
-    console.log("URL BASE "+URL.LOGIN);
+    console.log("URL BASE " + URL.LOGIN);
     this.$session.clear();
+    this.$root.$emit('LOGOUT', CONSTANTES.LOGOUT);
 
   },
   methods: {
@@ -38,25 +39,26 @@ export default {
       this.loading = true;
       this.$http.post(URL.LOGIN, data).then(
         result => {
-          console.log("En el login");          
+          console.log("En el login");
           this.response = result.data;
-         this.loading = false;
+          this.loading = false;
           if (this.response.auth) {
             this.$session.set("usuario_sesion", this.response);
             this.$session.set("jwt", this.response.token);
-            console.log("JSON "+JSON.stringify(this.response));
-            if(this.response.usuario.permiso_gerente){
+            console.log("JSON " + JSON.stringify(this.response));
+            if (this.response.usuario.permiso_gerente) {
               console.log("Mandar evento para admin");              
-              this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN_ADMIN);
+              this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN_ADMIN);
               this.$router.replace({ path: "/ReporteAdmin" });              
-            }else{
+            } else {
               console.log("Mandar evento para usuario general");              
-              this.$root.$emit('loginEnter',CONSTANTES.EVENTO_LOGIN);
+              console.log("MENSAJE "+CONSTANTES.EVENTO_LOGIN);
+              this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN);
               this.$router.replace({ path: "/principal" });              
             }
-            
-          } else {            
-            this.$notificacion.error('Login', 'No se encuentra el usuario.');            
+
+          } else {
+            this.$notificacion.error('Login', 'No se encuentra el usuario.');
           }
         },
         error => { //FIXME: modificar la contestacion del API
@@ -64,7 +66,7 @@ export default {
           this.loading = false;
           //console.log(JSON.stringify(error));
           if (!error.auth) {
-            this.$notificacion.error('Login', 'El usuario o la clave son incorrectas.');            
+            this.$notificacion.error('Login', 'El usuario o la clave son incorrectas.');
           }
           //this.response = error;
         }

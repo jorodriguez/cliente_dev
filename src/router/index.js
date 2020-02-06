@@ -40,10 +40,11 @@ const router = new Router({
     { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes},
     { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios},    
     { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc},        
-    { path: '/Informes', name: 'Informes', component: Informes},        
-    {path: '*', redirect: '/'}
+    { path: '/Informes', name: 'Informes', component: Informes},            
+    {path: '*', redirect: '404'}
   ]
 })
+
 
 
 router.beforeResolve((to, from, next) => {

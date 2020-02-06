@@ -8,12 +8,11 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
 
-
 export default {
     name: "Principal",
     mixins: [operacionesApi],
     components:{
-        ItemCapsulaAlumno
+        ItemCapsulaAlumno        
     },
     data() {
         return {
@@ -301,6 +300,7 @@ export default {
         signout() {
             console.log("Signout ");
             this.$session.clear();
+            this.$root.$emit('LOGOUT','LOGOUT');            
             this.$router.push("/");
         },
         filtrarAlumnosPorGrupo(grupoItem) {

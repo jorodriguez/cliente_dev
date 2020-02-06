@@ -13,7 +13,7 @@ export default {
               :class="clase === undefined ? 'badge badge-pill badge-info border border-white' : ('badge badge-pill border border-white badge-'+clase)" 
                @click="onclick()">
               <AvatarAlumno :url="foto"/>
-              <i>{{texto}}</i>              
+              <span > {{texto}}</span>
               <slot name="cuerpo">              
                 <!-- Cuerpo del badge -->
               </slot>              
