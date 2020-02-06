@@ -1,5 +1,5 @@
 <template>
-  <div class="asistencia container">
+  <div class="asistencia">
     <h1>Entrada de Alumnos</h1>
     <span>{{this.mensaje}}</span>
     <div class="row">

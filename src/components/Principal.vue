@@ -1,5 +1,5 @@
 <template>
-  <div class="principal container">
+  <div class="principal">
     <h1>Asistencias</h1>
     <!--
     <small class="font-weight-bold h6">
@@ -35,7 +35,7 @@
     -->
     <div class="row"></div>
 
-    <div class="container scroll-panel-salida-div bg-light rounded border">
+    <div class=" scroll-panel-salida-div bg-light rounded border">
       <div class="row">
         <div class="col text-left">
           <div class="dropdown">

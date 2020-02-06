@@ -1,5 +1,5 @@
 <template>
-  <div id="id_gastos" class="container">
+  <div id="id_gastos" >
     <h1>Gastos</h1>
     <div class="row">
       <div class="col-auto mr-auto">
