@@ -1,6 +1,6 @@
 <template>
   <div class="asistencia container">
-    <h1>Asistencias</h1>
+    <h1>Entrada de Alumnos</h1>
     <span>{{this.mensaje}}</span>
     <div class="row">
       <div class="col-1">

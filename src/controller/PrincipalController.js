@@ -7,14 +7,12 @@ import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
-import IndicadorMensualidades from "../indicadores/IndicadorMensualidades";
 
 export default {
     name: "Principal",
     mixins: [operacionesApi],
     components:{
-        ItemCapsulaAlumno,
-        IndicadorMensualidades
+        ItemCapsulaAlumno        
     },
     data() {
         return {

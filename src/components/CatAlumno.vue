@@ -1,7 +1,6 @@
 <template>
   <div class="cat_alumno container">
-    <h1>Alumnos</h1>(
-    <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
+    <h1>Alumnos</h1>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
