@@ -45,6 +45,7 @@
                   class="btn btn-link btn-xs text-white"
                   v-on:click="removeToList(item)"
                 >
+                {{item.id}}
                   <span class="badge badge-pill badge-danger">x</span>
                 </button>
               </span>
