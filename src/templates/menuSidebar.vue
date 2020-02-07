@@ -167,7 +167,7 @@
 
 <script>
 import CONSTANTES from "../helpers/Constantes";
-import {usuarioSesion} from '../helpers/Sesion';
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "menu-principal",
@@ -181,7 +181,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.usuarioSesion = usuarioSesion;
+    this.usuarioSesion = getUsuarioSesion() ;
     /*this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;
 

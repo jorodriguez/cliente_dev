@@ -6,7 +6,7 @@
 
 <script>
 import CONSTANTES from "../helpers/Constantes";
-import {usuarioSesion,token} from '../helpers/Sesion';
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "sidebar-principal",
@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.mostrarmenu= (usuarioSesion != null);
+    this.mostrarmenu= (getUsuarioSesion() != null);
     
     /*this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;

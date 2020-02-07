@@ -24,7 +24,7 @@
 import Popup from "../controller/Popup";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
-import { usuarioSesion, token } from "../helpers/Sesion";
+import { getUsuarioSesion, token } from "../helpers/Sesion";
 
 export default {
   name: "indicadores-mensualidad-vencer",
@@ -43,7 +43,7 @@ export default {
   mounted() {
     console.log("Inciando consulta de indicadores");
 
-    this.usuarioSesion = usuarioSesion;
+    this.usuarioSesion = getUsuarioSesion();
 
     this.obtenerIndicadorMensualidad = function() {
       console.log(

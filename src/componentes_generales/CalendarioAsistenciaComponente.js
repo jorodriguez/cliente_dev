@@ -3,7 +3,7 @@ import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import { GChart } from "vue-google-charts";
-import {usuarioSesion,token} from '../helpers/Sesion';
+import {getUsuarioSesion,token} from '../helpers/Sesion';
 
 //https://vuejsexamples.com/vuejs-functional-calendar-component/
 export default {
@@ -64,7 +64,7 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;*/
-this.usuarioSesion =usuarioSesion;
+this.usuarioSesion =getUsuarioSesion();
     if (!this.idalumno) {
       console.log("No existe la propiedad de idalumno");
 

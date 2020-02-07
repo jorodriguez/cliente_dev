@@ -6,7 +6,7 @@ import { VueGoodTable } from 'vue-good-table';
 import COLUMNS_TABLE_ASISTENCIA_ALUMNO  from "../helpers/DatatableAlumnoAsistencia";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { GChart } from "vue-google-charts";
-import {usuarioSesion,token} from '../helpers/Sesion';
+import {getUsuarioSesion,token} from '../helpers/Sesion';
 
 export default {
   name: "lista-asistencia-alumno",
@@ -55,7 +55,7 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;*/
-this.usuarioSesion=usuarioSesion;
+this.usuarioSesion=getUsuarioSesion();
     if (!this.idalumno) {
       console.log("No existe la propiedad de idalumno");
 

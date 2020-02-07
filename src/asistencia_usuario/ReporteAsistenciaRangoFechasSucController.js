@@ -9,7 +9,7 @@ import COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE  from "../helpers/DatatableConfi
 import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
-import {usuarioSesion,token} from '../helpers/Sesion';
+import {getUsuarioSesion,token} from '../helpers/Sesion';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
@@ -44,7 +44,7 @@ export default {
       return;
     }
     this.usuarioSesion = this.sesion.usuario;*/
-    this.usuarioSesion =usuarioSesion;
+    this.usuarioSesion =getUsuarioSesion();
     this.fecha_inicio = new Date();
     this.fecha_fin = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;

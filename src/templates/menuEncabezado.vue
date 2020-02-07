@@ -1,10 +1,10 @@
 <template >
   <!-- Navbar -->
-  <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <nav class="navbar navbar-top navbar-expand-md navbar-dark " id="navbar-main">
     <div class="bg-gradient-primary pb-6 pt-4 pt-md-2"> </div>
     <div class="container-fluid">
       <!-- Brand -->
-      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./index.html">-</a>
+      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" >-</a>
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
         <div class="nav navbar-nav mr-auto">        
           <div class="dropdown mr-1">
@@ -85,7 +85,7 @@
 <script>
 import CONSTANTES from "../helpers/Constantes";
 import IndicadorMensualidades from "../indicadores/IndicadorMensualidades";
-import {usuarioSesion,clearSesion} from '../helpers/Sesion';
+import {getUsuarioSesion,clearSesion} from '../helpers/Sesion';
 
 export default {
   name: "sidebar-principal",
@@ -99,7 +99,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");    
-    this.usuarioSesion =usuarioSesion;
+    this.usuarioSesion =getUsuarioSesion();
     /*this.mostrarmenu=false;
     this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;
