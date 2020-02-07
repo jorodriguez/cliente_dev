@@ -1,22 +1,6 @@
 <template>
   <div class="principal">
-    <h1>Asistencias</h1>
-    <!--
-    <small class="font-weight-bold h6">
-      {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-      <button
-        type="button"
-        class="btn btn-sm btn-danger"
-        v-on:click="signout()"
-      >
-        <i class="fas fa-power-off" v-on:click="signout()"></i>
-      </button>
-    </small>-->
-    <!--
-    <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
-      <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>     
-    -->
+    <h1>Asistencias</h1>  
     <div class="row">
       <button
         type="button"

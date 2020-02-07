@@ -1,6 +1,6 @@
 
 <template>
-  <div id="bienvenido">
+  <span id="bienvenido">
     <MenuSidebar></MenuSidebar>
     <div class="main-content">
       <MenuEncabezado />
@@ -57,7 +57,7 @@
       <div slot="footer"></div>
     </Popup>
 
-  </div>
+  </span>
 </template>
 
 <script>

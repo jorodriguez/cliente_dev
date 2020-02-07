@@ -1,6 +1,22 @@
 <template >
 
-    <div class="bg-gradient-primary pb-6 pt-4 pt-md-2" > </div>
+    <!--<div class="bg-gradient-primary pb-6 pt-4 pt-md-2" > </div>-->
+      <!-- Header -->
+    <!--<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 100px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">-->
+    <div class="header pb-2 pt-5 pt-lg-4 d-flex align-items-center" style="min-height: 80px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <!--<h1 class="display-6 text-white">Hello Jesse</h1>
+            <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
+            <a href="#!" class="btn btn-info">Edit profile</a>-->
+          </div>
+        </div>
+      </div>
+    </div>
 
 </template>
 
@@ -20,50 +36,7 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.mostrarmenu= (getUsuarioSesion() != null);
-    
-    /*this.sesion = this.$session.get("usuario_sesion");
-    this.usuarioSesion = this.sesion.usuario;
-    this.revisarSesionPromise = function() {
-      this.sesion = this.$session.get("usuario_sesion");
-      this.usuarioSesion = this.sesion.usuario;
-      var thus = this;
-      return new Promise(function(resolve, reject) {
-        if (!thus.sesion || !thus.sesion.usuario) {
-          //reject(false);
-          console.log("no hay sesion ");
-        } else {
-          let usuarioSesion =
-            thus.sesion.usuario != null && thus.sesion.usuario != undefined;
-          console.log("sesion ok " + usuarioSesion);
-          resolve(usuarioSesion);
-        }
-      });
-    };
-
-    this.revisarSesion = function() {
-      this.revisarSesionPromise()
-        .then(enSesion => {
-          console.log("USUARIO EN SESION " + enSesion);
-          this.mostrarmenu = enSesion;
-        })
-        .catch(e => {
-          console.log("USUARIO SIN SESION " + e);
-          this.mostrarmenu = false;
-        });
-    };
-
-    this.$root.$on("loginEnter", text => {
-      console.log("loginEnter %%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + text);
-      this.revisarSesion();
-    });
-
-    this.$root.$on("LOGOUT", text => {
-      console.log("LOGOUT %%%%%%%%%%%%%%%%%%%%%%%%%LOGOUT " + text);
-      this.mostrarmenu = false;
-    });
-
-    this.revisarSesion();*/
+    this.mostrarmenu= (getUsuarioSesion() != null);    
   },
   methods: {}
 };

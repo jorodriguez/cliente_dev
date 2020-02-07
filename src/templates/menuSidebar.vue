@@ -1,7 +1,6 @@
 <template >
   <nav   
-    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light "    
-    style="background-color:powderblue;"
+    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"        
     id="sidenav-main"
   >
     <div class="container-fluid">
@@ -32,8 +31,8 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >
-            <i class="ni ni-bell-55"></i>
+          >          
+            <i class="fa fa-bell"></i>
           </a>
           <div
             class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
@@ -119,10 +118,7 @@
           <li class="nav-item">
             <router-link to="/CatAlumno" class="nav-link">
               <i class="fa fa-list-ul text-purple"></i> Alumnos
-            </router-link>
-            <!--<a class="nav-link" href="./examples/icons.html">
-              <i class="ni ni-planet text-blue"></i> Icons
-            </a>-->
+            </router-link>           
           </li>
           <li class="nav-item">
             <router-link to="/Asistencia" class="nav-link">
@@ -156,7 +152,7 @@
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">
-            <a class="nav-link" href="./examples/upgrade.html">
+            <a class="nav-link" href="#">
               <i class="ni ni-send text-dark"></i> V.0.1
             </a>
           </li>

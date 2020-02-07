@@ -34,12 +34,15 @@
     <table class="table">
       <thead>
         <th>
+          <div class="custom-control custom-checkbox ">
           <input
             type="checkbox"
-            id="checkboxSeleccionarTodo"
+            id="checkboxSeleccionarTodo"            
             v-model="seleccionTodos"
             v-on:change="seleccionarTodoPagos()"
+            class="custom-control-input"
           />
+          </div>
         </th>
         <th>Fecha</th>
         <th>Concepto</th>
