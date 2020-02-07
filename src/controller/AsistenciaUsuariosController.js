@@ -8,7 +8,7 @@ import { VueGoodTable } from 'vue-good-table';
 import COLUMNS_TABLE_ASISTENCIA_USUARIO_ENTRADA  from "../helpers/DatatableConfigAsistenciasUsuariosEntrada";
 import COLUMNS_TABLE_ASISTENCIA_USUARIO_SALIDA  from "../helpers/DatatableConfigAsistenciasUsuariosSalida";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
-
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "AsistenciaUsuarios",
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       usuarioSesion: {},
-      sesion: {},
+      //sesion: {},
       usuarioSeleccionado: {},
       usuarioAsistenciaSeleccionado: {},
       listaPorEntrar: [],                      
@@ -36,22 +36,15 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de asistencia de usuarios ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-    
+   
+   this.usuarioSesion = getUsuarioSesion();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
 
     this.loadFunctionPorEntrar = function () {
       this.loaderPorEntrar = true;
       this.get(
         URL.ASISTENCIA_USUARIO_POR_ENTRAR + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -65,7 +58,7 @@ export default {
       this.loaderPorSalir = true;
       this.get(
         URL.ASISTENCIA_USUARIO_POR_SALIR + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -92,7 +85,7 @@ export default {
         this.post(
           URL.ASISTENCIA_USUARIO_ENTRADA,
           { id:this.usuarioSeleccionado.id,comentario_entrada:this.comentario, genero: this.usuarioSesion.id },
-          this.sesion.token,
+          
           (result) => {            
             console.log("insertados " + result.data);
             if (result.data != null) {
@@ -118,7 +111,7 @@ export default {
       this.post(
         URL.ASISTENCIA_USUARIO_SALIDA,
         { id_asistencia:this.usuarioAsistenciaSeleccionado.id,comentario_salida:this.comentario, genero: this.usuarioSesion.id },
-        this.sesion.token,
+        
         (result) => {            
           console.log("insertados " + result.data);
           if (result.data != null) {

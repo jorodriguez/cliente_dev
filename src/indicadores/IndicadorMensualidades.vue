@@ -24,6 +24,7 @@
 import Popup from "../controller/Popup";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import { usuarioSesion, token } from "../helpers/Sesion";
 
 export default {
   name: "indicadores-mensualidad-vencer",
@@ -36,20 +37,22 @@ export default {
       listaMensualidades: [],
       loader: false,
       obtenerIndicadorMensualidad: null,
-      usuarioSesion:null
+      usuarioSesion: null
     };
   },
   mounted() {
     console.log("Inciando consulta de indicadores");
-     
-    this.usuarioSesion = this.sesion.usuario;
+
+    this.usuarioSesion = usuarioSesion;
 
     this.obtenerIndicadorMensualidad = function() {
-      console.log("@obtenerIndicadorMensualidad "+this.usuarioSesion.co_sucursal);
+      console.log(
+        "@obtenerIndicadorMensualidad " + this.usuarioSesion.co_sucursal
+      );
       this.loader = true;
       this.get(
         URL.MENSUALIDAD_VENCE_SEMANA_ACTUAL + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+
         results => {
           console.log(" MENSUALIDADADES A VENCER  " + results);
           if (results != null) {

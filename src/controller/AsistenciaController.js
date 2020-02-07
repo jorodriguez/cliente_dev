@@ -4,6 +4,7 @@ import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "Asistencia",
@@ -11,8 +12,7 @@ export default {
   components:{ItemCapsulaAlumno},
   data() {
     return {
-      usuarioSesion: {},
-      sesion: {},
+      usuarioSesion: {},      
       item: AlumnoModel,
       lista: [],
       listaSeleccion: [],
@@ -26,21 +26,13 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de asistencia ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+  
+    this.usuarioSesion = getUsuarioSesion();
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function () {
       console.log("Invocando LoadFuncion");
       this.get(
-        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,        
         (result) => {
           console.log("resultado "+JSON.stringify(result))
           this.response = result.data;
@@ -59,7 +51,7 @@ export default {
       this.listaRecibidos = [];
 
       this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("Consulta " + this.response);
@@ -121,7 +113,7 @@ export default {
         this.post(
           URL.ASISTENCIA_ENTRADA_ALUMNOS,
           { ids: ids, genero: this.usuarioSesion.id },
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             console.log("insertados " + this.response);
@@ -171,7 +163,7 @@ export default {
         this.post(
           URL.ASISTENCIA_SALIDA_ALUMNOS,
           { listaSalida: listaSalida, genero: this.usuarioSesion.id },
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             if (this.response != null) {

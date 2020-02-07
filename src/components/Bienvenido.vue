@@ -1,48 +1,19 @@
 
 <template>
-  <div id="app">
-    <!--position="top left" -->
-    <notifications group="notificacion_principal">
-      <!--<template slot="body" slot-scope="props">
-        <div>
-          <a class="title"><h5>{{props.item.title}}</h5></a>
-          <a class="close" @click="props.close">
-            <i class="fa fa-fw fa-close"></i>
-          </a>
-          <div v-html="props.item.text"></div>
-        </div>
-      </template>-->
-    </notifications>
-
-    <span class="text-left">
-      <MonitorRed></MonitorRed>
-    </span>
-<Login></Login>
-<!--
-    <button
-      id="id_notificador_principal"
-      type="button"      
-      data-toggle="modal"
-      data-target="#detalle_notificacion_principal"
-      
-    >      
-      <span id="texto_notificador_principal"></span>
-    </button>   -->
-
-    
-  <!--<MenuSidebar></MenuSidebar>           
+  <div id="bienvenido">
+    <MenuSidebar></MenuSidebar>
     <div class="main-content">
       <MenuEncabezado />
-      <Header/>
-      <div class="container-fluid">        -->
-        
-              <router-view />           
-        
-      <!--</div>      
+      <Header />
+      <div class="container-fluid">
+        <div class="col-xl-12 mb-12 mb-xl-0">
+          <router-view />
+        </div>
+      </div>
     </div>
--->
-    <!-- app principal -->
-   <!-- <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
+
+  <!-- app principal -->
+    <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
       <div slot="header">
         <p id="encabezado_notificador_principal"></p>
       </div>
@@ -56,7 +27,7 @@
       <div slot="footer"></div>
     </Popup>
 
-   
+    <!-- popup de expiracion de sesion -->
     <Popup id="popup_expiracion_sesion" size="md" show_button_close="false">
       <div slot="header">
         <p id="id_header_popup_expiracion_sesion"></p>
@@ -85,28 +56,27 @@
       </div>
       <div slot="footer"></div>
     </Popup>
-    -->
+
   </div>
 </template>
 
 <script>
-import Popup from "./controller/Popup";
-/*import MenuEncabezado from "./components/menuEncabezado";
-import MenuSidebar from "./components/menuSidebar";
-import Header from "./components/header";*/
-import MonitorRed from "./componentes_generales/MonitorRed";
-import Login from "./components/Login";
-import {usuarioSesion,clearSesion} from './helpers/Sesion';
+import Popup from "../controller/Popup";
+import MenuEncabezado from "../templates/menuEncabezado";
+import MenuSidebar from "../templates/menuSidebar";
+import Header from "../templates/header";
+import MonitorRed from "../componentes_generales/MonitorRed";
+import { usuarioSesion, clearSesion } from "../helpers/Sesion";
 
-export default {
+export default {  
   components: {
     Popup,
- /*   MenuSidebar,
+    MenuSidebar,
     MenuEncabezado,
-    Header,*/
+    Header,
     MonitorRed
   },
-  name: "App",
+  name: "Bienvenido",
   methods: {
     signout() {
       console.log("Signout ");
@@ -119,12 +89,3 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  /*color: #2c3e50; */
-}
-</style>

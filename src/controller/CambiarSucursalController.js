@@ -4,13 +4,15 @@ import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 
+import {getUsuarioSesion } from '../helpers/Sesion'
+
 export default {
   name: "cambiar-alumno-sucursal",
   mixins: [operacionesApi],
   data() {
     return {
       usuarioSesion: {},
-      sesion: {},
+      //sesion: {},
       listaSucursal: [],
       sucursal_seleccionada: { id: -1, nombre: "" },
       alumno: AlumnoModel,
@@ -21,14 +23,9 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente de cambio de sucursal ");
-    this.sesion = this.$session.get("usuario_sesion");
+ 
 
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+this.usuarioSesion = getUsuarioSesion();
 
     let id_alumno = this.$route.params.id_alumno;
 
@@ -42,7 +39,7 @@ export default {
 
       this.get(
         URL.ALUMNOS_BASE + "/id/" + id_alumno,
-        this.sesion.token,
+        
         (result) => {
           this.alumno = result.data;
           this.loadFunction();
@@ -52,7 +49,7 @@ export default {
 
         this.get(
           URL.SUCURSAL_BASE,
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             console.log("Consulta " + JSON.stringify(this.response));
@@ -85,7 +82,7 @@ export default {
           id_sucursal_destino: this.sucursal_seleccionada.id,
           genero: this.usuarioSesion.id
         },
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;          
           if (this.response != 0) {

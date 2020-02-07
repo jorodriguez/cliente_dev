@@ -1,6 +1,5 @@
 <template >
-  <nav
-    v-if="mostrarmenu"
+  <nav   
     class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"
     id="sidenav-main"
   >
@@ -168,22 +167,22 @@
 
 <script>
 import CONSTANTES from "../helpers/Constantes";
+import {usuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "menu-principal",
   components: {},
   data() {
-    return {
-      sesion: null,
-      usuarioSesion: null,
-      mostrarmenu: false,
+    return {      
+      usuarioSesion: null,      
       revisarSesionPromise: null,
       revisarSesion: null
     };
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.sesion = this.$session.get("usuario_sesion");
+    this.usuarioSesion = usuarioSesion;
+    /*this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;
 
     this.revisarSesionPromise = function() {
@@ -229,7 +228,7 @@ export default {
       this.$router.push("/");      
     });
 
-    this.revisarSesion();
+    this.revisarSesion();*/
   },
   methods: {
     

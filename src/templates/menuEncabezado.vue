@@ -1,6 +1,6 @@
 <template >
   <!-- Navbar -->
-  <nav v-if="mostrarmenu" class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
     <div class="bg-gradient-primary pb-6 pt-4 pt-md-2"> </div>
     <div class="container-fluid">
       <!-- Brand -->
@@ -85,21 +85,22 @@
 <script>
 import CONSTANTES from "../helpers/Constantes";
 import IndicadorMensualidades from "../indicadores/IndicadorMensualidades";
+import {usuarioSesion,clearSesion} from '../helpers/Sesion';
 
 export default {
   name: "sidebar-principal",
   components: { IndicadorMensualidades },
   data() {
     return {
-      usuarioSesion: {},
-      mostrarmenu: false,
+      usuarioSesion: {},      
       revisarSesionPromise: null,
       revisarSesion: null
     };
   },
   mounted() {
-    console.log("iniciando el template de menu");
-    this.mostrarmenu=false;
+    console.log("iniciando el template de menu");    
+    this.usuarioSesion =usuarioSesion;
+    /*this.mostrarmenu=false;
     this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;
 
@@ -145,14 +146,14 @@ export default {
       this.$router.push("/");      
     });
 
-    this.revisarSesion();
+    this.revisarSesion();*/
   },
   methods: {
     signout() {
       console.log("Signout ");
-      this.usuarioSesion = {};
-      this.mostrarmenu = false;
-      this.$session.clear();
+      this.usuarioSesion = null;      
+      //this.$session.clear();
+      clearSesion();
       this.$root.$emit("LOGOUT", "LOGOUT");
       this.$router.push("/");
     }

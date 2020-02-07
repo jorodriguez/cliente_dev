@@ -12,6 +12,7 @@ import Popup from './Popup';
 import { operacionesApi } from "../helpers/OperacionesApi";
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
     name: "perfil-alumno",
@@ -75,7 +76,7 @@ export default {
             uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
             response: "",
             mensaje: "",
-            sesion: {},
+           // sesion: {},
             loadFamiliaresFuncion: null,
             loadCatalogoParentescoFuncion: null,            
             loadValoresEsperadosFunction: null,
@@ -93,15 +94,7 @@ export default {
     mounted() {
         console.log("iniciando el componente Perfil alumno");
 
-        this.sesion = this.$session.get("usuario_sesion");
-
-        if (!this.sesion || !this.sesion.usuario) {
-            console.log("No tiene sesion");
-            this.$router.push("/");
-            return;
-        }
-
-        this.usuarioSesion = this.sesion.usuario;
+        this.usuarioSesion = getUsuarioSesion();
 
         this.id = this.$route.params.id;
 
@@ -115,7 +108,7 @@ export default {
 
             this.get(
                 this.uriTemp + "/id/" + this.id,
-                this.sesion.token,
+                
                 (result) => {
                     this.alumno = result.data;
                     if (this.alumno.formato_inscripcion == null)
@@ -131,7 +124,7 @@ export default {
 
                 this.get(
                     this.uriTempFamiliar + "/" + this.id,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         if (this.response != null) {
@@ -145,7 +138,7 @@ export default {
             this.loadCatalogoParentescoFuncion = () => {
                 this.get(
                     this.uriTempParentesco + "/" + this.id,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         console.log(" ======>>> "+JSON.stringify(this.response));
@@ -162,7 +155,7 @@ export default {
 
                 this.get(
                     this.uriTempServicios,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         if (this.response != null) {
@@ -177,7 +170,7 @@ export default {
             this.loadValoresEsperadosFunction = (id_formato) => {
                 this.get(
                     this.uriTempValoresEsperados + "/" + id_formato,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         if (this.response != null) {
@@ -194,7 +187,7 @@ export default {
 
                 this.get(
                     this.uriTempGrupos,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         console.log("Grupos " + this.response);
@@ -209,7 +202,7 @@ export default {
             this.loadFunctionPosiblesFamiliares = function (id_parentesco,apellidos_alumno,id_sucursal) {
                 this.get(
                     this.uriTempFamiliar+"/"+id_parentesco+"/"+apellidos_alumno+"/"+id_sucursal,
-                    this.sesion.token,
+                    
                     (result) => {
                         this.response = result.data;
                         console.log("Posibles padres " + this.response);
@@ -246,7 +239,7 @@ export default {
             this.put(
                 this.uriTemp + "/" + this.alumno.id, 
                 this.alumno,
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
 
@@ -269,7 +262,7 @@ export default {
             this.put(
                 this.uriTemp + "/fecha_limite_pago/" + this.alumno.id, 
                 this.alumno,
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
 
@@ -331,7 +324,7 @@ export default {
         confirmarResetClave(){
             this.get(
                 this.uriTempResetClaveFamiliar + "/" + this.familiar.id, 
-                this.sesion.token,
+                
                 result => {
                     this.response = result.data;
                     if (this.response != null) {
@@ -366,7 +359,7 @@ export default {
             this.post(
                 this.uriTempFamiliar + "/" + this.alumno.id, 
                 this.familiar,
-                this.sesion.token,
+                
                 (result) => {
                     let respuesta = result.data;
                     console.log(JSON.stringify(respuesta));
@@ -400,7 +393,7 @@ export default {
             this.put(
                 this.uriTempFamiliar + "/" + this.familiar.id,
                 this.familiar,
-                this.sesion.token,
+                
                 (result) => {                                       
                     if (result.data != null) {
                         console.log("" + this.response);
@@ -422,7 +415,7 @@ export default {
             this.put(
                 this.uriTempFamiliar + "/eliminar/" + this.familiar.id_relacion,
                 this.familiar,
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
 
@@ -470,7 +463,7 @@ export default {
             this.post(
                 this.uriTempDatosFacturacion, 
                 this.datos_facturacion,
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
 
@@ -510,7 +503,7 @@ export default {
             this.put(
                 this.uriTempDatosFacturacion,  
                 { id_alumno :this.id ,factura : this.alumno.factura,genero:this.usuarioSesion.id},
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
 

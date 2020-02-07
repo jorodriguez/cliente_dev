@@ -4,6 +4,7 @@ import URL from "../helpers/Urls";
 import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import {en, es} from 'vuejs-datepicker/dist/locale'
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "Alumno",
@@ -31,19 +32,13 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente alumno ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+   
+    this.usuarioSesion = getUsuarioSesion();
 
     console.log("Cargando lista alumno");
     this.loadFunction = function () {
       this.get(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("Consulta " + this.response);
@@ -58,7 +53,7 @@ export default {
 
     this.loadFunctionGrupos = function () {
       this.get(URL.GRUPOS_BASE,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("Grupos " + this.response);
@@ -113,7 +108,7 @@ export default {
 
       this.post(URL.ALUMNOS_BASE,
         this.input,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("this.response " + this.response);
@@ -135,7 +130,7 @@ export default {
 
       this.put(URL.ALUMNOS_BASE + "/" + this.input.id,
         this.input, 
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -153,7 +148,7 @@ export default {
       console.log("Modificar el id " + this.input.id);
       
       this.remove(URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.sesion.token,
+        
         (result) => {      
           console.log(" "+result.data);    
           if ( result.data != null) {

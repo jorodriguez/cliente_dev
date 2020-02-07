@@ -1,18 +1,7 @@
 <template>
   <div class="cat_alumno container">
     <h1>Balances</h1>
-    <small class="font-weight-bold h6">
-      {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-      <button
-        type="button"
-        class="btn btn-sm btn-warning"
-        v-on:click="signout()"
-      >
-        <i class="fas fa-power-off" v-on:click="signout()"></i>
-      </button>
-    </small>
-    <br />
-
+    
     <div class="row text-right">
       <div class="col align-self-end">
         <router-link

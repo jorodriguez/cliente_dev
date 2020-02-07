@@ -3,7 +3,7 @@ import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import { GChart } from "vue-google-charts";
-
+import {usuarioSesion,token} from '../helpers/Sesion';
 
 //https://vuejsexamples.com/vuejs-functional-calendar-component/
 export default {
@@ -50,21 +50,21 @@ export default {
       load: null,
       numero_mes: "",
       mensaje: "",
-      sesion: null,
+    //  sesion: null,
       usuarioSesion: null
     };
   },
   mounted() {
     console.log("iniciando el componente grafica de asistencia alumno ");
-    this.sesion = this.$session.get("usuario_sesion");
+    /*this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
       console.log("No tiene sesion");
       this.$router.push("/");
       return;
     }
-    this.usuarioSesion = this.sesion.usuario;
-
+    this.usuarioSesion = this.sesion.usuario;*/
+this.usuarioSesion =usuarioSesion;
     if (!this.idalumno) {
       console.log("No existe la propiedad de idalumno");
 
@@ -74,7 +74,7 @@ export default {
       this.get(
         //URL.ASISTENCIA_REPORTE_POR_ALUMNO +`/${this.idalumno}/${this.numero_mes}`,
         URL.ASISTENCIA_REPORTE_MES_ALUMNO + `${this.idalumno}`,
-        this.sesion.token,
+        
         (result) => {
           try {
             if (result.data != null) {

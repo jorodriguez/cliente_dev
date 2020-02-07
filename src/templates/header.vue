@@ -1,11 +1,12 @@
 <template >
 
-    <div v-if="mostrarmenu"  class="bg-gradient-primary pb-6 pt-4 pt-md-2"> </div>
+    <div class="bg-gradient-primary pb-6 pt-4 pt-md-2"> </div>
 
 </template>
 
 <script>
 import CONSTANTES from "../helpers/Constantes";
+import {usuarioSesion,token} from '../helpers/Sesion';
 
 export default {
   name: "sidebar-principal",
@@ -19,8 +20,9 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.mostrarmenu=false;
-    this.sesion = this.$session.get("usuario_sesion");
+    this.mostrarmenu= (usuarioSesion != null);
+    
+    /*this.sesion = this.$session.get("usuario_sesion");
     this.usuarioSesion = this.sesion.usuario;
     this.revisarSesionPromise = function() {
       this.sesion = this.$session.get("usuario_sesion");
@@ -61,7 +63,7 @@ export default {
       this.mostrarmenu = false;
     });
 
-    this.revisarSesion();
+    this.revisarSesion();*/
   },
   methods: {}
 };

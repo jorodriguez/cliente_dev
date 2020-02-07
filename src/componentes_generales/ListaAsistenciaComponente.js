@@ -6,6 +6,7 @@ import { VueGoodTable } from 'vue-good-table';
 import COLUMNS_TABLE_ASISTENCIA_ALUMNO  from "../helpers/DatatableAlumnoAsistencia";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { GChart } from "vue-google-charts";
+import {usuarioSesion,token} from '../helpers/Sesion';
 
 export default {
   name: "lista-asistencia-alumno",
@@ -40,21 +41,21 @@ export default {
       load: null,
       numero_mes: "",
       mensaje: "",
-      sesion: null,
+      //sesion: null,
       usuarioSesion: null
     };
   },
   mounted() {
     console.log("iniciando el componente lista de asistencia alumno ");
-    this.sesion = this.$session.get("usuario_sesion");
+    /*this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
       console.log("No tiene sesion");
       this.$router.push("/");
       return;
     }
-    this.usuarioSesion = this.sesion.usuario;
-
+    this.usuarioSesion = this.sesion.usuario;*/
+this.usuarioSesion=usuarioSesion;
     if (!this.idalumno) {
       console.log("No existe la propiedad de idalumno");
 
@@ -63,7 +64,7 @@ export default {
     this.load = () => {
       this.get(        
         URL.ASISTENCIA_REPORTE_POR_ALUMNO + `${this.idalumno}`,
-        this.sesion.token,
+        
         (result) => {
           if (result.data != null) {
             this.lista = result.data;                        

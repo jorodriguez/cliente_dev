@@ -1,7 +1,7 @@
 
 import URL from "../helpers/Urls";
 import CONSTANTES from "../helpers/Constantes";
-
+import {setSession,setToken} from '../helpers/Sesion';
 
 export default {
   name: "Login",
@@ -43,18 +43,21 @@ export default {
           this.response = result.data;
           this.loading = false;
           if (this.response.auth) {
-            this.$session.set("usuario_sesion", this.response);
-            this.$session.set("jwt", this.response.token);
+            setSession(this.response);
+            setToken(this.response.token);           
+           
             console.log("JSON " + JSON.stringify(this.response));
             if (this.response.usuario.permiso_gerente) {
               console.log("Mandar evento para admin");              
-              this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN_ADMIN);
-              this.$router.replace({ path: "/ReporteAdmin" });              
+              //this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN_ADMIN);
+              this.$router.push({ path: "/ReporteAdmin" });
+              //this.$router.replace({ path: "/ReporteAdmin" });              
             } else {
               console.log("Mandar evento para usuario general");              
               console.log("MENSAJE "+CONSTANTES.EVENTO_LOGIN);
-              this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN);
-              this.$router.replace({ path: "/principal" });              
+              //this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN);
+              //this.$router.replace({ path: "/principal" });              
+              this.$router.push({ path: "/principal" });
             }
 
           } else {
