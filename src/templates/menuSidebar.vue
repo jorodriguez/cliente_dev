@@ -1,6 +1,7 @@
 <template >
   <nav   
-    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"
+    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light "    
+    style="background-color:powderblue;"
     id="sidenav-main"
   >
     <div class="container-fluid">

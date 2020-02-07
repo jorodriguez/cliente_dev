@@ -1,6 +1,6 @@
 <template >
 
-    <div class="bg-gradient-primary pb-6 pt-4 pt-md-2"> </div>
+    <div class="bg-gradient-primary pb-6 pt-4 pt-md-2" > </div>
 
 </template>
 
