@@ -50,6 +50,49 @@ export default {
       response: "",
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,  
+      /*columnsAlumnos: [
+        {
+          label: 'Id',
+          field: 'id',
+          hidden: true
+        },
+        {
+          label: '',
+          field: 'foto',
+          filterable: false,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Alumno',
+          field: 'nombre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Apellidos',
+          field: 'apellidos',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Adeuda',
+          field: 'total_adeudo',                   
+        },
+        {
+          label:"cargos",
+          field:"cargos_array"
+        },
+        
+        {
+          label: 'Adeuda',
+          field: 'adeuda',         
+          hidden: true
+        },
+          
+      ]*/
       columnsAlumnos: [
         {
           label: 'Id',
@@ -82,6 +125,11 @@ export default {
           field: 'total_adeudo',                   
         },
         {
+          label:"cargos",
+          field:"cargos_array"
+        },
+        
+        {
           label: 'Adeuda',
           field: 'adeuda',         
           hidden: true
@@ -111,7 +159,7 @@ export default {
         this.uriTempBalanceSucursal,
         this.sesion.token,
         (result) => {
-          console.log("Consulta " + result.data);
+          console.log("Consulta " + result.data);          
           if (result.data != null) {
             this.listaBalanceSucursal = result.data;
           }
@@ -129,6 +177,7 @@ export default {
           (result) => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
+              console.log(JSON.stringify(result.data[0]));
               this.listaBalancesAlumnosPorSucursal = result.data;
             }
           }

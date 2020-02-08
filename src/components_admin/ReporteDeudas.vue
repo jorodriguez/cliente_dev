@@ -121,7 +121,7 @@
             <vue-good-table
               :columns="columnsAlumnos"
               :rows="listaBalancesAlumnosPorSucursal"
-              :line-numbers="true"                            
+              :line-numbers="true"
               :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
               :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
               :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
@@ -155,9 +155,24 @@
                     v-on:click="verPerfil(props.row)"
                   />
                 </span>
+                <span v-else-if="props.column.field == 'cargos_array'">
+                  <table>
+                    <tr
+                      v-for="row in props.row.cargos_array"
+                      :key="row.id"
+                      class="text-left"
+                    >
+                      <td>{{row.nombre_cargo}}</td>
+                      <td>${{row.total_adeudo}}</td>
+                    </tr>
+                  </table>
+                </span>
                 <span v-else-if="props.column.field == 'total_adeudo'">
-                    <span v-if="props.row.total_adeudo > 0" class="text-danger">${{ props.row.total_adeudo }}</span>
-                    <span v-else>${{ props.row.total_adeudo }}</span>
+                  <span
+                    v-if="props.row.total_adeudo > 0"
+                    class="text-danger"
+                  >${{ props.row.total_adeudo }}</span>
+                  <span v-else>${{ props.row.total_adeudo }}</span>
                 </span>
 
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>
