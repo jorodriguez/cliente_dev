@@ -119,14 +119,15 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+        },      
+        {
+          label:"Adeuda",
+          field:"cargos_array",
+          
         },
         {
-          label: 'Adeuda',
+          label: 'Total',
           field: 'total_adeudo',                   
-        },
-        {
-          label:"cargos",
-          field:"cargos_array"
         },
         
         {
@@ -312,6 +313,7 @@ export default {
   methods: {
     verDetalleDeudasSucursal(row) {
       this.sucursal_seleccionada = row;
+      console.log("===== "+JSON.stringify(this.sucursal_seleccionada));
       this.id_sucursal_seleccionada = row.id;
       this.loadFunctionBalancesAlumnosPorSucursal();
     },

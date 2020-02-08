@@ -91,9 +91,6 @@
                   v-bind:style="{'background-color':row.class_color}"
                 >
                   <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                    <!--div class="rotate">
-                                <i class="fa fa-user fa-3x"></i>
-                    </div>-->
                     <h6 class="text-uppercase">{{row.nombre}}</h6>
                     <small>Pendiente</small>
 
@@ -117,6 +114,25 @@
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
+            <br/>
+            <div class="row">
+              <div
+                v-for="desglose in sucursal_seleccionada.array_desglose_cargos"
+                :key="desglose.id"
+                class="col border"
+              >
+                <small
+                  v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
+                >
+                  <!--${{ formatPrice(desglose.total_cargos_pendiente_desglose)}} de-->
+                  {{desglose.tipo_cargo}}
+                  <span
+                    class="badge badge-light"
+                  >{{desglose.cargos_pendientes_pago}}</span>
+                </small>
+              </div>
+            </div>
+            <br/>
 
             <vue-good-table
               :columns="columnsAlumnos"
@@ -156,16 +172,17 @@
                   />
                 </span>
                 <span v-else-if="props.column.field == 'cargos_array'">
-                  <table>
-                    <tr
-                      v-for="row in props.row.cargos_array"
-                      :key="row.id"
-                      class="text-left"
-                    >
-                      <td>{{row.nombre_cargo}}</td>
-                      <td>${{row.total_adeudo}}</td>
-                    </tr>
-                  </table>
+                  <ul v-if="props.row.existen_cargos_adeuda">
+                    <li v-for="row in props.row.cargos_array" :key="row.id" class="text-left">
+                      <strong>${{row.total_adeudo}}</strong>
+                      {{row.nombre_cargo}} {{row.texto_ayuda}}
+                      <span v-if="row.texto_ayuda">'{{row.anio}}</span>
+                      <span v-if="row.total_pagado_cargo > 0" class="text-info">
+                        (Abonó
+                        <strong>${{row.total_pagado_cargo}}</strong>)
+                      </span>
+                    </li>
+                  </ul>
                 </span>
                 <span v-else-if="props.column.field == 'total_adeudo'">
                   <span
@@ -368,7 +385,7 @@
                   <tr class="text-left">
                     <td>
                       <img
-                        src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                        :src="row.foto"
                         width="50"
                         height="50"
                         alt="..."
