@@ -36,6 +36,8 @@ export default {
       gasto_mensual: 0,
       item: AlumnoModel,
       id_sucursal_seleccionada: -1,
+      id_tipo_cargo_seleccionado : -1,
+      tipo_cargo_seleccionado :{id:-1,nombre:""},
       sucursal_seleccionada: { id_sucursal: -1, nombre: '' },
       sucursal_seleccionada_crecimiento: { id_sucursal: -1, nombre: '' },
       listaBalanceSucursal: [],
@@ -46,7 +48,7 @@ export default {
       listaCrecimientoGlobal: [],
       listaCrecimientoMensualSucursal: [],
       reporteIngresoMenosGastos: null,
-      alumno_seleccionado: { id: 0, nombre: "" },
+      alumno_seleccionado: { id: 0, nombre: "" },      
       response: "",
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,  
@@ -172,13 +174,17 @@ export default {
 
       if (this.id_sucursal_seleccionada != -1) {
 
+        if(this.id_tipo_cargo_seleccionado == undefined || this.id_tipo_cargo_seleccionado == null){
+            this.id_tipo_cargo_seleccionado = -1;
+        }
+
         this.get(
-          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada,
+          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada+"/"+this.id_tipo_cargo_seleccionado,
           this.sesion.token,
           (result) => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
-              console.log(JSON.stringify(result.data[0]));
+              //console.log(JSON.stringify(result.data[0]));
               this.listaBalancesAlumnosPorSucursal = result.data;
             }
           }
@@ -311,10 +317,23 @@ export default {
 
   },
   methods: {
-    verDetalleDeudasSucursal(row) {
-      this.sucursal_seleccionada = row;
-      console.log("===== "+JSON.stringify(this.sucursal_seleccionada));
+    verDetalleDeudasSucursal(row) {    
+      this.sucursal_seleccionada = row;      
       this.id_sucursal_seleccionada = row.id;
+      this.id_tipo_cargo_seleccionado = -1;
+      console.log("sucursal seleccionada "+this.sucursal_seleccionada.nombre);
+      this.loadFunctionBalancesAlumnosPorSucursal();
+    },
+    verDetalleDeudasSucursalYTipoCargo(row) {        
+      console.log(JSON.stringify(row));
+      this.tipo_cargo_seleccionado = row;    
+      this.id_tipo_cargo_seleccionado = row.id_cargo;
+      this.loadFunctionBalancesAlumnosPorSucursal();
+    },
+    verDetalleDeudasSucursalYTipoCargoChange() {              
+      //this.tipo_cargo_seleccionado = row;    
+      //this.id_tipo_cargo_seleccionado = row.id_cargo;
+      console.log("this.id_tipo_cargo_seleccionado  "+this.id_tipo_cargo_seleccionado );
       this.loadFunctionBalancesAlumnosPorSucursal();
     },
     verDetalleCrecimientoSucursal(row) {

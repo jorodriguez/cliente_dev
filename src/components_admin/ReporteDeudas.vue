@@ -114,25 +114,50 @@
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
-            <br/>
-            <div class="row">
+            <br />
+            <!--<div class="row">
               <div
                 v-for="desglose in sucursal_seleccionada.array_desglose_cargos"
                 :key="desglose.id"
-                class="col border"
+                class="col-sm-4 py-1 mx-auto border"
               >
-                <small
+                <div
+                  class="card  h-100 pointer sucursal-item-hover hover"
+                  @click="verDetalleDeudasSucursalYTipoCargo(desglose)"
                   v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
                 >
-                  <!--${{ formatPrice(desglose.total_cargos_pendiente_desglose)}} de-->
-                  {{desglose.tipo_cargo}}
-                  <span
-                    class="badge badge-light"
-                  >{{desglose.cargos_pendientes_pago}}</span>
-                </small>
+                  <div class="card-body">
+                    <p >{{desglose.tipo_cargo}}</p>
+                    <span class="badge badge-light">{{desglose.cargos_pendientes_pago}}</span>
+                  </div>
+                  <h6>Ver</h6>
+                </div>                
+              </div>              
+            </div>-->
+            <div class="row">
+              <div class="col-auto mr-auto"></div>
+              <div class="col-auto">
+                <select
+                  v-model="id_tipo_cargo_seleccionado"
+                  class="form-control"
+                  placeholder="Filtrar"
+                  @change="verDetalleDeudasSucursalYTipoCargoChange()"
+                >
+                  <option v-bind:value="-1" v-bind:key="-1">Todos los cargos</option>
+                  <option
+                    v-for="desglose in sucursal_seleccionada.array_desglose_cargos"
+                    v-bind:value="desglose.id_cargo"
+                    v-bind:key="desglose.id_cargo"
+                  >
+                    {{desglose.tipo_cargo}}
+                    <strong>
+                      <span class="text-danger">({{ desglose.cargos_pendientes_pago }})</span>
+                    </strong>
+                  </option>
+                </select>
               </div>
             </div>
-            <br/>
+            <br />
 
             <vue-good-table
               :columns="columnsAlumnos"
@@ -162,6 +187,7 @@
                 </span>
 
                 <span v-else-if="props.column.field == 'foto'">
+                  {{props.row.id}}
                   <img
                     :src="props.row.foto != '' ? props.row.foto :'https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg' "
                     width="50"
@@ -176,7 +202,9 @@
                     <li v-for="row in props.row.cargos_array" :key="row.id" class="text-left">
                       <strong>${{row.total_adeudo}}</strong>
                       {{row.nombre_cargo}} {{row.texto_ayuda}}
-                      <span v-if="row.texto_ayuda">'{{row.anio}}</span>
+                      <span
+                        v-if="row.texto_ayuda"
+                      >'{{row.anio}}</span>
                       <span v-if="row.total_pagado_cargo > 0" class="text-info">
                         (Abonó
                         <strong>${{row.total_pagado_cargo}}</strong>)
