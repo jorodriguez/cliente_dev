@@ -12,6 +12,7 @@ import Popup from './Popup';
 import { operacionesApi } from "../helpers/OperacionesApi";
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
+import {validacionCorreo} from "../helpers/ValidacionUtils"
 
 export default {
     name: "perfil-alumno",
@@ -239,10 +240,10 @@ export default {
                 return;
             }           
             //validacion anexa
-            if(!validacionFechaLimitePagoAlumno(this.alumno)){
+           /* if(!validacionFechaLimitePagoAlumno(this.alumno)){
                 console.log("No paso la validacion de fecha limite de pago");
                 return;
-            }
+            }*/
 
             this.alumno.genero = this.usuarioSesion.id;
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
@@ -310,7 +311,7 @@ export default {
         },
         confirmarResetClave(){
             this.get(
-                this.uriTempResetClaveFamiliar + "/" + this.familiar.id, 
+                this.uriTempResetClaveFamiliar + "/" + this.familiar.id+"/"+this.usuarioSesion.co_sucursal, 
                 this.sesion.token,
                 result => {
                     this.response = result.data;
@@ -334,13 +335,21 @@ export default {
             ) {
                 //this.mensaje = "Escribe los valores requeridos";
                 //this.mensajeToast("Escribe los valores requeridos");
-                this.$notificacion.info('Validación', 'Escribe los valores requeridos.');
+                this.$notificacion.error('Validación', 'Escribe los valores requeridos.');
                 return;
             }
+
+            if(!validacionCorreo(this.familiar.correo)){
+                this.$notificacion.error('Formato de Correo', 'Escribe un correo válido');
+                return;
+            }
+
 
             this.familiar.genero = this.usuarioSesion.id;
             this.familiar.co_parentesco = this.co_parentesco_seleccionado.id;
             this.familiar.cat_genero = this.co_parentesco_seleccionado.cat_genero_default;
+            this.familiar.id_sucursal = this.usuarioSesion.co_sucursal;
+
             console.log("== " + JSON.stringify(this.familiar));
 
             this.post(
@@ -371,11 +380,16 @@ export default {
                 this.familiar.correo == "" 
             ) {
                // this.mensajeToast("Escribe los valores requeridos");
-                this.$notificacion.info('Validación', 'Escribe los valores requeridos.');
+                this.$notificacion.error('Validación', 'Escribe los valores requeridos.');
                
                 return;
             }
             this.familiar.genero = this.usuarioSesion.id;
+
+            if(!validacionCorreo(this.familiar.correo)){
+                this.$notificacion.error('Formato de Correo', 'Escribe un correo válido');
+                return;
+            }
 
             this.put(
                 this.uriTempFamiliar + "/" + this.familiar.id,

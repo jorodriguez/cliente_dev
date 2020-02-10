@@ -68,6 +68,7 @@
                 class="small tachado"
               >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}} {{row.texto_ayuda != null ? row.texto_ayuda:''}}</span>
             </button>            
+            
           </td>
           <td>
             <strong>
@@ -455,7 +456,7 @@
                 <td>
                   <span
                     v-if="!cargoSeleccionado.pagado"
-                  >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}} {{texto_ayuda != null ? texto_ayuda:'' }}</span>
+                  >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}} {{cargoSeleccionado.texto_ayuda != null ? cargoSeleccionado.texto_ayuda:'' }}</span>
                   <span
                     v-else-if="cargoSeleccionado.pagado"
                     class="tachado"

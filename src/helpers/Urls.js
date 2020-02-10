@@ -3,6 +3,7 @@
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
 const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
+
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
 const BALANCE_BASE = BASE +'/balance';
