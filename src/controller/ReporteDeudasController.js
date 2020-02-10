@@ -313,7 +313,7 @@ export default {
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
     this.loadFunctionCrecimientoGlobal();
-    this.loadFunctionGastoMensual();
+    //this.loadFunctionGastoMensual();
 
   },
   methods: {
