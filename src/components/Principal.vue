@@ -1,7 +1,9 @@
 <template>
   <div class="principal">
+
     <h1>Asistencias</h1>  
     <div class="row">
+
       <button
         type="button"
         data-toggle="modal"
