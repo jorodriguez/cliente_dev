@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Lista de Asistencia</h1>      
-      (<small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
+    <h1>Lista de Asistencia</h1>            
     <div class="text-left">      
       <router-link to="/Asistencia" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>

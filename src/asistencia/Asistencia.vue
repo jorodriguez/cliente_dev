@@ -46,8 +46,7 @@
                   type="button"
                   class="btn btn-link btn-xs text-white"
                   v-on:click="removeToList(item)"
-                >
-                {{item.id}}
+                >                
                   <span class="badge badge-pill badge-danger">x</span>
                 </button>
               </span>
@@ -70,7 +69,7 @@
         >Todos</span>      
         <a                    
           :style="grupoItem.color != null ? 'background-color:'+grupoItem.color: ''"
-          class="badge badge-pill"
+          :class="grupoItem.color != null ? 'badge badge-pill':'badge badge-pill badge-info' "
           v-for="grupoItem in listaFiltroGrupos"
           v-bind:key="grupoItem.id"
           v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
