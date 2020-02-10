@@ -1,8 +1,7 @@
 <template>
   <div class="principal">
     <h1>Asistencias</h1>    
-    
-  
+ 
     <div class="row"></div>
 
     <!--<div class=" scroll-panel-salida-div bg-light rounded border">-->

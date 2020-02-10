@@ -54,6 +54,7 @@ export default {
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,
      /* columnsAlumnos: [
+
         {
           label: 'Id',
           field: 'id',
