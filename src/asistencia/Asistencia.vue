@@ -60,21 +60,21 @@
     <div class="border" />
     <div class="border" />
     <!--<div class="container jumbotron m-1">-->    
-    <div class="card border" style="background-color:#E9E9E9;">      
+    <div class="card " style="background-color:#E9E9E9;">            
       <h4><strong>{{grupoSeleccionado.nombre}}</strong></h4>
-      <div class="col-sm" >
+      <div >
         <span
           :style="grupoDefault.color != null ? 'background-color:'+grupoDefault.color: ''"
-          class="badge badge-info text-wrap"
+          class="badge badge-pill"
           v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
-        >Todos</span>
-        <button                    
+        >Todos</span>      
+        <a                    
           :style="grupoItem.color != null ? 'background-color:'+grupoItem.color: ''"
-          class="badge badge-info text-wrap"
+          class="badge badge-pill"
           v-for="grupoItem in listaFiltroGrupos"
           v-bind:key="grupoItem.id"
           v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
-        >{{grupoItem.nombre}}</button>
+        >{{grupoItem.nombre}}</a>
       </div>
     </div>
 

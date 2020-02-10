@@ -65,6 +65,12 @@
   <!--<link rel="manifest" crossorigin="use-credentials" href="%PUBLIC_URL%/manifest.json" />-->
 
   <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
+  <script>
+  $("#menu-toggle").click(function(e) {
+  e.preventDefault();
+  $("#sidenav-main").toggleClass("toggle");
+});
+  </script>
 
   <title>Magic</title>
 </head>
@@ -72,6 +78,7 @@
 
 <body>
  
+
     <div id="app"></div>
     <!--
     <script src="/static/js/core/jquery-3.3.1.slim.min.js"></script>

@@ -1,9 +1,9 @@
 <template >
   <!-- Navbar -->
-  <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <nav id="navbar-main" class="navbar navbar-top navbar-expand-md navbar-dark fixed-top" >
     <div class="container-fluid">
       <!-- Brand -->
-      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">User prof</a>
+      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#"></a>      
       <!-- Form -->
       <div class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
         <div class="form-group mb-0"></div>
@@ -69,54 +69,7 @@ export default {
   mounted() {
     console.log("iniciando el template de menu");
     this.usuarioSesion = getUsuarioSesion();
-    /*this.mostrarmenu=false;
-    this.sesion = this.$session.get("usuario_sesion");
-    this.usuarioSesion = this.sesion.usuario;
-
-    this.revisarSesionPromise = function() {
-      this.sesion = this.$session.get("usuario_sesion");
-      this.usuarioSesion = this.sesion.usuario;
-      var thus = this;
-      return new Promise(function(resolve, reject) {
-        if (!thus.sesion || !thus.sesion.usuario) {
-          //reject(false);
-          console.log("no hay sesion ");
-        } else {
-          let usuarioSesion =
-            thus.sesion.usuario != null && thus.sesion.usuario != undefined;
-          console.log("sesion ok " + usuarioSesion);
-          resolve(usuarioSesion);
-        }
-      });
-    };
-
-    this.revisarSesion = function() {
-      this.revisarSesionPromise()
-        .then(enSesion => {
-          console.log("USUARIO EN SESION " + enSesion);
-          this.mostrarmenu = enSesion;
-        })
-        .catch(e => {
-          console.log("USUARIO SIN SESION " + e);
-          this.mostrarmenu = false;
-        });
-    };
-
-    this.$root.$on("loginEnter", text => {
-      console.log("loginEnter %%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + text);
-      this.revisarSesion();
-    });
-
-    this.$root.$on("LOGOUT", text => {
-      console.log("LOGOUT %%%%%%%%%%%%%%%%%%%%%%%%%LOGOUT " + text);
-      this.usuarioSesion = {};
-      this.mostrarmenu = false;      
-      this.$session.clear();
-      this.$router.push("/");      
-    });
-
-    this.revisarSesion();*/
-  },
+     },
   methods: {
     signout() {
       console.log("Signout ");

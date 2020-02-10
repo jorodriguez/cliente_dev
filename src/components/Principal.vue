@@ -1,25 +1,12 @@
 <template>
   <div class="principal">
-    <h1>Asistencias</h1>  
-    <div class="row">
-      <button
-        type="button"
-        data-toggle="modal"
-        class="btn btn-success btn-lg"
-        v-on:click="initRegistroActividad()"
-      >Actividad</button>
-    </div>
-    <!--<router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
-      <router-link
-        to="/AsistenciasUsuarios"
-        class="btn btn-lg btn-danger"
-        style="background-color:#ea0075"
-      >Asistencia/Miss</router-link>
-    </div>
-    -->
+    <h1>Asistencias</h1>    
+    
+  
     <div class="row"></div>
 
-    <div class=" scroll-panel-salida-div bg-light rounded border">
+    <!--<div class=" scroll-panel-salida-div bg-light rounded border">-->
+      <div class="scroll-panel-salida-div rounded border">
       <div class="row">
         <div class="col text-left">
           <div class="dropdown">
@@ -57,6 +44,17 @@
         </div>
         <div class="col text-right">
           <div class="btn-group" role="group" aria-label="Basic example">
+              <button
+                type="button"
+                data-toggle="modal"
+                class="btn btn-success rounded"
+                v-on:click="initRegistroActividad()"
+                title="Registrar una actividad"
+              >
+              <i class="fas fa-bullhorn"></i>
+              Actividad
+              </button>
+    
             <button
               type="button"
               class="btn btn-warning rounded"
@@ -153,7 +151,7 @@
         <!-- <form class="needs-validation" novalidate>-->
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Registro de Actividad</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-bullhorn"></i> Registro de Actividad</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -419,6 +417,8 @@
 .scroll-panel-salida-div {
   width: 100%;
   height: 600px;
+  padding-left: 15px;
+  padding-right: 15px;
   /*overflow-y: scroll;*/
   overflow-y: hidden;
 }

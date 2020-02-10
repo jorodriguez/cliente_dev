@@ -166,6 +166,7 @@ export default {
     };
 
     this.loadFunctionBalancesAlumnosPorSucursal = function () {
+      console.log("@loadFunctionBalancesAlumnosPorSucursal");
 
       if (this.id_sucursal_seleccionada != -1) {
 
@@ -174,8 +175,7 @@ export default {
         }
 
         this.get(
-          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada+"/"+this.id_tipo_cargo_seleccionado,
-          this.sesion.token,
+          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada+"/"+this.id_tipo_cargo_seleccionado,          
           (result) => {
             console.log("Consulta " + result.data);
             if (result.data != null) {

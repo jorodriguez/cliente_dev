@@ -1,6 +1,7 @@
 <template >
   <nav   
     class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"        
+    v-if="mostrarSideBar"
     id="sidenav-main"
   >
     <div class="container-fluid">
@@ -61,14 +62,14 @@
           </a>
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
             <div class="dropdown-header noti-title">
-              <h6 class="text-overflow m-0">Welcome!</h6>
+               <h6 class="text-overflow m-0">Hola!</h6>
             </div>
 
             <div class="dropdown-divider"></div>
-            <a href="#!" class="dropdown-item">
-              <i class="ni ni-user-run"></i>
-              <span>Logout</span>
-            </a>
+            <a class="dropdown-item" @click="signout()">
+               <i class="fa fa-sign-out-alt"></i>
+               <span class="text-red">Salir</span>
+            </a>  
           </div>
         </li>
       </ul>
@@ -145,8 +146,8 @@
           <li class="nav-item">
             <router-link
               to="/AsistenciasUsuarios"
-              class="btn btn-block btn-danger"
-              style="background-color:#ea0075"
+              class="btn btn-block btn btn-outline-default"
+              
             >Asistencia/Miss</router-link>
           </li>
         </ul>
@@ -172,63 +173,25 @@ export default {
   data() {
     return {      
       usuarioSesion: null,      
-      revisarSesionPromise: null,
-      revisarSesion: null
+      mostrarSideBar:true      
     };
   },
   mounted() {
     console.log("iniciando el template de menu");
-    this.usuarioSesion = getUsuarioSesion() ;
-    /*this.sesion = this.$session.get("usuario_sesion");
-    this.usuarioSesion = this.sesion.usuario;
+    this.usuarioSesion = getUsuarioSesion();
 
-    this.revisarSesionPromise = function() {
-      this.sesion = this.$session.get("usuario_sesion");
-      this.usuarioSesion = this.sesion.usuario;
-      var thus = this;
-      return new Promise(function(resolve, reject) {
-        if (!thus.sesion || !thus.sesion.usuario) {
-          //reject(false);
-          console.log("no hay sesion ");
-        } else {
-          let usuarioSesion =
-            thus.sesion.usuario != null && thus.sesion.usuario != undefined;
-          console.log("sesion ok " + usuarioSesion);
-          resolve(usuarioSesion);
-        }
-      });
-    };
-
-
-    this.revisarSesion = function() {
-      this.revisarSesionPromise()
-        .then(enSesion => {
-          console.log("USUARIO EN SESION " + enSesion);
-          this.mostrarmenu = enSesion;
-        })
-        .catch(e => {
-          console.log("USUARIO SIN SESION " + e);
-          this.mostrarmenu = false;
-        });
-    };
-
-    this.$root.$on("loginEnter", text => {
-      console.log("loginEnter %%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + text);
-      this.revisarSesion();
-    });
-
-    this.$root.$on("LOGOUT", text => {
-      console.log("LOGOUT %%%%%%%%%%%%%%%%%%%%%%%%%LOGOUT " + text);
-       this.usuarioSesion = {};
-      this.mostrarmenu = false;
-      this.$session.clear();
-      this.$router.push("/");      
-    });
-
-    this.revisarSesion();*/
+    this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
+    
   },
   methods: {
-    
+     signout() {
+      console.log("Signout ");
+      this.usuarioSesion = null;
+      //this.$session.clear();
+      clearSesion();
+      this.$root.$emit("LOGOUT", "LOGOUT");
+      this.$router.push("/");
+    }
   }
 };
 </script>
