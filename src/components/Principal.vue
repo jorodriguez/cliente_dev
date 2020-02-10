@@ -12,8 +12,7 @@
     </small>
 
     <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
-      <router-link to="/Informes" class="btn btn-lg btn-success">Informes</router-link>
+      <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>      
       <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>
       <!--<router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      -->
       <!-- btn-head-->
