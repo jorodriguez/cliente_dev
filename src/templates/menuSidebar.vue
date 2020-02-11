@@ -117,20 +117,20 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/CatAlumno" class="nav-link">
-              <i class="fa fa-list-ul text-purple"></i> Alumnos
-            </router-link>           
+            <router-link to="/Principal" class="nav-link">
+              <i class="fa fa-home text-purple"></i> Asistencias
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/Asistencia" class="nav-link">
               <i class="fa fa-child text-blue"></i> Entrada de Alumnos
             </router-link>
-          </li>
+          </li>          
           <li class="nav-item">
-            <router-link to="/Principal" class="nav-link">
-              <i class="fa fa-home text-purple"></i> Salida Alumnos
-            </router-link>
-          </li>
+            <router-link to="/CatAlumno" class="nav-link">
+              <i class="fa fa-list-ul text-purple"></i> Alumnos
+            </router-link>           
+          </li>          
           <li class="nav-item">
             <router-link to="/Gastos" class="nav-link">
               <i class="fa fa-cash-register text-blue"></i> Gastos
