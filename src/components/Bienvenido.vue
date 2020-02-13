@@ -13,6 +13,7 @@
     </div>
 
   <!-- app principal -->
+  <!--
     <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
       <div slot="header">
         <p id="encabezado_notificador_principal"></p>
@@ -25,7 +26,7 @@
         </div>
       </div>
       <div slot="footer"></div>
-    </Popup>
+    </Popup>-->
 
     <!-- popup de expiracion de sesion -->
     <Popup id="popup_expiracion_sesion" size="md" show_button_close="false">
