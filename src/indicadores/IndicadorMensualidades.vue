@@ -10,18 +10,22 @@
       @click="mostrarListaMensualidades()"
     >
       <small class="text-white">
-        <strong>Pagos Pendientes</strong>
+        <strong>Mensua. Pendientes</strong>
       </small>
-      <small class="badge badge-pill badge-warning"> <Loader :loading="loader" :type="grow" :mini="true"/> {{contador}}</small>
+      <small class="badge badge-pill badge-warning">
+        <Loader :loading="loader" :type="grow" :mini="true" />
+        {{contador}}
+      </small>
     </a>
 
-    <Popup id="popup_indicador" :show_button_close="true">
+    <Popup id="popup_indicador" size="lg" :show_button_close="false">
       <div slot="header">
-        <p>Mensualidades próximas a vencer</p>
+        <p>Mensualidades que vencen esta semana</p>
       </div>
       <div slot="content">
         <div class="text-center">
           <div class="container text-center">
+            {{sucItem.nombre_sucursal}}
             <vue-good-table
               :columns="columnas"
               :rows="listaMensualidades"
@@ -30,7 +34,25 @@
               :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
               :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
               :groupOptions="{        enabled: false   }"
-            ></vue-good-table>
+            >
+              <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'nombre_cargo'">
+                    <span >{{props.row.nombre_cargo}}</span>  
+                    <span >{{props.row.texto_ayuda}}</span>
+                    <!--<small> {{props.row.nota}}</small>-->             
+                </span>
+                <span v-else-if="props.column.field == 'total_pagado'">
+                    <span class="text-primary"><strong>${{props.row.total_pagado}}</strong></span>  
+                </span>
+                <span v-else-if="props.column.field == 'total'">
+                    <span class="text-danger"><strong>${{props.row.total}}</strong></span>  
+                </span>
+                <span v-else-if="props.column.field == 'botones'">
+                  <button class="btn btn-primary" >Pagar</button>
+                </span>
+                <span v-else>{{props.formattedRow[props.column.field]}}</span>
+              </template>
+            </vue-good-table>
           </div>
         </div>
       </div>
@@ -43,7 +65,7 @@
 import Popup from "../controller/Popup";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
-import Loader  from "../components_utils/Loader";
+import Loader from "../components_utils/Loader";
 import { getUsuarioSesion, token } from "../helpers/Sesion";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { VueGoodTable } from "vue-good-table";
@@ -53,7 +75,8 @@ export default {
   mixins: [operacionesApi],
   components: {
     Popup,
-    VueGoodTable,Loader
+    VueGoodTable,
+    Loader
   },
   data() {
     return {
@@ -61,57 +84,61 @@ export default {
       loader: false,
       obtenerIndicadorMensualidad: null,
       usuarioSesion: null,
-      contador:0,
+      contador: 0,
+      sucItem:null,
       TABLE_CONFIG: TABLE_CONFIG,
       columnas: [
         {
           label: "Id",
           field: "id_alumno",
           hidden: true
-        },
-        {
-          label: "Fecha Límite",
-          field: "fecha_limite_pago_mensualidad"          
-        },
+        },        
         {
           label: "Alumno",
-          field: "nombre_alumno"          
+          field: "nombre_alumno"
         },
         {
           label: "Concepto",
-          field: "nombre_cargo",          
+          field: "nombre_cargo"
         },
         {
           label: "Pagado",
-          field: "total_pagado",          
+          field: "total_pagado"
         },
         {
           label: "Adeudo",
-          field: "total"          
+          field: "total"
         },
-        
+
         {
           label: "cargo",
           field: "cargo",
-            hidden:true
+          hidden: true
+        },
+        {
+          label: "Fecha Límite",
+          field: "fecha_limite_pago_mensualidad"
         },
         {
           label: "cantidad",
           field: "cantidad",
-          hidden:true
+          hidden: true
         },
-        
+
         {
           label: "texto_ayuda",
           field: "texto_ayuda",
-          hidden:true
+          hidden: true
         },
         {
           label: "nota",
           field: "nota",
-          hidden:true
-        }
-        
+          hidden: true
+        },
+        {
+          label: "",
+          field: "botones",          
+        }        
       ]
     };
   },
@@ -125,18 +152,21 @@ export default {
         "@obtenerIndicadorMensualidad " + this.usuarioSesion.co_sucursal
       );
       this.loader = true;
+      this.listaMensualidades=[];
       this.get(
         URL.MENSUALIDAD_VENCE_SEMANA_ACTUAL + this.usuarioSesion.co_sucursal,
         results => {
-          console.log(" MENSUALIDADADES A VENCER  " +JSON.stringify(results.body));
+          console.log(
+            " MENSUALIDADADES A VENCER  " + JSON.stringify(results.body)
+          );
           if (results.body != null) {
             this.loader = false;
             let resultado = results.body;
-            let sucItem = resultado[0] || null;
-            if(sucItem != null){
-               this.listaMensualidades = sucItem.mensualidades_vencidas || [];
-              this.contador = sucItem.mensualidades_vencidas.length || 0;
-            }            
+            this.sucItem = resultado[0] || null;
+            if (this.sucItem != null) {
+              this.listaMensualidades = this.sucItem.mensualidades_vencidas || [];
+              this.contador = this.sucItem.mensualidades_vencidas.length || 0;
+            }
           }
         }
       );
@@ -145,7 +175,10 @@ export default {
   },
   methods: {
     mostrarListaMensualidades() {
-      $("#popup_indicador").appendTo("body").modal('show');
+      this.obtenerIndicadorMensualidad();
+      $("#popup_indicador")
+        .appendTo("body")
+        .modal("show");
       //$("#popup_indicador").modal("show");
     }
   }
