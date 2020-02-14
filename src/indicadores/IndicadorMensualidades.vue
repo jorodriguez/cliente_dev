@@ -18,18 +18,18 @@
       </small>
     </a>
 
-    <Popup id="popup_indicador" size="lg" :show_button_close="false">
+    <Popup id="popup_indicador" size="lg" :show_button_close="true">
       <div slot="header">
         <p>Mensualidades que vencen esta semana</p>
       </div>
       <div slot="content">
         <div class="text-center">
           <div class="container text-center">
-            {{sucItem.nombre_sucursal}}
+            <h2>{{sucItem.nombre_sucursal}}</h2>
             <vue-good-table
               :columns="columnas"
               :rows="listaMensualidades"
-              :line-numbers="true"
+              :line-numbers="false"
               :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
               :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
               :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
@@ -38,8 +38,7 @@
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'nombre_cargo'">
                     <span >{{props.row.nombre_cargo}}</span>  
-                    <span >{{props.row.texto_ayuda}}</span>
-                    <!--<small> {{props.row.nota}}</small>-->             
+                    <span >{{props.row.texto_ayuda}}</span>                    
                 </span>
                 <span v-else-if="props.column.field == 'total_pagado'">
                     <span class="text-primary"><strong>${{props.row.total_pagado}}</strong></span>  
@@ -56,8 +55,11 @@
           </div>
         </div>
       </div>
-      <div slot="footer"></div>
+      <div slot="footer">
+        
+      </div>
     </Popup>
+        
   </div>
 </template>
 
@@ -107,8 +109,9 @@ export default {
         },
         {
           label: "Adeudo",
-          field: "total"
-        },
+          field: "total",
+          type:'number'
+        },    
 
         {
           label: "cargo",
@@ -117,7 +120,7 @@ export default {
         },
         {
           label: "Fecha Límite",
-          field: "fecha_limite_pago_mensualidad"
+          field: "fecha_limite_pago_mensualidad",          
         },
         {
           label: "cantidad",
@@ -176,10 +179,11 @@ export default {
   methods: {
     mostrarListaMensualidades() {
       this.obtenerIndicadorMensualidad();
-      $("#popup_indicador")
-        .appendTo("body")
-        .modal("show");
-      //$("#popup_indicador").modal("show");
+      $("#popup_indicador").appendTo("#bienvenido").modal("show");      
+      //$("#popup_indicador").modal("show");      
+    },
+    cerrarPopup(){
+      //$('#popup_indicador').rem
     }
   }
 };

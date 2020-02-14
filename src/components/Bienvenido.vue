@@ -56,7 +56,7 @@
         </div>
       </div>
       <div slot="footer"></div>
-    </Popup>
+    </Popup>    
 
   </span>
 </template>
