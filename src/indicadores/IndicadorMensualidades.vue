@@ -12,8 +12,7 @@
       <small class="text-white">
         <strong>Mensua. Pendientes</strong>
       </small>
-      <small class="badge badge-pill badge-warning">
-        <Loader :loading="loader" :type="grow" :mini="true" />
+      <small class="badge badge-pill badge-warning">       
         {{contador}}
       </small>
     </a>
@@ -22,16 +21,21 @@
       <div slot="header">
         <p>Mensualidades que vencen esta semana</p>
       </div>
+      <!-- :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"-->
       <div slot="content">
         <div class="text-center">
           <div class="container text-center">
             <h2>{{sucItem.nombre_sucursal}}</h2>
+             <Loader :loading="loader" :mini="false" />
+             
             <vue-good-table
               :columns="columnas"
               :rows="listaMensualidades"
               :line-numbers="false"
+              max-height="400px"
+              :fixed-header="true"
+              
               :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
-              :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
               :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
               :groupOptions="{        enabled: false   }"
             >

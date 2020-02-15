@@ -5,7 +5,7 @@ export default {
   name: "Popup", 
   template: `
       <div :id="id == undefined ? [dynamicSlotName]: id" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-      <div :class="size == undefined ? 'modal-dialog' : ('modal-dialog modal-'+size)" role="document">
+      <div :class="size == undefined ? 'modal-dialog modal-dialog-centered' : ('modal-dialog-centered modal-dialog modal-'+size)" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">

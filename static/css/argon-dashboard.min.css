@@ -13091,6 +13091,8 @@ textarea[resize=horizontal] {
     position: relative;
     top: 2px
 }
+
+
 @media (min-width: 992px) {
     .nav-item.active-pro {
         position: absolute;
