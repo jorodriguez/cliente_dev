@@ -129,7 +129,7 @@
               </span>
 
               <span v-else>{{props.formattedRow[props.column.field]}}</span>
-            </template>-->
+            </template>
           </vue-good-table>
         </div>
       </div>
