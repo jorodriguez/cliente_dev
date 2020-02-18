@@ -43,7 +43,7 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
     this.init();
   },
-  methods: {
+  methods: {    
     init() {
       console.log("Init");
       this.loader = true;

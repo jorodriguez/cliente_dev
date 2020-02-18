@@ -1,5 +1,5 @@
 <template>
-  <div class="cat_alumno">
+  <div class="catalogo_alumno">
     <h1>Usuarios</h1>
     <div class="text-left">
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
@@ -67,7 +67,8 @@
     <Loader :loading="loader" />
 
     {{lista.length}}
-    
+    <button @click="init()">CARGAR</button>
+
     <vue-good-table
       :columns="columnas"
       :rows="lista"
@@ -77,12 +78,19 @@
       :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
       :groupOptions="{
   	          enabled: false,               
-          }"
-    ></vue-good-table>
+      }"
+    >
+      <template slot="table-row" slot-scope="props">
+        <span v-if="props.column.field == 'nombre'">
+          {{props.row.nombre}}
+        </span>
+        <span v-else>{{props.formattedRow[props.column.field]}}</span>
+      </template>
+    </vue-good-table>
   </div>
 </template>
 
-<script src="../controller/CatUsuarioController.js" >
+<script src="../../controller/CatUsuarioController.js" >
 </script>
 
 <style scoped>

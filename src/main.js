@@ -8,12 +8,15 @@ import VueSessionStorage from 'vue-sessionstorage'
 import VueGoogleCharts from 'vue-google-charts'
 import Notifications from 'vue-notification'
 import Notificaciones from './helpers/Notificaciones'
+import VueTimepicker from 'vue2-timepicker'
+import 'vue2-timepicker/dist/VueTimepicker.css'
 
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
 Vue.use(VueGoogleCharts);
 Vue.use(Notifications);
+Vue.use(VueTimepicker);
 //Vue.use(Notificacion);
 Vue.prototype.$notificacion = Notificaciones;
 

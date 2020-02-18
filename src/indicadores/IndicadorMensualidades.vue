@@ -7,19 +7,20 @@
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
-      @click="mostrarListaMensualidades()"
+      @click="mostrarListaMensualidades()"      
+      title="Mensualidades pendientes de pagar"
     >
       <small class="text-white">
-        <strong>Mensua. Pendientes</strong>
+        <strong>Mens. Pendientes</strong>
       </small>
       <small class="badge badge-pill badge-warning">       
-        {{contador}}
+        {{sucItem.existen_mensualidades_vencidas ? contador : 0}}
       </small>
     </a>
 
     <Popup id="popup_indicador" size="lg" :show_button_close="true">
       <div slot="header">
-        <p>Mensualidades que vencen esta semana</p>
+        <p>Mensualidades vencidas</p>
       </div>
       <!-- :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"-->
       <div slot="content">
@@ -27,13 +28,13 @@
           <div class="container text-center">
             <h2>{{sucItem.nombre_sucursal}}</h2>
              <Loader :loading="loader" :mini="false" />
-             
+          
+          <!--  max-height="400px"
+              :fixed-header="true"-->
             <vue-good-table
               :columns="columnas"
               :rows="listaMensualidades"
-              :line-numbers="false"
-              max-height="400px"
-              :fixed-header="true"
+              :line-numbers="false"              
               
               :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
               :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
@@ -51,7 +52,8 @@
                     <span class="text-danger"><strong>${{props.row.total}}</strong></span>  
                 </span>
                 <span v-else-if="props.column.field == 'botones'">
-                  <button class="btn btn-primary" >Pagar</button>
+                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar</button>                  
+                  <!--<router-link :to="'/PerfilAlumno/'+props.row.id_alumno">Pagar</router-link>-->
                 </span>
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>
               </template>
@@ -91,7 +93,7 @@ export default {
       obtenerIndicadorMensualidad: null,
       usuarioSesion: null,
       contador: 0,
-      sucItem:null,
+      sucItem:null,      
       TABLE_CONFIG: TABLE_CONFIG,
       columnas: [
         {
@@ -188,7 +190,12 @@ export default {
     },
     cerrarPopup(){
       //$('#popup_indicador').rem
-    }
+    },
+     verPerfil(rowSelect){
+      console.log("Ver perfil para pago id = "+rowSelect.id_alumno );
+      $("#popup_indicador").modal("hide");      
+      this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id_alumno } });
   }
+  }, 
 };
 </script>

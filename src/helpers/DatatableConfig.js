@@ -8,7 +8,7 @@ const TABLE_CONFIG = {
         position: 'bottom',
         //perPageDropdown: [3, 7, 9],
         dropdownAllowAll: false,
-        setCurrentPage: 2,
+        setCurrentPage: 1,
         nextLabel: 'Siguiente',
         prevLabel: 'Anterior',
         rowsPerPageLabel: 'Registros por pagina',

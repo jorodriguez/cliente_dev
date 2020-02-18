@@ -48,9 +48,6 @@ export default {
 
 
 this.usuarioSesion = getUsuarioSesion();
-
-
-
     this.loadFunctionGastos = function (anio_mes) {
       this.get(
         this.uriTempGastos + "/" + this.usuarioSesion.co_sucursal + "/" + anio_mes,
