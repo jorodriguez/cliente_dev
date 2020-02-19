@@ -53,10 +53,11 @@
 <script>
 import Popup from "../controller/Popup";
 import { usuarioSesion, clearSesion } from "../helpers/Sesion";
+import { VueGoodTable } from 'vue-good-table';
 
 export default {
   components: {
-    Popup
+    Popup, VueGoodTable
   },
   name: "Administracion",
   methods: {}

@@ -1,6 +1,6 @@
 <template >
   <nav   
-    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"        
+    class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"         
     v-if="mostrarSideBar"
     id="sidenav-main"
   >
@@ -19,7 +19,8 @@
       </button>
       <!-- Brand -->
       <router-link to="/Principal" class="navbar-brand pt-0">
-        <img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="150" />
+         <img src="../assets/magic.jpeg" class="rounded-lg"  width="90" height="150" />
+        <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="150" />-->
       </router-link>
 
       <!-- User -->
@@ -138,6 +139,7 @@
           </li>
            <li class="nav-item nav-with-child">            
             <router-link to="/administracion" class="nav-link">
+            <!--<router-link to="/CatalogoUsuario" class="nav-link">            -->
               <i class="fa fa-cash-register text-blue"></i> Administración
             </router-link>
           </li>

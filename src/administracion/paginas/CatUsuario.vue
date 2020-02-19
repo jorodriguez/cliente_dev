@@ -66,19 +66,23 @@
 
     <Loader :loading="loader" />
 
-    {{lista.length}}
+    {{listaUsuario.length}}
     <button @click="init()">CARGAR</button>
+    <!--<ul>
+      <li v-for="row in listaUsuario" :key="row.id" >
+        {{row.nombre}}
+      </li>
+    </ul>-->
 
+   
     <vue-good-table
-      :columns="columnas"
-      :rows="lista"
+      :columns="columnasUsuario"
+      :rows="listaUsuario"
       :line-numbers="true"
       :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
       :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
       :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
-      :groupOptions="{
-  	          enabled: false,               
-      }"
+      :groupOptions="{enabled: false}"
     >
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'nombre'">

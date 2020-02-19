@@ -13,27 +13,27 @@ import Loader from "../components_utils/Loader";
 
 export default {
   name: "cat-usuario",
+  mixins: [operacionesApi],
   components: {
     VueGoodTable, Datepicker, VueTimepicker, Popup,Loader
-  },
-  mixins: [operacionesApi],
+  },  
   data() {
     return {
       usuario: UsuarioModel,
       usuarioSesion: null,
       response: "",
       operacion: "INSERT",
-      lista: [],
+      listaUsuario: [],
       es: es,
       TABLE_CONFIG: TABLE_CONFIG,
       loader : false,
-      columnas: [
-        { label: "Id", field: "id", hidden: true },
-        { label: "Foto", field: "foto", hidden: true },
-        { label: "Nombre", field: "nombre" },
-        { label: "Correo", field: "correo" }, ,
-        { label: "Hora_entrada", field: "hora_entrada" },
-        { label: "Hora_salida", field: "hora_salida" },
+      columnasUsuario: [
+        { label: "Id", field: "id", type:'string',hidden: true },
+        { label: "Foto", field: "foto", type:'string',hidden: true },
+        { label: "Nombre", field: "nombre",type:'string' },
+        { label: "Correo", field: "correo",type:'string' }, ,
+        { label: "Hora_entrada", field: "hora_entrada",type: 'time', },
+        { label: "Hora_salida", field: "hora_salida",type: 'time' },
       ]
     };
   },
@@ -52,7 +52,7 @@ export default {
           console.log("Consulta " + JSON.stringify(result.body));
           this.loader = false;
           if (result.body != null) {
-            this.lista = result.body;
+            this.listaUsuario = result.body || [];
           }
         });
     },
