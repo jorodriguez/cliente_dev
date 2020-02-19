@@ -6,7 +6,7 @@
     <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
-     <vue-page-transition name="fade-in-up">
+     <vue-page-transition name="flip-x">
         <router-view />
      </vue-page-transition>
   </div>
