@@ -6,9 +6,9 @@
     <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
-     <transition name="component-fade" mode="out-in">
-    <router-view />
-     </transition>
+     <vue-page-transition name="fade-in-up">
+        <router-view />
+     </vue-page-transition>
   </div>
 </template>
 

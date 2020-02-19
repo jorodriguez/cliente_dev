@@ -10,6 +10,7 @@ import Notifications from 'vue-notification'
 import Notificaciones from './helpers/Notificaciones'
 import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
+import VuePageTransition from 'vue-page-transition'
 
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
@@ -18,6 +19,7 @@ Vue.use(VueGoogleCharts);
 Vue.use(Notifications);
 Vue.use(VueTimepicker);
 //Vue.use(Notificacion);
+Vue.use(VuePageTransition);
 Vue.prototype.$notificacion = Notificaciones;
 
 Vue.config.productionTip = false
