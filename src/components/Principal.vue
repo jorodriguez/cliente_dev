@@ -5,6 +5,9 @@
     <div class="row"></div>
 
     <!--<div class=" scroll-panel-salida-div bg-light rounded border">-->
+       <!--<div class="navbar-nav align-items-center d-none d-md-flex">
+        <div class="nav-item dropdown">
+          -->
       <div class="scroll-panel-salida-div rounded border">
       <div class="row">
         <div class="col text-left">
