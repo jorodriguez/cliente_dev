@@ -1,6 +1,6 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos</h1>
+    <h1>Alumnos ({{ lista != [] ? lista.length:0}}) </h1>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>

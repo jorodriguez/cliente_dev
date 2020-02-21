@@ -10,17 +10,17 @@
       @click="mostrarListaMensualidades()"      
       title="Mensualidades pendientes de pagar"
     >
-      <small class="text-white">
-        <strong>Mens. Pendientes</strong>
+      <small class="text-white text-wrap" style="width:50px;">
+        <strong>Mensualidades Pendientes</strong>
       </small>
-      <small class="badge badge-pill badge-warning">       
+      <small class="badge badge-pill badge-warning align-top" >       
         {{sucItem.existen_mensualidades_vencidas ? contador : 0}}
       </small>
     </a>
 
     <Popup id="popup_indicador" size="lg" :show_button_close="true">
       <div slot="header">
-        <p>Mensualidades vencidas</p>
+        <p>Mensualidades Pendientes</p>
       </div>
       <!-- :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"-->
       <div slot="content">
