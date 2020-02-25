@@ -2,7 +2,7 @@
   <div class="login container">
   
     <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="315" height="150"/>-->
-    <img src="../assets/magic.jpeg" class="rounded-lg" width="235" height="110"/>
+    <img src="../assets/magic.png" class="rounded-lg" width="235" height="110"/>
    
     
     <form class="form-signin">
@@ -30,7 +30,7 @@
             >
        <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span> {{loading ? 'Validando..':'Entrar'}}       
       </a> 
-      <small class="text-muted">(v090220)</small>
+      <small class="text-muted">(v200225)</small>
       <br>
       <br>
       

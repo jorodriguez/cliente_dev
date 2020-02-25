@@ -19,7 +19,7 @@
       </button>
       <!-- Brand -->
       <router-link to="/Principal" class="navbar-brand pt-0">
-         <img src="../assets/magic.jpeg" class="rounded-lg"  width="90" height="150" />
+         <img src="../assets/magic.png" class="rounded-lg"  width="90" height="150" />
         <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="150" />-->
       </router-link>
 
@@ -80,7 +80,7 @@
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
             <div class="col-6 collapse-brand">
-              <img src="../assets/magic.jpeg" class="rounded-lg" width="90" height="100" />
+              <img src="../assets/magic.png" class="rounded-lg" width="90" height="100" />
             </div>
             <div class="col-6 collapse-close">
               <button
@@ -137,12 +137,11 @@
               <i class="fa fa-cash-register text-blue"></i> Gastos
             </router-link>
           </li>
-           <li class="nav-item nav-with-child">            
-            <router-link to="/administracion" class="nav-link">
-            <!--<router-link to="/CatalogoUsuario" class="nav-link">            -->
+           <!--<li class="nav-item nav-with-child">            
+            <router-link to="/administracion" class="nav-link">            
               <i class="fa fa-cash-register text-blue"></i> Administración
             </router-link>
-          </li>
+          </li>-->
         </ul>
         <!-- Divider -->
         <hr class="my-3" />
