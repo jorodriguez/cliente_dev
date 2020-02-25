@@ -512,6 +512,7 @@
                         required
                       >
                     </div>
+                    <!--
                     <div class="form-group">
                       <label for="inputFechaLimitePago">
                         Fecha Pago 
@@ -528,7 +529,7 @@
                       >
                       </datepicker>                     
                       
-                    </div>                    
+                    </div>  -->                  
 
                     <div class="form-group">
                       <label for="inputNota">Nota</label>
