@@ -38,8 +38,8 @@
                 <span >{{props.row.apellidos}}</span>
               </span>
             </span>
-            <span v-else-if="props.column.field == 'nombre_grupo'">
-              <span class="badge badge-info text-wrap">{{props.row.nombre_grupo}}</span>
+            <span v-else-if="props.column.field == 'nombre_grupo'">              
+              <span :style="props.column.field != null ? 'background-color:'+props.row.color : ''" class="badge badge-info text-wrap">{{props.row.nombre_grupo}}</span>
             </span>
              <span v-else-if="props.column.field == 'numero_asistencias'">
               <span :class="props.row.numero_asistencias == 0 ? 'font-weight-bold text-danger':''">{{props.row.numero_asistencias}}/{{props.row.num_dias_trabajados}}</span>

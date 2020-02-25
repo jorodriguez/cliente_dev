@@ -1,7 +1,6 @@
 <template>
-  <div class="cat_alumno container">
-    <h1>Alumnos</h1>(
-    <small>{{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}</small>)
+  <div class="cat_alumno">
+    <h1>Alumnos ({{ lista != [] ? lista.length:0}}) </h1>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
@@ -9,7 +8,7 @@
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
     </div>
     <br />
-    <form>
+    <!--<form>-->
       <div
         id="modal_alumno"
         class="modal"
@@ -66,6 +65,8 @@
                   name="fecha_nacmiento"
                   v-model="input.fecha_nacimiento"
                   input-class="form-control"
+                  :bootstrap-styling="true"              
+                  :language="es"
                   required
                 ></datepicker>
 
@@ -162,6 +163,9 @@
                   name="fecha_inscripcion"
                   v-model="input.fecha_inscripcion"
                   input-class="form-control"
+                  :bootstrap-styling="true"
+                              
+                    :language="es"
                   required
                 ></datepicker>
 
@@ -191,6 +195,24 @@
                   required
                 />
 
+                <div class="form-group">
+                      <label for="inputFechaLimitePago">
+                        Fecha Pago 
+                        <span class="text-danger">*</span>
+                      </label>
+                       <datepicker
+                        id="inputFechaLimitePagoColegiatura"
+                        v-model="input.fecha_limite_pago_mensualidad"
+                        input-class="form-control"
+                        :bootstrap-styling="true"                        
+                        :language="es"
+                        required
+                      >
+                      </datepicker>                     
+                      
+                    </div>                    
+
+
                 <label>Nota</label>
                 <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
               </div>
@@ -207,7 +229,7 @@
           </div>
         </div>
       </div>
-    </form>
+   <!-- </form>-->
 
     <!-- ELIMINAR MODAL -->
     <div
@@ -282,7 +304,7 @@
             <tr v-for="row in lista" :key="row.id">
               <td class="text-right">
                 <img
-                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                  :src="row.foto"
                   width="50"
                   height="50"
                   v-on:click="verPerfil(row)"
@@ -304,7 +326,7 @@
               </td>
               <td class="hidden-xs">{{ row.apellidos }}</td>
               <td>
-                <span class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
+                <span :style="row.color ? 'background-color:'+row.color:'' " class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
               </td>
               <td>{{ row.hora_entrada }}</td>
               <td>{{ row.hora_salida }}</td>

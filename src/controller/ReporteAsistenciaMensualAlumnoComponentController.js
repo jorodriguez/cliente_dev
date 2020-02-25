@@ -9,6 +9,7 @@ import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import ReporteAsistenciaMensualAlumnoComponentController from '../';
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
 //import Popup from './Popup'
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "reporte-asistencia-mensuaul-alumno",
@@ -19,7 +20,7 @@ export default {
   data() {
     return {      
       usuarioSesion: {},
-      sesion: {}, 
+      //sesion: {}, 
       fecha:Date,
       listaAsistencia: [],                                    
       alumno_seleccionado:null,
@@ -32,16 +33,9 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente reporte de asistencia ");
-    this.sesion = this.$session.get("usuario_sesion");
+  
+    this.usuarioSesion = getUsuarioSesion();
 
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      //this.$router.push("/");
-      this.mensaje = "Expiró su sesión";
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-    //this.fecha = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
 
     this.loadFunction = ()=> {
@@ -50,7 +44,7 @@ export default {
       this.loading = true;
       this.get(
         URL.ASISTENCIA_MENSUAL_ALUMNO + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {

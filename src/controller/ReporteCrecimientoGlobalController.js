@@ -4,6 +4,8 @@ import AlumnoModel from "../models/AlumnoModel";
 import SignoutComponent from "./SignoutComponent";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {getUsuarioSesion} from '../helpers/Sesion';
+
 
 export default {
   name: "CrecimientoGlobal",
@@ -16,7 +18,7 @@ export default {
       uriTempBalanceCrecimientoGlobal: URL.BALANCE_CRECIMIENTO_GLOBAL, //"http://localhost:5000/balance_crecimiento_global",
       uriTempBalanceAlumnosIngreso: URL.ALUMNOS_CRECIMIENTO_MES, // "http://localhost:5000/alumnos_crecimiento_mes",
       usuarioSesion: {},
-      sesion: {},
+     // sesion: {},
       mes_seleccionado: {},
       listaCrecimientoGlobal: [],
       listaNuevosAlumno: [],
@@ -27,24 +29,18 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente reporte crecimiento global ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+  
+    this.usuarioSesion = getUsuarioSesion();
+/*
     if (!this.usuarioSesion.permiso_gerente) {
       this.$router.push("/");
       return;
-    }
+    }*/
 
     this.loadFunctionCrecimientoGlobal = function () {
       this.get(
         this.uriTempBalanceCrecimientoGlobal,
-        this.sesion.token,
+        
         (result) => {
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -61,7 +57,7 @@ export default {
 
           this.get(
             this.uriTempBalanceAlumnosIngreso + "/" + this.mes_seleccionado.numero_anio + "/" + this.mes_seleccionado.numero_mes,
-            this.sesion.token,
+            
             result => {
               console.log("Consulta " + result.data);
               if (result.data != null) {

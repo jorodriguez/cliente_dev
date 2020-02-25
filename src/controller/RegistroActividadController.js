@@ -3,6 +3,7 @@ import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "Actividad",
@@ -10,7 +11,7 @@ export default {
   data() {
     return {
       usuarioSesion: {},
-      sesion: {},
+      //sesion: {},
       response: "",
       actividad: ActividadModel,
       actividadSelecionada: {},
@@ -31,21 +32,13 @@ export default {
   mounted() {
     console.log("iniciando el componente ");
 
-    //this.usuarioSesion = SesionHelper.mySesion.getSesion().usuario;
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+    this.usuarioSesion = getUsuarioSesion();
     
     this.loadFunction = function() {
 
       this.get(
         this.uriTemp,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("Consulta de actividades" + this.response);

@@ -7,6 +7,7 @@ import Datepicker from 'vuejs-datepicker';
 import COLUMNS_TABLE_ASISTENCIA  from "../helpers/DatatableConfigAsistencias";
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "reporte-asistencia",
@@ -17,7 +18,7 @@ export default {
   data() {
     return {      
       usuarioSesion: {},
-      sesion: {}, 
+     // sesion: {}, 
       fecha:Date,
       listaAsistencia: [],                                    
       alumno_seleccionado:{},
@@ -30,15 +31,8 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente reporte de asistencia ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      //this.$router.push("/");
-      this.mensaje = "Expiró su sesión";
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+    
+    this.usuarioSesion = getUsuarioSesion();
     this.fecha = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
 
@@ -48,7 +42,7 @@ export default {
       this.loading = true;
       this.get(
         URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {

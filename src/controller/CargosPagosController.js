@@ -6,6 +6,8 @@ import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
 import  CONSTANTES  from "../helpers/Constantes";
+import {getUsuarioSesion} from '../helpers/Sesion';
+
 
 export default {
   name: "cargos-pagos",
@@ -34,7 +36,7 @@ export default {
       total_pagos: 0,
       seleccionTodos: false,
       usuarioSesion: {},
-      sesion: {},
+      //sesion: {},
       item: AlumnoModel,
       alumno: null,
       listaCargosAlumnos: [],
@@ -54,19 +56,11 @@ export default {
   mounted() {
     console.log("iniciando el componente de pagos y cargos ");
 
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+this.usuarioSesion = getUsuarioSesion();
     this.loadFunctionCargosAlumno = function () {
       this.get(
         URL.CARGOS_BASE + "/" + this.idalumno,
-        this.sesion.token,
+        
         (result) => {                    
           if (result.data != null) {
             this.listaCargosAlumnos = result.data;
@@ -80,7 +74,7 @@ export default {
       this.listaCargos = [];
       this.get(
         URL.CARGOS_BASE,
-        this.sesion.token,
+        
         (result) => {
            console.log("Consulta del catalogo de cargos" + result.data);
           if (result.data != null) {
@@ -97,7 +91,7 @@ export default {
 
         this.get(
           URL.FORMAS_PAGO_BASE,
-          this.sesion.token,
+          
           result => {
             console.log("Consulta del catalogo de formas pago" + result.data);
             if (result.data != null) {
@@ -116,7 +110,7 @@ export default {
 
       this.get(
         URL.MESES_ADEUDA + this.idalumno,
-        this.sesion.token,
+        
         results => {
           console.log("Consulta de meses " + results.data);
           if (results.data != null) {
@@ -146,14 +140,14 @@ export default {
       /*
           AlumnoApi.getAlumnoById(
                     this.idalumno,
-                    this.sesion.token,
+                    this.sesion.
                     result => {
                       this.alumno = result;
                     })*/
 
      await this.get(
         URL.ALUMNOS_BASE + "/id/" + this.idalumno,
-        this.sesion.token,
+        
         (result) => {
          this.alumno = result.data;         
           console.log("==== >>"+JSON.stringify(this.alumno));
@@ -252,7 +246,7 @@ export default {
       this.post(
         URL.CARGO_REGISTRAR,
         this.cargo,
-        this.sesion.token,
+        
         (result) => {
           if (result.data != null) {
             this.$notificacion.info("Se agrego el cargo", "");
@@ -403,7 +397,7 @@ export default {
           this.post(
             URL.PAGOS_REGISTRAR,
             objEnvio,
-            this.sesion.token,
+            
             (result) => {             
               if (result.data != null) {
                 console.log("" + result.data);                
@@ -425,7 +419,7 @@ export default {
       this.cargoSeleccionado = item;
        this.get(
         URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
-        this.sesion.token,
+        
         result => {
           if (result.data != null) {
             console.log("" + JSON.stringify(result.data));
@@ -471,7 +465,7 @@ export default {
             motivo: this.motivo_eliminacion,
             genero: this.usuarioSesion.id
           },
-          this.sesion.token,
+          
           result => {
             if (result.data != null) {
               this.$notificacion.info("Se elimino correctamente", "");              

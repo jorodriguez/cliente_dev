@@ -9,6 +9,7 @@ import COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE  from "../helpers/DatatableConfi
 import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
+import {getUsuarioSesion,token} from '../helpers/Sesion';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
@@ -19,7 +20,7 @@ export default {
   data() {
     return {      
       usuarioSesion: {},
-      sesion: {}, 
+      //sesion: {}, 
       fecha_inicio:Date,
       fecha_fin:Date,
       listaAsistenciaSucursal: [],    
@@ -35,14 +36,15 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente reporte de asistencia ");
-    this.sesion = this.$session.get("usuario_sesion");
+    /*this.sesion = this.$session.get("usuario_sesion");
 
     if (!this.sesion || !this.sesion.usuario) {
       console.log("No tiene sesion");      
       this.mensaje = "Expiró su sesión";
       return;
     }
-    this.usuarioSesion = this.sesion.usuario;
+    this.usuarioSesion = this.sesion.usuario;*/
+    this.usuarioSesion =getUsuarioSesion();
     this.fecha_inicio = new Date();
     this.fecha_fin = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
@@ -52,7 +54,7 @@ export default {
       this.loading = true;
       this.get(
         URL.ASISTENCIA_USUARIO_REPORTE_SUC_RANGO_FECHA + this.usuarioSesion.co_sucursal+"/"+this.fecha_inicio+"/"+this.fecha_fin,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -67,7 +69,7 @@ export default {
       this.loading = true;
       this.get(
         URL.ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA + this.usuario_seleccionado.id+"/"+this.fecha_inicio+"/"+this.fecha_fin,
-        this.sesion.token,
+        
         (result) => {          
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null) {

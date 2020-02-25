@@ -1,16 +1,6 @@
 <template>
   <div class="crecimiento-global">
-    <h1>Crecimiento Global</h1>
-    <small class="font-weight-bold h6">
-      {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-      <button
-        type="button"
-        class="btn btn-sm btn-warning"
-        v-on:click="signout()"
-      >
-        <i class="fas fa-power-off" v-on:click="signout()"></i>
-      </button>
-    </small>
+    <h1>Crecimiento Global</h1>    
     <div class="row text-left">
       <div class="col">
         <router-link :to="{ name: 'ReporteDeudas', params: {} }" class="btn btn-secondary btn-lg">

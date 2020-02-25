@@ -1,6 +1,6 @@
 <template>
-  <div class="asistencia container">
-    <h1>Asistencias</h1>
+  <div class="asistencia">
+    <h1>Entrada de Alumnos</h1>
     <span>{{this.mensaje}}</span>
     <div class="row">
       <div class="col-1">
@@ -34,23 +34,23 @@
             v-bind:key="item.id"
             class="d-flex flex-wrap align-content-center"
           >
-            <small class="badge badge-pill badge-info border border-white">
-              <img
-                src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                width="35"
-                height="35"
-                alt="..."
-                class="rounded-circle"
-              />
-              <i>{{item.nombre}}</i>
-              <button
-                type="button"
-                class="btn btn-link btn-xs text-white"
-                v-on:click="removeToList(item)"
-              >
-                <span class="badge badge-pill badge-danger">x</span>
-              </button>
-            </small>
+            <ItemCapsulaAlumno
+              :texto="item.nombre"
+              :foto="item.foto"
+              :color="item.color"
+              :seleccion="removeToList"
+              :value="item"
+            >
+              <span slot="cuerpo">
+                <button
+                  type="button"
+                  class="btn btn-link btn-xs text-white"
+                  v-on:click="removeToList(item)"
+                >                
+                  <span class="badge badge-pill badge-danger">x</span>
+                </button>
+              </span>
+            </ItemCapsulaAlumno>
           </div>
         </div>
       </div>
@@ -58,9 +58,28 @@
     <div class="border" />
     <div class="border" />
     <div class="border" />
-    <!--<div class="container jumbotron m-1">-->
+    <!--<div class="container jumbotron m-1">-->    
+    <div class="card " style="background-color:#E9E9E9;">            
+      <h4><strong>{{grupoSeleccionado.nombre}}</strong></h4>
+      <div >
+        <span
+          :style="grupoDefault.color != null ? 'background-color:'+grupoDefault.color: ''"
+          class="badge badge-pill"
+          v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
+        >Todos</span>      
+        <a                    
+          :style="grupoItem.color != null ? 'background-color:'+grupoItem.color: ''"
+          :class="grupoItem.color != null ? 'badge badge-pill':'badge badge-pill badge-info' "
+          v-for="grupoItem in listaFiltroGrupos"
+          v-bind:key="grupoItem.id"
+          v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
+        >{{grupoItem.nombre}}</a>
+      </div>
+    </div>
+
     <div class="card border" style="background-color:#E9E9E9;">
-      <div class="row">
+      
+      <!--<div class="row">
         <div class="dropdown">
           <button
             class="btn btn-link dropdown-toggle"
@@ -86,24 +105,21 @@
           </div>
         </div>
       </div>
+      -->
       <div class="card-body" style="background-color:#E9E9E9;">
         <!--<p>Seleccione para registrar entrada</p>-->
         <div class="row">
           <div v-for="item in lista" v-bind:key="item.id">
             <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
-              <small
-                class="badge badge-pill badge-warning border border-primary"
-                v-on:click="addToList(item)"
+              <ItemCapsulaAlumno
+                :texto="item.nombre"
+                :foto="item.foto"
+                :color="item.color"
+                :seleccion="addToList"
+                :value="item"
               >
-                <img
-                  src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                  width="35"
-                  height="35"
-                  alt="..."
-                  class="rounded-circle"
-                />
-                <i>{{item.nombre}}</i>
-              </small>
+                <span slot="cuerpo"></span>
+              </ItemCapsulaAlumno>
             </div>
           </div>
         </div>
@@ -114,7 +130,7 @@
         type="button"
         class="btn btn-success btn-block"
         v-on:click="registrarEntrada()"
-      >Confirmar</button>
+      >Confirmar Entrada</button>
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "enviar-recordatorio-pago",  
@@ -26,13 +27,8 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente balance de alumnos complemento de perfil ");        
-    this.sesion = this.$session.get("usuario_sesion");       
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+   
+    this.usuarioSesion = getUsuarioSesion();
     /*this.$root.$on('actualizacionPorCargoEvent', (text) => {
       console.log("ACTUALIZACION POR CARGO NUEVO");
       this.loadFunctionBalanceAlumno();
@@ -44,7 +40,7 @@ export default {
         this.loading = true;
         this.get(
           URL.ENVIAR_RECORDATORIO_PAGO_ALUMNO+"/"+this.id_alumno,
-          this.sesion.token,
+          
           (result) => {          
             console.log("result.data "+JSON.stringify(result.data));
             if (result.data != null) {                           

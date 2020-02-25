@@ -5,6 +5,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "repote-gastos",
@@ -28,8 +29,7 @@ export default {
       disabledDates: {
         from : new Date(Date.now() + 8640000)
       },
-      usuarioSesion: {},
-      sesion: {},
+      usuarioSesion: {},  
       mensajeToast: null,
       response: "",
       mensaje: "",      
@@ -38,24 +38,17 @@ export default {
   mounted() {
     console.log("iniciando el componente de reporte de gastos ");
 
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
+   
+this.usuarioSesion = getUsuarioSesion();
+    /*if (!this.usuarioSesion.permiso_gerente) {
       this.$router.push("/");
       return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
-    if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }
+    }*/
 
     this.loadFunctionReporteGastos = function () {
       this.get(
         this.uriTempReporteGastos,
-        this.sesion.token,
+        
         result => {            
           if (result.data != null) {
             this.listaGastosPorSucursal =result.data;
@@ -68,7 +61,7 @@ export default {
 
       this.get(
         this.uriTempReporteGastos+"/"+id_sucursal,
-        this.sesion.token,
+        
         result => {                      
           if (result.data != null) {
             this.listaGastosPorSucursalTrendMensual = result.data ;
@@ -86,7 +79,7 @@ export default {
   
       this.get(
         this.uriTempReporteGastos+"/"+id_sucursal+"/"+mes_anio,
-        this.sesion.token,
+        
         (result) => {                            
           if (result.data != null) {
             this.listaGastosPorSucursalTipo = result.data;                
@@ -98,7 +91,7 @@ export default {
     this.loadFunctionGastosGlobal = function () {
       this.get(
         this.uriTempReporteGastosGlobal,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           if (this.response != null) {

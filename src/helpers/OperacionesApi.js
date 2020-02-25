@@ -1,20 +1,13 @@
 
-const get = function (url, token, handler) {
-  /*promesaGet(url, token)
-    .then(
-      result => {
-        handler(result);
-      },
-      error => {
-        console.error(error);
-        console.log("Revisando la sesion " + JSON.stringify(error));
-        lanzarAvisoExpiracionSesion(error);
-      });
-*/
+import {getToken} from '../helpers/Sesion';
+
+const get = function (url, handler) {
+  console.log("== TOKEN INTERNO "+getToken());
+ 
   this.$http.get(url,
     {
       headers: {
-        "x-access-token": token
+        "x-access-token": getToken()
       }
     })
     .then(
@@ -28,21 +21,11 @@ const get = function (url, token, handler) {
       });
 };
 
-const post = function (url, params, token, handler) {
-  /*promesaPost(url, params, token)
-    .then(
-      result => {
-        handler(result);
-      },
-      error => {
-        console.error(error);
-        console.log("Revisando la sesion " + JSON.stringify(error));
-        lanzarAvisoExpiracionSesion(error);
-      });*/
+const post = function (url, params, handler) {
   this.$http
     .post(
       url, params,
-      { headers: { "x-access-token": token } })
+      { headers: { "x-access-token": getToken() } })
     .then(
       result => {
         handler(result);
@@ -55,23 +38,12 @@ const post = function (url, params, token, handler) {
 }
 
 
-const put = function (url, params, token, handler) {
+const put = function (url, params, handler) {
 
-  /* promesaPut(url, params, token)
-     .then(
-       result => {
-         handler(result);
-       },
-       error => {
-         console.error(error);
-         console.log("Revisando la sesion " + JSON.stringify(error));
-         lanzarAvisoExpiracionSesion(error);
-       });
- */
   this.$http
     .put(
       url, params,
-      { headers: { "x-access-token": token } }
+      { headers: { "x-access-token": getToken() } }
     ).then(
       result => {
         handler(result);
@@ -84,25 +56,14 @@ const put = function (url, params, token, handler) {
 };
 
 
-const remove = function (url, token, handler) {
-  /*promesaRemove(url, token)
-    .then(
-      result => {
-        handler(result);
-      },
-      error => {
-        console.error(error);
-        console.log("Revisando la sesion " + JSON.stringify(error));
-        lanzarAvisoExpiracionSesion(error);
-      });;
-*/
-
+const remove = function (url, handler) {
+  
   this.$http
     .delete(
       url,
       {
         headers: {
-          "x-access-token": token
+          "x-access-token": getToken()
         }
       })
     .then(
@@ -161,11 +122,7 @@ const promesaRemove = function (url, params, token) {
 const operacionesApi = {
   methods: {
     get, post, put, remove
-  },
-  /*promesaGet: promesaGet,
-  promesaPost: promesaPost,
-  promesaPut: promesaPut,
-  promesaRemove: promesaRemove*/
+  }  
 };
 
 export { operacionesApi };

@@ -107,7 +107,9 @@
                     v-model="familiar.fecha_nacimiento"
                     v-bind:input-class="familiarRelacionado != null ? 'form-control text-success':'form-control'"
                     name="fecha_nacimiento"
-                    v-bind:disabled="familiarRelacionado != null"                    
+                    v-bind:disabled="familiarRelacionado != null"      
+                    :bootstrap-styling="true"              
+                    :language="es"
                     required
                   ></datepicker>                  
                 </div>
@@ -199,9 +201,9 @@
           </a>
           -->
         </div>
-        <div class="col text-center">
+        <div class="col text-center">          
           <img
-            src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+            :src="alumno.foto"
             alt
             class="rounded-circle"
             width="50"
@@ -211,14 +213,25 @@
             {{alumno.nombre}}
             {{alumno.apellidos}}
           </p>
+          <p>
+            <small>{{alumno.nombre_grupo}}</small>
+          </p>
         </div>
         <div class="col text-center">
-          <span class="text-danger card font-weight-bold h6">
-            Balance $
-            <balance-alumno :idalumno="id"></balance-alumno>
-          </span>
+          <div class="text-danger card font-weight-bold h6">
+            <div class="card-body">
+            Balance
+            <p>
+            $<balance-alumno :idalumno="id" mostrarfecha="true"></balance-alumno>
+            </p>
+            </div>
+          </div>
         </div>
         <div class="w-100"/>
+      </div>
+
+      <div  v-if="alumno.fecha_limite_pago_mensualidad == null" class="alert alert-warning">
+       <i class="far fa-hand-point-right"></i><strong>Hola!</strong> por favor captura la fecha de pago de la mensualidad.<button @click="iniciarCapturaFechaPago()" class="btn btn-link"> Clic aquí para capturar</button>          
       </div>
       <div class="row">
         <div class="col">
@@ -293,7 +306,7 @@
                   role="tab"
                   aria-controls="pills-servicios"
                   aria-selected="false"
-                >Pagos</a>
+                >Pagos  </a>
               </li>
               <li class="nav-item">
                 <a
@@ -364,6 +377,8 @@
                         id="inputFechaNacimientoAlumno"
                         v-model="alumno.fecha_nacimiento"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>
@@ -463,8 +478,7 @@
                         placeholder="Min. Gracia"
                         min="0"
                         required
-                      >
-                      min {{alumno.minutos_gracia}}
+                      >                   
                     </div>
 
                     <div class="form-group">
@@ -498,6 +512,23 @@
                         required
                       >
                     </div>
+                    <div class="form-group">
+                      <label for="inputFechaLimitePago">
+                        Fecha Pago 
+                        <span class="text-danger">*</span>
+                      </label>
+                       <datepicker
+                        id="inputFechaLimitePagoColegiatura"
+                        v-model="alumno.fecha_limite_pago_mensualidad"
+                        @click.native="iniciarCapturaFechaPago()"
+                        input-class="form-control"
+                        :bootstrap-styling="true"                        
+                         disabled 
+                        :language="es"                        
+                      >
+                      </datepicker>                     
+                      
+                    </div>                    
 
                     <div class="form-group">
                       <label for="inputNota">Nota</label>
@@ -533,6 +564,9 @@
                         id="inputInscripcion"
                         v-model="alumno.fecha_inscripcion"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>
@@ -546,6 +580,9 @@
                         id="inputFReinscripcion"
                         v-model="alumno.fecha_reinscripcion"
                         input-class="form-control"
+                        :bootstrap-styling="true"
+                        :disabled-dates="disableDaysFechaLimitePago"
+                        :language="es"
                         required
                       ></datepicker>
                     </div>
@@ -1203,6 +1240,38 @@
       </div>
     </div>
     <!-- MODAL TOAST -->
+
+    <!-- captura de fecha de pago-->
+
+      <Popup id="popup_captura_fecha_pago"   :show_button_close="false">
+          <div slot="header">Fecha de pago <strong> {{alumno.nombre}} {{alumno.apellidos}}</strong></div>
+          <div slot="content">                                      
+            <div class="row justify-content-md-center">
+              <span>* Seleccione la fecha límite de pago</span>
+              <datepicker
+                        id="inputFechaLimitePagoColegiatura1"
+                        v-model="alumno.fecha_limite_pago_mensualidad"
+                        input-class="form-control"
+                        :bootstrap-styling="true"                        
+                        :language="es"
+                        :inline="true"
+                        :full-month-name="true"
+                        required
+              > </datepicker>        
+              </div>                                    
+          </div>
+          <div slot="footer">            
+            <button
+                      class="btn btn-secondary"
+                      v-on:click="cancelarModificarFechaPago()"                      
+                    >Cancelar</button>  
+               <button
+                      class="btn btn-primary"
+                      v-on:click="modificarFechaLimitePago()"                      
+                    >Seleccionar</button>            
+          </div>
+        </Popup>   
+
   </div>
 </template>
 

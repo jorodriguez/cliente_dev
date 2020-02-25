@@ -1,5 +1,6 @@
 
 import Vue from "vue";
+import {getUsuarioSesion,clearSesion} from '../helpers/Sesion';
 
 export default {
   name: "boton-logout",  
@@ -24,19 +25,12 @@ export default {
   mounted() {
     console.log("iniciando el componente singout ");
 
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
+    this.usuarioSesion = getUsuarioSesion();
   },
   methods: {
     signout() {
-      console.log("Signout ");
-      this.$session.clear();
+      console.log("Signout ");      
+      clearSesion();
       this.$router.push("/");
     },
   }

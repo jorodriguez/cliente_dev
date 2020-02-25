@@ -1,34 +1,14 @@
 <template>
   <div class="principal">
-    <small class="font-weight-bold h6">
-      {{usuarioSesion.nombre}} {{usuarioSesion.nombre_sucursal}}
-      <button
-        type="button"
-        class="btn btn-sm btn-danger"
-        v-on:click="signout()"
-      >
-        <i class="fas fa-power-off" v-on:click="signout()"></i>
-      </button>
-    </small>
-
-    <div class="p-1 mb-1 text-white">
-      <router-link to="/CatAlumno" class="btn btn-lg btn-info">Alumnos</router-link>
-      <!-- <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias</router-link>-->
-      <router-link to="/Asistencia" class="btn btn-lg btn-success">Asistencias/Alumnos</router-link>
-      <!--<router-link to="/ReporteAsistencias" class="btn btn-lg btn-success">Lista Asistencias</router-link>      -->
-      <!-- btn-head-->
-      <button
-        type="button"
-        data-toggle="modal"
-        class="btn btn-success btn-lg"
-        v-on:click="initRegistroActividad()"
-      >Actividad</button>
-      <router-link to="/Gastos" class="btn btn-lg btn-primary">Gastos</router-link>
-      <router-link to="/AsistenciasUsuarios" class="btn btn-lg btn-danger" style="background-color:#ea0075" >Asistencia/Miss</router-link>
-    </div>
+    <h1>Asistencias</h1>    
+ 
     <div class="row"></div>
 
-    <div class="container scroll-panel-salida-div bg-light rounded border">
+    <!--<div class=" scroll-panel-salida-div bg-light rounded border">-->
+       <!--<div class="navbar-nav align-items-center d-none d-md-flex">
+        <div class="nav-item dropdown">
+          -->
+      <div class="scroll-panel-salida-div rounded border">
       <div class="row">
         <div class="col text-left">
           <div class="dropdown">
@@ -66,6 +46,17 @@
         </div>
         <div class="col text-right">
           <div class="btn-group" role="group" aria-label="Basic example">
+              <button
+                type="button"
+                data-toggle="modal"
+                class="btn btn-success rounded"
+                v-on:click="initRegistroActividad()"
+                title="Registrar una actividad"
+              >
+              <i class="fas fa-bullhorn"></i>
+              Actividad
+              </button>
+    
             <button
               type="button"
               class="btn btn-warning rounded"
@@ -96,14 +87,35 @@
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
           >
+            <ItemCapsulaAlumno
+              v-if="alumnoItem.visible"
+              :texto="alumnoItem.nombre_alumno"
+              :foto="alumnoItem.foto"
+              :color="alumnoItem.color"
+              :seleccion="toggleSelectAlumno"
+              :value="alumnoItem"
+            >
+              <span slot="cuerpo">
+                <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
+                <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+                <span
+                  v-if="alumnoItem.calcular_tiempo_extra"                  
+                  class="badge badge-pill badge-warning text-wrap"
+                  style="width: 2rem;background-color:#ECE050;"
+                >
+                  <small>
+                    <i class="fas fa-plus"></i>
+                  </small>
+                  <span >{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
+                  <span class="text-muted">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
+                  {{alumnoItem.tiempo_extra.minutes}}
+                  <span class="text-muted">min</span>
+                </span>
+              </span>
+            </ItemCapsulaAlumno>
+            <!--
             <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
-              <img
-                src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                width="35"
-                height="35"
-                alt="..."
-                class="rounded-circle"
-              />
+              <img :src="alumnoItem.foto" width="35" height="35" alt="..." class="rounded-circle" />
               <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
               <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
               <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
@@ -120,7 +132,7 @@
                 {{alumnoItem.tiempo_extra.minutes}}
                 <span class="text-muted">min</span>
               </span>
-            </small>
+            </small>-->
           </div>
         </div>
       </div>
@@ -141,7 +153,7 @@
         <!-- <form class="needs-validation" novalidate>-->
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Registro de Actividad</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-bullhorn"></i> Registro de Actividad</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -267,7 +279,11 @@
                     v-bind:key="alumnoItem.id"
                     class="d-flex align-content-top flex-wrap"
                   >
-                    <span class="badge badge-pill badge-info" v-if="alumnoItem.seleccionado">
+                    <span
+                      :style="alumnoItem.color == '' ? '':'background-color:'+alumnoItem.color"
+                      class="badge badge-pill badge-info"
+                      v-if="alumnoItem.seleccionado"
+                    >
                       {{alumnoItem.nombre_alumno}}
                       <i
                         v-on:click="toggleSelectAlumno(alumnoItem)"
@@ -290,32 +306,14 @@
               <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
                 <span class="sr-only">Cargando...</span>
               </div>
-              <!--<div class="row justify-content-md-center">
-                <div class="col-6 border" 
-                    v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
-                    v-bind:key="alumnoItem.id" >
-                    <span >{{alumnoItem.nombre_alumno}}</span>
-                    <small><i class="fas fa-plus"></i></small>
-                    <span class="text-danger">{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
-                    <span class="text-muted" style="font-size:12px;">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span> 
-                    {{alumnoItem.tiempo_extra.minutes}} <span class="text-muted" style="font-size:12px;">min</span>
-                      <div class="custom-control custom-switch">
-                     <input  :id="alumnoItem.id" v-model="alumnoItem.seleccionado" type="checkbox"  class="custom-control-input" />                     
-                      <label class="custom-control-label" :for="alumnoItem.id">                                                
-                        <small>                         
-                        
-                        </small>                        
-                     </label>
-                      </div>
-                </div>                    
-              </div>-->
-
               <table class="table">
                 <tr>
                   <td></td>
                   <td></td>
-                  <td><small>Aplicar Cargos</small></td>
-                                    </tr>
+                  <td>
+                    <small>Aplicar Cargos</small>
+                  </td>
+                </tr>
                 <tr
                   v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                   v-bind:key="alumnoItem.id"
@@ -332,7 +330,10 @@
                         style="font-size:12px;"
                       >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
                       {{alumnoItem.tiempo_extra.minutes}}
-                      <span class="text-muted" style="font-size:12px;">min</span>
+                      <span
+                        class="text-muted"
+                        style="font-size:12px;"
+                      >min</span>
                     </div>
                   </td>
                   <td>
@@ -417,7 +418,9 @@
 
 .scroll-panel-salida-div {
   width: 100%;
-  height: 400px;
+  height: 600px;
+  padding-left: 15px;
+  padding-right: 15px;
   /*overflow-y: scroll;*/
   overflow-y: hidden;
 }
@@ -426,6 +429,7 @@
   z-index: 9999999;
 }
 
-.fondo-rosa { background-color: "#e83e8c" !important; }
-
+.fondo-rosa {
+  background-color: "#e83e8c" !important;
+}
 </style>

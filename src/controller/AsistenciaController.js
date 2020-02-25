@@ -3,14 +3,16 @@ import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "Asistencia",
   mixins: [operacionesApi],
+  components:{ItemCapsulaAlumno},
   data() {
     return {
-      usuarioSesion: {},
-      sesion: {},
+      usuarioSesion: {},      
       item: AlumnoModel,
       lista: [],
       listaSeleccion: [],
@@ -18,27 +20,21 @@ export default {
       listaSeleccionSalida: [],
       listaFiltroGrupos: [],
       grupoSeleccionado: { id: -1, nombre: '' },
-      grupoDefault: { id: -1, nombre: 'Todos' },
+      grupoDefault: { id: -1, nombre: 'Todos',color:'gray' },
       response: "",      
     };
   },
   mounted() {
     console.log("iniciando el componente de asistencia ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+  
+    this.usuarioSesion = getUsuarioSesion();
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function () {
+      console.log("Invocando LoadFuncion");
       this.get(
-        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,        
         (result) => {
+          console.log("resultado "+JSON.stringify(result))
           this.response = result.data;
           console.log("Consulta " + this.response);
           if (this.response != null) {
@@ -55,7 +51,7 @@ export default {
       this.listaRecibidos = [];
 
       this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           console.log("Consulta " + this.response);
@@ -72,7 +68,7 @@ export default {
       this.lista.filter(function (item) {
         var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
         if (i <= -1) {
-          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
+          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo,color:item.color });
         }
         return null;
       });
@@ -117,7 +113,7 @@ export default {
         this.post(
           URL.ASISTENCIA_ENTRADA_ALUMNOS,
           { ids: ids, genero: this.usuarioSesion.id },
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             console.log("insertados " + this.response);
@@ -167,7 +163,7 @@ export default {
         this.post(
           URL.ASISTENCIA_SALIDA_ALUMNOS,
           { listaSalida: listaSalida, genero: this.usuarioSesion.id },
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             if (this.response != null) {
@@ -192,9 +188,11 @@ export default {
 
       if (this.grupoSeleccionado.id == -1) {
         console.log("sinfiltro");
-        this.lista.forEach(element => {
-          element.visible = true;
-        });
+        if(this.lista != null && this.lista != undefined && this.lista != []){
+          this.lista.forEach(element => {
+            element.visible = true;
+          });
+        }        
       } else {
         console.log("Filtrar por grupo " + grupoItem.nombre);
         this.lista.forEach(element => {

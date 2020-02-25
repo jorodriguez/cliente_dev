@@ -9,12 +9,13 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import { VueGoodTable } from 'vue-good-table';
 import Popup from './Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
+import { getUsuarioSesion } from '../helpers/Sesion';
 
 export default {
   name: "ReporteDeudas",
   components: {
     SignoutComponent,
-    ReporteMensualidades,    
+    ReporteMensualidades,
     VueGoodTable,
     Popup
   },
@@ -32,10 +33,12 @@ export default {
       uriTempGastosMesActual: URL.REPORTE_GASTO_MES_ACTUAL,// "http://localhost:5000/reporte_gastos_mes_actual",      
       uriTempIngresoMenosGastos: URL.REPORTE_INGRESO_MENOS_GASTO_MENSUAL, //"http://localhost:5000/reporte_ingreso_menos_gasto_mensual",
       usuarioSesion: {},
-      sesion: {},
+      // sesion: {},
       gasto_mensual: 0,
       item: AlumnoModel,
       id_sucursal_seleccionada: -1,
+      id_tipo_cargo_seleccionado : -1,
+      tipo_cargo_seleccionado :{id:-1,nombre:""},
       sucursal_seleccionada: { id_sucursal: -1, nombre: '' },
       sucursal_seleccionada_crecimiento: { id_sucursal: -1, nombre: '' },
       listaBalanceSucursal: [],
@@ -46,11 +49,12 @@ export default {
       listaCrecimientoGlobal: [],
       listaCrecimientoMensualSucursal: [],
       reporteIngresoMenosGastos: null,
-      alumno_seleccionado: { id: 0, nombre: "" },
+      alumno_seleccionado: { id: 0, nombre: "" },      
       response: "",
       mensaje: "",
-      TABLE_CONFIG: TABLE_CONFIG,  
-      columnsAlumnos: [
+      TABLE_CONFIG: TABLE_CONFIG,
+     /* columnsAlumnos: [
+
         {
           label: 'Id',
           field: 'id',
@@ -79,60 +83,108 @@ export default {
         },
         {
           label: 'Adeuda',
-          field: 'total_adeudo',                   
+          field: 'total_adeudo',
         },
+        {
+          label:"cargos",
+          field:"cargos_array"
+        },
+        
         {
           label: 'Adeuda',
           field: 'adeuda',         
           hidden: true
         },
           
+      ]*/
+      columnsAlumnos: [
+        {
+          label: 'Id',
+          field: 'id',
+          hidden: true
+        },
+        {
+          label: '',
+          field: 'foto',
+          filterable: false,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Alumno',
+          field: 'nombre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Apellidos',
+          field: 'apellidos',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },      
+        {
+          label:"Adeuda",
+          field:"cargos_array",
+          
+        },
+        {
+          label: 'Total',
+          field: 'total_adeudo',                   
+        },
+        
+        {
+          label: 'Adeuda',
+          field: 'adeuda',
+          hidden: true
+        },
+
       ]
     };
   },
   mounted() {
     console.log("iniciando el componente reporte deudas ");
-    this.sesion = this.$session.get("usuario_sesion");
 
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
+    this.usuarioSesion = getUsuarioSesion();
+    console.log("Admin "+JSON.stringify(this.usuarioSesion));
+    /*if (!this.usuarioSesion.permiso_gerente) {
       this.$router.push("/");
       return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
-    if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }
+    }*/
 
     this.loadFunctionBalanceSucursal = function () {
       this.get(
         this.uriTempBalanceSucursal,
-        this.sesion.token,
+
         (result) => {
-          console.log("Consulta " + result.data);
+          console.log("Consulta " + result.data);          
           if (result.data != null) {
             this.listaBalanceSucursal = result.data;
           }
         }
-      );      
+      );
     };
 
     this.loadFunctionBalancesAlumnosPorSucursal = function () {
+      console.log("@loadFunctionBalancesAlumnosPorSucursal");
 
       if (this.id_sucursal_seleccionada != -1) {
 
+        if(this.id_tipo_cargo_seleccionado == undefined || this.id_tipo_cargo_seleccionado == null){
+            this.id_tipo_cargo_seleccionado = -1;
+        }
+
         this.get(
-          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada,
-          this.sesion.token,
+          this.uriTempBalanceAlumnosSucursal + "/" + this.id_sucursal_seleccionada+"/"+this.id_tipo_cargo_seleccionado,          
           (result) => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
+              //console.log(JSON.stringify(result.data[0]));
               this.listaBalancesAlumnosPorSucursal = result.data;
             }
           }
-        );        
+        );
       } else {
         this.mensaje = "Por favor seleccione una sucursal.";
       }
@@ -142,7 +194,7 @@ export default {
 
       this.get(
         this.uriTempBalanceCrecimiento,
-        this.sesion.token,
+
         (result) => {
           console.log("Consulta balance crecimiento " + result.data);
           if (result.data != null) {
@@ -150,7 +202,7 @@ export default {
           }
         }
       );
-      
+
     };
 
     this.loadFunctionBalanceCrecimientoAlumnosPorSucursal = function (id_sucursal) {
@@ -159,7 +211,7 @@ export default {
 
         this.get(
           this.uriTempBalanceCrecimientoAlumnos + "/" + id_sucursal,
-          this.sesion.token,
+
           (result) => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
@@ -167,7 +219,7 @@ export default {
             }
           }
         );
-      
+
       } else {
         this.mensaje = "Por favor seleccione una sucursal.";
       }
@@ -177,7 +229,7 @@ export default {
 
       this.get(
         this.uriTempBalanceCrecimientoGlobal,
-        this.sesion.token,
+
         (result) => {
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -193,7 +245,7 @@ export default {
 
         this.get(
           this.uriTempBalanceCrecimientoMensualSucursal + "/" + id_sucursal,
-          this.sesion.token,
+
           (result) => {
             console.log("MMMMESUAL " + result.data);
             if (result.data != null) {
@@ -213,7 +265,7 @@ export default {
       ) {
         this.get(
           this.uriTempBalanceAlumnoCrecimientoMensualSucursal + '/' + id_sucursal + '/' + mes_anio,
-          this.sesion.token,
+
           result => {
             console.log("Consulta " + result.data);
             if (result.data != null) {
@@ -229,7 +281,7 @@ export default {
     this.loadFunctionMesesActivos = function () {
       this.get(
         this.uriTempMesesActivos,
-        this.sesion.token,
+
         (result) => {
           console.log("Consulta meses activos " + result.data);
           if (result.data != null) {
@@ -243,7 +295,7 @@ export default {
     this.loadFunctionGastoMensual = function () {
       this.get(
         this.uriTempGastosMesActual,
-        this.sesion.token,
+
         (result) => {
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null && result.data.length > 0) {
@@ -257,13 +309,27 @@ export default {
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
     this.loadFunctionCrecimientoGlobal();
-    this.loadFunctionGastoMensual();
+    //this.loadFunctionGastoMensual();
 
   },
   methods: {
-    verDetalleDeudasSucursal(row) {
-      this.sucursal_seleccionada = row;
+    verDetalleDeudasSucursal(row) {    
+      this.sucursal_seleccionada = row;      
       this.id_sucursal_seleccionada = row.id;
+      this.id_tipo_cargo_seleccionado = -1;
+      console.log("sucursal seleccionada "+this.sucursal_seleccionada.nombre);
+      this.loadFunctionBalancesAlumnosPorSucursal();
+    },
+    verDetalleDeudasSucursalYTipoCargo(row) {        
+      console.log(JSON.stringify(row));
+      this.tipo_cargo_seleccionado = row;    
+      this.id_tipo_cargo_seleccionado = row.id_cargo;
+      this.loadFunctionBalancesAlumnosPorSucursal();
+    },
+    verDetalleDeudasSucursalYTipoCargoChange() {              
+      //this.tipo_cargo_seleccionado = row;    
+      //this.id_tipo_cargo_seleccionado = row.id_cargo;
+      console.log("this.id_tipo_cargo_seleccionado  "+this.id_tipo_cargo_seleccionado );
       this.loadFunctionBalancesAlumnosPorSucursal();
     },
     verDetalleCrecimientoSucursal(row) {
@@ -299,6 +365,6 @@ export default {
       this.$session.clear();
       this.$router.push("/");
     },
-  
+
   }
 };

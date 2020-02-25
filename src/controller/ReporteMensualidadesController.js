@@ -7,6 +7,7 @@ import RecordatorioPago from './RecordatorioPago'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { castNumMonthToSpanish } from "../helpers/UtilsDate";
+import { getUsuarioSesion } from '../helpers/Sesion';
 
 export default {
   name: "ReporteMensualidades",
@@ -27,8 +28,8 @@ export default {
       listaMeses: [],
       usuarioSesion: {},
       mes_seleccionado: null,
-      pago_seleccionado : null,
-      sesion: {},
+      pago_seleccionado: null,
+      // sesion: {},
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
       loadFunctionReporteContadoresMesSucursal: null,
       loadFunctionReporteMensualidadesSucursal: null,
@@ -127,34 +128,27 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente reporte de mensualidades ");
-    this.sesion = this.$session.get("usuario_sesion");
 
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+    this.usuarioSesion = getUsuarioSesion();
     if (!this.usuarioSesion.permiso_gerente) {
       this.$router.push("/");
       return;
     }
 
     //para mostrar las sucursales
-    this.loadFunctionReporteContadoresSucursalesMesActual= function () {
+    this.loadFunctionReporteContadoresSucursalesMesActual = function () {
       this.get(
         this.uriTemp,
-        this.sesion.token,
+
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
-            this.listaSucursales = result.data;               
-            if(this.listaSucursales != null && this.listaSucursales.length > 0){
-              if(this.mes_seleccionado == null){
+            this.listaSucursales = result.data;
+            if (this.listaSucursales != null && this.listaSucursales.length > 0) {
+              if (this.mes_seleccionado == null) {
                 this.mes_seleccionado = this.listaSucursales[0].anio_mes;
-              }           
-            } 
+              }
+            }
           }
         }
       );
@@ -162,10 +156,10 @@ export default {
 
 
     this.loadFunctionReporteMensualidadesSucursal = function (id_sucursal) {
-      console.log("sucr "+id_sucursal+" mes "+this.mes_seleccionado);
+      console.log("sucr " + id_sucursal + " mes " + this.mes_seleccionado);
       this.get(
-        this.uriTemp + "/" + id_sucursal+"/"+this.mes_seleccionado,
-        this.sesion.token,
+        this.uriTemp + "/" + id_sucursal + "/" + this.mes_seleccionado,
+
         (result) => {
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -193,7 +187,7 @@ export default {
             nota: this.texto_recordatorio,
             nota_escrita: true //poner un checkbox
           },
-          this.sesion.token,
+
           (result) => {
             if (result.data != null) {
               console.log(JSON.stringify(result.data));
@@ -211,14 +205,14 @@ export default {
       };
     }
 
-    this.loadFunctionReporteContadoresMesSucursal = function(id_sucursal)  {
+    this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
       this.get(
         this.uriTemp + "/" + id_sucursal,
-        this.sesion.token,
+
         result => {
           console.log("Consulta meses con adeudo" + result.data);
           if (result.data != null) {
-            this.listaMeses = result.data;          
+            this.listaMeses = result.data;
           }
         }
       );
@@ -229,9 +223,9 @@ export default {
   methods: {
     async verListaMensualidadesFacturadas(row_sucursal) {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
-      this.sucursal_seleccionada = row_sucursal;      
-      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id_sucursal);            
-      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);     
+      this.sucursal_seleccionada = row_sucursal;
+      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id_sucursal);
+      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
@@ -243,19 +237,19 @@ export default {
 
       this.filtrarCargos();
     },
-    formatNumeroMes(num_mes){
+    formatNumeroMes(num_mes) {
       return castNumMonthToSpanish(num_mes).es;
     },
     cambiarMes() {
       this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
     },
-    verCargosPorMes(row){
+    verCargosPorMes(row) {
       this.mes_seleccionado = row.anio_mes;
       this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));
-      this.pago_seleccionado = params.row ;
+      this.pago_seleccionado = params.row;
       $("#detallePago").modal("show");
       // params.row - row object 
       // params.pageIndex - index of this row on the current page.
@@ -291,7 +285,7 @@ export default {
       this.mensaje = "";
       this.get(
         URL.INFO_CONFIGURACION,
-        this.sesion.token,
+
         result => {
           if (result.data != null) {
             this.texto_recordatorio = result.data.mensaje_recordatorio_pago;

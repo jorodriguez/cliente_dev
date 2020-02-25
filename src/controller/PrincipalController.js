@@ -6,15 +6,18 @@ import { truncateSync } from "fs";
 import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
-
+import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
+import {getUsuarioSesion,clearSesion} from '../helpers/Sesion';
 
 export default {
     name: "Principal",
     mixins: [operacionesApi],
+    components:{
+        ItemCapsulaAlumno        
+    },
     data() {
         return {
-            usuarioSesion: {},
-            sesion: {},
+            usuarioSesion: {},          
             response: "",
             listaAlumnos: [],
             listaAlumnosSeleccionados: [],
@@ -46,22 +49,13 @@ export default {
     //FIXME: SESION
     mounted() {
         console.log("iniciando el Bienvenida ");
-
-        this.sesion = this.$session.get("usuario_sesion");
-
-        if (!this.sesion || !this.sesion.usuario) {
-            console.log("No tiene sesion");
-            this.$router.push("/login");
-            return;
-        }
-        this.usuarioSesion = this.sesion.usuario;
+        this.usuarioSesion = getUsuarioSesion();
 
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
             this.listaRecibidos = [];
             this.get(
-                this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,
-                this.sesion.token,
+                this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,                
                 (result) => {
                     this.response = result.data;
                     if (this.response != null) {
@@ -76,8 +70,7 @@ export default {
         this.loadFunctionAlumnosParaSalir = function (listaIdsAsistenciasSalida, handler) {
 
             this.get(
-                URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,
-                this.sesion.token,
+                URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,                
                 handler
             );
         };
@@ -108,7 +101,7 @@ export default {
 
         this.get(
             this.uriTempActividad + "/catalogo_actividad",
-            this.sesion.token,
+            
             (result) => {
                 this.response = result.data;
                 console.log("Consulta de actividades" + this.response);
@@ -273,7 +266,7 @@ export default {
             this.post(
                 this.uriTempActividad + "/registrar",
                 this.actividad,
-                this.sesion.token,
+                
                 (result) => {
                     this.response = result.data;
                     console.log("Actividades insertadas " + this.response);
@@ -296,7 +289,9 @@ export default {
         },
         signout() {
             console.log("Signout ");
-            this.$session.clear();
+            //this.$session.clear();
+              clearSesion();
+            this.$root.$emit('LOGOUT','LOGOUT');            
             this.$router.push("/");
         },
         filtrarAlumnosPorGrupo(grupoItem) {
@@ -391,7 +386,7 @@ export default {
                 this.post(
                     this.uriTempAsistencia + "/salidaAlumnos",
                     { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
-                    this.sesion.token,
+                    
                     (result) => {
                         console.log("Response " + result.data);
                         if (result.data != null) {

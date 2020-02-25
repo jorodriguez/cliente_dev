@@ -5,6 +5,7 @@ import { VueGoodTable } from 'vue-good-table';
 import Popup from './Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { operacionesApi } from "../helpers/OperacionesApi";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "AlumnosCargos",
@@ -77,25 +78,13 @@ export default {
   },
   mounted() {
     console.log("iniciando el componente alumnos ");
-    this.sesion = this.$session.get("usuario_sesion");
-
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
-    if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }
+    this.usuarioSesion = getUsuarioSesion();
 
     //para mostrar las sucursales
     this.loadFunctionSucursal= function () {
       this.get(
         URL.SUCURSAL_BASE,
-        this.sesion.token,
+        
         result => {
           console.log("Consulta sucursales" + result.data);
           if (result.data != null) {
@@ -109,7 +98,7 @@ export default {
       console.log("sucr "+id_sucursal);
       this.get(
         URL.SUCURSAL_BASE + "/" + id_sucursal+"/cargos",
-        this.sesion.token,
+        
         (result) => {
           console.log("Alumnos de sucusal " + result.data);
           if (result.data != null) {

@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "node server.js",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js",
+    "build": "node build/build.js --mode prod",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
@@ -25,10 +25,12 @@
     "vue-material": "^1.0.0-beta-11",
     "vue-moment": "^4.0.0",
     "vue-notification": "^1.3.20",
+    "vue-page-transition": "^0.2.2",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue-session": "^1.0.0",
     "vue-sessionstorage": "^1.0.0",
+    "vue2-timepicker": "^1.0.8",
     "vuejs-datepicker": "^1.5.4",
     "vuejs-smart-table": "0.0.5"
   },

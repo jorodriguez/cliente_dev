@@ -5,6 +5,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
+import {getUsuarioSesion} from '../helpers/Sesion';
 
 export default {
   name: "gastos",
@@ -37,7 +38,7 @@ export default {
         from: new Date(Date.now() + 8640000)
       },
       usuarioSesion: {},
-      sesion: {},      
+      //sesion: {},      
       response: "",
       mensaje: "",
     };
@@ -45,19 +46,12 @@ export default {
   mounted() {
     console.log("iniciando el componente de gastos");
 
-    this.sesion = this.$session.get("usuario_sesion");
 
-    if (!this.sesion || !this.sesion.usuario) {
-      console.log("No tiene sesion");
-      this.$router.push("/");
-      return;
-    }
-    this.usuarioSesion = this.sesion.usuario;
-
+this.usuarioSesion = getUsuarioSesion();
     this.loadFunctionGastos = function (anio_mes) {
       this.get(
         this.uriTempGastos + "/" + this.usuarioSesion.co_sucursal + "/" + anio_mes,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -71,7 +65,7 @@ export default {
 
       this.get(
         this.uriTempTiposGasto,
-        this.sesion.token,
+        
         (result) => {
           if (result.data != null) {
             this.listaTiposGasto = result.data;
@@ -85,7 +79,7 @@ export default {
 
       this.get(
         this.uriTempFormasPagos,
-        this.sesion.token,
+        
         (result) => {
           if (result.data != null) {
             this.listaFormasPago = result.data;
@@ -97,7 +91,7 @@ export default {
     this.loadFunctionGastosMensuales = function () {
       this.get(
         this.uriTempHistoricoGastos + "/" + this.usuarioSesion.co_sucursal,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -149,7 +143,7 @@ export default {
         this.post(
           this.uriTempGastos,
           this.gasto,
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             if (this.response != null) {
@@ -166,7 +160,7 @@ export default {
         this.put(
           this.uriTempGastos,
           this.gasto,
-          this.sesion.token,
+          
           (result) => {
             this.response = result.data;
             if (this.response != null) {
@@ -207,7 +201,7 @@ export default {
 
       this.remove(
         this.uriTempGastos + "/" + this.gasto.id,
-        this.sesion.token,
+        
         (result) => {
           this.response = result.data;
           if (this.response != null) {

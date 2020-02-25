@@ -1,111 +1,33 @@
 
 <template>
   <div id="app">
-    <!--position="top left" -->
-    <notifications group="notificacion_principal">
-      <!--<template slot="body" slot-scope="props">
-        <div>
-          <a class="title"><h5>{{props.item.title}}</h5></a>
-          <a class="close" @click="props.close">
-            <i class="fa fa-fw fa-close"></i>
-          </a>
-          <div v-html="props.item.text"></div>
-        </div>
-      </template>-->
-    </notifications>
+    <notifications group="notificacion_principal"></notifications>
 
     <span class="text-left">
       <MonitorRed></MonitorRed>
     </span>
-
-    <button
-      id="id_notificador_principal"
-      type="button"
-      class="btn btn-link btn-small hide"
-      data-toggle="modal"
-      data-target="#detalle_notificacion_principal"
-    >
-      <!--<span class="spinner-border" > </span>  -->
-      <span id="texto_notificador_principal"></span>
-    </button>
-    <!--
-        <router-link to="/CatAlumno" class="dash-nav-item">Alumnos</router-link>
-        <router-link to="/Asistencia" class="dash-nav-item">Asistencias</router-link>
-        <router-link to="/ReporteAsistencias" class="dash-nav-item">Lista Asistencias</router-link>
-    -->
-
-    <!-- <MenuPrincipal></MenuPrincipal>-->
-
-    <router-view />
-
-    <!-- app principal -->
-    <Popup id="detalle_notificacion_principal" size="md" show_button_close="true">
-      <div slot="header">
-        <p id="encabezado_notificador_principal"></p>
-      </div>
-      <div slot="content">
-        <div class="row">
-          <div class="container overflow-auto">
-            <div id="cuerpo_notificador_principal"></div>
-          </div>
-        </div>
-      </div>
-      <div slot="footer"></div>
-    </Popup>
-
-    <!-- popup de expiracion de sesion -->
-    <Popup id="popup_expiracion_sesion" size="md" show_button_close="false">
-      <div slot="header">
-        <p id="id_header_popup_expiracion_sesion"></p>
-      </div>
-      <div slot="content">
-        <div class="row">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-5 text-right">
-                <i class="fas fa-user-clock fa-5x"></i>
-              </div>
-              <div class="col text-left">
-                <h2>
-                  <p id="id_mensaje_popup_expiracion_sesion" />
-                </h2>
-                <h3>
-                  <p id="id_mensaje_popup_expiracion_sesion"></p>
-                </h3>
-                <button type="button" class="btn btn-link" v-on:click="signout()">
-                  <p v-on:click="signout()">Click aquí para iniciar sesión</p>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="footer"></div>
-    </Popup>
+     <vue-page-transition name="flip-x">
+        <router-view />
+     </vue-page-transition>
   </div>
 </template>
 
 <script>
-/*
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-;*/
 import Popup from "./controller/Popup";
-import MenuPrincipal from "./components/navBar";
 import MonitorRed from "./componentes_generales/MonitorRed";
+import { usuarioSesion, clearSesion } from "./helpers/Sesion";
 
 export default {
   components: {
-    Popup,
-    MenuPrincipal,
+    Popup,   
     MonitorRed
   },
   name: "App",
   methods: {
     signout() {
       console.log("Signout ");
-      this.$session.clear();
+      //this.$session.clear();
+      clearSesion();
       $("#popup_expiracion_sesion").modal("hide");
       this.$router.push("/");
     }
@@ -119,7 +41,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 10px;
+  /*color: #2c3e50; */  
+}
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
