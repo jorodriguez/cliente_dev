@@ -75,7 +75,7 @@ export default {
       this.post(URL.USUARIO_BASE,
         this.usuario,
         (result) => {
-          console.log("this.response " + this.body);
+          console.log("this.response " + result.body);
           this.$notificacion.info('Registro de usuario', 'Se registró el usuario.');
           this.init();
           $("#popup_usuario").modal("hide");
@@ -124,17 +124,24 @@ export default {
       console.log("fila seleccionada " + rowSelect.adeuda);
       this.operacion = operacion;
       this.usuario = rowSelect;
-      /* if (operacion == 'DELETE') {        
-         this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
-         return;
-       } else {*/
-      $("#popup_eliminar_usuario").modal("show");
-      //}
+      if(operacion == 'EDIT'){
+        $("#popup_usuario").modal("show");
+      }
+       if (operacion == 'DELETE') {        
+         //validar si no esta en asistencia
+
+         //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
+         $("#popup_eliminar_usuario").modal("show");
+       } 
     },
     verDetalle(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);
       //$("#popup_eliminar_usuario").modal("show");
       //this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
+    },
+    validarHoras(eventData){
+      //console.log("HOra entrada "+ JSON.stringify(this.usuario.hora_entrada)+" SALIDA "+JSON.stringify(this.usuario.hora_salida));
+      console.log();
     }
   }
 };
