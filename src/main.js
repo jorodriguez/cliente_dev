@@ -12,6 +12,14 @@ import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
 import VuePageTransition from 'vue-page-transition'
 
+/*import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
+import { required, email } from 'vee-validate/dist/rules';
+extend('required', {
+  ...required,
+  message: 'Campo requerido'
+});
+extend('email', email);*/
+
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
@@ -22,6 +30,9 @@ Vue.use(VueTimepicker);
 Vue.use(VuePageTransition);
 Vue.prototype.$notificacion = Notificaciones;
 
+/*Vue.component("ValidationProvider", ValidationProvider);
+Vue.component("ValidationObserver", ValidationObserver);
+*/
 Vue.config.productionTip = false
 
 /* eslint-disable */

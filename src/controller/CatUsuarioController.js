@@ -5,10 +5,11 @@ import { en, es } from 'vuejs-datepicker/dist/locale'
 import { getUsuarioSesion } from '../helpers/Sesion';
 import VueTimepicker from 'vue2-timepicker'
 import { UsuarioModel, UsuarioBuilder } from '../models/UsuarioModel';
-import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { VueGoodTable } from 'vue-good-table';
+import TABLE_CONFIG from "../helpers/DatatableConfig";
 import Popup from "../controller/Popup";
 import Loader from "../components_utils/Loader";
+import { validarDatosUsuario } from '../helpers/UsuarioValidacion';
 
 
 export default {
@@ -27,13 +28,15 @@ export default {
       es: es,
       TABLE_CONFIG: TABLE_CONFIG,
       loader : false,
+      contador :0,
       columnasUsuario: [
-        { label: "Id", field: "id", type:'string',hidden: true },
-        { label: "Foto", field: "foto", type:'string',hidden: true },
-        { label: "Nombre", field: "nombre",type:'string' },
-        { label: "Correo", field: "correo",type:'string' }, ,
-        { label: "Hora_entrada", field: "hora_entrada",type: 'time', },
-        { label: "Hora_salida", field: "hora_salida",type: 'time' },
+        { label: "Id", field: "id", hidden: true },
+        { label: "Foto", field: "foto", hidden: true },
+        { label: "Nombre", field: "nombre" },
+        { label: "Correo", field: "correo" }, 
+        { label: "Hora Entrada", field: "hora_entrada" },
+        { label: "Hora Salida", field: "hora_salida"},
+        { label: "", field: "botones"}
       ]
     };
   },
@@ -53,6 +56,7 @@ export default {
           this.loader = false;
           if (result.body != null) {
             this.listaUsuario = result.body || [];
+            this.contador = this.listaUsuario.length;
           }
         });
     },
@@ -62,12 +66,16 @@ export default {
       this.usuario = new UsuarioModel();
       $("#popup_usuario").modal("show");
     },
-    guardar() {
+   async guardar() {
       console.log("Insertar");
-      /*if (!validacionDatos(this.input)) {        -
+      
+      //const isValid = await this.$refs.observer.validate();      
+      //if(!validarDatosUsuario(this.usuario) && !isValid){
+        if(!validarDatosUsuario(this.usuario)){
         console.log("No paso la validacion");
-        return;
-      }*/
+        return;     
+      }       
+      
 
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
@@ -143,5 +151,6 @@ export default {
       //console.log("HOra entrada "+ JSON.stringify(this.usuario.hora_entrada)+" SALIDA "+JSON.stringify(this.usuario.hora_salida));
       console.log();
     }
+    
   }
 };
