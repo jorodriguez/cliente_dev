@@ -77,6 +77,7 @@ export default {
             response: "",
             mensaje: "",
             // sesion: {},
+            loadAlumnoFuncion: null,
             loadFamiliaresFuncion: null,
             loadCatalogoParentescoFuncion: null,
             loadValoresEsperadosFunction: null,
@@ -96,7 +97,16 @@ export default {
         console.log(" " + to);
         this.id = to.params.id;
         this.init();
+        // this.loadFamiliaresFuncion();
+        //this.loadValoresEsperadosFunction();        
     },
+    /*watch: {
+        id: function (newId, oldId) {
+            console.log("Observer para id ");
+
+            this.loadAlumnoFuncion();
+        }
+    },*/
     mounted() {
         console.log("iniciando el componente Perfil alumno");
 
@@ -120,18 +130,20 @@ export default {
             } else {
                 console.log("this.uriTemp  " + this.uriTemp);
 
-                this.get(
-                    this.uriTemp + "/id/" + this.id,
-                    (result) => {
-                        this.alumno = result.data;
-                        if (this.alumno.formato_inscripcion == null)
-                            this.alumno.formato_inscripcion = {};
+                this.loadAlumnoFuncion = () => {
+                    this.get(
+                        this.uriTemp + "/id/" + this.id,
+                        (result) => {
+                            this.alumno = result.data;
+                            if (this.alumno.formato_inscripcion == null)
+                                this.alumno.formato_inscripcion = {};
 
-                        if (this.alumno.co_datos_facturacion != null) {
-                            this.datos_facturacion = this.alumno.datos_facturacion;
+                            if (this.alumno.co_datos_facturacion != null) {
+                                this.datos_facturacion = this.alumno.datos_facturacion;
+                            }
                         }
-                    }
-                );
+                    );
+                };
 
                 this.loadFamiliaresFuncion = () => {
 
@@ -226,7 +238,8 @@ export default {
                         }
                     );
                 };
-
+                this.loadAlumnoFuncion();
+                this.loadFamiliaresFuncion();
                 this.loadFunctionGrupos();
             }
 

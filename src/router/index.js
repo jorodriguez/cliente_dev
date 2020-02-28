@@ -42,7 +42,7 @@ const router = new Router({
         { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true } },
         { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true } },
         { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true } },
-        { path: '/CatalogoUsuario', name: 'CatUsuario', component: CatUsuario, meta: { requiresAuth: true } },
+        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true } },
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true } },
 
         {path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true ,is_admin: true}},

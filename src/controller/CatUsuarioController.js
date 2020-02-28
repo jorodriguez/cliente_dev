@@ -10,14 +10,15 @@ import TABLE_CONFIG from "../helpers/DatatableConfig";
 import Popup from "../controller/Popup";
 import Loader from "../components_utils/Loader";
 import { validarDatosUsuario } from '../helpers/UsuarioValidacion';
-
+import * as moment from 'moment';
+import CONSTANTES  from '../helpers/Constantes'
 
 export default {
   name: "cat-usuario",
   mixins: [operacionesApi],
   components: {
-    VueGoodTable, Datepicker, VueTimepicker, Popup,Loader
-  },  
+    VueGoodTable, Datepicker, VueTimepicker, Popup, Loader
+  },
   data() {
     return {
       usuario: UsuarioModel,
@@ -26,17 +27,19 @@ export default {
       operacion: "INSERT",
       listaUsuario: [],
       es: es,
+      registrarCorreo: false,
       TABLE_CONFIG: TABLE_CONFIG,
-      loader : false,
-      contador :0,
+      loader: false,
+      contador: 0,
+      rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
       columnasUsuario: [
         { label: "Id", field: "id", hidden: true },
         { label: "Foto", field: "foto", hidden: true },
         { label: "Nombre", field: "nombre" },
-        { label: "Correo", field: "correo" }, 
+        { label: "Correo", field: "correo" },
         { label: "Hora Entrada", field: "hora_entrada" },
-        { label: "Hora Salida", field: "hora_salida"},
-        { label: "", field: "botones"}
+        { label: "Hora Salida", field: "hora_salida" },
+        { label: "", field: "botones" }
       ]
     };
   },
@@ -45,14 +48,15 @@ export default {
 
     this.usuarioSesion = getUsuarioSesion();
     this.init();
+    this.usuario = new UsuarioModel(); 
   },
-  methods: {    
+  methods: {
     init() {
       console.log("Init");
       this.loader = true;
       this.get(URL.USUARIO_BASE + "/" + this.usuarioSesion.co_sucursal,
         (result) => {
-          console.log("Consulta " + JSON.stringify(result.body));
+          // console.log("Consulta " + JSON.stringify(result.body));
           this.loader = false;
           if (result.body != null) {
             this.listaUsuario = result.body || [];
@@ -63,22 +67,26 @@ export default {
     nuevo() {
       console.log("Nuevo");
       this.operacion = "INSERT";
-      this.usuario = new UsuarioModel();
+      this.usuario = new UsuarioModel();      
       $("#popup_usuario").modal("show");
     },
-   async guardar() {
+    async guardar() {
       console.log("Insertar");
-      
+
       //const isValid = await this.$refs.observer.validate();      
       //if(!validarDatosUsuario(this.usuario) && !isValid){
-        if(!validarDatosUsuario(this.usuario)){
+      console.log(JSON.stringify(this.usuario));
+      if (!validarDatosUsuario(this.usuario)) {
         console.log("No paso la validacion");
-        return;     
-      }       
-      
+        return;
+      }
 
+      this.usuario.hora_entrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm}).format('H:mm');
+      this.usuario.hora_salida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm}).format('H:mm'); 
+      console.log(`entrada ${this.usuario.hora_entrada} salida ${this.usuario.hora_entrada}`);
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
+      this.usuario.id_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
 
       this.post(URL.USUARIO_BASE,
         this.usuario,
@@ -92,12 +100,15 @@ export default {
     },
 
     modificar() {
-      console.log("Modificar el id " + this.usuario.id);
+      console.log("Modificar el id " + this.usuario.nombre);
 
       /*if (!validacionDatosAlumno(this.input)) {
         console.log("No paso la validacion");
         return;
       }*/
+      this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
+      this.usuario.genero = this.usuarioSesion.id;
+
 
       this.put(URL.USUARIO_BASE + "/" + this.usuario.id,
         this.usuario,
@@ -132,25 +143,31 @@ export default {
       console.log("fila seleccionada " + rowSelect.adeuda);
       this.operacion = operacion;
       this.usuario = rowSelect;
-      if(operacion == 'EDIT'){
+      if (operacion == 'EDIT') {
         $("#popup_usuario").modal("show");
       }
-       if (operacion == 'DELETE') {        
-         //validar si no esta en asistencia
+      if (operacion == 'DELETE') {
+        //validar si no esta en asistencia
 
-         //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
-         $("#popup_eliminar_usuario").modal("show");
-       } 
+        //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
+        $("#popup_eliminar_usuario").modal("show");
+      }
     },
     verDetalle(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);
       //$("#popup_eliminar_usuario").modal("show");
       //this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
     },
-    validarHoras(eventData){
+    validarHoras(eventData) {
       //console.log("HOra entrada "+ JSON.stringify(this.usuario.hora_entrada)+" SALIDA "+JSON.stringify(this.usuario.hora_salida));
-      console.log();
+      let horaEntrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm});
+      let horaSalida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm});
+      console.log(` ${horaEntrada} salida ${horaSalida}`);
+      if (horaSalida <= horaEntrada) {
+        Vue.prototype.$notificacion.error('Hora de entrada y salida', 'La hora de entrada es menos a la hora de salida.');
+        return false;
+      }
     }
-    
+
   }
 };

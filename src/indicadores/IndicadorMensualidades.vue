@@ -52,8 +52,8 @@
                     <span class="text-danger"><strong>${{props.row.total}}</strong></span>  
                 </span>
                 <span v-else-if="props.column.field == 'botones'">
-                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar</button>                  
-                  <!--<router-link :to="'/PerfilAlumno/'+props.row.id_alumno">Pagar</router-link>-->
+                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar {{props.row.id_alumno}}</button>                  
+                  <!--<router-link :to="{name:'PerfilAlumno',params:{id : props.row.id_alumno}}" replace >Pagar {{props.row.id_alumno}}</router-link>-->
                 </span>
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>
               </template>
@@ -165,9 +165,9 @@ export default {
       this.get(
         URL.MENSUALIDAD_VENCE_SEMANA_ACTUAL + this.usuarioSesion.co_sucursal,
         results => {
-          console.log(
+         /* console.log(
             " MENSUALIDADADES A VENCER  " + JSON.stringify(results.body)
-          );
+          );*/
           if (results.body != null) {
             this.loader = false;
             let resultado = results.body;

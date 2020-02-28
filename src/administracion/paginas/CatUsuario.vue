@@ -23,12 +23,12 @@
                   v-model="usuario.nombre"
                   class="form-control"
                   placeholder="Nombre "
-                  required                  
+                  required         
+                  autofocus         
                 />
               <!--  <span>{{ errors[0] }}</span>
               </ValidationProvider>-->
-            </div>
-
+            </div>             
             <!--<label>
             Fecha de entrada
             <span class="text-danger">*</span>
@@ -44,16 +44,15 @@
             <div class="form-group">
               <label for="correoInput">
                 Correo
-                <span class="text-danger">*</span>
+                <span class="text-primary">(opcional)</span>
               </label>
-              <!--<ValidationProvider name="email" rules="required|email"  v-slot="{errors}">-->
+              <!--<ValidationProvider name="email" rules="required|email"  v-slot="{errors}">-->              
                 <input
                   id="correoInput"
                   type="email"
                   v-model="usuario.correo"
                   class="form-control"
-                  placeholder="micorreo@ejemplo.com"
-                  required
+                  placeholder="micorreo@ejemplo.com"                  
                 />
               <!--  <span>{{ errors[0] }}</span>
               </ValidationProvider>-->
@@ -66,13 +65,16 @@
                 </label>
                 <vue-timepicker
                   v-model="usuario.hora_entrada"
-                  @change="validarHoras()"
-                  :minute-interval="15"
+                  @change="validarHoras()"                  
+                  :minute-interval="15"        
+                  :hour-range="rangoHora"          
+                  :hide-disabled-hours="true"
                   hour-label="hora"
                   minute-label="minuto"
                   format="HH:mm"
                   placeholder="00:00"
                 ></vue-timepicker>
+                {{usuario.hora_entrada}}
               </div>
               <div class="col">
                 <label>
@@ -82,17 +84,18 @@
                 <vue-timepicker
                   v-model="usuario.hora_salida"
                   @change="validarHoras()"
+                  :min="hora_entrada"
                   :minute-interval="15"
-                  :hour-range="[7,8,9,10,11,12,20]"
+                  :hour-range="rangoHora"
                   :hide-disabled-hours="true"
                   hour-label="hora"
                   minute-label="minuto"
                   format="HH:mm"
                   placeholder="00:00"
                 ></vue-timepicker>
+                {{usuario.hora_salida}}
               </div>              
-            </div>
-            {{invalid}}
+            </div>            
             <!--</ValidationObserver>-->
           </div>        
         </div>

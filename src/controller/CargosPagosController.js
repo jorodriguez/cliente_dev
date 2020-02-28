@@ -5,8 +5,8 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
-import  CONSTANTES  from "../helpers/Constantes";
-import {getUsuarioSesion} from '../helpers/Sesion';
+import CONSTANTES from "../helpers/Constantes";
+import { getUsuarioSesion } from '../helpers/Sesion';
 
 
 export default {
@@ -49,19 +49,19 @@ export default {
       loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
-      loadFunctionMesesAdeuda:null,
-       motivo_eliminacion: ""
+      loadFunctionMesesAdeuda: null,
+      motivo_eliminacion: ""
     };
   },
   mounted() {
     console.log("iniciando el componente de pagos y cargos ");
 
-this.usuarioSesion = getUsuarioSesion();
+    this.usuarioSesion = getUsuarioSesion();
     this.loadFunctionCargosAlumno = function () {
       this.get(
         URL.CARGOS_BASE + "/" + this.idalumno,
-        
-        (result) => {                    
+
+        (result) => {
           if (result.data != null) {
             this.listaCargosAlumnos = result.data;
           }
@@ -74,9 +74,9 @@ this.usuarioSesion = getUsuarioSesion();
       this.listaCargos = [];
       this.get(
         URL.CARGOS_BASE,
-        
+
         (result) => {
-           console.log("Consulta del catalogo de cargos" + result.data);
+          console.log("Consulta del catalogo de cargos" + result.data);
           if (result.data != null) {
             this.listaCargos = result.data;
           }
@@ -91,7 +91,7 @@ this.usuarioSesion = getUsuarioSesion();
 
         this.get(
           URL.FORMAS_PAGO_BASE,
-          
+
           result => {
             console.log("Consulta del catalogo de formas pago" + result.data);
             if (result.data != null) {
@@ -110,7 +110,7 @@ this.usuarioSesion = getUsuarioSesion();
 
       this.get(
         URL.MESES_ADEUDA + this.idalumno,
-        
+
         results => {
           console.log("Consulta de meses " + results.data);
           if (results.data != null) {
@@ -126,6 +126,12 @@ this.usuarioSesion = getUsuarioSesion();
 
     this.loadFunctionCargosAlumno();
     //this.loadFunctionCatCargos();
+  },
+  watch: {
+    idalumno: function (newId, oldId) {
+      console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);
+      this.loadFunctionCargosAlumno();
+    }
   },
   methods: {
     async iniciarAgregarCargo() {
@@ -145,12 +151,12 @@ this.usuarioSesion = getUsuarioSesion();
                       this.alumno = result;
                     })*/
 
-     await this.get(
+      await this.get(
         URL.ALUMNOS_BASE + "/id/" + this.idalumno,
-        
+
         (result) => {
-         this.alumno = result.data;         
-          console.log("==== >>"+JSON.stringify(this.alumno));
+          this.alumno = result.data;
+          console.log("==== >>" + JSON.stringify(this.alumno));
         }
       );
 
@@ -167,22 +173,22 @@ this.usuarioSesion = getUsuarioSesion();
       this.cargo.monto = this.cargo.cat_cargo.precio;
       this.calcularTotalCargo();
 
-       let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
+      let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
       //cargar mensualidades si se selecciono la mensualidad
       if (this.cargo.cat_cargo.id == id_cargo_mes) {
         this.cargo.monto = this.alumno.costo_colegiatura;
-        if(this.listaMesesAdeuda.length == 0){
+        if (this.listaMesesAdeuda.length == 0) {
           this.loadFunctionMesesAdeuda();
-        }        
-      }else{
-          if(this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION){
-            this.cargo.monto = this.alumno.costo_inscripcion ;
-          }
+        }
+      } else {
+        if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION) {
+          this.cargo.monto = this.alumno.costo_inscripcion;
+        }
       }
     },
     onChangeMensualidad() {
-      if (this.cargo.mes_seleccionado.cargo_registrado){
-          this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
+      if (this.cargo.mes_seleccionado.cargo_registrado) {
+        this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
       }
 
     },
@@ -215,7 +221,7 @@ this.usuarioSesion = getUsuarioSesion();
         return;
       }
 
-      console.log("Fecha seleccionada "+JSON.stringify(this.cargo.fecha_cargo));
+      console.log("Fecha seleccionada " + JSON.stringify(this.cargo.fecha_cargo));
 
       if (this.cargo.cat_cargo.escribir_cantidad
         && this.cargo.cantidad == undefined || this.cargo.cantidad == '') {
@@ -246,7 +252,7 @@ this.usuarioSesion = getUsuarioSesion();
       this.post(
         URL.CARGO_REGISTRAR,
         this.cargo,
-        
+
         (result) => {
           if (result.data != null) {
             this.$notificacion.info("Se agrego el cargo", "");
@@ -319,7 +325,7 @@ this.usuarioSesion = getUsuarioSesion();
     },
     guardarPago() {
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
-      
+
       var pass = true;
 
       if (this.pago.cat_forma_pago.id == -1) {
@@ -350,7 +356,7 @@ this.usuarioSesion = getUsuarioSesion();
 
         if (!pass) {
           this.$notificacion.warn("Por favor revise las cantidades", "No pueden ir Ceros, Negativos ni espacios en blanco.");
-   
+
         } else {
 
           var lista = this.listaCargosAlumnos
@@ -397,12 +403,12 @@ this.usuarioSesion = getUsuarioSesion();
           this.post(
             URL.PAGOS_REGISTRAR,
             objEnvio,
-            
-            (result) => {             
+
+            (result) => {
               if (result.data != null) {
-                console.log("" + result.data);                
+                console.log("" + result.data);
                 this.$notificacion.warn("Se agregó el pago ", "");
-                 this.seleccionTodos = false;
+                this.seleccionTodos = false;
                 this.loadFunctionCargosAlumno();
                 this.loadFunctionActualizarCargoGeneral();
                 $("#modal_pago").modal("hide");
@@ -417,9 +423,9 @@ this.usuarioSesion = getUsuarioSesion();
       console.log("Ver detalle cargo " + item.id_cargo_balance_alumno);
 
       this.cargoSeleccionado = item;
-       this.get(
+      this.get(
         URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
-        
+
         result => {
           if (result.data != null) {
             console.log("" + JSON.stringify(result.data));
@@ -443,13 +449,13 @@ this.usuarioSesion = getUsuarioSesion();
       if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
         this.motivo_eliminacion = "";
         $("#eliminarCargoAlumno").modal("show");
-      }else{
+      } else {
         this.$notificacion.error("Seleccione al menos un cargo para eliminar", "");
       }
     },
     confirmarEliminacion() {
       if (this.motivo_eliminacion == "") {
-         this.$notificacion.warn("Escribe el motivo de eliminación", "");
+        this.$notificacion.warn("Escribe el motivo de eliminación", "");
       } else {
 
         var lista = this.listaCargosAlumnos
@@ -465,10 +471,10 @@ this.usuarioSesion = getUsuarioSesion();
             motivo: this.motivo_eliminacion,
             genero: this.usuarioSesion.id
           },
-          
+
           result => {
             if (result.data != null) {
-              this.$notificacion.info("Se elimino correctamente", "");              
+              this.$notificacion.info("Se elimino correctamente", "");
               this.seleccionTodos = false;
               this.loadFunctionCargosAlumno();
               this.loadFunctionActualizarCargoGeneral();
@@ -483,7 +489,7 @@ this.usuarioSesion = getUsuarioSesion();
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-   
+
   },
 };
 

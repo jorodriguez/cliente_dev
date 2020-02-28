@@ -1,66 +1,48 @@
 <template>
-  <span id="administracion"> 
-     
-      
-       <router-link to="/CatalogoUsuario" class="nav-link">
-          <i class="fa fa-cash-register text-blue"></i> Usuarios
-        </router-link>
-       <!--  <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
-              <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  id="pills-home-tab"
-                  data-toggle="pill"
-                  href="#pills-home"
-                  role="tab"
-                  aria-controls="pills-home"
-                  aria-selected="true"
-                >Usuarios</a>
-              </li>         
-                   
-             
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="pills-servicios-tab"
-                  data-toggle="pill"
-                  href="#pills-facturacion"
-                  role="tab"
-                  aria-controls="pills-facturacion"
-                  aria-selected="false"
-                >Facturación</a>
-              </li>
-            </ul>
-            <div class="tab-content" id="pills-tabContent">
-              <div
-                class="tab-pane fade show active"
-                id="pills-home"
-                role="tabpanel"
-                aria-labelledby="pills-home-tab"
-              >
-                <div class="card">
-                  <div class="card-body">
-                    usuarios
-                  </div>
-                </div>
-              </div>
-            </div>
-  -->
-   
+  <span id="administracion">
+    <div class="row mb-4">
+      <Card
+        titulo="Administrar"
+        sub_titulo="Usuarios"
+        clase_icono="fas fa-user"
+        clase_color="icon icon-shape bg-white rounded-circle shadow"
+        clase_fondo="bg-gradient-info"
+        icono_etiqueta ="fa fa-cog"
+        :etiqueta="usuarioSesion.nombre_sucursal"
+        descripcion=""
+        @click="irAdministrarUsuario()"
+      ></Card>
+      <!--<router-link to="/CatalogoUsuario" class="nav-link">
+        <i class="fa fa-cash-register text-blue"></i> Usuarios
+      </router-link>-->
+    </div>
   </span>
 </template>
 
 <script>
 import Popup from "../controller/Popup";
-import { usuarioSesion, clearSesion } from "../helpers/Sesion";
-import { VueGoodTable } from 'vue-good-table';
+import { getUsuarioSesion } from "../helpers/Sesion";
+import Card from "./fragmentos/Card";
 
 export default {
   components: {
-    Popup, VueGoodTable
+    Popup,
+    Card
+  },
+  data(){
+    return{
+        usuarioSesion :null
+    }
   },
   name: "Administracion",
-  methods: {}
+  mounted(){
+      this.usuarioSesion = getUsuarioSesion();
+  },
+  methods: {
+    irAdministrarUsuario(){
+      this.$router.push({ name: "CatalogoUsuario" });
+    }
+  }
 };
 </script>
 
