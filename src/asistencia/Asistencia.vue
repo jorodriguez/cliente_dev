@@ -9,10 +9,10 @@
         </router-link>
       </div>
       <div class="col-11 text-right">
-        <router-link to="/ReporteAsistencias" class="btn btn-lg btn-primary">Asistencias por fecha</router-link>
+        <router-link to="/ReporteAsistencias" class="btn btn-lg btn-outline-primary">Asistencias por fecha</router-link>
         <router-link
           to="/ReporteAsistenciasSucursalMes"
-          class="btn btn-lg btn-primary"
+          class="btn btn-lg btn-outline-primary"
         >Faltas del Mes</router-link>
       </div>
     </div>

@@ -9,6 +9,5 @@ export function validarEmail(valor) {
     return false;
   }
   
-  return REG.test(valor);
-    
+  return REG.test(valor);    
 }

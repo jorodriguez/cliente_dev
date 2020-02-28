@@ -92,9 +92,14 @@ export default {
         this.usuario,
         (result) => {
           console.log("this.response " + result.body);
-          this.$notificacion.info('Registro de usuario', 'Se registró el usuario.');
-          this.init();
-          $("#popup_usuario").modal("hide");
+          let respuesta = result.body;
+          if(respuesta.estatus){
+            this.init();            
+            $("#popup_usuario").modal("hide");            
+            this.$notificacion.info('Registro de usuario', 'Se registró el usuario.');
+          }else{
+            this.$notificacion.error('Mensaje',respuesta.mensaje);
+          }                   
         }
       );
     },
@@ -109,15 +114,20 @@ export default {
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
 
-
       this.put(URL.USUARIO_BASE + "/" + this.usuario.id,
         this.usuario,
         (result) => {
-          if (this.body != null) {
-            console.log("" + result.body);
-            this.$notificacion.info('Modificación de usuario', 'Se actualizarón los datos del usuario.');
-            this.init();
-            $("#popup_usuario").modal("hide");
+          if (result != null) {
+            console.log("" + JSON.stringify(result.body));
+            let respuesta = result.body;
+            if(respuesta.estatus){
+              this.$notificacion.info('Modificación de usuario', 'Se actualizarón los datos del usuario.');
+              this.init();            
+              $("#popup_usuario").modal("hide");                          
+            }else{
+              this.$notificacion.error('Mensaje',respuesta.mensaje);
+            }              
+            
           }
         }
       );
