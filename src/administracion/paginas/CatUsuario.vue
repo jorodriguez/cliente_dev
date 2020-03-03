@@ -34,7 +34,10 @@
           :groupOptions="{enabled: false}"
         >
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'nombre'">{{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> </span>
+            <span v-if="props.column.field == 'nombre'">
+              <span class="btn btn-link"   v-on:click="seleccionar(props.row,'EDIT')"> {{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> 
+              </span>
+              </span>
             <span v-else-if="props.column.field == 'botones'">
               <button
                 type="button"
