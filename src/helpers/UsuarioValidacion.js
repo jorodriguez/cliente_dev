@@ -14,7 +14,8 @@ export const validarDatosUsuario = (usuario) => {
       Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
       return false;
     }
-    if (usuario.correo != null && usuario.correo != undefined) {
+
+    if (usuario.correo != null && usuario.correo != undefined && usuario.correo != '') {
       if (!validarEmail(usuario.correo)) {
         Vue.prototype.$notificacion.error('Formato de correo ', 'El correo no cumple con el formato correcto.');
         return false;

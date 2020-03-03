@@ -34,11 +34,21 @@
           :groupOptions="{enabled: false}"
         >
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'nombre'">{{props.row.nombre}}</span>
+            <span v-if="props.column.field == 'nombre'">{{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> </span>
             <span v-else-if="props.column.field == 'botones'">
               <button
                 type="button"
+                :class="props.row.acceso_sistema ? 'btn btn-sm btn-warning':'btn btn-sm btn-secondary'"                
+                :title="props.row.acceso_sistema ? 'Acceso a sistema':'Dar acceso a sistema'"
+                v-on:click="seleccionar(props.row,'ACCESO_SISTEMA')"
+              >
+                <!--<i class="fas fa-minus-circle" v-if="props.row.acceso_sistema"></i>-->
+                <i class="fas fa-key"  ></i>
+              </button>
+              <button
+                type="button"
                 class="btn btn-primary btn-sm"
+                title="Modificar registro"
                 v-on:click="seleccionar(props.row,'EDIT')"
               >
                 <i class="fas fa-edit"></i>
@@ -46,6 +56,7 @@
               <button
                 type="button"
                 class="btn btn-danger btn-sm"
+                title="Eliminar registro"
                 v-on:click="seleccionar(props.row,'DELETE')"
               >
                 <i class="fas fa-trash-alt"></i>
@@ -93,22 +104,21 @@
             :language="es"
             required
           ></datepicker>-->
+
           <div class="form-group">
             <label for="correoInput">
               Correo
               <span class="text-primary">(opcional)</span>
-            </label>
-            <!--<ValidationProvider name="email" rules="required|email"  v-slot="{errors}">-->
+            </label>            
             <input
               id="correoInput"
               type="email"
               v-model="usuario.correo"
               class="form-control"
               placeholder="micorreo@ejemplo.com"
-            />
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
+            />            
           </div>
+          
           <div class="row">
             <div class="col">
               <label>
@@ -125,8 +135,7 @@
                 minute-label="minuto"
                 format="HH:mm"
                 placeholder="00:00"
-              ></vue-timepicker>
-              {{usuario.hora_entrada}}
+              ></vue-timepicker>              
             </div>
             <div class="col">
               <label>
@@ -144,8 +153,7 @@
                 minute-label="minuto"
                 format="HH:mm"
                 placeholder="00:00"
-              ></vue-timepicker>
-              {{usuario.hora_salida}}
+              ></vue-timepicker>              
             </div>
           </div>
           <!--</ValidationObserver>-->
@@ -154,8 +162,39 @@
       <div slot="footer">
         <button class="btn btn-primary" @click="guardar()" v-if="operacion == 'INSERT'">Guardar</button>
         <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>
+      </div>    
+    </Popup>
+
+    <!-- Add acceso -->
+    <Popup id="popup_acceso" show_button_close="true" size="md">
+      <div slot="header">Acceso al Sistema</div>
+      <div slot="content">
+        <div class="container text-left">          
+          <p>Usuario : {{usuario.nombre}}</p>
+          <div class="form-group">
+            <label for="nombreInput">
+              Correo
+              <span class="text-danger">*</span>
+            </label>            
+            <input
+              id="correoInput"
+              type="text"
+              v-model="usuario.correo"
+              class="form-control"
+              placeholder="Correo "
+              required
+              autofocus
+            />          
+          </div>       
+        </div>
+      </div>
+      <div slot="footer">
+        <!--<button class="btn btn-primary" @click="guardarAcceso()" v-if="operacion == 'INSERT'">Guardar</button>
+        <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>
+        -->
       </div>
     </Popup>
+
   </div>
 </template>
 

@@ -39,6 +39,8 @@ export default {
         { label: "Correo", field: "correo" },
         { label: "Hora Entrada", field: "hora_entrada" },
         { label: "Hora Salida", field: "hora_salida" },
+        { label: "acceso sistema", field: "acceso_sistema" ,hidden:true},
+        { label: "nuevo ingreso", field: "nuevo_ingreso" ,hidden:true},
         { label: "", field: "botones" }
       ]
     };
@@ -107,14 +109,16 @@ export default {
     modificar() {
       console.log("Modificar el id " + this.usuario.nombre);
 
-      /*if (!validacionDatosAlumno(this.input)) {
+      if (!validarDatosUsuario(this.usuario)) {
         console.log("No paso la validacion");
         return;
-      }*/
+      }
+
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
 
-      this.put(URL.USUARIO_BASE + "/" + this.usuario.id,
+    //this.put(URL.USUARIO_BASE + "/" + this.usuario.id,
+    this.put(URL.USUARIO_BASE,
         this.usuario,
         (result) => {
           if (result != null) {
@@ -161,6 +165,9 @@ export default {
 
         //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
         $("#popup_eliminar_usuario").modal("show");
+      }
+      if(operacion === 'ACCESO_SISTEMA'){
+        $("#popup_acceso").modal("show");
       }
     },
     verDetalle(rowSelect) {
