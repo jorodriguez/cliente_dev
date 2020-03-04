@@ -107,8 +107,7 @@ export default {
       this.input.genero = this.usuarioSesion.id;
 
       this.post(URL.ALUMNOS_BASE,
-        this.input,
-        
+        this.input,        
         (result) => {
           this.response = result.data;
           console.log("this.response " + this.response);

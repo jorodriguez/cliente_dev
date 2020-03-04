@@ -24,6 +24,12 @@ export default {
       loadFunctionBalanceAlumno:null,        
     };
   },
+  watch: {
+    idalumno: function (newId, oldId) {
+      console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);
+      this.loadFunctionBalanceAlumno();
+    }
+  },
   mounted() {
     console.log("iniciando el componente balance de alumnos complemento de perfil ");    
     console.log(" == > alumnos "+this.idalumno);

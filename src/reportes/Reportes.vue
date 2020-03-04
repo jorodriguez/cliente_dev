@@ -1,11 +1,11 @@
 <template>
-  <span id="administracion">
+  <span id="reportes">
     <div class="card">
       <div class="card-body">
         <div class="row mb-4">
           <Card
-            titulo="Administrar"
-            sub_titulo="Usuarios"
+            titulo="Alumnos"
+            sub_titulo="Faltas del mes"
             clase_icono="fas fa-user"
             clase_color="icon icon-shape bg-white rounded-circle shadow"
             clase_fondo="bg-gradient-info pointer"
@@ -13,10 +13,7 @@
             :etiqueta="usuarioSesion.nombre_sucursal"
             descripcion
             @click="irAdministrarUsuario()"
-          ></Card>
-          <!--<router-link to="/CatalogoUsuario" class="nav-link">
-        <i class="fa fa-cash-register text-blue"></i> Usuarios
-          </router-link>-->
+          ></Card>          
         </div>
       </div>
     </div>
@@ -26,7 +23,7 @@
 <script>
 import Popup from "../controller/Popup";
 import { getUsuarioSesion } from "../helpers/Sesion";
-import Card from "./fragmentos/Card";
+import Card from "../administracion/fragmentos/Card";
 
 export default {
   components: {
