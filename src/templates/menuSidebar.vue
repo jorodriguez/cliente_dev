@@ -139,7 +139,7 @@
           </li>
            <li class="nav-item nav-with-child">            
             <router-link to="/administracion" class="nav-link">            
-              <i class="fa fa-cash-register text-blue"></i> Administración
+              <i class="fa fa-cog text-blue"></i> Administración
             </router-link>
           </li>
         </ul>
