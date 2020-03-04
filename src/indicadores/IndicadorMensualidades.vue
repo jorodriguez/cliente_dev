@@ -52,7 +52,7 @@
                     <span class="text-danger"><strong>${{props.row.total}}</strong></span>  
                 </span>
                 <span v-else-if="props.column.field == 'botones'">
-                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar {{props.row.id_alumno}}</button>                  
+                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar</button>                  
                   <!--<router-link :to="{name:'PerfilAlumno',params:{id : props.row.id_alumno}}" replace >Pagar {{props.row.id_alumno}}</router-link>-->
                 </span>
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>

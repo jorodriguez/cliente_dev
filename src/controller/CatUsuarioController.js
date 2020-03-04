@@ -22,6 +22,8 @@ export default {
   data() {
     return {
       usuario: UsuarioModel,
+      usuarioMemento: UsuarioModel,
+      datosBaja : {motivo_baja:"",fecha_baja:null},
       usuarioSesion: null,
       response: "",
       operacion: "INSERT",
@@ -140,35 +142,62 @@ export default {
     eliminar() {
       console.log("Modificar el id " + this.usuario.id);
 
-      this.remove(URL.USUARIO_BASE + "/" + this.usuario.id,
-        this.usuario,
+      if(this.datosBaja.fecha_baja == null || this.datosBaja.fecha_baja == undefined){
+        this.$notificacion.error('Fecha de baja',"Seleccione una fecha de baja");
+        return;
+      }
+
+      this.datosBaja.genero = this.usuarioSesion.id;
+
+      this.put(URL.USUARIO_BASE + "/" + this.usuario.id,
+        this.datosBaja,
         (result) => {
-          console.log(" " + result.data);
-          if (result.data != null) {
-            console.log("" + result.data);
-            this.$notificacion.error('Registro de Baja de usuario', 'Se registro la baja de usuario ' + this.usuario.nombre + '.');
-            this.init();
-          }
+          let respuesta = result.body;
+            if(respuesta.estatus){
+              this.$notificacion.error('Registro de Baja de usuario', 'Se registro la baja de usuario ' + this.usuario.nombre + '.');
+              this.init();
+            }else{
+              this.$notificacion.error('Mensaje',respuesta.mensaje);
+            }          
         }
       );
-
     },
     seleccionar(rowSelect, operacion) {
       console.log("fila seleccionada " + rowSelect.adeuda);
       this.operacion = operacion;
-      this.usuario = rowSelect;
-      if (operacion == 'EDIT') {
+      
+      this.usuario = Object.assign({}, rowSelect);      
+
+      //this.usuarioMemento = Object.assign({}, this.usuario);
+
+      if (this.operacion == 'EDIT') {
+        //console.log("CLON "+JSON.stringify(this.usuarioMemento));
         $("#popup_usuario").modal("show");
       }
-      if (operacion == 'DELETE') {
+      if (this.operacion == 'DELETE') {
         //validar si no esta en asistencia
 
         //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
-        $("#popup_eliminar_usuario").modal("show");
+        $("#popup_baja").modal("show");
       }
-      if(operacion === 'ACCESO_SISTEMA'){
+      if(this.operacion === 'ACCESO_SISTEMA'){
         $("#popup_acceso").modal("show");
       }
+    },
+    cancelar(){        
+       //console.log("CLON ca "+JSON.stringify(this.usuarioMemento));       
+        //this.usuario = Object.assign({}, this.usuarioMemento);
+       // console.log("ORI ca "+JSON.stringify(this.usuario));
+        if (this.operacion == 'EDIT' || this.operacion == 'INSERT') {          
+
+          $("#popup_usuario").modal("hide");
+        }
+        if (this.operacion == 'DELETE') {          
+          $("#popup_eliminar_usuario").modal("hide");
+        }
+        if(this.operacion === 'ACCESO_SISTEMA'){
+          $("#popup_acceso").modal("hide");
+        }
     },
     verDetalle(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);

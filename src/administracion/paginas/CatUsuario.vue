@@ -72,7 +72,7 @@
     </div>
 
 
-    <Popup id="popup_usuario" show_button_close="true" size="md">
+    <Popup id="popup_usuario" :show_button_close="false" size="md">
       <div slot="header">Registro de usuario</div>
       <div slot="content">
         <div class="container text-left">
@@ -130,7 +130,7 @@
               </label>
               <vue-timepicker
                 v-model="usuario.hora_entrada"
-                @change="validarHoras()"
+                
                 :minute-interval="15"
                 :hour-range="rangoHora"
                 :hide-disabled-hours="true"
@@ -147,7 +147,7 @@
               </label>
               <vue-timepicker
                 v-model="usuario.hora_salida"
-                @change="validarHoras()"
+                
                 :min="hora_entrada"
                 :minute-interval="15"
                 :hour-range="rangoHora"
@@ -162,9 +162,10 @@
           <!--</ValidationObserver>-->
         </div>
       </div>
-      <div slot="footer">
+      <div slot="footer">                
+        <button class="btn btn-secondary" @click="cancelar()" v-if="operacion == 'EDIT' || operacion == 'INSERT'">Cerrar</button>        
         <button class="btn btn-primary" @click="guardar()" v-if="operacion == 'INSERT'">Guardar</button>
-        <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>
+        <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>        
       </div>    
     </Popup>
 
@@ -197,6 +198,37 @@
         -->
       </div>
     </Popup>
+
+     <Popup id="popup_baja" show_button_close="true" size="md">
+      <div slot="header">Acceso al Sistema</div>
+      <div slot="content">
+        <div class="container text-left">  
+          <p class="text-danger">Con la siguiente acción se desactivara todo acceso y uso en el sistema de <strong>{{usuario.nombre}}</strong>. </p>                  
+          <label>
+            Fecha de Baja
+            <span class="text-danger">*</span>
+          </label>
+          <datepicker
+            name="fechaBaja"
+            v-model="datosBaja.fecha_baja"
+            input-class="form-control"
+            :disabled-dates="{from:new Date()}"
+            :bootstrap-styling="true"
+            :language="es"
+            required
+          ></datepicker>
+          <div class="form-group" >
+            <label>Escriba algúna observación</label>
+              <textarea class="form-control" v-model="datosBaja.motivo_baja" rows="3"></textarea>
+          </div>
+          
+        </div>
+      </div>
+      <div slot="footer">
+        <button class="btn btn-danger" @click="eliminar()">Confirmar Baja</button>        
+      </div>
+    </Popup>
+
 
   </div>
 </template>
