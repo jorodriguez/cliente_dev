@@ -29,10 +29,16 @@ export const validarDatosUsuario = (usuario) => {
     }
 
     //--validar horario
-    let horaEntrada = moment((usuario.hora_entrada.HH+':'+usuario.hora_entrada.mm),'HH:mm');
+    console.log("hora entrada"+usuario.hora_entrada.HH+" "+usuario.hora_entrada);
+    console.log("hora entrada"+usuario.hora_salida.HH+" "+usuario.hora_salida);
+
+   // let horaEntrada = moment(usuario.hora_entrada);
+   // let horaSalida = moment(usuario.hora_salida);
+
+    /*let horaEntrada = moment((usuario.hora_entrada.HH+':'+usuario.hora_entrada.mm),'HH:mm');
       let horaSalida = moment((usuario.hora_salida.HH+':'+usuario.hora_salida.mm),'HH:mm');
-      
-    if (horaSalida <= horaEntrada) {
+      */
+    if (usuario.hora_salida <= usuario.hora_entrada) {
       Vue.prototype.$notificacion.error('Hora de entrada y salida', 'La hora de entrada es menos a la hora de salida.');
       return false;
     }

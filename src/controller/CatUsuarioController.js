@@ -71,7 +71,9 @@ export default {
     nuevo() {
       console.log("Nuevo");
       this.operacion = "INSERT";
-      this.usuario = new UsuarioModel();      
+      this.usuario = new UsuarioModel();    
+      this.usuario.hora_entrada = "";
+      this.usuario.hora_salida = "";
       $("#popup_usuario").modal("show");
     },
     async guardar() {
@@ -85,8 +87,8 @@ export default {
         return;
       }
 
-      this.usuario.hora_entrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm}).format('H:mm');
-      this.usuario.hora_salida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm}).format('H:mm'); 
+    //  this.usuario.hora_entrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm}).format('H:mm');
+     // this.usuario.hora_salida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm}).format('H:mm'); 
       console.log(`entrada ${this.usuario.hora_entrada} salida ${this.usuario.hora_entrada}`);
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
@@ -155,6 +157,7 @@ export default {
           let respuesta = result.body;
             if(respuesta.estatus){
               this.$notificacion.error('Registro de Baja de usuario', 'Se registro la baja de usuario ' + this.usuario.nombre + '.');
+              $("#popup_baja").modal("hide");
               this.init();
             }else{
               this.$notificacion.error('Mensaje',respuesta.mensaje);
@@ -176,6 +179,8 @@ export default {
       }
       if (this.operacion == 'DELETE') {
         //validar si no esta en asistencia
+        
+        this.datosBaja = {motivo_baja:"",fecha_baja:new Date()};
 
         //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
         $("#popup_baja").modal("show");
@@ -193,7 +198,7 @@ export default {
           $("#popup_usuario").modal("hide");
         }
         if (this.operacion == 'DELETE') {          
-          $("#popup_eliminar_usuario").modal("hide");
+          $("#popup_baja").modal("hide");
         }
         if(this.operacion === 'ACCESO_SISTEMA'){
           $("#popup_acceso").modal("hide");
@@ -205,7 +210,7 @@ export default {
       //this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
     },
     validarHoras(eventData) {
-      //console.log("HOra entrada "+ JSON.stringify(this.usuario.hora_entrada)+" SALIDA "+JSON.stringify(this.usuario.hora_salida));
+      
       let horaEntrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm});
       let horaSalida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm});
       console.log(` ${horaEntrada} salida ${horaSalida}`);

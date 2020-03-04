@@ -39,15 +39,15 @@
               </span>
               </span>
             <span v-else-if="props.column.field == 'botones'">
-              <button
+              <!--<button
                 type="button"
                 :class="props.row.acceso_sistema ? 'btn btn-sm btn-warning':'btn btn-sm btn-secondary'"                
                 :title="props.row.acceso_sistema ? 'Acceso a sistema':'Dar acceso a sistema'"
                 v-on:click="seleccionar(props.row,'ACCESO_SISTEMA')"
-              >
-                <!--<i class="fas fa-minus-circle" v-if="props.row.acceso_sistema"></i>-->
+              >                
                 <i class="fas fa-key"  ></i>
               </button>
+              -->
               <button
                 type="button"
                 class="btn btn-primary btn-sm"
@@ -130,9 +130,9 @@
               </label>
               <vue-timepicker
                 v-model="usuario.hora_entrada"
-                
+               
                 :minute-interval="15"
-                :hour-range="rangoHora"
+                :hour-range="[[7, 20]]"
                 :hide-disabled-hours="true"
                 hour-label="hora"
                 minute-label="minuto"
@@ -147,10 +147,10 @@
               </label>
               <vue-timepicker
                 v-model="usuario.hora_salida"
-                
-                :min="hora_entrada"
+               
+                :min="usuario.hora_entrada"
                 :minute-interval="15"
-                :hour-range="rangoHora"
+                :hour-range="[[7, 20]]"
                 :hide-disabled-hours="true"
                 hour-label="hora"
                 minute-label="minuto"
