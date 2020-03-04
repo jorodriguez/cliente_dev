@@ -1,8 +1,23 @@
 
 export class UsuarioModel {
     constructor(usuario) {
-/*
-        console.log("En el cos");
+        this.id = null;
+        this.nombre = "";
+        this.correo = "";
+        this.password = "";
+        this.coSucursal = null;
+        this.hora_entrada =null;
+        this.hora_salida =  null;
+        this.genero = null;
+        this.token = '';
+        this.foto =  '';
+        this.activo =  false;
+        this.motivoBaja =  '';
+        this.fechaBaja =  '';
+        this.nombreSucursal =  '';
+        this.tipoUsuario = '';
+        
+       /* console.log("En el cos");
         this.id = usuario.id || null;
         this.nombre = usuario.nombre || '';
         this.correo = usuario.correo || '';

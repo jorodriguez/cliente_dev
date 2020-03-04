@@ -27,12 +27,15 @@
         :class="loading ? 'btn btn-lg btn-primary btn-block text-white disabled':'btn btn-lg btn-primary btn-block text-white'"
         v-on:click="login()"
       >
-        <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span>
-        {{loading ? 'Validando..':'Entrar'}}
-      </a>
-      <small class="text-muted">(v200225)</small>
-      <br />
-      <br />
+          
+      <a :class="loading ? 'btn btn-lg btn-primary btn-block text-white disabled':'btn btn-lg btn-primary btn-block text-white'"  
+            v-on:click="login()"  
+            >
+       <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span> {{loading ? 'Validando..':'Entrar'}}       
+      </a> 
+      <small class="text-muted">(v200304)</small>
+      <br>
+      <br>
 
       <!-- MODAL TOAST -->
       <div
