@@ -1,7 +1,5 @@
 
 <template>  
-
-
       <div :class="clase_fondo ? ('card '+clase_fondo) : 'bg-primary'" @click="click()">
         <!-- Card body -->
         <div class="card-body">
@@ -23,8 +21,7 @@
             <span class="text-nowrap text-light">{{descripcion}}</span>
           </p>
         </div>
-      </div>     
-
+      </div>    
 </template>
 
 <script>

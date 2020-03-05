@@ -141,7 +141,7 @@
             <router-link to="/administracion" class="nav-link">            
               <i class="fa fa-cog text-blue"></i> Administración
             </router-link>
-          </li>
+          </li>          
         </ul>
         <!-- Divider -->
         <hr class="my-3" />

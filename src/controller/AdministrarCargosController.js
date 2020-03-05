@@ -83,8 +83,7 @@ export default {
     //para mostrar las sucursales
     this.loadFunctionSucursal= function () {
       this.get(
-        URL.SUCURSAL_BASE,
-        
+        URL.SUCURSAL_BASE,        
         result => {
           console.log("Consulta sucursales" + result.data);
           if (result.data != null) {

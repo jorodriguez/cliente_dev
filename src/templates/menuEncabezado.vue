@@ -82,6 +82,7 @@
               <i class="ni ni-single-02"></i>
               <span>Mi Perfil</span>
             </a>
+            <CambioSucursal/>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" @click="signout()">
               <i class="fa fa-sign-out-alt"></i>
@@ -98,11 +99,12 @@
 <script>
 import CONSTANTES from "../helpers/Constantes";
 import IndicadorMensualidades from "../indicadores/IndicadorMensualidades";
+import CambioSucursal from "./CambioSucursal";
 import { getUsuarioSesion, clearSesion } from "../helpers/Sesion";
 
 export default {
   name: "sidebar-principal",
-  components: { IndicadorMensualidades },
+  components: { IndicadorMensualidades,CambioSucursal },
   data() {
     return {
       usuarioSesion: {},
