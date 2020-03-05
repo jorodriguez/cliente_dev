@@ -68,6 +68,7 @@ import Loader from "../components_utils/Loader";
 import { getUsuarioSesion, setSession } from "../helpers/Sesion";
 import Card from "../administracion/fragmentos/Card";
 import { cargarSesion } from "../controller/LoginHelper";
+//import Bus from "../components_utils/Bus";
 
 export default {
   name: "cambiar-sucursal-item",
@@ -124,8 +125,15 @@ export default {
               cargarSesion(results.data)
               .then(path => {
                 console.log("PATH " + path);
-                $("#popup_cambio_sucursal").modal("hide");
+                
+                this.usuarioSesion = getUsuarioSesion();
+               
+                //this.$router.push({ path: '/' });
                 this.$router.push({ path: path });
+              //  Bus.$emit('CAMBIO_SUCURSAL',{id_sucursal_seleccionada:this.usuarioSesion.co_sucursal});
+                this.$root.$emit('CAMBIO_SUCURSAL', {id_sucursal_seleccionada:this.usuarioSesion.co_sucursal}); 
+                                $("#popup_cambio_sucursal").modal("hide");
+              
               }).catch(error=>{
                   this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
               });              

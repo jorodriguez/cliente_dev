@@ -11,27 +11,26 @@
 
       <!--  notificaciones -->
 
-      
-        <div class="nav-item dropdown">
-          <a
-            class="nav-link pr-0"
-            href="#"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-          <IndicadorMensualidades/>
-            <!--<small class="text-white "><strong>Pagos Pendientes</strong></small> <small class="badge badge-pill badge-warning">2</small>                -->
-            <!--<div class="media align-items-center">
+      <div class="nav-item dropdown">
+        <a
+          class="nav-link pr-0"
+          href="#"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <IndicadorMensualidades />
+          <!--<small class="text-white "><strong>Pagos Pendientes</strong></small> <small class="badge badge-pill badge-warning">2</small>                -->
+          <!--<div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle bg-primary" >                
                   <i class="fas fa-bell text-white"/>
                   Deudas
                   <small class="badge text-white">2</small>                
               </span>              
-            </div>-->
-          </a>
-          <!--
+          </div>-->
+        </a>
+        <!--
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
             <div class="dropdown-header noti-title">
               <h6 class="text-overflow m-0">Notificaciones</h6>
@@ -46,9 +45,8 @@
               <span class="text-red">Salir</span>
             </a>
           </div>
-          -->
-        </div>
-
+        -->
+      </div>
 
       <!-- notificaciones -->
 
@@ -65,11 +63,14 @@
           >
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <i class="fa fa-2x fa-smile-wink " ></i>
+                <i class="fa fa-2x fa-smile-wink"></i>
                 <!--<img alt="Image placeholder" src="./assets/img/theme/team-4-800x800.jpg" />-->
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
-                <span class="mb-0 text-xs font-weight-bold">{{usuarioSesion.nombre}}</span>
+                <span class="mb-0 text-xs font-weight-bold">
+                  <Loader :loading="loader"/>
+                   {{usuarioSesion.nombre}}
+                  </span>
                 <p class="text-xs">{{usuarioSesion.nombre_sucursal}}</p>
               </div>
             </div>
@@ -82,7 +83,7 @@
               <i class="ni ni-single-02"></i>
               <span>Mi Perfil</span>
             </a>
-            <CambioSucursal/>
+            <CambioSucursal />
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" @click="signout()">
               <i class="fa fa-sign-out-alt"></i>
@@ -101,29 +102,41 @@ import CONSTANTES from "../helpers/Constantes";
 import IndicadorMensualidades from "../indicadores/IndicadorMensualidades";
 import CambioSucursal from "./CambioSucursal";
 import { getUsuarioSesion, clearSesion } from "../helpers/Sesion";
+import Loader from '../components_utils/Loader';
 
 export default {
   name: "sidebar-principal",
-  components: { IndicadorMensualidades,CambioSucursal },
+  components: { IndicadorMensualidades, CambioSucursal },
   data() {
     return {
       usuarioSesion: {},
       revisarSesionPromise: null,
-      revisarSesion: null
+      revisarSesion: null,
+      loader:false
     };
   },
   mounted() {
     console.log("iniciando el template de menu");
     this.usuarioSesion = getUsuarioSesion();
+    this.$root.$on("CAMBIO_SUCURSAL", text => {
+      console.log("CAMBIO_SUCURSAL en MENU ENCABEZADO");
+      let message = text;
+      this.loader=true;
+      this.usuarioSesion = getUsuarioSesion();
+      this.init();            
+    });
   },
   methods: {
+    init() {
+      this.loader=false;
+    },
     signout() {
       console.log("Signout ");
       this.usuarioSesion = null;
       //this.$session.clear();
       clearSesion();
       this.$root.$emit("LOGOUT", "LOGOUT");
-      this.$router.push("/");
+      this.$router.push("/Login");
     }
   }
 };

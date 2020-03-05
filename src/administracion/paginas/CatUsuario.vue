@@ -1,6 +1,7 @@
 <template>
   <div class="catalogo_alumno">
     <h1>Usuarios ({{contador}})</h1>
+    <small>{{usuarioSesion.nombre_sucursal}}</small> 
     <div class="row">
       <div class="col-1">
         <router-link to="/Administracion" class="btn btn-secondary btn-lg">

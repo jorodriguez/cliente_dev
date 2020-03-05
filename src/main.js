@@ -29,6 +29,7 @@ Vue.use(VueTimepicker);
 //Vue.use(Notificacion);
 Vue.use(VuePageTransition);
 Vue.prototype.$notificacion = Notificaciones;
+//Vue.forceUpdate();
 
 /*Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);

@@ -2,6 +2,7 @@
   <div id="reporte-asistencia-miss-rango-fecha">
     <div>
       <h1>Reporte de Asistencias Miss</h1>      
+      <small>{{usuarioSesion.nombre_sucursal}}</small> 
       <div class="text-left">
         <router-link to="/AsistenciasUsuarios" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>

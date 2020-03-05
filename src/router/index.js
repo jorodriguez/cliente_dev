@@ -19,7 +19,7 @@ import Bienvenido from '@/components/Bienvenido'
 import CatUsuario from '../administracion/paginas/CatUsuario'
 import Administracion from '../administracion/Administracion'
 import Reportes from '../reportes/Reportes'
-import { getUsuarioSesion, getToken } from '../helpers/Sesion';
+import { getUsuarioSesion,getSesion, getToken } from '../helpers/Sesion';
 
 import VueSession from 'vue-session'
 
@@ -28,11 +28,25 @@ Vue.use(VueSession);
 
 const router = new Router({
   routes: [
-    { path: '/', name: 'Login', component: Login }, 
+    {
+      path: '/', 
+      beforeEnter(to, from, next) {
+        console.log("REVISNADO SESION ");
+        const sesion = getSesion();
+        console.log(" SESION "+JSON.stringify(sesion));
+        if (sesion != null && sesion.auth) {
+          console.log("REDIRECCION A "+sesion.paginaPrincipal);
+          next({ path: sesion.paginaPrincipal });
+        } else {
+          next({ name: 'Login' });
+        }
+      },
+    },
+    { path: '/login', name: 'Login', component: Login },
     {
       path: '/bienvenido', name: 'Bienvenido', component: Bienvenido, meta: { requiresAuth: true },
       children: [
-        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true }},
+        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true } },
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true } },
         { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true } },
         { path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true } },
@@ -47,7 +61,7 @@ const router = new Router({
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true } },
         { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true } },
 
-        {path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true ,is_admin: true}},
+        { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true } },
         { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true } },
         { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true } }
       ]
@@ -59,7 +73,7 @@ const router = new Router({
         { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true } },
       ]
     },*/
-        { path: '*', redirect: '/' }
+    { path: '*', redirect: '/' }
   ]
 })
 
@@ -77,12 +91,12 @@ router.beforeEach((to, from, next) => {
     } else {
       console.log("Revisando Sesion");
       let user = getUsuarioSesion();
-      console.log("USUARIO " + (user!=null)+" admin "+user.permiso_gerente);
+      console.log("USUARIO " + (user != null) + " admin " + user.permiso_gerente);
       if (to.matched.some(record => record.meta.is_admin)) {
         if (user.permiso_gerente) {
           console.log("Es Admin");
           next();
-        }else {
+        } else {
           console.log("redireccion a home de admin");
           next({ name: 'ReporteAdmin' })
         }
@@ -92,7 +106,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    console.log("No requiere AUTH");    
+    console.log("No requiere AUTH");
     next();
   } /*else if (to.matched.some(record => record.meta.guest)) {
     if (localStorage.getItem('jwt') == null) {
