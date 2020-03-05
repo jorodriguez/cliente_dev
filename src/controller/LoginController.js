@@ -2,6 +2,7 @@
 import URL from "../helpers/Urls";
 import CONSTANTES from "../helpers/Constantes";
 import {setSession,setToken} from '../helpers/Sesion';
+import {cargarSesion } from './LoginHelper';
 
 export default {
   name: "Login",
@@ -43,6 +44,12 @@ export default {
           this.response = result.data;
           this.loading = false;
           if (this.response.auth) {
+            cargarSesion(this.response)
+            .then(path=>{
+              console.log("PATH "+path);
+              this.$router.push({ path: path });
+            });
+            /*
             setSession(this.response);
             setToken(this.response.token);           
            
@@ -58,7 +65,7 @@ export default {
               //this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN);
               //this.$router.replace({ path: "/principal" });              
               this.$router.push({ path: "/principal" });
-            }
+            }*/
 
           } else {
             this.$notificacion.error('Login', 'No se encuentra el usuario.');

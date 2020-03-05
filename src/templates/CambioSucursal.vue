@@ -15,13 +15,21 @@
             <small>Sucursal actual</small>
             <h3>{{usuarioSesion.nombre_sucursal}}</h3>
             <Loader :loading="loader" :mini="false" />
-            <p>Cambiar a </p>
-            <div class="card" v-for="row in listaSucursales" :key="row.id">              
+            <p>Cambiar a</p>
+            <div class="card" v-for="row in listaSucursales" :key="row.id">
               <div class="row align-items-center">
                 <div class="col-auto">
                   <!-- Avatar -->
-                  <a href="#" class="avatar avatar-xl rounded-circle " :style="'background-color:'+row.class_color">
-                    <img v-if="row.foto != null && row.foto != '#'" alt="Image placeholder" :src="row.foto ? row.foto:'../assets/magic.png'" />                    
+                  <a
+                    href="#"
+                    class="avatar avatar-xl rounded-circle"
+                    :style="'background-color:'+row.class_color"
+                  >
+                    <img
+                      v-if="row.foto != null && row.foto != '#'"
+                      alt="Image placeholder"
+                      :src="row.foto ? row.foto:'../assets/magic.png'"
+                    />
                   </a>
                 </div>
                 <div class="col ml--2">
@@ -36,7 +44,11 @@
                   <small>{{row.contador_asistencia_alumnos}} Asistencia</small>
                 </div>
                 <div class="col-auto">
-                  <button type="button" class="btn btn-sm btn-primary" @click="cambiarSucursal(row)">Seleccionar</button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    @click="cambiarSucursal(row)"
+                  >Seleccionar</button>
                 </div>
               </div>
             </div>
@@ -53,8 +65,9 @@ import Popup from "../controller/Popup";
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import Loader from "../components_utils/Loader";
-import { getUsuarioSesion } from "../helpers/Sesion";
+import { getUsuarioSesion, setSession } from "../helpers/Sesion";
 import Card from "../administracion/fragmentos/Card";
+import { cargarSesion } from "../controller/LoginHelper";
 
 export default {
   name: "cambiar-sucursal-item",
@@ -102,20 +115,28 @@ export default {
     },
     cambiarSucursal(row) {
       console.log("Cambiar de sucursal a " + row);
-       try {
+      try {
         this.put(
           URL.SUCURSAL_USUARIO,
-          {id_usuario:this.usuarioSesion.id,id_sucursal:row.id_sucursal},
+          { id_usuario: this.usuarioSesion.id, id_sucursal: row.id_sucursal },
           results => {
-            if (results.data != null) {              
-              $("#popup_cambio_sucursal").modal("hide");
+            if (results.data != null && results.data.auth) {
+              cargarSesion(results.data)
+              .then(path => {
+                console.log("PATH " + path);
+                $("#popup_cambio_sucursal").modal("hide");
+                this.$router.push({ path: path });
+              }).catch(error=>{
+                  this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
+              });              
+            }else{
+                 this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
             }
           }
         );
       } catch (error) {
         console.error("ERRRRRR OR " + error);
       }
-
     }
   }
 };
