@@ -47,7 +47,7 @@ const REPORTE_INGRESO_MENOS_GASTO_MENSUAL = BASE + '/reporte_ingreso_menos_gasto
 const REPORTE_GASTOS = BASE + '/reporte_gastos';
 const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 
-const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
+const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades_sucursales';
 
 //-recordatorio
 const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
