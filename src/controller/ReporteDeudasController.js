@@ -52,51 +52,7 @@ export default {
       alumno_seleccionado: { id: 0, nombre: "" },      
       response: "",
       mensaje: "",
-      TABLE_CONFIG: TABLE_CONFIG,
-     /* columnsAlumnos: [
-
-        {
-          label: 'Id',
-          field: 'id',
-          hidden: true
-        },
-        {
-          label: '',
-          field: 'foto',
-          filterable: false,
-          thClass: 'text-center',
-          tdClass: 'text-center',
-        },
-        {
-          label: 'Alumno',
-          field: 'nombre',
-          filterable: true,
-          thClass: 'text-center',
-          tdClass: 'text-center',
-        },
-        {
-          label: 'Apellidos',
-          field: 'apellidos',
-          filterable: true,
-          thClass: 'text-center',
-          tdClass: 'text-center',
-        },
-        {
-          label: 'Adeuda',
-          field: 'total_adeudo',
-        },
-        {
-          label:"cargos",
-          field:"cargos_array"
-        },
-        
-        {
-          label: 'Adeuda',
-          field: 'adeuda',         
-          hidden: true
-        },
-          
-      ]*/
+      TABLE_CONFIG: TABLE_CONFIG,    
       columnsAlumnos: [
         {
           label: 'Id',
@@ -152,11 +108,11 @@ export default {
       this.$router.push("/");
       return;
     }*/
+    console.log("ACCESO A "+this.usuarioSesion.contador_sucursales+" sucursales");
 
     this.loadFunctionBalanceSucursal = function () {
       this.get(
-        this.uriTempBalanceSucursal,
-
+        this.uriTempBalanceSucursal+"/"+this.usuarioSesion.id,
         (result) => {
           console.log("Consulta " + result.data);          
           if (result.data != null) {
@@ -193,7 +149,7 @@ export default {
     this.loadFunctionBalanceCrecimiento = function () {
 
       this.get(
-        this.uriTempBalanceCrecimiento,
+        this.uriTempBalanceCrecimiento+"/"+this.usuarioSesion.id,
 
         (result) => {
           console.log("Consulta balance crecimiento " + result.data);
@@ -228,8 +184,7 @@ export default {
     this.loadFunctionCrecimientoGlobal = function () {
 
       this.get(
-        this.uriTempBalanceCrecimientoGlobal,
-
+        this.uriTempBalanceCrecimientoGlobal+"/"+this.usuarioSesion.id,
         (result) => {
           console.log("Consulta " + result.data);
           if (result.data != null) {
@@ -295,12 +250,10 @@ export default {
     this.loadFunctionGastoMensual = function () {
       this.get(
         this.uriTempGastosMesActual,
-
         (result) => {
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null && result.data.length > 0) {
             this.gasto_mensual = result.data[0].gasto_mes_actual;
-
           }
         }
       );
@@ -309,7 +262,7 @@ export default {
     this.loadFunctionBalanceSucursal();
     this.loadFunctionBalanceCrecimiento();
     this.loadFunctionCrecimientoGlobal();
-    //this.loadFunctionGastoMensual();
+    this.loadFunctionGastoMensual();
 
   },
   methods: {

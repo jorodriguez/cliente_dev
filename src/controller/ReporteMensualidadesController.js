@@ -207,7 +207,7 @@ export default {
 
     this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
       this.get(
-        this.uriTemp + "/" + id_sucursal,
+        this.uriTemp + "/" + id_sucursal+"/"+this.usuarioSesion.id,
 
         result => {
           console.log("Consulta meses con adeudo" + result.data);

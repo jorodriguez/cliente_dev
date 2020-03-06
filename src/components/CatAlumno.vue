@@ -1,6 +1,7 @@
 <template>
   <div class="cat_alumno">
     <h1>Alumnos ({{ lista != [] ? lista.length:0}}) </h1>
+    <small>{{usuarioSesion.nombre_sucursal}}</small>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>

@@ -1,6 +1,7 @@
 <template>
   <div>
     <a
+     :key="usuarioSesion.co_sucursal"
       class="nav-link pr-0"
       href="#"
       role="button"
@@ -155,6 +156,14 @@ export default {
     console.log("Inciando consulta de indicadores");
 
     this.usuarioSesion = getUsuarioSesion();
+
+  
+   this.$root.$on('CAMBIO_SUCURSAL', (text) => { 
+     console.log("CAMBIO_SUCURSAL en indicadores");
+          let message = text;
+           this.usuarioSesion = getUsuarioSesion();
+             this.obtenerIndicadorMensualidad();
+    });
 
     this.obtenerIndicadorMensualidad = function() {
       console.log(

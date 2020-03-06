@@ -18,10 +18,14 @@ export const getToken = () => {
 export const getUsuarioSesion = () => {
 
   let sesion = JSON.parse(localStorage.getItem("usuario_sesion"));
-  console.log(sesion);
+  //console.log(sesion);
   return sesion.usuario || null;
 };
 
+export const getSesion = () => {
+  let sesion = JSON.parse(localStorage.getItem("usuario_sesion"));  
+  return sesion || null;
+};
 
 export const clearSesion = () => {
   console.log("======== SESION OUT ============");

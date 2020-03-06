@@ -46,10 +46,26 @@ export default {
             loaderAsistencia: false
         };
     },
-    //FIXME: SESION
+    /*beforeRouteUpdate(to) {        
+        console.log(" ############## " + to);
+        let refresh = to.params.refresh;
+        if(refresh){
+            console.log("REFRESCADO POR CAMBIO DE SUCURSAL");
+            this.init();        
+        }
+        
+    }, */
     mounted() {
-        console.log("iniciando el Bienvenida ");
+        console.log("#### iniciando  el Bienvenida ###");
         this.usuarioSesion = getUsuarioSesion();
+
+        this.$root.$on('CAMBIO_SUCURSAL', (text) => { 
+            console.log("CAMBIO_SUCURSAL en pantalla principal");
+                 let message = text;
+                  this.usuarioSesion = getUsuarioSesion();
+                   this.init();
+        })
+       
 
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
@@ -192,8 +208,11 @@ export default {
 
         this.loadFunctionAlumnosDentro();
         //this.validacion();
-    },
+    },    
     methods: {
+        init(){
+            this.loadFunctionAlumnosDentro();
+        },
         toggleSelectAlumno(itemSelected) {
             if (!itemSelected.seleccionado) {
                 itemSelected["seleccionado"] = true;

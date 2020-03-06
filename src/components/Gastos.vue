@@ -1,6 +1,7 @@
 <template>
   <div id="id_gastos" >
     <h1>Gastos</h1>
+    <small>{{usuarioSesion.nombre_sucursal}}</small> 
     <div class="row">
       <div class="col-auto mr-auto">
       <router-link to="/principal" class="btn btn-secondary btn-lg">

@@ -39,7 +39,7 @@ export default {
 
     this.loadFunctionCrecimientoGlobal = function () {
       this.get(
-        this.uriTempBalanceCrecimientoGlobal,
+        this.uriTempBalanceCrecimientoGlobal+"/"+this.usuarioSesion.id,
         
         (result) => {
           console.log("Consulta " + result.data);

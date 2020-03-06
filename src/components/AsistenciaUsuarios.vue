@@ -1,6 +1,7 @@
 <template>
   <div id="id_asistencia_maestras">
-    <h1>Asistencias Miss</h1>    
+    <h1>Asistencias Miss</h1>   
+    <small>{{usuarioSesion.nombre_sucursal}}</small> 
     <div class="row">
       <div class="col-1">
         <router-link to="/principal" class="btn btn-secondary btn-lg">        

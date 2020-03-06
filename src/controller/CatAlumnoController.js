@@ -29,9 +29,9 @@ export default {
       es:es,
       disableDaysFechaLimitePago:{days:[6,0],to: new Date()},
     };
-  },
+  },   
   mounted() {
-    console.log("iniciando el componente alumno ");
+    console.log("##### iniciando catalogo alumno ####");
    
     this.usuarioSesion = getUsuarioSesion();
 
@@ -62,7 +62,8 @@ export default {
           }
         });
     };
-     this.loadFunction();
+
+    this.loadFunction();
     this.loadFunctionGrupos();
   },
   methods: {

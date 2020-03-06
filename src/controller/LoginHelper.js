@@ -4,15 +4,19 @@ import Vue from 'vue';
 
 import { setSession, setToken } from '../helpers/Sesion';
 import CONSTANTES from "../helpers/Constantes";
-import { resolve } from 'url';
-import { rejects } from 'assert';
 
 const cargarSesion = (loginRespuesta) => {
     return new Promise((resolve, reject) => {
         try {
+            let paginaPrincipal = loginRespuesta.usuario.permiso_gerente ? "/ReporteAdmin" : "/principal";
+            
+            loginRespuesta.paginaPrincipal = paginaPrincipal;
+            
             setSession(loginRespuesta);
             setToken(loginRespuesta.token);
 
+            resolve(paginaPrincipal);
+/*
             console.log("JSON " + JSON.stringify(loginRespuesta));
             if (loginRespuesta.usuario.permiso_gerente) {
                 console.log("Mandar evento para admin");
@@ -27,7 +31,7 @@ const cargarSesion = (loginRespuesta) => {
                 //this.$router.replace({ path: "/principal" });              
                 //this.$router.push({ path: "/principal" });
                 resolve("/Principal");
-            }
+            }*/
         } catch (error) {
             reject(error);
         }

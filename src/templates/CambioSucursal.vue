@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a class="dropdown-item" @click="cargarSucursales()">
+    <a class="dropdown-item" v-if="mostrarOpcion" @click="cargarSucursales(true)">
       <i class="ni ni-single-02"></i>
       <span>Cambiar de Sucursal</span>
     </a>
@@ -68,6 +68,7 @@ import Loader from "../components_utils/Loader";
 import { getUsuarioSesion, setSession } from "../helpers/Sesion";
 import Card from "../administracion/fragmentos/Card";
 import { cargarSesion } from "../controller/LoginHelper";
+//import Bus from "../components_utils/Bus";
 
 export default {
   name: "cambiar-sucursal-item",
@@ -83,15 +84,17 @@ export default {
       loader: false,
       obtener: null,
       usuarioSesion: null,
-      contador: 0
+      contador: 0,
+      mostrarOpcion: false
     };
   },
   mounted() {
     console.log("Inciando consulta de sucucrsales");
     this.usuarioSesion = getUsuarioSesion();
+    this.cargarSucursales(false);
   },
   methods: {
-    cargarSucursales() {
+    cargarSucursales(mostrarVentanaCambio) {
       console.log("@obtener sucursales " + this.usuarioSesion.co_sucursal);
       this.loader = true;
       this.listaSucursales = [];
@@ -103,9 +106,12 @@ export default {
             if (results.data != null) {
               this.loader = false;
               this.listaSucursales = results.data;
-              $("#popup_cambio_sucursal")
-                .appendTo("#bienvenido")
-                .modal("show");
+              this.mostrarOpcion = this.listaSucursales.length > 1;
+              if (mostrarVentanaCambio) {
+                $("#popup_cambio_sucursal")
+                  .appendTo("#bienvenido")
+                  .modal("show");
+              }
             }
           }
         );
@@ -122,17 +128,31 @@ export default {
           results => {
             if (results.data != null && results.data.auth) {
               cargarSesion(results.data)
-              .then(path => {
-                console.log("PATH " + path);
-                $("#popup_cambio_sucursal").modal("hide");
-                this.$router.push({ path: path });
-                this.$forceUpdate();
-                
-              }).catch(error=>{
-                  this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
-              });              
-            }else{
-                 this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
+                .then(path => {
+                  console.log("PATH " + path);
+
+                  this.usuarioSesion = getUsuarioSesion();
+
+                  //this.$router.push({ path: '/' });
+                  this.$router.push({ path: path });
+                  //  Bus.$emit('CAMBIO_SUCURSAL',{id_sucursal_seleccionada:this.usuarioSesion.co_sucursal});
+                  this.$root.$emit("CAMBIO_SUCURSAL", {
+                    id_sucursal_seleccionada: this.usuarioSesion.co_sucursal
+                  });
+                  $("#popup_cambio_sucursal").modal("hide");
+                })
+                .catch(error => {
+                  this.$notificacion.error(
+                    "Error",
+                    "Ups!! sucedió un detalle al cambiar de sucursal."
+                  );
+                });
+            } else {
+              this.$notificacion.error(
+                "Error",
+                "Ups!! sucedió un detalle al cambiar de sucursal."
+              );
+>>>>>>> 72f322adc7b81030036ec75f9df169be8e11f462
             }
           }
         );
