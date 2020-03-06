@@ -126,6 +126,8 @@ export default {
                 console.log("PATH " + path);
                 $("#popup_cambio_sucursal").modal("hide");
                 this.$router.push({ path: path });
+                this.$forceUpdate();
+                
               }).catch(error=>{
                   this.$notificacion.error('Error', 'Ups!! sucedió un detalle al cambiar de sucursal.');
               });              
