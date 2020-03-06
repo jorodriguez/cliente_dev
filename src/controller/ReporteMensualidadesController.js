@@ -137,11 +137,10 @@ export default {
 
     //para mostrar las sucursales
     this.loadFunctionReporteContadoresSucursalesMesActual = function () {
-      console.log("loadFunctionReporteContadoresSucursalesMesActual");
-      // this.uriTemp+"/"+this.usuarioSesion.id,
+
+      console.log("@@loadFunctionReporteContadoresSucursalesMesActual usuario "+this.usuarioSesion.id);
       this.get(
-       
-       URL.REPORTE_MENSUALIDADES_SUCURSALES+"/"+this.usuarioSesion.id,
+        URL.REPORTE_MENSUALIDADES_MES_ACTUAL+"/"+this.usuarioSesion.id,
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
