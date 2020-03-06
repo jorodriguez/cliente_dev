@@ -48,6 +48,8 @@ const REPORTE_GASTOS = BASE + '/reporte_gastos';
 const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 
 const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades_sucursales';
+const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
+
 
 //-recordatorio
 const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
@@ -128,6 +130,8 @@ const URL = {
     REPORTE_GASTOS_GLOBAL : REPORTE_GASTOS_GLOBAL,
 
     REPORTE_MENSUALIDADES : REPORTE_MENSUALIDADES,    
+    REPORTE_MENSUALIDADES_MES_ACTUAL : REPORTE_MENSUALIDADES_MES_ACTUAL,    
+    
     INFO_CORREO_ALUMNOS: INFO_CORREO_ALUMNOS,
     
     INFO_CONFIGURACION:INFO_CONFIGURACION,
