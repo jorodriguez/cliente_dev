@@ -47,7 +47,8 @@ const REPORTE_INGRESO_MENOS_GASTO_MENSUAL = BASE + '/reporte_ingreso_menos_gasto
 const REPORTE_GASTOS = BASE + '/reporte_gastos';
 const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 
-const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades_sucursales';
+const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
+const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
 
 //-recordatorio
 const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
@@ -134,7 +135,8 @@ const URL = {
 
     ENVIAR_RECORDATORIO_PAGO_ALUMNO : ENVIAR_RECORDATORIO_PAGO_ALUMNO,
 
-    SUCURSAL_USUARIO:SUCURSAL_USUARIO
+    SUCURSAL_USUARIO:SUCURSAL_USUARIO,
+    REPORTE_MENSUALIDADES_MES_ACTUAL:REPORTE_MENSUALIDADES_MES_ACTUAL
 
 }
 

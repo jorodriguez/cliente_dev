@@ -152,7 +152,6 @@ export default {
                 "Error",
                 "Ups!! sucedió un detalle al cambiar de sucursal."
               );
->>>>>>> 72f322adc7b81030036ec75f9df169be8e11f462
             }
           }
         );

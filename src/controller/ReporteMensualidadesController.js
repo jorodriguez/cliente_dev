@@ -130,16 +130,18 @@ export default {
     console.log("iniciando el componente reporte de mensualidades ");
 
     this.usuarioSesion = getUsuarioSesion();
-    if (!this.usuarioSesion.permiso_gerente) {
+    /*if (!this.usuarioSesion.permiso_gerente) {
       this.$router.push("/");
       return;
-    }
+    }*/
 
     //para mostrar las sucursales
     this.loadFunctionReporteContadoresSucursalesMesActual = function () {
+      console.log("loadFunctionReporteContadoresSucursalesMesActual");
+      // this.uriTemp+"/"+this.usuarioSesion.id,
       this.get(
-        this.uriTemp,
-
+       
+       URL.REPORTE_MENSUALIDADES_SUCURSALES+"/"+this.usuarioSesion.id,
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
