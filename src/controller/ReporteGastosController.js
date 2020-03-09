@@ -40,15 +40,11 @@ export default {
 
    
 this.usuarioSesion = getUsuarioSesion();
-    /*if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }*/
-
+    
     this.loadFunctionReporteGastos = function () {
+      //this.uriTempReporteGastos,        
       this.get(
-        this.uriTempReporteGastos,
-        
+        URL.REPORTE_GASTOS_SUCURSALES+"/"+this.usuarioSesion.id,        
         result => {            
           if (result.data != null) {
             this.listaGastosPorSucursal =result.data;
@@ -90,8 +86,7 @@ this.usuarioSesion = getUsuarioSesion();
 
     this.loadFunctionGastosGlobal = function () {
       this.get(
-        this.uriTempReporteGastosGlobal,
-        
+        this.uriTempReporteGastosGlobal,        
         (result) => {
           this.response = result.data;
           if (this.response != null) {

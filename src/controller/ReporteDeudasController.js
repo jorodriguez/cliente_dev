@@ -249,7 +249,7 @@ export default {
 
     this.loadFunctionGastoMensual = function () {
       this.get(
-        this.uriTempGastosMesActual,
+        this.uriTempGastosMesActual+"/"+this.usuarioSesion.id,
         (result) => {
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null && result.data.length > 0) {

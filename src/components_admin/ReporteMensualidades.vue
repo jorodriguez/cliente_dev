@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div> 
     {{usuarioSesion.nombre_sucursal}} = {{usuarioSesion.id}}
     <button @click="loadFunctionReporteContadoresSucursalesMesActual()">Reload</button>
-    {{listaSucursales}}
+    
     <div class="card">
       <div class="card-body">
         <div class="row mb-3">
