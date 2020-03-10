@@ -19,7 +19,7 @@ export default {
   mixins: [operacionesApi],
   data() {
     return {
-      uriTemp: URL.REPORTE_MENSUALIDADES, //"http://localhost:5000/reporte_mensualidades",     
+      uriTemp: URL.REPORTE_MENSUALIDADES, 
       listaSucursales: [],
       listaCargos: [],
       listaCargosResp: [],
@@ -28,8 +28,7 @@ export default {
       listaMeses: [],
       usuarioSesion: {},
       mes_seleccionado: null,
-      pago_seleccionado: null,
-      // sesion: {},
+      pago_seleccionado: null,      
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
       loadFunctionReporteContadoresMesSucursal: null,
       loadFunctionReporteMensualidadesSucursal: null,
@@ -130,11 +129,7 @@ export default {
     console.log("iniciando el componente reporte de mensualidades ");
 
     this.usuarioSesion = getUsuarioSesion();
-    /*if (!this.usuarioSesion.permiso_gerente) {
-      this.$router.push("/");
-      return;
-    }*/
-
+   
     //para mostrar las sucursales
     this.loadFunctionReporteContadoresSucursalesMesActual = function () {
 
@@ -242,9 +237,12 @@ export default {
       return castNumMonthToSpanish(num_mes).es;
     },
     cambiarMes() {
-      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
+      console.log("Cambiar de mez");
+      //this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);      
     },
     verCargosPorMes(row) {
+      console.log("SELECCION "+JSON.stringify(row));
       this.mes_seleccionado = row.anio_mes;
       this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
     },

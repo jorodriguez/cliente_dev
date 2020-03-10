@@ -1,8 +1,10 @@
 <template>
-  <div> 
-    {{usuarioSesion.nombre_sucursal}} = {{usuarioSesion.id}}
-    <button @click="loadFunctionReporteContadoresSucursalesMesActual()">Reload</button>
-    
+  <div>     
+    <div class="text-right">
+    <button class="btn btn-secondary" @click="loadFunctionReporteContadoresSucursalesMesActual()">
+      <i class="fas fa-sync-alt"></i>
+      </button>    
+      </div>
     <div class="card">
       <div class="card-body">
         <div class="row mb-3">
@@ -29,6 +31,7 @@
         </div>
         <h3>{{sucursal_seleccionada.sucursal}}</h3>
         <h5 class="text-muted">Mensualidades</h5>
+        <h4>{{mes_seleccionado}}</h4>
          <div class="table-responsive">
             <table class="table">
               <tbody>
@@ -105,7 +108,7 @@
             <span v-else-if="props.column.field == 'fecha_pago'">
               <span
                 v-bind:class="props.row.pagado ? '':'text-danger'"
-              >{{props.row.fecha_pago | moment("DD-MMM-YYYY") }}</span>
+              >{{props.row.fecha_pago }}</span>
             </span>
             <span v-else-if="props.column.field == 'pagado'">
               <small

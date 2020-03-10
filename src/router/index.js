@@ -60,19 +60,20 @@ const router = new Router({
         { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true } },
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true } },
         { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true } },
-
-        { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true } },
-        { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true } },
+        
+        /*{ path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true } },
+        { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true } },        
         { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true } }
+        */
       ]
     },
-    /*{
-      path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true },
+    {
+      path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true , is_admin: true },
       children: [
         { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true } },
-        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true } },
+        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, is_admin: true  } },
       ]
-    },*/
+    },
     { path: '*', redirect: '/' }
   ]
 })
