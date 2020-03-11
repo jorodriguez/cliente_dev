@@ -48,7 +48,6 @@ const REPORTE_GASTOS = BASE + '/reporte_gastos';
 const REPORTE_GASTOS_SUCURSALES = BASE + '/reporte_gastos_sucursales';
 const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 
-
 const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
 const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
 
@@ -66,6 +65,7 @@ const ENVIAR_RECORDATORIO_PAGO_ALUMNO = BASE + '/enviar_recordatorio_pago';
 const REPORTE_MENSUALIDAD_BASE =  BASE +'/mensualidad';
 
 const SUCURSAL_USUARIO = BASE + '/sucursal_usuario';
+const SUCURSAL_USUARIO_ASIGNADAS = SUCURSAL_USUARIO + '/sucursales_asignadas'; //todas las sucursales asignadas
 
 const URL = {    
     LOGIN : BASE+'/auth/login',    
@@ -147,11 +147,13 @@ const URL = {
     ENVIAR_RECORDATORIO_PAGO_ALUMNO : ENVIAR_RECORDATORIO_PAGO_ALUMNO,
 
     SUCURSAL_USUARIO:SUCURSAL_USUARIO,
-    REPORTE_MENSUALIDADES_MES_ACTUAL:REPORTE_MENSUALIDADES_MES_ACTUAL
+    REPORTE_MENSUALIDADES_MES_ACTUAL:REPORTE_MENSUALIDADES_MES_ACTUAL,
 
+    SUCURSAL_USUARIO_ASIGNADAS :SUCURSAL_USUARIO_ASIGNADAS
 
 }
 
 export default URL;
 
 //Me quede en cargos y pagos
+

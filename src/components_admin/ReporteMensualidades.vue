@@ -1,7 +1,7 @@
 <template>
   <div>     
     <div class="text-right">
-    <button class="btn btn-secondary" @click="loadFunctionReporteContadoresSucursalesMesActual()">
+    <button class="btn btn-secondary" @click="loadFunctionSucursalesAsignadas()">
       <i class="fas fa-sync-alt"></i>
       </button>    
       </div>
@@ -10,7 +10,7 @@
         <div class="row mb-3">
           <div
             v-for="row in listaSucursales"
-            :key="row.id_sucursal"
+            :key="row.id"
             class="col-xl-3 col-sm-4 py-2 mx-auto"
           >
             <div
@@ -20,19 +20,19 @@
               v-bind:style="{'background-color':row.class_color}"
             >
               <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                <h6 class="text-uppercase">{{row.sucursal}}</h6>
-                <small class="badge badge-info " style="background-color: gray"> {{row.total_cargos}}</small>
+                <h4 class="text-uppercase">{{row.nombre}}</h4>
+                <!--<small class="badge badge-info " style="background-color: gray"> {{row.total_cargos}}</small>-->
                 <small>Mensualidades </small>                
                 <!--<small>{{formatNumeroMes(row.numero_mes)}}</small>-->
                 <!--<h4 class="display-5">{{row.pagos_facturados}} de {{row.cargos_pagados}}</h4>-->
               </div>
             </div>
           </div>
-        </div>
-        <h3>{{sucursal_seleccionada.sucursal}}</h3>
+        </div>        
         <h5 class="text-muted">Mensualidades</h5>
-        <h4>{{mes_seleccionado}}</h4>
-         <div class="table-responsive">
+        <h2>{{sucursal_seleccionada.nombre}}</h2>
+        
+        <!-- <div class="table-responsive">
             <table class="table">
               <tbody>
                 <tr>
@@ -54,6 +54,7 @@
               </tbody>
             </table>
           </div>
+          -->
 <!--
         <div class="d-flex flex-row-reverse d-highlight">
           <div class="bd-highlight">
@@ -77,51 +78,74 @@
         <vue-good-table
           :columns="columnsCargos"
           :rows="listaCargos"
-          :line-numbers="true"
-          @on-row-click="onRowClick"
+          :line-numbers="true"          
           @on-search="onSearch"
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
-          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
-          @on-selected-rows-change="selectionChanged"
+          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
-          @on-select-all="selectAll"
+          
         >
-          <template slot="table-row" slot-scope="props">
-            <!--<span v-if="props.row.pagado && props.row.vgtSelected">
-                nada
-            </span>
-            <span v-else-if="props.column.field == 'pago'">-->
-            <span v-if="props.column.field == 'pago'">
+          <template slot="table-row" slot-scope="props">          
+            <span v-if="props.column.field == 'enero'">
               <span
-                v-bind:class=" props.row.pagado ? 'text-success':'text-danger'"
-              >${{formatPrice(props.row.pago)}}</span>
-              <small
-                v-if="(props.row.pago > 0 && props.row.pagado==false)"
-                v-bind:class=" (props.row.pago > 0 && props.row.pagado==false) ? 'label info text-success':'text-danger'"
-              >Abono</small>
-            </span>
-            <span v-else-if="props.column.field == 'cargo'">
+                v-bind:class="(props.row.cargos_array[0] != undefined && props.row.cargos_array[0].pagado) ?  'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[0] != undefined ? props.row.cargos_array[0].total_pagado:'' }}</span>                            
+            </span>                     
+            <span v-else-if="props.column.field == 'febrero'">
               <span
-                v-bind:class="props.row.pagado ? '':'text-danger'"
-              >${{formatPrice(props.row.cargo)}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'fecha_pago'">
+                v-bind:class="(props.row.cargos_array[1] != undefined && props.row.cargos_array[1].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[1] != undefined ? props.row.cargos_array[1].total_pagado:'' }}</span>                            
+            </span>                     
+            <span v-else-if="props.column.field == 'marzo'">
               <span
-                v-bind:class="props.row.pagado ? '':'text-danger'"
-              >{{props.row.fecha_pago }}</span>
-            </span>
-            <span v-else-if="props.column.field == 'pagado'">
-              <small
-                class="fas fa-check-circle text-success text-small"
-                v-if="props.row.pagado"
-                title="Pagado"
-              ></small>
-              <small
-                class="fas fa-check-circle text-danger text-small"
-                v-if="!props.row.pagado"
-                title="¡Adeuda!"
-              ></small>
-            </span>
+                v-bind:class=" (props.row.cargos_array[2] != undefined && props.row.cargos_array[2].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[2] != undefined ? props.row.cargos_array[2].total_pagado:'' }}</span>                            
+            </span>                     
+            <span v-else-if="props.column.field == 'abril'">
+              <span
+                v-bind:class=" (props.row.cargos_array[3] != undefined && props.row.cargos_array[3].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[3] != undefined ? props.row.cargos_array[3].total_pagado : '' }}</span>                            
+            </span>                     
+            <span v-else-if="props.column.field == 'mayo'">
+              <span
+                v-bind:class=" (props.row.cargos_array[4] != undefined && props.row.cargos_array[4].pagado)? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[4] != undefined ? props.row.cargos_array[4].total_pagado : '' }}</span>
+            </span>                     
+            <span v-else-if="props.column.field == 'junio'">
+              <span
+                v-bind:class=" (props.row.cargos_array[5] != undefined && props.row.cargos_array[5].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[5] != undefined ? props.row.cargos_array[5].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'julio'">
+              <span
+               v-bind:class=" (props.row.cargos_array[6] != undefined && props.row.cargos_array[6].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[6] != undefined ? props.row.cargos_array[6].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'agosto'">
+              <span
+                v-bind:class=" (props.row.cargos_array[7] != undefined && props.row.cargos_array[7].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[7] != undefined ? props.row.cargos_array[7].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'septiembre'">
+              <span
+                v-bind:class=" (props.row.cargos_array[8] != undefined && props.row.cargos_array[8].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[8] != undefined ? props.row.cargos_array[8].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'octubre'">
+              <span
+                v-bind:class="(props.row.cargos_array[9] != undefined && props.row.cargos_array[9].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[9] != undefined ? props.row.cargos_array[9].total_pagado : '' }}</span>
+            </span>                
+             <span v-else-if="props.column.field == 'novimebre'">
+              <span
+                v-bind:class=" (props.row.cargos_array[10] != undefined && props.row.cargos_array[10].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[10] != undefined ? props.row.cargos_array[10].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'diciembre'">
+              <span
+                v-bind:class=" (props.row.cargos_array[11] != undefined && props.row.cargos_array[11].pagado) ? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[11] != undefined ? props.row.cargos_array[11].total_pagado : '' }}</span>
+            </span>   
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
           <div slot="selected-row-actions">

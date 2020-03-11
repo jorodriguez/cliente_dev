@@ -27,6 +27,7 @@ export default {
       listaCorreosEnviarRecordatorio: [],
       listaMeses: [],
       usuarioSesion: {},
+      anio_seleccionado: 2020,
       mes_seleccionado: null,
       pago_seleccionado: null,      
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
@@ -55,73 +56,98 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        },
+        },            
         {
-          label: 'Fecha Pago',
-          field: 'fecha_pago',
-          type: 'date',
-          dateInputFormat: 'yyyy-MM-dd',
-          dateOutputFormat: 'MMM Do yy',
+          label: 'Apellidos',
+          field: 'apellidos_alumno',
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-          filterable: true,
-        },
+        },  
         {
-          label: 'Pago',
-          field: 'pago',
+          label: 'Ene',          
+          field: 'enero',
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-          filterable: true,
         },
-
         {
-          label: 'Cargo',
-          field: 'cargo',
-          type: 'number',
+          label: 'Feb',
+          field: 'febrero',
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-          filterable: true,
         },
         {
-          label: 'Factura',
-          field: 'identificador_factura',
+          label: 'Mar',
+          field: 'marzo',
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-          filterable: true,
         },
         {
-          label: '',
-          field: 'pagado',
-          type: 'boolean',
-          width: '50px',
+          label: 'Abr',
+          field: 'abril',
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+        },
+        {
+          label: 'May',
+          field: 'mayo',
           filterable: true,
-          filterOptions: {
-            filterDropdownItems: [
-              { value: 'false', text: 'Pagado' },
-              { value: 'true', text: 'Adeuda' },
-            ]
-          }
-        },
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },       
         {
-          label: 'Correos',
-          field: 'correos',
-          hidden: true,
-          filterable: false,
-        },
+          label: 'Jun',
+          field: 'junio',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
         {
-          label: 'nombre_padres',
-          field: 'nombre_padres',
-          hidden: true,
-          filterable: false,
-        },
+          label: 'Jul',
+          field: 'julio',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
         {
-          label: 'tokens',
-          field: 'tokens',
-          hidden: true,
-          filterable: false,
-        }
+          label: 'Ago',
+          field: 'agosto',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
+        {
+          label: 'Sept',
+          field: 'septiembre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
+        {
+          label: 'Oct',
+          field: 'octubre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
+        {
+          label: 'Nov',
+          field: 'novimebre',
+          filterable: true,          
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
+        {
+          label: 'Dic',
+          field: 'diciembre',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        }, 
       ]
     };
   },
@@ -131,19 +157,19 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
    
     //para mostrar las sucursales
-    this.loadFunctionReporteContadoresSucursalesMesActual = function () {
+    this.loadFunctionSucursalesAsignadas = function () {
 
-      console.log("@@loadFunctionReporteContadoresSucursalesMesActual usuario "+this.usuarioSesion.id);
+      console.log("@@loadFunctionSucursalesAsignadas usuario "+this.usuarioSesion.id);
       this.get(
-        URL.REPORTE_MENSUALIDADES_MES_ACTUAL+"/"+this.usuarioSesion.id,
+        URL.SUCURSAL_USUARIO_ASIGNADAS+"/"+this.usuarioSesion.id,
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
             this.listaSucursales = result.data;
             if (this.listaSucursales != null && this.listaSucursales.length > 0) {
-              if (this.mes_seleccionado == null) {
+              /*if (this.mes_seleccionado == null) {
                 this.mes_seleccionado = this.listaSucursales[0].anio_mes;
-              }
+              }*/
             }
           }
         }
@@ -154,13 +180,11 @@ export default {
     this.loadFunctionReporteMensualidadesSucursal = function (id_sucursal) {
       console.log("sucr " + id_sucursal + " mes " + this.mes_seleccionado);
       this.get(
-        this.uriTemp + "/" + id_sucursal + "/" + this.mes_seleccionado,
-
+        this.uriTemp + "/" + id_sucursal + "/" + this.anio_seleccionado,
         (result) => {
           console.log("Consulta " + result.data);
           if (result.data != null) {
             this.listaCargos = result.data;
-
           }
         }
       );
@@ -203,8 +227,7 @@ export default {
 
     this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
       this.get(
-        this.uriTemp + "/" + id_sucursal+"/"+this.usuarioSesion.id,
-
+        URL.REPORTE_MENSUALIDADES + "/" + id_sucursal+"/"+this.usuarioSesion.id,
         result => {
           console.log("Consulta meses con adeudo" + result.data);
           if (result.data != null) {
@@ -214,14 +237,33 @@ export default {
       );
     };
 
-    this.loadFunctionReporteContadoresSucursalesMesActual();
+    this.loadFunctionSucursalesAsignadas();
   },
   methods: {
+    getValorEnero(rowObj){
+      console.log("ENERO ");
+      console.log(JSON.stringify(rowObj));
+      let cargos = rowObj.cargos_array;
+      if(cargos){
+        return cargos[0] || null;
+      }
+      return null;
+    },
+
+    getValorMes(rowObj,index){      
+      console.log(JSON.stringify(rowObj));
+      let cargo = rowObj.cargos_array ;      
+      if(cargo){
+        return cargo[index] || null;
+      }
+      return null;
+    },
+
     async verListaMensualidadesFacturadas(row_sucursal) {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
       this.sucursal_seleccionada = row_sucursal;
-      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id_sucursal);
-      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
+      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id);
+      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
@@ -239,12 +281,12 @@ export default {
     cambiarMes() {
       console.log("Cambiar de mez");
       //this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
-      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);      
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);      
     },
     verCargosPorMes(row) {
       console.log("SELECCION "+JSON.stringify(row));
       this.mes_seleccionado = row.anio_mes;
-      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));
