@@ -8,13 +8,15 @@ import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { castNumMonthToSpanish } from "../helpers/UtilsDate";
 import { getUsuarioSesion } from '../helpers/Sesion';
+import CeldaMesMensualidad from '../components_admin/fragmentos/CeldaMesMensualidad';
 
 export default {
   name: "ReporteMensualidades",
   components: {
     VueGoodTable,
     Popup,
-    RecordatorioPago
+    RecordatorioPago,
+    CeldaMesMensualidad
   },
   mixins: [operacionesApi],
   data() {
@@ -23,16 +25,19 @@ export default {
       listaSucursales: [],
       listaCargos: [],
       listaCargosResp: [],
+      listaFiltroAnios:[],
       rowSelection: [],
       listaCorreosEnviarRecordatorio: [],
       listaMeses: [],
       usuarioSesion: {},
-      anio_seleccionado: 2020,
+      anio_seleccionado: null,
       mes_seleccionado: null,
       pago_seleccionado: null,      
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
       loadFunctionReporteContadoresMesSucursal: null,
       loadFunctionReporteMensualidadesSucursal: null,
+      loadFunctionCargaListaMensualidadPorSucursal:null,
+      loadFunctionFiltroAnios:null,
       loadFunctionMeses: null,
       enviarRecordatorioFunction: null,
       filtrarCargos: null,
@@ -44,27 +49,35 @@ export default {
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,
       texto_recordatorio: "",
+      mostrar_mes:true,
+      mostrar_monto:true,
+      mostrar_pagado:true,
+      mostrar_adeuda:true,
       columnsCargos: [
         {
+          id:-1,
           label: 'Id',
           field: 'id',
           hidden: true
         },
         {
+          id:-1,
           label: 'Alumno',
-          field: 'nombre_alumno',
+          field: 'alumno',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },            
-        {
+        /*{
+          id:-1,
           label: 'Apellidos',
           field: 'apellidos_alumno',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        },  
+        },  */
         {
+          id:1,
           label: 'Ene',          
           field: 'enero',
           filterable: true,
@@ -72,6 +85,7 @@ export default {
           tdClass: 'text-center',
         },
         {
+          id:2,
           label: 'Feb',
           field: 'febrero',
           filterable: true,
@@ -79,6 +93,7 @@ export default {
           tdClass: 'text-center',
         },
         {
+          id:3,
           label: 'Mar',
           field: 'marzo',
           filterable: true,
@@ -86,13 +101,14 @@ export default {
           tdClass: 'text-center',
         },
         {
+          id:4,
           label: 'Abr',
           field: 'abril',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
-        {
+        {id:5,
           label: 'May',
           field: 'mayo',
           filterable: true,
@@ -100,6 +116,7 @@ export default {
           tdClass: 'text-center',
         },       
         {
+          id:6,
           label: 'Jun',
           field: 'junio',
           filterable: true,
@@ -107,6 +124,7 @@ export default {
           tdClass: 'text-center',
         }, 
         {
+          id:7,
           label: 'Jul',
           field: 'julio',
           filterable: true,
@@ -114,6 +132,7 @@ export default {
           tdClass: 'text-center',
         }, 
         {
+          id:8,
           label: 'Ago',
           field: 'agosto',
           filterable: true,
@@ -121,6 +140,7 @@ export default {
           tdClass: 'text-center',
         }, 
         {
+          id:9,
           label: 'Sept',
           field: 'septiembre',
           filterable: true,
@@ -128,6 +148,7 @@ export default {
           tdClass: 'text-center',
         }, 
         {
+          id:10,
           label: 'Oct',
           field: 'octubre',
           filterable: true,
@@ -135,13 +156,15 @@ export default {
           tdClass: 'text-center',
         }, 
         {
+          id:11,
           label: 'Nov',
-          field: 'novimebre',
+          field: 'noviembre',
           filterable: true,          
           thClass: 'text-center',
           tdClass: 'text-center',
         }, 
         {
+          id:12,
           label: 'Dic',
           field: 'diciembre',
           filterable: true,
@@ -177,8 +200,9 @@ export default {
     };
 
 
-    this.loadFunctionReporteMensualidadesSucursal = function (id_sucursal) {
-      console.log("sucr " + id_sucursal + " mes " + this.mes_seleccionado);
+    this.loadFunctionReporteMensualidadesSucursal = (id_sucursal) => {
+      console.log("@@loadFunctionReporteMensualidadesSucursal");
+      console.log("sucr " + id_sucursal + " mes " + this.anio_seleccionado);
       this.get(
         this.uriTemp + "/" + id_sucursal + "/" + this.anio_seleccionado,
         (result) => {
@@ -225,7 +249,7 @@ export default {
       };
     }
 
-    this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
+    /*this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
       this.get(
         URL.REPORTE_MENSUALIDADES + "/" + id_sucursal+"/"+this.usuarioSesion.id,
         result => {
@@ -235,36 +259,39 @@ export default {
           }
         }
       );
-    };
+    };*/
+    this.loadFunctionCargaListaMensualidadPorSucursal =  () => {
+      console.log("@@loadFunctionFiltroAnio "+this.sucursal_seleccionada.id);
+      this.get(
+        URL.CARGOS_BASE +"/filtro_anios/"+this.sucursal_seleccionada.id,
+        result => {
+          console.log("Consulta filtro años por sucursal" + result.data);
+          if (result.data != null) {
+            this.listaFiltroAnios = result.data;
+            if (this.listaFiltroAnios != null && this.listaFiltroAnios.length > 0) {
+              if (this.anio_seleccionado == null) {                
+                this.anio_seleccionado = this.listaFiltroAnios[0].anio;    
+                console.log("Año seleccionado "+this.anio_seleccionado);                            
+              }
+              
+              this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
 
+            }
+          }
+        }
+      );
+    };
+    
     this.loadFunctionSucursalesAsignadas();
   },
-  methods: {
-    getValorEnero(rowObj){
-      console.log("ENERO ");
-      console.log(JSON.stringify(rowObj));
-      let cargos = rowObj.cargos_array;
-      if(cargos){
-        return cargos[0] || null;
-      }
-      return null;
-    },
+  methods: {   
 
-    getValorMes(rowObj,index){      
-      console.log(JSON.stringify(rowObj));
-      let cargo = rowObj.cargos_array ;      
-      if(cargo){
-        return cargo[index] || null;
-      }
-      return null;
-    },
-
-    async verListaMensualidadesFacturadas(row_sucursal) {
+    verListaMensualidadesFacturadas(row_sucursal) {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
       this.sucursal_seleccionada = row_sucursal;
-      await this.loadFunctionReporteContadoresMesSucursal(this.sucursal_seleccionada.id);
-      await this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
+      this.loadFunctionCargaListaMensualidadPorSucursal();                                
     },
+
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -278,7 +305,11 @@ export default {
     formatNumeroMes(num_mes) {
       return castNumMonthToSpanish(num_mes).es;
     },
-    cambiarMes() {
+    cambiarAnio(){
+        //this.anio_seleccionado = row;
+        this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
+    },
+    /*cambiarMes() {
       console.log("Cambiar de mez");
       //this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
       this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);      
@@ -287,7 +318,7 @@ export default {
       console.log("SELECCION "+JSON.stringify(row));
       this.mes_seleccionado = row.anio_mes;
       this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
-    },
+    },*/
     onRowClick(params) {
       console.log(JSON.stringify(params));
       this.pago_seleccionado = params.row;

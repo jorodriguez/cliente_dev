@@ -30,8 +30,7 @@
           </div>
         </div>        
         <h5 class="text-muted">Mensualidades</h5>
-        <h2>{{sucursal_seleccionada.nombre}}</h2>
-        <h2>({{anio_seleccionado}})</h2>
+        <h2>{{sucursal_seleccionada.nombre}} ({{anio_seleccionado}})</h2>
         
         <!-- <div class="table-responsive">
             <table class="table">
@@ -76,57 +75,6 @@
             </div>
           </div>
         </div>
-        <div class="d-flex small flex-row-reverse bd-highlight">
-          <div class="form-check">
-            <input
-              id="id_mostrar_mes"
-              type="checkbox"              
-              v-model="mostrar_mes"
-              class="form-control"
-              name="mostrar_mes"
-            />
-            <label class="form-check-label" for="id_mostrar_mes">
-              Mostrar Mes              
-            </label>
-          </div>
-          <div class="form-check">
-             <input
-             id="id_mostrar_monto"
-              type="checkbox"              
-              v-model="mostrar_monto"
-              class="form-control"
-              name="mostrar_monto"
-            />
-            <label class="form-check-label" for="mostrar_monto">
-              Mostrar Monto      
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-             id="id_mostrar_pagado"
-              type="checkbox"              
-              v-model="mostrar_pagado"
-              class="form-control"
-              name="mostrar_monto"
-            />
-            <label class="form-check-label" for="mostrar_pagado">
-              Mostrar Pagado
-            </label>
-          </div>
-          <div class="form-check">
-                        <input
-             id="id_mostrar_adeuda"
-              type="checkbox"              
-              v-model="mostrar_adeuda"
-              class="form-control"
-              name="mostrar_adeuda"
-            />
-            <label class="form-check-label" for="mostrar_adeuda">
-              Mostrar Adeuda
-            </label>
-          </div>
-          </div>
-        </div>
 
         <vue-good-table
           :columns="columnsCargos"
@@ -139,87 +87,71 @@
           
         >
           <template slot="table-row" slot-scope="props">          
-            <span v-if="props.column.field == 'enero'">               
-              <CeldaMesMensualidad :value="props.row.enero" 
-                                  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />              
+            <span v-if="props.column.field == 'enero'">
+              <span
+                v-bind:class="(props.row.cargos_array[0] != undefined && props.row.cargos_array[0].pagado) ?  'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[0] != undefined ? props.row.cargos_array[0].total_pagado:'' }}
+              {{ props.row.cargos_array[0] != undefined ? props.row.cargos_array[0].nombre_mes:'' }}
+              </span>                            
             </span>                     
             <span v-else-if="props.column.field == 'febrero'">
-              <CeldaMesMensualidad :value="props.row.febrero"
-                                  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />                
+              <span
+                v-bind:class="(props.row.cargos_array[1] != undefined && props.row.cargos_array[1].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[1] != undefined ? props.row.cargos_array[1].total_pagado:'' }}</span>                            
             </span>                     
             <span v-else-if="props.column.field == 'marzo'">
-              <CeldaMesMensualidad :value="props.row.marzo"
-                                  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />  
+              <span
+                v-bind:class=" (props.row.cargos_array[2] != undefined && props.row.cargos_array[2].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[2] != undefined ? props.row.cargos_array[2].total_pagado:'' }}</span>                            
             </span>                     
             <span v-else-if="props.column.field == 'abril'">
-              <CeldaMesMensualidad :value="props.row.abril"
-                                  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />  
+              <span
+                v-bind:class=" (props.row.cargos_array[3] != undefined && props.row.cargos_array[3].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[3] != undefined ? props.row.cargos_array[3].total_pagado : '' }}</span>                            
             </span>                     
             <span v-else-if="props.column.field == 'mayo'">
-              <CeldaMesMensualidad :value="props.row.mayo"
-                                  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />              
+              <span
+                v-bind:class=" (props.row.cargos_array[4] != undefined && props.row.cargos_array[4].pagado)? 'text-success':'text-danger'"
+              >{{ props.row.cargos_array[4] != undefined ? props.row.cargos_array[4].total_pagado : '' }}</span>
             </span>                     
             <span v-else-if="props.column.field == 'junio'">
-              <CeldaMesMensualidad :value="props.row.junio" :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />  
-            </span>                     
+              <span
+                v-bind:class=" (props.row.cargos_array[5] != undefined && props.row.cargos_array[5].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[5] != undefined ? props.row.cargos_array[5].total_pagado : '' }}</span>
+            </span>   
             <span v-else-if="props.column.field == 'julio'">
-              <CeldaMesMensualidad :value="props.row.julio"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />      
-            </span>                     
+              <span
+               v-bind:class=" (props.row.cargos_array[6] != undefined && props.row.cargos_array[6].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[6] != undefined ? props.row.cargos_array[6].total_pagado : '' }}</span>
+            </span>   
             <span v-else-if="props.column.field == 'agosto'">
-              <CeldaMesMensualidad :value="props.row.agosto"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />       
-            </span>                     
+              <span
+                v-bind:class=" (props.row.cargos_array[7] != undefined && props.row.cargos_array[7].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[7] != undefined ? props.row.cargos_array[7].total_pagado : '' }}</span>
+            </span>   
             <span v-else-if="props.column.field == 'septiembre'">
-              <CeldaMesMensualidad :value="props.row.septiembre"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />                
-            </span>                     
+              <span
+                v-bind:class=" (props.row.cargos_array[8] != undefined && props.row.cargos_array[8].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[8] != undefined ? props.row.cargos_array[8].total_pagado : '' }}</span>
+            </span>   
             <span v-else-if="props.column.field == 'octubre'">
-              <CeldaMesMensualidad :value="props.row.octubre"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />        
-            </span>                     
-            <span v-else-if="props.column.field == 'noviembre'">
-              <CeldaMesMensualidad :value="props.row.noviembre"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />          
-            </span>                     
+              <span
+                v-bind:class="(props.row.cargos_array[9] != undefined && props.row.cargos_array[9].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[9] != undefined ? props.row.cargos_array[9].total_pagado : '' }}</span>
+            </span>                
+             <span v-else-if="props.column.field == 'novimebre'">
+              <span
+                v-bind:class=" (props.row.cargos_array[10] != undefined && props.row.cargos_array[10].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[10] != undefined ? props.row.cargos_array[10].total_pagado : '' }}</span>
+            </span>   
             <span v-else-if="props.column.field == 'diciembre'">
-              <CeldaMesMensualidad :value="props.row.diciembre"  :mostrar_mes="mostrar_mes"
-                                  :mostrar_monto="mostrar_monto"
-                                  :mostrar_pagado="mostrar_pagado"
-                                  :mostrar_adeuda="mostrar_adeuda" />          
-            </span>                     
-          
-            <span v-else-if="props.column.field == 'alumno'">
+              <span
+                v-bind:class=" (props.row.cargos_array[11] != undefined && props.row.cargos_array[11].pagado) ? 'text-primary':'text-danger'"
+              >{{ props.row.cargos_array[11] != undefined ? props.row.cargos_array[11].total_pagado : '' }}</span>
+            </span>   
+            <span v-else-if="props.column.field == 'nombre_alumno'">
               <span                
-              >{{ props.row.alumno }} </span>
+              >{{ props.row.nombre_alumno }} {{props.row.eliminado ? 'BAJA':''}} </span>
             </span> 
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>

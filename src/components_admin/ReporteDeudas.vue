@@ -1,5 +1,6 @@
 <template>
   <div class="cat_alumno container">
+     
     <h1>Balances</h1>
     
     <div class="row text-right">
