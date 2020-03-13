@@ -15,48 +15,7 @@
                 etiqueta="Mensualidades"
                 descripcion=""
             />
-            <!--<div @click="verListaMensualidadesFacturadas(row)"  
-                  :class="row.class_color ? '':'bg-primary'"
-                  :style="row.class_color ? ('background-color:'+row.class_color) :''">              
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <h5 class="card-title text-uppercase text-muted mb-0 text-white">{{titulo}}</h5>
-                    <span class="h2 font-weight-bold mb-0 text-white">{{row.nombre}}</span>
-                  </div>
-                  <div class="col-auto" >
-                    <div  class='icon icon-shape bg-white rounded-circle shadow'>                                            
-                      <img v-if="row.foto == null"
-                          src="../assets/magic.png"  
-                          class="avatar"/>
-                      <img v-else alt="No Image" :src="row.foto" class="avatar"/>
-                    </div>
-                  </div>
-                </div>
-                <p class="mt-3 mb-0 text-sm">
-                  <span class="text-white mr-2">
-                    <i :class="icono_etiqueta ? icono_etiqueta : 'fa fa-arrow-right'"></i>
-                    Mensualidades
-                  </span>
-                  <span class="text-nowrap text-light">{{descripcion}}</span>
-                </p>
-              </div>
-            </div>
-            -->
-
-            <!--
-            <div
-              class="card text-white h-100 pointer sucursal-item-hover hover"
-              v-on:click="verListaMensualidadesFacturadas(row)"
-              title="Clic para ver el detalle"
-              v-bind:style="{'background-color':row.class_color}"
-            >
-              <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                <h4 class="text-uppercase">{{row.nombre}}</h4>                
-                <small>Mensualidades</small>                
-              </div>
-            </div>
-            -->
+           
           </div>
         </div>
         <h5 class="text-muted">Mensualidades</h5>
@@ -244,7 +203,7 @@
             </span>
 
             <span v-else-if="props.column.field == 'alumno'">
-              <span>{{ props.row.alumno }}</span>
+              <span>{{ props.row.alumno }} </span>
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>

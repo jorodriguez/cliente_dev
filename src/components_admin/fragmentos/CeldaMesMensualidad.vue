@@ -16,7 +16,9 @@
         <div  v-if="mostrar_adeuda" class="row row-cols-1">
             <span :class="value.pagado ? 'col small':'col small text-danger'">Adeuda</span>
             <span :class="value.pagado ? 'col':'col text-danger'">{{ value != null ? value.total:'' }} </span>
-        </div>                     
+        </div> 
+        <span  v-if="value.eliminado" class="badge badge-pill badge-danger">BAJA</span>
+        
     </span>           
 </template>
 
