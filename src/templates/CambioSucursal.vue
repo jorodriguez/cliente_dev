@@ -40,7 +40,7 @@
                   <p class="text-sm text-muted mb-0">
                     <!--<span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">●</span>-->
                     <span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">
-                      <span :class="row.contador_alumnos_por_entregar > 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-secondary'">{{row.contador_asistencia_alumnos}}</span> alumnos por entregar
+                      <span :class="row.contador_alumnos_por_entregar > 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-secondary'">{{row.contador_alumnos_por_entregar}}</span> alumnos por entregar
                     </span>
                   </p>
                   <span class="text-primary">●</span>
