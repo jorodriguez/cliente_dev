@@ -10,6 +10,7 @@ import { VueGoodTable } from 'vue-good-table';
 import Popup from './Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { getUsuarioSesion } from '../helpers/Sesion';
+import SucursalCard from '../components_admin/fragmentos/SucursalCard';
 
 export default {
   name: "ReporteDeudas",
@@ -17,7 +18,8 @@ export default {
     SignoutComponent,
     ReporteMensualidades,
     VueGoodTable,
-    Popup
+    Popup,
+    SucursalCard
   },
   mixins: [operacionesApi],
   data() {
@@ -253,7 +255,7 @@ export default {
         (result) => {
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null && result.data.length > 0) {
-            this.gasto_mensual = result.data[0].gasto_mes_actual;
+            this.gasto_mensual = result.data[0];
           }
         }
       );

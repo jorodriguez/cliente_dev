@@ -20,15 +20,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <IndicadorMensualidades />
-          <!--<small class="text-white "><strong>Pagos Pendientes</strong></small> <small class="badge badge-pill badge-warning">2</small>                -->
-          <!--<div class="media align-items-center">
-              <span class="avatar avatar-sm rounded-circle bg-primary" >                
-                  <i class="fas fa-bell text-white"/>
-                  Deudas
-                  <small class="badge text-white">2</small>                
-              </span>              
-          </div>-->
+          <IndicadorMensualidades />          
         </a>
         <!--
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">

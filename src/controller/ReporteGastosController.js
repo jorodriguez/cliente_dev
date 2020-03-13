@@ -6,13 +6,15 @@ import { VueGoodTable } from 'vue-good-table';
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import {getUsuarioSesion} from '../helpers/Sesion';
+import SucursalCard from '../components_admin/fragmentos/SucursalCard';
 
 export default {
   name: "repote-gastos",
   props: [],
   components: {
     Datepicker,
-    VueGoodTable
+    VueGoodTable,
+    SucursalCard
   }, 
   mixins:[operacionesApi],  
   data() {
@@ -24,7 +26,8 @@ export default {
       listaGastosPorSucursalTipo:[],
       listaGastosGlobal:[],
       sucursal_seleccionada:{id_sucursal:-1,nombre:""},      
-      mes_seleccionado:{mes_anio:'',anio_mes:'',suma:-1},
+      mes_seleccionado:{mes_anio:'',anio_mes:'',suma:0},
+      tipo_gasto_seleccionado : null,
       operacion: '',
       disabledDates: {
         from : new Date(Date.now() + 8640000)
@@ -86,7 +89,7 @@ this.usuarioSesion = getUsuarioSesion();
 
     this.loadFunctionGastosGlobal = function () {
       this.get(
-        this.uriTempReporteGastosGlobal,        
+        this.uriTempReporteGastosGlobal+"/"+this.usuarioSesion.id,        
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -115,11 +118,10 @@ this.usuarioSesion = getUsuarioSesion();
 
       this.loadFunctionReporteGastosTipoYSucursal(this.sucursal_seleccionada.id_sucursal ,this.mes_seleccionado.anio_mes);
     },
-    verGastosGlobal(){     
-      
+    verGastosGlobal(){           
       this.loadFunctionGastosGlobal();
       $("#modal_detallado").modal("show");
-    },
+    },    
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")

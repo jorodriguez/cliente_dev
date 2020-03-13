@@ -56,7 +56,7 @@ export default {
         || this.mes_seleccionado.numero_mes != null) {
 
           this.get(
-            this.uriTempBalanceAlumnosIngreso + "/" + this.mes_seleccionado.numero_anio + "/" + this.mes_seleccionado.numero_mes,
+            this.uriTempBalanceAlumnosIngreso + "/" + this.mes_seleccionado.numero_anio + "/" + this.mes_seleccionado.numero_mes+"/"+this.usuarioSesion.id,
             
             result => {
               console.log("Consulta " + result.data);

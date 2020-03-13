@@ -9,6 +9,10 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import { castNumMonthToSpanish } from "../helpers/UtilsDate";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import CeldaMesMensualidad from '../components_admin/fragmentos/CeldaMesMensualidad';
+import SucursalCard from '../components_admin/fragmentos/SucursalCard';
+
+
+
 
 export default {
   name: "ReporteMensualidades",
@@ -16,7 +20,7 @@ export default {
     VueGoodTable,
     Popup,
     RecordatorioPago,
-    CeldaMesMensualidad
+    CeldaMesMensualidad,SucursalCard
   },
   mixins: [operacionesApi],
   data() {
@@ -49,9 +53,9 @@ export default {
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,
       texto_recordatorio: "",
-      mostrar_mes:true,
+      mostrar_mes:false,
       mostrar_monto:true,
-      mostrar_pagado:true,
+      mostrar_pagado:false,
       mostrar_adeuda:true,
       columnsCargos: [
         {

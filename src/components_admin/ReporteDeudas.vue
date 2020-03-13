@@ -1,14 +1,13 @@
 <template>
   <div class="cat_alumno container">
-     
     <h1>Balances</h1>
-    
+
     <div class="row text-right">
       <div class="col align-self-end">
         <router-link
           to="/ReporteGastos"
           class="btn btn-outline-danger"
-        >Gastos $ {{ formatPrice(gasto_mensual)}}</router-link>
+        >Gastos {{gasto_mensual.mes}} = ${{ formatPrice(gasto_mensual.gasto_mes_actual)}}</router-link>
       </div>
     </div>
 
@@ -74,33 +73,76 @@
                 :key="row.id"
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
+                <SucursalCard
+                  @click="verDetalleDeudasSucursal(row)"
+                  :class_color="row.class_color"
+                  titulo
+                  :nombre="row.nombre"
+                  :foto="row.foto"
+                  icono_etiqueta="fa fa-user"
+                  :etiqueta="row.contador_alumnos+ ' alumnos en total'"
+                  descripcion
+                >
+                  <div slot="contenido">
+                    <small class="text-white">Total Pendiente</small>
+                    <h3 class="display-5 text-white">${{formatPrice(row.total_adeuda)}}</h3>
+                    <a
+                      class="btn btn-link text-white"
+                      data-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      Ver detalle
+                      <i class="fa fa-down"></i>
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                      <div v-if="row.array_desglose_cargos.length > 0">
+                        <table style="border:1px solid #ddd;">
+                          <tr
+                            style="border:1px solid #ddd;"
+                            v-for="desglose in row.array_desglose_cargos"
+                            :key="desglose.id"
+                          >
+                            <td style="border:1px solid #ddd;">{{desglose.cargos_pendientes_pago}}</td>
+                            <td style="border:1px solid #ddd;" align="left">{{desglose.tipo_cargo}}</td>
+                            <td>${{ formatPrice(desglose.total_cargos_pendiente_desglose)}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </SucursalCard>
+                <!--
                 <div
                   class="card text-white h-100 pointer sucursal-item-hover hover"
                   v-on:click="verDetalleDeudasSucursal(row)"
                   title="Clic para ver el detalle"
                   v-bind:style="{'background-color':row.class_color}"
-                >
+                >               
                   <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                    <h6 class="text-uppercase">{{row.nombre}}</h6>
-                    <small>Pendiente</small>
-
-                    <h4 class="display-5">${{formatPrice(row.total_adeuda)}}</h4>
+                    <h3 class="text-uppercase">{{row.nombre}}</h3>
+                    <small>Total Pendiente</small>                    
+                    <h3 class="display-5">${{formatPrice(row.total_adeuda)}}</h3>
+                     <a class="btn btn-link text-white" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                      Ver detalle <i class="ni ni-bold-down"></i>
+                    </a>
+                    <div class="collapse" id="collapseExample">
                     <div v-if="row.array_desglose_cargos.length > 0">
-                      <div v-for="desglose in row.array_desglose_cargos" :key="desglose.id">
-                        <small
-                          v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
-                        >
-                          ${{ formatPrice(desglose.total_cargos_pendiente_desglose)}} de
-                          <span
-                            class="badge badge-light"
-                          >{{desglose.cargos_pendientes_pago}}</span>
-                          {{desglose.tipo_cargo}}
-                        </small>
-                      </div>
+                      <table style="border:1px solid #ddd;">
+                          <tr style="border:1px solid #ddd;" v-for="desglose in row.array_desglose_cargos" :key="desglose.id">
+                            <td style="border:1px solid #ddd;">{{desglose.cargos_pendientes_pago}}</td>
+                            <td style="border:1px solid #ddd;" align="left">{{desglose.tipo_cargo}}</td>
+                            <td>${{ formatPrice(desglose.total_cargos_pendiente_desglose)}}</td>
+                          </tr>
+                      </table>  
+                    </div>                                         
                     </div>
-                  </div>
+                  </div>                  
                   <h6>{{row.contador_alumnos}} alumnos en total</h6>
                 </div>
+                -->
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
@@ -177,7 +219,6 @@
                 </span>
 
                 <span v-else-if="props.column.field == 'foto'">
-                  
                   <img
                     :src="props.row.foto != '' ? props.row.foto :'https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg' "
                     width="50"
@@ -280,6 +321,33 @@
                 :key="row.id"
                 class="col-xl-3 col-sm-4 py-2 mx-auto"
               >
+                <SucursalCard
+                  @click="verDetalleCrecimientoSucursal(row)"
+                  :class_color="row.class_color"
+                  titulo
+                  :nombre="row.nombre"
+                  :foto="row.foto"
+                  icono_etiqueta="fa fa-user"
+                  etiqueta
+                  descripcion
+                >
+                  <div slot="contenido">
+                    <h4>
+                      <span
+                        v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'"
+                      >{{row.count_alumno}}</span> <span class="text-white"> Alumnos inscritos este mes</span>
+                    </h4>
+                    <small class="text-white"> Crecimiento en Mensualidades</small>
+                    <h3 class="text-white">
+                      <p>${{formatPrice(row.suma_colegiaturas)}}</p>
+                    </h3>
+                    <small class="text-white">Crecimiento en Inscripciones</small>
+                    <h3 class="text-white">
+                      <p>${{formatPrice(row.suma_inscripciones)}}</p>
+                    </h3>
+                  </div>
+                </SucursalCard>
+                <!--
                 <div
                   class="card text-white h-100 pointer sucursal-item-hover"
                   v-on:click="verDetalleCrecimientoSucursal(row)"
@@ -292,8 +360,7 @@
                         v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'"
                       >{{row.count_alumno}}</span>
                       alumnos inscritos este mes
-                    </h6>
-                    <!--<h4 class="display-5">Cargos : ${{formatPrice(row.total_cargos_crecimiento)}}</h4>-->
+                    </h6>                    
                     <small>Crecimiento (Mensualidad)</small>
                     <h4>
                       <p>${{formatPrice(row.suma_colegiaturas)}}</p>
@@ -304,6 +371,7 @@
                     </h4>
                   </div>
                 </div>
+                -->
               </div>
             </div>
             <div class="mx-auto">
@@ -459,18 +527,6 @@
           <ReporteMensualidades />
         </div>
       </div>
-      <!-- ALUMNO CARGOS -->
-
-      <!-- <div
-        class="tab-pane fade"
-        id="pills-alumnos-cargos"
-        role="tabpanel"
-        aria-labelledby="pills-alumnos-cargo-tab"
-      >
-        <div class="card">
-          <AlumnosCargos />
-        </div>
-      </div>-->
     </div>
 
     <!--- Detalle -->

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a class="dropdown-item" v-if="mostrarOpcion" @click="cargarSucursales(true)">
-      <i class="ni ni-single-02"></i>
+      <i class="ni ni-settings"></i>
       <span>Cambiar de Sucursal</span>
     </a>
 
@@ -12,8 +12,8 @@
       <div slot="content">
         <div class="text-center">
           <div class="container text-center">
-            <small>Sucursal actual</small>
-            <h3>{{usuarioSesion.nombre_sucursal}}</h3>
+            <small>Estas en </small>
+            <h2>{{usuarioSesion.nombre_sucursal}}</h2>
             <Loader :loading="loader" :mini="false" />
             <p>Cambiar a</p>
             <div class="card" v-for="row in listaSucursales" :key="row.id">
@@ -22,6 +22,7 @@
                   <!-- Avatar -->
                   <a
                     href="#"
+                    @click="cambiarSucursal(row)"
                     class="avatar avatar-xl rounded-circle"
                     :style="'background-color:'+row.class_color"
                   >
@@ -34,14 +35,19 @@
                 </div>
                 <div class="col ml--2">
                   <h4 class="mb-0">
-                    <a href="#!" class="h2" @click="cambiarSucursal(row)">{{row.nombre_sucursal}}</a>
+                    <a href="#!" class="h1" @click="cambiarSucursal(row)">{{row.nombre_sucursal}}</a>
                   </h4>
-                  <!--<p class="text-sm text-muted mb-0">Working remoteley</p>-->
-                  <span class="text-success">●</span>
+                  <p class="text-sm text-muted mb-0">
+                    <!--<span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">●</span>-->
+                    <span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">
+                      <span :class="row.contador_alumnos_por_entregar > 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-secondary'">{{row.contador_asistencia_alumnos}}</span> alumnos por entregar
+                    </span>
+                  </p>
+                  <span class="text-primary">●</span>
                   <small>{{row.contador_alumnos}} Alumnos</small>
-
                   <span :class="row.contador_asistencia_alumnos > 0 ? 'text-success':'text-gray'">●</span>
-                  <small>{{row.contador_asistencia_alumnos}} Asistencia</small>
+                  <small>{{row.contador_asistencia_alumnos}} Asistencias en total</small>
+                  
                 </div>
                 <div class="col-auto">
                   <button
@@ -106,7 +112,7 @@ export default {
             if (results.data != null) {
               this.loader = false;
               this.listaSucursales = results.data;
-              this.mostrarOpcion = this.listaSucursales.length > 1;
+              this.mostrarOpcion = this.listaSucursales.length >= 1;
               if (mostrarVentanaCambio) {
                 $("#popup_cambio_sucursal")
                   .appendTo("#bienvenido")
