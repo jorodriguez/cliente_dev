@@ -42,7 +42,7 @@ export default {
         result => {
           console.log("En el login");
           this.response = result.data;
-          this.loading = false;
+          this.loading = false;          
           if (this.response.auth) {
             cargarSesion(this.response)
             .then(path=>{

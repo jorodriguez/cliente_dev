@@ -72,7 +72,7 @@ const remove = function (url, handler) {
       },
       error => {
         console.error(error);
-        console.log("Revisando la sesion " + JSON.stringify(error));
+        console.log(" Error => " + JSON.stringify(error));
         lanzarAvisoExpiracionSesion(error);
       });
 };
@@ -80,15 +80,18 @@ const remove = function (url, handler) {
 const lanzarAvisoExpiracionSesion = function (error) {
   console.log("lanzar aviso");
   let mensaje = "";
+  let sesionExpirada = false;
   console.log("error " + JSON.stringify(error));
   if (error.ok == false && error.status == 401) {
-
-    if (error.body && error.body.auth == false && error.body.message.name == 'TokenExpiredError') {
-      mensaje = "Sesión expirada.";
-    }
+   // if (error.body && error.body.auth == false && error.body.message.name == 'TokenExpiredError') {
+     console.log("==="+error.tokenExpired);
+     sesionExpirada = error.body.tokenExpired;    
+      mensaje =  sesionExpirada ? "Su sesión ha expirado." :'Ocurrió un error.';    
   }
-  $("#id_header_popup_expiracion_sesion").text(mensaje == "" ? "Ups¡ Ocurrió un error" : mensaje);
-  $("#id_mensaje_popup_expiracion_sesion").text("Expiró su sesión");
+
+  $("#id_header_popup_expiracion_sesion").text(sesionExpirada ? "Sesión":"Ups¡");
+  $("#id_icono_popup_expiracion_sesion").attr('class',sesionExpirada ? "fas fa-user-clock fa-5x":"fas fa-error fa-5x");  
+  $("#id_mensaje_popup_expiracion_sesion").text(mensaje);
   $("#id_mensaje_secundario_popup_expiracion_sesion").empty();
   $("#popup_expiracion_sesion").modal("show");
 };

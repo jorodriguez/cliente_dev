@@ -16,11 +16,11 @@
         <p id="id_header_popup_expiracion_sesion"></p>
       </div>
       <div slot="content">
-        <div class="row">
-          <div class="container">
+        <div class="ro">
+          <div class="cotainer">
             <div class="row justify-content-center">
               <div class="col-5 text-right">
-                <i class="fas fa-user-clock fa-5x"></i>
+                <i id=id_icono_popup_expiracion_sesion></i>
               </div>
               <div class="col text-left">
                 <h2>

@@ -25,23 +25,27 @@ export default {
       },
       pago: {
         pago_total: 0,
+        descuento_total: 0,
         cat_forma_pago: { id: -1, nombre: "", permite_factura: false },
         identificador_factura: "",
         nota_pago: ""
       },
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
+      noOptionDescuento: { id: -1, nombre: " NA ", descuento_decimal: 0.0 },
       escribir_folio_factura: false,
       existen_montos_facturables: false,
       total_cargos: 0,
       total_pagos: 0,
+      total_adeuda: 0,
       seleccionTodos: false,
       usuarioSesion: {},
-      //sesion: {},
       item: AlumnoModel,
       alumno: null,
       listaCargosAlumnos: [],
+      listaCargosAlumnosSeleccionados:[],
       listaCargos: [],
       listaPagos: [],
+      listaDescuentos: [],
       listaSeleccionSalida: [],
       listaPagosCargo: [],
       listaFormasPago: [],
@@ -125,7 +129,7 @@ export default {
     }
 
     this.loadFunctionCargosAlumno();
-    //this.loadFunctionCatCargos();
+
   },
   watch: {
     idalumno: function (newId, oldId) {
@@ -143,13 +147,6 @@ export default {
       this.cargo.fecha_cargo = undefined;
       this.mensaje = "";
       this.cargo.total_cargo = 0;
-      /*
-          AlumnoApi.getAlumnoById(
-                    this.idalumno,
-                    this.sesion.
-                    result => {
-                      this.alumno = result;
-                    })*/
 
       await this.get(
         URL.ALUMNOS_BASE + "/id/" + this.idalumno,
@@ -190,7 +187,6 @@ export default {
       if (this.cargo.mes_seleccionado.cargo_registrado) {
         this.$notificacion.warn("Cargo ya fué registrado", "El cargo para el mes seleccionado ya fue registrado.");
       }
-
     },
     calcularTotalCargo() {
       console.log("recalcular total ");
@@ -272,6 +268,8 @@ export default {
       this.pago.nota_pago = '';
       this.pago.cat_forma_pago = { id: -1, nombre: "", permite_factura: false };
       this.pago.identificador_factura = "";
+      this.pago.identificador_pago = "";
+      this.pago.descuento_total = 0;
       this.facturado = false;
 
       this.mensaje = "";
@@ -285,15 +283,23 @@ export default {
 
       if (existeSeleccionAlumno(this.listaCargosAlumnos)) {
         for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
-          var element = this.listaCargosAlumnos[i];
+          var element = this.listaCargosAlumnos[i];          
           if (element.checked) {
             element.pago = Number(element.total);
-            this.total_cargos = this.total_cargos + Number(element.total); //el total de deudas
+            element.total_original = Number(element.total);
+            //this.total_cargos = this.total_cargos + Number(element.total); //el total de deudas            
+            this.total_cargos = this.total_cargos + Number(element.total); //el total de deudas            
+            element.cat_descuento = this.noOptionDescuento;
+            element.descuento_decimal = 0.0;
+            element.descuento = 0.0;
+            
+            this.listaCargosAlumnosSeleccionados.push(Object.assign({}, element));
           }
         }
         this.pago.pago_total = this.total_cargos;
 
         this.loadFunctionCatFormasPago();
+        this.loadDescuentos();
 
         $('#modal_pago').modal('show');
 
@@ -301,10 +307,23 @@ export default {
         this.$notificacion.info("Seleccione al menos un cargo", "");
       }
     },
+    cancelarEfectuarPago(){
+      console.log("Cancelar agregar pago");
+      this.listaCargosAlumnosSeleccionados=[];
+      $('#modal_pago').modal('hide');
+  /*    for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
+        var element = this.listaCargosAlumnos[i];
+        if (element.checked && element.cat_descuento != -1) {          
+          element.cat_descuento = this.noOptionDescuento;
+          console.log("this.pago.descuento_total  " + this.pago.descuento_total);
+        }
+      }
+*/
+    },
     reacalcularTotales() {
       var pass = true;
-      for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
-        var element = this.listaCargosAlumnos[i];
+      for (var i = 0; i < this.listaCargosAlumnosSeleccionados.length; i++) {
+        var element = this.listaCargosAlumnosSeleccionados[i];
         if (element.checked) {
           if (element.pago == undefined || element.pago == null || element.pago <= 0) {
             pass = false;
@@ -315,15 +334,41 @@ export default {
 
       if (pass) {
         this.pago.pago_total = Number(0);
-        for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
-          var element = this.listaCargosAlumnos[i];
+        this.pago.descuento_total = Number(0);
+        for (var i = 0; i < this.listaCargosAlumnosSeleccionados.length; i++) {
+          var element = this.listaCargosAlumnosSeleccionados[i];
           if (element.checked && element.pago != null) {
             this.pago.pago_total = this.pago.pago_total + Number(element.pago);
+            this.pago.descuento_total = this.pago.descuento_total + Number(element.descuento);
+            console.log("this.pago.descuento_total  " + this.pago.descuento_total);
           }
         }
+
+        this.tota_adeuda = this.total_cargos - (this.pago.descuento_total + this.pago.pago_total);
+
+      }
+    },
+    reacalcularTotalDescuento(row) {
+      console.log("Recalcular descuento " + JSON.stringify(row));
+      //row.descuento_decimal = row.descuento
+      if (row.cat_descuento && row.cat_descuento.id == -1) {
+        console.log("Regresar total  original");
+        row.descuento = 0.0;
+        row.total = row.total_original;
+        row.pago = row.total;
+        this.reacalcularTotales();
+      }
+      if (row.cat_descuento && row.cat_descuento.id != -1) {
+        console.log("Recalcular el total con el descuento " + row.cat_descuento.descuento);
+        row.descuento = (row.cat_descuento.descuento_decimal * row.total_original);
+        row.total = (row.total_original - row.descuento);
+        row.pago = row.total;
+        this.reacalcularTotales();
       }
     },
     guardarPago() {
+
+      console.log("=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>guardar pago <<<<<<<<<<<<<<<<<<<<<<<<<");
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
 
       var pass = true;
@@ -344,8 +389,8 @@ export default {
         $("#inputIdentificadorFactura").focus();
         return;
       } else {
-        for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
-          var element = this.listaCargosAlumnos[i];
+        for (var i = 0; i < this.listaCargosAlumnosSeleccionados.length; i++) {
+          var element = this.listaCargosAlumnosSeleccionados[i];
           if (element.checked) {
             if (element.pago == undefined || element.pago == null || element.pago <= 0) {
               pass = false;
@@ -359,7 +404,7 @@ export default {
 
         } else {
 
-          var lista = this.listaCargosAlumnos
+          var lista = this.listaCargosAlumnosSeleccionados
             .filter(e => e.checked)
             .map(e => {
               return {
@@ -389,14 +434,54 @@ export default {
           console.log(" = = = > " + ids_cargos);
           console.log(" = = = > " + cargos_desglosados);
 
+          //--Obtener los cargos con descuentos 
+          var ids_cargos_descuento = "";
+          var ids_descuentos_desglose = "";
+
+          for(var i=0;i < this.listaCargosAlumnosSeleccionados.length;i++){
+            let el = this.listaCargosAlumnosSeleccionados[i];
+            if(el.checked &&  el.cat_descuento.id != -1){
+              console.log(" cargo seleccion>  "+JSON.stringify(el));
+            }
+              
+          }
+
+          var listaCargosDescuentos = this.listaCargosAlumnosSeleccionados
+          .filter(e => (e.checked && e.cat_descuento.id != -1))
+          .map(e => {
+            return {
+              id_cargo: e.id_cargo_balance_alumno,
+              id_descuento: e.cat_descuento.id              
+            };
+          });
+          first = true;
+
+          listaCargosDescuentos.forEach(element => {
+            if (first) {
+              ids_cargos_descuento += element.id_cargo;
+              ids_descuentos_desglose += element.id_descuento;
+              first = false;
+            } else {
+              ids_cargos_descuento += (',' + element.id_cargo);
+              ids_descuentos_desglose += (',' + element.id_descuento);
+            }
+          });
+          console.log(" = = = cargos descuentos > " + ids_cargos_descuento);
+          console.log(" = = = descuentos > " + ids_descuentos_desglose);
+
+
+
           var objEnvio = {
             id_alumno: this.idalumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
-            cat_forma_pago: this.pago.cat_forma_pago.id,
-            identificador_factura: this.pago.identificador_factura,
             ids_cargos: ids_cargos,
             cargos_desglosados: cargos_desglosados,
+            ids_cargos_descuento : ids_cargos_descuento,
+            id_descuentos_desglose : ids_descuentos_desglose,
+            cat_forma_pago: this.pago.cat_forma_pago.id,
+            identificador_factura: this.pago.identificador_factura,                        
+            identificador_pago : this.pago.identificador_pago,
             genero: this.usuarioSesion.id
           };
 
@@ -411,6 +496,7 @@ export default {
                 this.seleccionTodos = false;
                 this.loadFunctionCargosAlumno();
                 this.loadFunctionActualizarCargoGeneral();
+                this.listaCargosAlumnosSeleccionados=[];
                 $("#modal_pago").modal("hide");
               }
             }
@@ -425,7 +511,6 @@ export default {
       this.cargoSeleccionado = item;
       this.get(
         URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
-
         result => {
           if (result.data != null) {
             console.log("" + JSON.stringify(result.data));
@@ -489,7 +574,18 @@ export default {
       let val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-
+    loadDescuentos() {
+      console.log("Cargar lista de descuento");
+      this.get(
+        URL.CAT_DESCUENTOS + "/" + this.usuarioSesion.id_empresa,
+        results => {
+          console.log("Consulta de descuentos " + results.data);
+          if (results.data != null) {
+            this.listaDescuentos = results.data;
+          }
+        }
+      );
+    }
   },
 };
 

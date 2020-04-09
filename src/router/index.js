@@ -92,6 +92,7 @@ router.beforeEach((to, from, next) => {
     } else {
       console.log("Revisando Sesion");
       let user = getUsuarioSesion();
+      //console.log(" SESION "+JSON.stringify(user));
       console.log("USUARIO " + (user != null) + " admin " + user.permiso_gerente);
       if (to.matched.some(record => record.meta.is_admin)) {
         if (user.permiso_gerente) {

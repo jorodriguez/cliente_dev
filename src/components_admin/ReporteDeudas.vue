@@ -113,59 +113,12 @@
                       </div>
                     </div>
                   </div>
-                </SucursalCard>
-                <!--
-                <div
-                  class="card text-white h-100 pointer sucursal-item-hover hover"
-                  v-on:click="verDetalleDeudasSucursal(row)"
-                  title="Clic para ver el detalle"
-                  v-bind:style="{'background-color':row.class_color}"
-                >               
-                  <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                    <h3 class="text-uppercase">{{row.nombre}}</h3>
-                    <small>Total Pendiente</small>                    
-                    <h3 class="display-5">${{formatPrice(row.total_adeuda)}}</h3>
-                     <a class="btn btn-link text-white" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                      Ver detalle <i class="ni ni-bold-down"></i>
-                    </a>
-                    <div class="collapse" id="collapseExample">
-                    <div v-if="row.array_desglose_cargos.length > 0">
-                      <table style="border:1px solid #ddd;">
-                          <tr style="border:1px solid #ddd;" v-for="desglose in row.array_desglose_cargos" :key="desglose.id">
-                            <td style="border:1px solid #ddd;">{{desglose.cargos_pendientes_pago}}</td>
-                            <td style="border:1px solid #ddd;" align="left">{{desglose.tipo_cargo}}</td>
-                            <td>${{ formatPrice(desglose.total_cargos_pendiente_desglose)}}</td>
-                          </tr>
-                      </table>  
-                    </div>                                         
-                    </div>
-                  </div>                  
-                  <h6>{{row.contador_alumnos}} alumnos en total</h6>
-                </div>
-                -->
+                </SucursalCard>              
               </div>
             </div>
             <h3>{{sucursal_seleccionada.nombre}}</h3>
             <br />
-            <!--<div class="row">
-              <div
-                v-for="desglose in sucursal_seleccionada.array_desglose_cargos"
-                :key="desglose.id"
-                class="col-sm-4 py-1 mx-auto border"
-              >
-                <div
-                  class="card  h-100 pointer sucursal-item-hover hover"
-                  @click="verDetalleDeudasSucursalYTipoCargo(desglose)"
-                  v-bind:title="'Total en cargos $'+desglose.total_cargos_desglose+', Total pagados : $'+desglose.total_cargos_pagados_desglose"
-                >
-                  <div class="card-body">
-                    <p >{{desglose.tipo_cargo}}</p>
-                    <span class="badge badge-light">{{desglose.cargos_pendientes_pago}}</span>
-                  </div>
-                  <h6>Ver</h6>
-                </div>                
-              </div>              
-            </div>-->
+
             <div class="row">
               <div class="col-auto mr-auto"></div>
               <div class="col-auto">
@@ -236,6 +189,11 @@
                       <span
                         v-if="row.texto_ayuda"
                       >'{{row.anio}}</span>
+                      
+                      <span v-if="row.descuento_aplicado" class="text-primary">                        
+                        <strong>{{row.nombre_descuento}}</strong>
+                      </span>
+
                       <span v-if="row.total_pagado_cargo > 0" class="text-info">
                         (Abonó
                         <strong>${{row.total_pagado_cargo}}</strong>)
@@ -254,55 +212,7 @@
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>
               </template>
               <div slot="selected-row-actions"></div>
-            </vue-good-table>
-
-            <!--<div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <th></th>
-                  <th>Nombre</th>
-                  <th class="hidden-xs">Apellidos</th>
-                  <th>Adeuda</th>
-                  <th></th>
-                </thead>
-                <tr v-for="row in listaBalancesAlumnosPorSucursal" :key="row.id" class="text-left">
-                  <td>
-                    <img
-                      src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
-                      width="50"
-                      height="50"
-                      alt="..."
-                      title="Ver datos del alumno"
-                      class="rounded-circle"
-                      v-on:click="verPerfil(row)"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-link"
-                      title="Ver datos del alumno"
-                      v-on:click="verPerfil(row)"
-                    >
-                      {{ row.nombre }}
-                      <sup
-                        v-if="row.nuevo_ingreso"
-                        class="badge badge-pill badge-warning"
-                      >
-                        <i>Nuevo Ingreso</i>
-                      </sup>
-                      <span class="text-danger">{{row.adeuda ? '*':''}}</span>
-                    </button>
-                  </td>
-                  <td class="hidden-xs">{{ row.apellidos }}</td>
-                  <td class="text-center">
-                    <span v-if="row.total_adeudo > 0" class="text-danger">${{ row.total_adeudo }}</span>
-                    <span v-else>${{ row.total_adeudo }}</span>
-                  </td>
-                  <td></td>
-                </tr>
-              </table>
-            </div>-->
+            </vue-good-table>            
           </div>
         </div>
       </div>
@@ -346,32 +256,7 @@
                       <p>${{formatPrice(row.suma_inscripciones)}}</p>
                     </h3>
                   </div>
-                </SucursalCard>
-                <!--
-                <div
-                  class="card text-white h-100 pointer sucursal-item-hover"
-                  v-on:click="verDetalleCrecimientoSucursal(row)"
-                  title="Clic para ver el detalle"
-                >
-                  <div class="card-body" v-bind:style="{'background-color':row.class_color}">
-                    <h6 class="text-uppercase">{{row.nombre}}</h6>
-                    <h6>
-                      <span
-                        v-bind:class="row.count_alumno == 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-light'"
-                      >{{row.count_alumno}}</span>
-                      alumnos inscritos este mes
-                    </h6>                    
-                    <small>Crecimiento (Mensualidad)</small>
-                    <h4>
-                      <p>${{formatPrice(row.suma_colegiaturas)}}</p>
-                    </h4>
-                    <small class="text-muted">Inscripciones</small>
-                    <h4 class="text-muted">
-                      <p>${{formatPrice(row.suma_inscripciones)}}</p>
-                    </h4>
-                  </div>
-                </div>
-                -->
+                </SucursalCard>               
               </div>
             </div>
             <div class="mx-auto">

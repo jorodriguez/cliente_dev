@@ -8,6 +8,7 @@
         <div  v-if="mostrar_monto" class="row row-cols-1">
             <span class="col small">Mensualidad</span>
             <span class="col">{{ value != null ? value.cargo:'' }} </span>
+            <span class="col text-primary small "> <strong>{{ (value != null && value.descuento_aplicado) ? value.nombre_descuento :'' }} </strong></span>            
         </div>
         <div  v-if="mostrar_pagado" class="row row-cols-1">
               <span class="col small">Pagado</span>
