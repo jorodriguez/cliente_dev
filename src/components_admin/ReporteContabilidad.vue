@@ -2,24 +2,6 @@
   <div>
     <div class="card">
       <div class="card-body">
-        <!--
-        <div class="row mb-3">
-          <div v-for="row in listaSucursales" :key="row.id" class="col-xl-3 col-sm-4 py-2 mx-auto">
-
-            <SucursalCard 
-                @click="verListaMensualidadesFacturadas(row)"
-                :class_color="row.class_color"
-                titulo=""
-                :nombre="row.nombre"
-                :foto="row.foto"
-                icono_etiqueta=""
-                etiqueta="Mensualidades"
-                descripcion=""
-            />
-           
-          </div>
-        </div>
-        -->
         <h5 class="text-muted">Reportes</h5>
         <div class="form-row">
           <label for="inputFechaInicio">Fecha inicio</label>
@@ -44,36 +26,47 @@
             required
           ></datepicker>
 
-          <button @click="consultarCobranza()" class="btn btn-primary">Cobranza</button>
-          
+          <button @click="consultarCobranza()" 
+            class="btn btn-primary"
+            :disabled="loader"
+          >            
+            Cobranza</button>
+          <button @click="consultarCobranza()" 
+            class="btn btn-primary"
+            :disabled="loader"
+          >            
+            Cobranza</button>
         </div>
         <div class="row">
-          <div class="col-md-10">
-          </div>
+          <div class="col-md-10"></div>
           <div class="col-md-2">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <download-excel            
-           v-if="lista != []"
-            class="btn btn-success btn-sm"
-            :data="lista"
-            :fields="columnExport"
-            :worksheet="nombre_libro"
-            :name="nombre_reporte+'.csv'"
-          ><i class="fas fa-download"/> XLS</download-excel>          
-          <download-excel            
-           v-if="lista != []"
-            class="btn btn-secondary btn-sm"
-            :data="lista"
-            :fields="columnExport"
-            :worksheet="nombre_libro"
-            :name="nombre_reporte+'.csv'"
-          ><i class="fas fa-download"/> CSV</download-excel>
-            
-                   
+              <download-excel
+                v-if="lista != []"
+                class="btn btn-success btn-sm"
+                :data="lista"
+                :fields="columnExport"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.xls'"
+              >
+                <i class="fas fa-download" /> XLS
+              </download-excel>
+              <download-excel
+                v-if="lista != []"
+                class="btn btn-secondary btn-sm"
+                :data="lista"
+                :fields="columnExport"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.csv'"
+              >
+                <i class="fas fa-download" /> CSV
+              </download-excel>
+            </div>
           </div>
         </div>
-        </div>
-        
+
+         <Loader :loading="loader" :mini="true" /> 
+
         <vue-good-table
           :columns="columns"
           :rows="lista"
@@ -91,9 +84,7 @@
             
           </template>
           -->
-          <div slot="selected-row-actions">             
-         
-          </div>
+          <div slot="selected-row-actions"></div>
         </vue-good-table>
       </div>
     </div>
@@ -111,13 +102,15 @@ import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import Datepicker from "vuejs-datepicker";
 import { en, es } from "vuejs-datepicker/dist/locale";
+import Loader from "../components_utils/Loader";
 
 export default {
   name: "ReporteContabilidad",
   components: {
     Datepicker,
     VueGoodTable,
-    Popup
+    Popup,
+    Loader
   },
   mixins: [operacionesApi],
   data() {
@@ -127,19 +120,20 @@ export default {
       fecha_fin: null,
       lista: [],
       es: es,
-      nombre_reporte:'reporte.xls',
-      nombre_libro:"libro1",
+      loader:false,
+      nombre_reporte: "reporte.xls",
+      nombre_libro: "libro1",
       TABLE_CONFIG: TABLE_CONFIG,
-      columnExport:{},
-      columnsExportCobranza:{
-        sucursal:"sucursal",
-        alumno:"alumno",
-        fecha:"fecha_cargo",
-        concepto:"concepto",
-        cargo:"cargo",
-        "pago_abono":"pago_abono",
-        saldo_por_concepto:"saldo_por_concepto",
-        saldo_por_alumno:"saldo_por_alumno",
+      columnExport: {},
+      columnsExportCobranza: {
+        sucursal: "sucursal",
+        alumno: "alumno",
+        fecha: "fecha_cargo",
+        concepto: "concepto",
+        cargo: "cargo",
+        pago_abono: "pago_abono",
+        saldo_por_concepto: "saldo_por_concepto",
+        saldo_por_alumno: "saldo_por_alumno"
       },
       columnsCobranza: [
         {
@@ -224,13 +218,14 @@ export default {
   methods: {
     init(row) {},
     consultarCobranza() {
-      this.nombre_reporte =`Reporte de Cobranza`;
+      this.nombre_reporte = `Reporte de Cobranza`;
       this.nombre_libro = `Cobranza`;
       this.columnExport = this.columnsExportCobranza;
       this.columns = this.columnsCobranza;
       console.log("fecha inicio " + this.fecha_inicio);
       console.log("fecha fin " + this.fecha_fin);
-      //URL.REPORTE_CONBRANZA  + "/" + this.usuarioSesion.id+"/"+this.fecha_inicio+"/"+this.fecha_fin,
+      
+      this.loader = true;
       this.put(
         URL.REPORTE_CONBRANZA,
         {
@@ -242,6 +237,7 @@ export default {
           console.log("Reporte cobranza " + result.data);
           if (result.data != null) {
             this.lista = result.data;
+            this.loader = false;
           }
         }
       );

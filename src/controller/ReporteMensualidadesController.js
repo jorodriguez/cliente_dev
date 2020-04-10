@@ -56,7 +56,12 @@ export default {
       mostrar_mes:false,
       mostrar_monto:true,
       mostrar_pagado:false,
-      mostrar_adeuda:true,
+      mostrar_adeuda:false,
+      sumasMeses :{
+        enero:0,febrero:0,marzo:0,abril:0,mayo:0,
+        jnio:0,julio:0,agosto:0,septiembre:0,
+        octubre:0,noviembre:0,diciembre:0,
+     },
       columnsCargos: [
         {
           id:-1,
@@ -88,8 +93,15 @@ export default {
           thClass: 'text-center',
           tdClass: 'text-center',
         },
-        {
-          id:2,
+        {          
+          label: '% Mensualidad',          
+          field: 'porcentaje_enero',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {     
+          id:2,     
           label: 'Feb',
           field: 'febrero',
           filterable: true,
@@ -175,6 +187,7 @@ export default {
           thClass: 'text-center',
           tdClass: 'text-center',
         }, 
+        
       ]
     };
   },
@@ -252,18 +265,7 @@ export default {
         );
       };
     }
-
-    /*this.loadFunctionReporteContadoresMesSucursal = function (id_sucursal) {
-      this.get(
-        URL.REPORTE_MENSUALIDADES + "/" + id_sucursal+"/"+this.usuarioSesion.id,
-        result => {
-          console.log("Consulta meses con adeudo" + result.data);
-          if (result.data != null) {
-            this.listaMeses = result.data;
-          }
-        }
-      );
-    };*/
+  
     this.loadFunctionCargaListaMensualidadPorSucursal =  () => {
       console.log("@@loadFunctionFiltroAnio "+this.sucursal_seleccionada.id);
       this.get(
@@ -313,16 +315,32 @@ export default {
         //this.anio_seleccionado = row;
         this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
     },
-    /*cambiarMes() {
-      console.log("Cambiar de mez");
-      //this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id_sucursal);
-      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);      
-    },
-    verCargosPorMes(row) {
-      console.log("SELECCION "+JSON.stringify(row));
-      this.mes_seleccionado = row.anio_mes;
-      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
-    },*/
+    calcularOperaciones(){        
+       
+       var obtenerValorCargo = function(valor){
+          if(valor != null && valor.cargo){
+            return valor.cargo;
+          }else{return 0;}
+       };
+
+       for(let i =0;i<this.listaCargos.length;i++){
+          let el = this.listaCargos[i];          
+          this.sumasMeses.enero += obtenerValorCargo(el.enero);           
+          this.sumasMeses.febrero += obtenerValorCargo(el.febrero);           
+          this.sumasMeses.marzo += obtenerValorCargo(el.marzo);           
+          this.sumasMeses.abril += obtenerValorCargo(el.abril);           
+          this.sumasMeses.mayo += obtenerValorCargo(el.mayo);           
+          this.sumasMeses.junio += obtenerValorCargo(el.junio);           
+          this.sumasMeses.julio += obtenerValorCargo(el.julio);           
+          this.sumasMeses.agosto += obtenerValorCargo(el.agosto);           
+          this.sumasMeses.septiembre += obtenerValorCargo(el.septiembre);           
+          this.sumasMeses.octubre += obtenerValorCargo(el.octubre);           
+          this.sumasMeses.noviembre += obtenerValorCargo(el.noviembre);           
+          this.sumasMeses.diciembre += obtenerValorCargo(el.diciembre);           
+          //console.log(JSON.stringify((el.enero != null && el.enero.cargo) ? el.enero.cargo : 0));
+        }
+        //el.porcentaje_enero = 
+    },  
     onRowClick(params) {
       console.log(JSON.stringify(params));
       this.pago_seleccionado = params.row;

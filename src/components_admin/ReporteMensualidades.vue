@@ -40,48 +40,12 @@
             </div>
           </div>
         </div>
-        <div class="d-flex small flex-row-reverse bd-highlight">          
-          <div class="custom-control custom-checkbox mb-3">
-            <input
-              id="id_mostrar_mes"
-              type="checkbox"
-              v-model="mostrar_mes"
-              class="custom-control-input"
-              name="mostrar_mes"
-            />
-            <label class="custom-control-label" for="id_mostrar_mes">Mes</label>
-          </div>
-          <div class="custom-control custom-checkbox mb-3">
-            <input
-              id="id_mostrar_monto"
-              type="checkbox"
-              v-model="mostrar_monto"
-              class="custom-control-input"
-              name="mostrar_monto"
-            />
-            <label class="custom-control-label" for="id_mostrar_monto">Monto</label>
-          </div>
-          <div class="custom-control custom-checkbox mb-3">
-            <input
-              id="id_mostrar_pagado"
-              type="checkbox"
-              v-model="mostrar_pagado"
-              class="custom-control-input"
-              name="mostrar_monto"
-            />
-            <label class="custom-control-label" for="id_mostrar_pagado">Pagado</label>
-          </div>
-          <div class="custom-control custom-checkbox mb-3">
-            <input
-              id="id_mostrar_adeuda"
-              type="checkbox"
-              v-model="mostrar_adeuda"
-              class="custom-control-input"
-              name="mostrar_adeuda"
-            />
-            <label class="custom-control-label" for="id_mostrar_adeuda">Adeuda</label>
-          </div>
-        </div>
+        
+        <button @click="calcularOperaciones()">
+          Calcular
+        </button>
+
+        {{sumasMeses}}
 
         <vue-good-table
           :columns="columnsCargos"
@@ -89,7 +53,7 @@
           :line-numbers="true"
           @on-search="onSearch"
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
-          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
+          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
         >
           <template slot="table-row" slot-scope="props">
@@ -100,8 +64,11 @@
                 :mostrar_monto="mostrar_monto"
                 :mostrar_pagado="mostrar_pagado"
                 :mostrar_adeuda="mostrar_adeuda"
-              />
+              />              
             </span>
+            <span v-else-if="props.column.field == 'porcentaje_enero'">
+              porcentaje_enero
+            </span>            
             <span v-else-if="props.column.field == 'febrero'">
               <CeldaMesMensualidad
                 :value="props.row.febrero"
@@ -374,47 +341,6 @@
           </div>
           <div slot="footer"></div>
         </Popup>
-
-        <!-- Tabla de cargos -->
-        <!-- <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <th class="text-left">Alumno</th>
-              <th class="text-left">Fecha de pago</th>
-              <th class="text-left">Pago</th>
-              <th class="text-left">Cargo</th>
-              <th class="text-left">Factura</th>
-              <th></th>
-            </thead>
-            <tr v-for="row in listaCargos" :key="row.id" class="text-left">
-              <td>                
-                <span v-bind:class=" row.pagado ? '':'text-danger'">
-                  <strong>{{row.nombre_alumno}}</strong>
-                </span>
-              </td>
-              <td>
-                <span
-                  v-bind:class=" row.pagado ? '':'text-danger'"
-                >{{ row.fecha_pago | moment("DD-MMM-YYYY") }}</span>
-              </td>
-              <td class="text-left">
-                <span v-bind:class=" row.pagado ? '':'text-danger'">${{formatPrice(row.pago)}}</span>
-              </td>
-              <td class="text-left">
-                <span v-bind:class=" row.pagado ? '':'text-danger'">${{formatPrice(row.cargo)}}</span>
-              </td>
-              <td>
-                <span class="text-success">
-                  <strong>{{row.identificador_factura}}</strong>
-                </span>
-              </td>
-              <td>
-                <i class="fas fa-check-circle text-success text-small" v-if="row.pagado">Pagado</i>
-                <i class="fas fa-check-circle text-danger text-small" v-if="!row.pagado">¡Adeuda!</i>
-              </td>
-            </tr>
-          </table>
-        </div>-->
       </div>
     </div>
   </div>
