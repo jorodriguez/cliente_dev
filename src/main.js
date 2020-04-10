@@ -11,6 +11,8 @@ import Notificaciones from './helpers/Notificaciones'
 import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
 import VuePageTransition from 'vue-page-transition'
+import JsonExcel from 'vue-json-excel'
+ 
 
 /*import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 import { required, email } from 'vee-validate/dist/rules';
@@ -28,6 +30,7 @@ Vue.use(Notifications);
 Vue.use(VueTimepicker);
 //Vue.use(Notificacion);
 Vue.use(VuePageTransition);
+Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$notificacion = Notificaciones;
 //Vue.forceUpdate();
 

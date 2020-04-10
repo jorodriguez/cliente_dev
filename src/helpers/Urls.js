@@ -69,6 +69,8 @@ const SUCURSAL_USUARIO_ASIGNADAS = SUCURSAL_USUARIO + '/sucursales_asignadas'; /
 
 const CAT_DESCUENTOS = BASE + '/descuento';
 
+const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
+
 const URL = {    
     LOGIN : BASE+'/auth/login',    
     ASISTENCIA_BASE : ASISTENCIA_BASE,
@@ -153,7 +155,9 @@ const URL = {
 
     SUCURSAL_USUARIO_ASIGNADAS :SUCURSAL_USUARIO_ASIGNADAS,
 
-    CAT_DESCUENTOS:CAT_DESCUENTOS
+    CAT_DESCUENTOS:CAT_DESCUENTOS,
+    
+    REPORTE_CONBRANZA:REPORTE_CONBRANZA
 }
 
 export default URL;

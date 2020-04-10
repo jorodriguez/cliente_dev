@@ -11,12 +11,14 @@ import Popup from './Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import SucursalCard from '../components_admin/fragmentos/SucursalCard';
+import ReporteContabilidad from '../components_admin/ReporteContabilidad';
 
 export default {
   name: "ReporteDeudas",
   components: {
     SignoutComponent,
     ReporteMensualidades,
+    ReporteContabilidad,
     VueGoodTable,
     Popup,
     SucursalCard

@@ -44,19 +44,18 @@
           aria-controls="pills-mensualidades"
           aria-selected="false"
         >Mensualidades</a>
-      </li>
-      <!--
+      </li>      
       <li class="nav-item">
         <a
           class="nav-link"
-          id="pills-alumnos-cargos-tab"
+          id="pills-contabilidad-tab"
           data-toggle="pill"
-          href="#pills-alumnos-cargos"
+          href="#pills-contabilidad"
           role="tab"
-          aria-controls="pills-alumnos-cargos"
+          aria-controls="pills-contabilidad"
           aria-selected="false"
-        >Alumnos</a>
-      </li>-->
+        >Otros</a>
+      </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
       <div
@@ -410,6 +409,18 @@
       >
         <div class="card">
           <ReporteMensualidades />
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="pills-contabilidad"
+        role="tabpanel"
+        aria-labelledby="pills-contabilidad-tab"
+      >
+        <div class="card">
+          conta
+          <ReporteContabilidad/>
+         ss
         </div>
       </div>
     </div>
