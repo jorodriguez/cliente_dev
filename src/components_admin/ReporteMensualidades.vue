@@ -19,6 +19,8 @@
         <h5 class="text-muted">Mensualidades</h5>
         <h2>{{sucursal_seleccionada.nombre}}</h2>
         <h2>{{anio_seleccionado != null ? ('('+anio_seleccionado+')'):''}}</h2>
+  <Loader :loading="isLoading" :mini="false" />        
+
         <div class="d-flex flex-row-reverse d-highlight">
           <div class="bd-highlight">
             <div class="form-group">
@@ -37,9 +39,37 @@
               </select>
             </div>
           </div>
+        </div>            
+         <div class="row">
+          <div class="col-md-10"></div>
+          <div class="col-md-2">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <download-excel
+                v-if="listaCargos != []"
+                class="btn btn-success btn-sm"
+                :data="listaCargos"
+                :fields="columnExport"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.xls'"
+              >
+                <i class="fas fa-download" /> XLS
+              </download-excel>
+              <download-excel
+                v-if="listaCargos != []"
+                class="btn btn-secondary  btn-sm"
+                :data="listaCargos"
+                :fields="columnExport"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.csv'"
+              >
+                <i class="fas fa-download" /> csv
+              </download-excel>
+            </div>
+          </div>
         </div>
-
-        <table border="1">
+      
+      <div class="row mx-auto">
+        <table border="1" style="width:100%">
           <th>Enero</th>
           <th>Febrero</th>
           <th>Marzo</th>
@@ -67,24 +97,8 @@
             <td>{{formatPrice(sumasMeses.diciembre)}}</td>
           </tr>
         </table>
-
-        <div class="row">
-          <div class="col-md-10"></div>
-          <div class="col-md-2">
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <download-excel
-                v-if="listaCargos != []"
-                class="btn btn-success btn-sm"
-                :data="listaCargos"
-                :fields="columnExport"
-                :worksheet="nombre_libro"
-                :name="nombre_reporte+'.xls'"
-              >
-                <i class="fas fa-download" /> XLS
-              </download-excel>
-            </div>
-          </div>
         </div>
+     
 
         <vue-good-table
           :columns="columnsCargos"

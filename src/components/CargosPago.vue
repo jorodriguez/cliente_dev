@@ -85,11 +85,9 @@
           </td>
           <td>
             <strong>
-              {{row.descuento_aplicado ? "("+row.nombre_descuento+")":"" }}
-              <span
-                class="font-weight-bold text-"
-              >${{row.descuento}}</span>
-            </strong>
+              <span class="font-weight-bold text-">${{row.descuento}}</span><br/>
+              <span class="text-orange">{{row.descuento_aplicado ? "("+row.nombre_descuento+")":"" }}</span>             
+                          </strong>
           </td>
           <td>
             <strong>
@@ -314,13 +312,14 @@
                   <span class="h3 font-weight-bold">${{row.cargo}}</span>
                 </strong>
               </td>
-              <td style="width:15%">
+              <td style="width:15%">                
                 <select
                   v-model="row.cat_descuento"
                   class="form-control h3 font-weight-bold"
                   placeholder="Descuento"
                   @change="reacalcularTotalDescuento(row)"
                   v-if="!row.descuento_aplicado && row.aplica_descuento"
+                  :disabled="(row.total_pagado > 0)"
                 >
                   <option id="noOptionDescuento" v-bind:value="noOptionDescuento">
                     <span class="h3 font-weight-bold">{{ noOptionDescuento.nombre }}</span>
@@ -334,9 +333,9 @@
                     <span class="h3 font-weight-bold">{{ d.nombre }}</span>
                   </option>
                 </select>
-                <h3 v-if="row.descuento_aplicado">{{row.nombre_descuento}} {{row.descuento}}</h3>
+                <h3 v-if="row.descuento_aplicado">{{row.nombre_descuento}}  </h3>                
               </td>
-              <td style="width:20%">
+              <td style="width:20%">                
                 <input
                   id="inputAbono"
                   type="number"
@@ -346,6 +345,7 @@
                   placeholder="Pago"
                   required
                 />
+                <span v-if="row.total_pagado > 0" > pagado : ${{row.total_pagado}}</span>
               </td>
               <td>
                 <strong>
@@ -362,7 +362,7 @@
                 <strong>Cargos :</strong>
               </td>
               <td class="text-danger">
-                <strong>${{total_cargos}}</strong>
+                <strong>${{formatPrice(total_cargos)}}</strong>
               </td>
             </tr>
             <tr>
@@ -378,7 +378,7 @@
                 <strong>Pago :</strong>
               </td>
               <td>
-                <strong>${{pago.pago_total}}</strong>
+                <strong>${{formatPrice(pago.pago_total)}}</strong>
               </td>
             </tr>
             <tr>
@@ -389,7 +389,7 @@
               </td>
               <td class="text-danger">
                 <!--<strong>${{total_cargos - pago.pago_total }}</strong>-->
-                <strong>{{total_cargos - (pago.descuento_total + pago.pago_total)}}</strong>
+                <strong>${{formatPrice(total_cargos - (pago.descuento_total + pago.pago_total))}}</strong>
                 <!--<strong>${{total_adeuda}}</strong>                -->
               </td>
             </tr>
@@ -439,7 +439,7 @@
                 </div>
               </td>
               <td>
-                <label class="font-weight-bold h3">${{ cargoSeleccionado.descuento}} <br/> <span class="h4">{{cargoSeleccionado.descuento_aplicado ? "("+cargoSeleccionado.nombre_descuento+")" : "" }} </span></label></td>
+                <label class="font-weight-bold h3">${{ cargoSeleccionado.descuento}} <br/> <span class="h4 text-orange">{{cargoSeleccionado.descuento_aplicado ? "("+cargoSeleccionado.nombre_descuento+")" : "" }} </span></label></td>
               <td>
                 <label class="font-weight-bold text-danger h3">${{cargoSeleccionado.total}}</label>
               </td>

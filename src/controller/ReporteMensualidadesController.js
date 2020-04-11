@@ -10,12 +10,14 @@ import { castNumMonthToSpanish } from "../helpers/UtilsDate";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import CeldaMesMensualidad from '../components_admin/fragmentos/CeldaMesMensualidad';
 import SucursalCard from '../components_admin/fragmentos/SucursalCard';
+import Loader from "../components_utils/Loader";
 
 export default {
   name: "ReporteMensualidades",
   components: {
     VueGoodTable,
     Popup,
+    Loader,
     RecordatorioPago,
     CeldaMesMensualidad, SucursalCard
   },
@@ -467,6 +469,7 @@ export default {
     this.loadFunctionReporteMensualidadesSucursal = (id_sucursal) => {
       console.log("@@loadFunctionReporteMensualidadesSucursal");
       console.log("sucr " + id_sucursal + " mes " + this.anio_seleccionado);
+      this.isLoading = true;
       this.get(
         this.uriTemp + "/" + id_sucursal + "/" + this.anio_seleccionado,
         (result) => {
@@ -474,6 +477,7 @@ export default {
           if (result.data != null) {
             this.listaCargos = result.data;
             this.calcularOperaciones();
+            this.isLoading = false;
           }
         }
       );

@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-body">
-        <h5 class="text-muted">Reportes</h5>
+        <h5 class="text-muted h4">Reporte de cobranza</h5>
         <div class="form-row">
           <label for="inputFechaInicio">Fecha inicio</label>
           <datepicker
@@ -10,8 +10,7 @@
             v-model="fecha_inicio"
             input-class="form-control"
             :bootstrap-styling="true"
-            :language="es"
-            format="yyyy-MM-dd"
+            :language="es"            
             required
           ></datepicker>
 
@@ -21,8 +20,7 @@
             v-model="fecha_fin"
             input-class="form-control"
             :bootstrap-styling="true"
-            :language="es"
-            format="yyyy-MM-dd"
+            :language="es"            
             required
           ></datepicker>
 
@@ -30,12 +28,7 @@
             class="btn btn-primary"
             :disabled="loader"
           >            
-            Cobranza</button>
-          <button @click="consultarCobranza()" 
-            class="btn btn-primary"
-            :disabled="loader"
-          >            
-            Cobranza</button>
+            Consultar</button>     
         </div>
         <div class="row">
           <div class="col-md-10"></div>
@@ -184,14 +177,14 @@ export default {
           filterable: true,
           thClass: "text-center",
           tdClass: "text-center"
-        },
+        }/*,
         {
           label: "Saldo por alumno",
           field: "saldo_por_alumno",
           filterable: true,
           thClass: "text-center",
           tdClass: "text-center"
-        }
+        }*/
         /*{
           label: "Saldo por sucursal",
           field: "saldo_por_sucursal",
