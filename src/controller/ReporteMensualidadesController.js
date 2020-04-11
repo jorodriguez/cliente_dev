@@ -11,37 +11,34 @@ import { getUsuarioSesion } from '../helpers/Sesion';
 import CeldaMesMensualidad from '../components_admin/fragmentos/CeldaMesMensualidad';
 import SucursalCard from '../components_admin/fragmentos/SucursalCard';
 
-
-
-
 export default {
   name: "ReporteMensualidades",
   components: {
     VueGoodTable,
     Popup,
     RecordatorioPago,
-    CeldaMesMensualidad,SucursalCard
+    CeldaMesMensualidad, SucursalCard
   },
   mixins: [operacionesApi],
   data() {
     return {
-      uriTemp: URL.REPORTE_MENSUALIDADES, 
+      uriTemp: URL.REPORTE_MENSUALIDADES,
       listaSucursales: [],
       listaCargos: [],
       listaCargosResp: [],
-      listaFiltroAnios:[],
+      listaFiltroAnios: [],
       rowSelection: [],
       listaCorreosEnviarRecordatorio: [],
       listaMeses: [],
       usuarioSesion: {},
       anio_seleccionado: null,
       mes_seleccionado: null,
-      pago_seleccionado: null,      
+      pago_seleccionado: null,
       sucursal_seleccionada: { id_sucursal: 0, nombre: "" },
       loadFunctionReporteContadoresMesSucursal: null,
       loadFunctionReporteMensualidadesSucursal: null,
-      loadFunctionCargaListaMensualidadPorSucursal:null,
-      loadFunctionFiltroAnios:null,
+      loadFunctionCargaListaMensualidadPorSucursal: null,
+      loadFunctionFiltroAnios: null,
       loadFunctionMeses: null,
       enviarRecordatorioFunction: null,
       filtrarCargos: null,
@@ -53,141 +50,391 @@ export default {
       mensaje: "",
       TABLE_CONFIG: TABLE_CONFIG,
       texto_recordatorio: "",
-      mostrar_mes:false,
-      mostrar_monto:true,
-      mostrar_pagado:false,
-      mostrar_adeuda:false,
-      sumasMeses :{
-        enero:0,febrero:0,marzo:0,abril:0,mayo:0,
-        jnio:0,julio:0,agosto:0,septiembre:0,
-        octubre:0,noviembre:0,diciembre:0,
-     },
+      mostrar_mes: false,
+      mostrar_monto: true,
+      mostrar_pagado: false,
+      mostrar_adeuda: false,
+      nombre_reporte: "reporte.xls",
+      nombre_libro: 'libro1',
+      sumasMeses: {
+        enero: 0, febrero: 0, marzo: 0, abril: 0, mayo: 0,
+        junio: 0, julio: 0, agosto: 0, septiembre: 0,
+        octubre: 0, noviembre: 0, diciembre: 0,
+      },
+      columnExport: {
+        sucursal: "sucursal",
+        alumno: "alumno",
+        enero: {
+          field: 'enero', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_ene: "porcentaje_enero",
+        descuento_ene: {
+          field: 'enero', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_ene: {
+          field: 'enero', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        febrero: {
+          field: 'febrero', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_feb: "porcentaje_febrero",
+        descuento_feb: {
+          field: 'febrero', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_feb: {
+          field: 'febrero', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        marzo: {
+          field: 'marzo', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_mar: "porcentaje_marzo",
+        descuento_mar: {
+          field: 'marzo', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_mar: {
+          field: 'marzo', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+
+        abril: {
+          field: 'abril', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_abr: "porcentaje_abril",
+        descuento_abr: {
+          field: 'abril', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_abr: {
+          field: 'abril', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        mayo: {
+          field: 'mayo', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_may: "porcentaje_mayo",
+        descuento_may: {
+          field: 'mayo', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_may: {
+          field: 'mayo', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        junio: {
+          field: 'junio', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_jun: "porcentaje_junio",
+        descuento_jun: {
+          field: 'junio', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_jun: {
+          field: 'junio', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        julio: {
+          field: 'julio', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_jul: "porcentaje_julio",
+        descuento_jul: {
+          field: 'julio', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_jul: {
+          field: 'julio', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        agosto: {
+          field: 'agosto', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_ago: "porcentaje_agosto",
+        descuento_ago: {
+          field: 'agosto', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_ago: {
+          field: 'agosto', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        septiembre: {
+          field: 'septiembre', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_sep: "porcentaje_septiembre",
+        descuento_sep: {
+          field: 'septiembre', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_sep: {
+          field: 'septiembre', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        octubre: {
+          field: 'octubre', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_oct: "porcentaje_octubre",
+        descuento_oct: {
+          field: 'octubre', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_oct: {
+          field: 'octubre', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        noviembre: {
+          field: 'noviembre', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_nov: "porcentaje_noviembre",
+        descuento_nov: {
+          field: 'noviembre', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_nov: {
+          field: 'noviembre', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        },
+        diciembre: {
+          field: 'diciembre', callback: (value) => {
+            return this.obtenerValorCargo(value);
+          }
+        },
+        porc_mens_dic: "porcentaje_diciembre",
+        descuento_dic: {
+          field: 'diciembre', callback: (value) => {
+            return this.obtenerValorDescuento(value);
+          }
+        },
+        importe_dic: {
+          field: 'diciembre', callback: (value) => {
+            return value != null ? value.total_pagado : 0;
+          }
+        }
+
+      },
       columnsCargos: [
         {
-          id:-1,
+          id: -1,
           label: 'Id',
           field: 'id',
           hidden: true
         },
         {
-          id:-1,
+          id: -1,
           label: 'Alumno',
           field: 'alumno',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        },            
-        /*{
-          id:-1,
-          label: 'Apellidos',
-          field: 'apellidos_alumno',
-          filterable: true,
-          thClass: 'text-center',
-          tdClass: 'text-center',
-        },  */
+        },
         {
-          id:1,
-          label: 'Ene',          
+          id: 1,
+          label: 'Ene',
           field: 'enero',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
-        {          
-          label: '% Mensualidad',          
+        {
+          label: '% Men.',
           field: 'porcentaje_enero',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
-        {     
-          id:2,     
+        {
+          label: 'Desc.',
+          field: 'descuento_enero',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          label: 'Importe',
+          field: 'importe_enero',
+          filterable: true,
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+        {
+          id: 2,
           label: 'Feb',
           field: 'febrero',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
+        { label: '% Men.', field: 'porcentaje_febrero', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_febrero', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_febrero', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:3,
+          id: 3,
           label: 'Mar',
           field: 'marzo',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
+        { label: '% Mensualidad', field: 'porcentaje_marzo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_marzo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_marzo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:4,
+          id: 4,
           label: 'Abr',
           field: 'abril',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
         },
-        {id:5,
+        { label: '% Mensualidad', field: 'porcentaje_abril', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_abril', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_abril', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
+        {
+          id: 5,
           label: 'May',
           field: 'mayo',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        },       
+        },
+        { label: '% Men.', field: 'porcentaje_mayo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_mayo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_mayo', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
         {
-          id:6,
+          id: 6,
           label: 'Jun',
           field: 'junio',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_junio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_junio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_junio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:7,
+          id: 7,
           label: 'Jul',
           field: 'julio',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_julio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_julio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_julio', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:8,
+          id: 8,
           label: 'Ago',
           field: 'agosto',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_agosto', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_agosto', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_agosto', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:9,
+          id: 9,
           label: 'Sept',
           field: 'septiembre',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_septiembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_septiembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_septiembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:10,
+          id: 10,
           label: 'Oct',
           field: 'octubre',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_octubre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_octubre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_octubre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:11,
+          id: 11,
           label: 'Nov',
           field: 'noviembre',
-          filterable: true,          
+          filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
+        },
+        { label: '% Men.', field: 'porcentaje_noviembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_noviembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_noviembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
         {
-          id:12,
+          id: 12,
           label: 'Dic',
           field: 'diciembre',
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
-        }, 
-        
+        },
+        { label: '% Men.', field: 'porcentaje_diciembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Desc.', field: 'descuento_diciembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+        { label: 'Importe', field: 'importe_diciembre', filterable: true, thClass: 'text-center', tdClass: 'text-center' },
+
+
       ]
     };
   },
@@ -195,13 +442,13 @@ export default {
     console.log("iniciando el componente reporte de mensualidades ");
 
     this.usuarioSesion = getUsuarioSesion();
-   
+
     //para mostrar las sucursales
     this.loadFunctionSucursalesAsignadas = function () {
 
-      console.log("@@loadFunctionSucursalesAsignadas usuario "+this.usuarioSesion.id);
+      console.log("@@loadFunctionSucursalesAsignadas usuario " + this.usuarioSesion.id);
       this.get(
-        URL.SUCURSAL_USUARIO_ASIGNADAS+"/"+this.usuarioSesion.id,
+        URL.SUCURSAL_USUARIO_ASIGNADAS + "/" + this.usuarioSesion.id,
         result => {
           console.log("Consulta cargos por sucursal" + result.data);
           if (result.data != null) {
@@ -226,6 +473,7 @@ export default {
           console.log("Consulta " + result.data);
           if (result.data != null) {
             this.listaCargos = result.data;
+            this.calcularOperaciones();
           }
         }
       );
@@ -265,21 +513,21 @@ export default {
         );
       };
     }
-  
-    this.loadFunctionCargaListaMensualidadPorSucursal =  () => {
-      console.log("@@loadFunctionFiltroAnio "+this.sucursal_seleccionada.id);
+
+    this.loadFunctionCargaListaMensualidadPorSucursal = () => {
+      console.log("@@loadFunctionFiltroAnio " + this.sucursal_seleccionada.id);
       this.get(
-        URL.CARGOS_BASE +"/filtro_anios/"+this.sucursal_seleccionada.id,
+        URL.CARGOS_BASE + "/filtro_anios/" + this.sucursal_seleccionada.id,
         result => {
           console.log("Consulta filtro años por sucursal" + result.data);
           if (result.data != null) {
             this.listaFiltroAnios = result.data;
             if (this.listaFiltroAnios != null && this.listaFiltroAnios.length > 0) {
-              if (this.anio_seleccionado == null) {                
-                this.anio_seleccionado = this.listaFiltroAnios[0].anio;    
-                console.log("Año seleccionado "+this.anio_seleccionado);                            
+              if (this.anio_seleccionado == null) {
+                this.anio_seleccionado = this.listaFiltroAnios[0].anio;
+                console.log("Año seleccionado " + this.anio_seleccionado);
               }
-              
+
               this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
 
             }
@@ -287,15 +535,18 @@ export default {
         }
       );
     };
-    
+
     this.loadFunctionSucursalesAsignadas();
   },
-  methods: {   
+  methods: {
 
     verListaMensualidadesFacturadas(row_sucursal) {
       console.log("row sucursal " + JSON.stringify(row_sucursal));
       this.sucursal_seleccionada = row_sucursal;
-      this.loadFunctionCargaListaMensualidadPorSucursal();                                
+      this.nombre_reporte = this.sucursal_seleccionada.nombre;
+      this.nombre_libro =this.sucursal_seleccionada.nombre;
+      this.loadFunctionCargaListaMensualidadPorSucursal();
+
     },
 
     formatPrice(value) {
@@ -305,42 +556,100 @@ export default {
     toggleTodosCargos() {
       console.log("Ver todos los cargos " + this.verTodosCargos);
       this.verTodosCargos = !this.verTodosCargos;
-
       this.filtrarCargos();
     },
     formatNumeroMes(num_mes) {
       return castNumMonthToSpanish(num_mes).es;
     },
-    cambiarAnio(){
-        //this.anio_seleccionado = row;
-        this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
+    cambiarAnio() {
+      //this.anio_seleccionado = row;
+      this.loadFunctionReporteMensualidadesSucursal(this.sucursal_seleccionada.id);
     },
-    calcularOperaciones(){        
-       
-       var obtenerValorCargo = function(valor){
-          if(valor != null && valor.cargo){
-            return valor.cargo;
-          }else{return 0;}
-       };
+    obtenerValorCargo(valor) {
+      if (valor != null && valor.cargo) {
+        return valor.cargo;
+      } else { return 0; }
+    },
+    obtenerValorDescuento(valor) {
+      if (valor != null && valor.descuento) {
+        return valor.descuento;
+      } else { return 0; }
+    },
+    calcularOperaciones() {
+      this.sumasMeses.enero = 0;
+      this.sumasMeses.febrero = 0;
+      this.sumasMeses.marzo = 0;
+      this.sumasMeses.abril = 0;
+      this.sumasMeses.mayo = 0;
+      this.sumasMeses.junio = 0;
+      this.sumasMeses.julio = 0;
+      this.sumasMeses.agosto = 0;
+      this.sumasMeses.septiembre = 0;
+      this.sumasMeses.octubre = 0;
+      this.sumasMeses.noviembre = 0;
+      this.sumasMeses.diciembre = 0;
 
-       for(let i =0;i<this.listaCargos.length;i++){
-          let el = this.listaCargos[i];          
-          this.sumasMeses.enero += obtenerValorCargo(el.enero);           
-          this.sumasMeses.febrero += obtenerValorCargo(el.febrero);           
-          this.sumasMeses.marzo += obtenerValorCargo(el.marzo);           
-          this.sumasMeses.abril += obtenerValorCargo(el.abril);           
-          this.sumasMeses.mayo += obtenerValorCargo(el.mayo);           
-          this.sumasMeses.junio += obtenerValorCargo(el.junio);           
-          this.sumasMeses.julio += obtenerValorCargo(el.julio);           
-          this.sumasMeses.agosto += obtenerValorCargo(el.agosto);           
-          this.sumasMeses.septiembre += obtenerValorCargo(el.septiembre);           
-          this.sumasMeses.octubre += obtenerValorCargo(el.octubre);           
-          this.sumasMeses.noviembre += obtenerValorCargo(el.noviembre);           
-          this.sumasMeses.diciembre += obtenerValorCargo(el.diciembre);           
-          //console.log(JSON.stringify((el.enero != null && el.enero.cargo) ? el.enero.cargo : 0));
-        }
-        //el.porcentaje_enero = 
-    },  
+
+      for (let i = 0; i < this.listaCargos.length; i++) {
+        let el = this.listaCargos[i];
+        this.sumasMeses.enero += this.obtenerValorCargo(el.enero);
+        this.sumasMeses.febrero += this.obtenerValorCargo(el.febrero);
+        this.sumasMeses.marzo += this.obtenerValorCargo(el.marzo);
+        this.sumasMeses.abril += this.obtenerValorCargo(el.abril);
+        this.sumasMeses.mayo += this.obtenerValorCargo(el.mayo);
+        this.sumasMeses.junio += this.obtenerValorCargo(el.junio);
+        this.sumasMeses.julio += this.obtenerValorCargo(el.julio);
+        this.sumasMeses.agosto += this.obtenerValorCargo(el.agosto);
+        this.sumasMeses.septiembre += this.obtenerValorCargo(el.septiembre);
+        this.sumasMeses.octubre += this.obtenerValorCargo(el.octubre);
+        this.sumasMeses.noviembre += this.obtenerValorCargo(el.noviembre);
+        this.sumasMeses.diciembre += this.obtenerValorCargo(el.diciembre);
+        //console.log(JSON.stringify((el.enero != null && el.enero.cargo) ? el.enero.cargo : 0));
+      }
+      for (let i = 0; i < this.listaCargos.length; i++) {
+        let el = this.listaCargos[i];
+        el.porcentaje_enero = 
+            this.sumasMeses.enero ?
+            this.formatPrice((this.obtenerValorCargo(el.enero) / this.sumasMeses.enero) * 100):0;
+
+        el.porcentaje_febrero = 
+            this.sumasMeses.febrero ?
+            this.formatPrice((this.obtenerValorCargo(el.febrero) / this.sumasMeses.febrero) * 100):0;
+        el.porcentaje_marzo = 
+          this.sumasMeses.marzo ?
+          this.formatPrice((this.obtenerValorCargo(el.marzo) / this.sumasMeses.marzo) * 100):0;
+        el.porcentaje_abril = 
+            this.sumasMeses.abril ?
+            this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.abril) * 100):0;
+        el.porcentaje_mayo = 
+            this.sumasMeses.mayo ?
+             this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.mayo) * 100):0;
+        el.porcentaje_junio = 
+          this.sumasMeses.junio ?
+          this.formatPrice((this.obtenerValorCargo(el.junio) / this.sumasMeses.junio) * 100):0;
+        el.porcentaje_julio = 
+        this.sumasMeses.julio ?
+          this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.julio) * 100):0;
+        el.porcentaje_agosto =
+          this.sumasMeses.agosto ?
+         this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.agosto) * 100):0;
+        el.porcentaje_septiembre = 
+         this.sumasMeses.septiembre ?
+        this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.septiembre) * 100):0;
+        el.porcentaje_octubre =
+        this.sumasMeses.octubre ? 
+         this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.octubre) * 100):0;
+        el.porcentaje_noviembre =
+          this.sumasMeses.noviembre ? 
+         this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.noviembre) * 100):0;
+        el.porcentaje_diciembre =
+          this.sumasMeses.diciembre ?
+         this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.diciembre) * 100):0;
+      }
+
+
+
+    },
     onRowClick(params) {
       console.log(JSON.stringify(params));
       this.pago_seleccionado = params.row;

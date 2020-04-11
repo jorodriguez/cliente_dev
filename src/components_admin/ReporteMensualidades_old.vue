@@ -1,27 +1,29 @@
 <template>
-  <div>
+  <div>    
     <div class="card">
       <div class="card-body">
         <div class="row mb-3">
           <div v-for="row in listaSucursales" :key="row.id" class="col-xl-3 col-sm-4 py-2 mx-auto">
-            <SucursalCard
-              @click="verListaMensualidadesFacturadas(row)"
-              :class_color="row.class_color"
-              titulo
-              :nombre="row.nombre"
-              :foto="row.foto"
-              icono_etiqueta
-              etiqueta="Mensualidades"
-              descripcion
+
+            <SucursalCard 
+                @click="verListaMensualidadesFacturadas(row)"
+                :class_color="row.class_color"
+                titulo=""
+                :nombre="row.nombre"
+                :foto="row.foto"
+                icono_etiqueta=""
+                etiqueta="Mensualidades"
+                descripcion=""
             />
+           
           </div>
         </div>
         <h5 class="text-muted">Mensualidades</h5>
         <h2>{{sucursal_seleccionada.nombre}}</h2>
         <h2>{{anio_seleccionado != null ? ('('+anio_seleccionado+')'):''}}</h2>
-        <div class="d-flex flex-row-reverse d-highlight">
+         <div class="d-flex flex-row-reverse d-highlight">
           <div class="bd-highlight">
-            <div class="form-group">
+            <div class="form-group">              
               <select
                 id="filtroAnios"
                 v-model="anio_seleccionado"
@@ -38,35 +40,12 @@
             </div>
           </div>
         </div>
+        
+        <button @click="calcularOperaciones()">
+          Calcular
+        </button>
 
-        <table border="1">
-          <th>Enero</th>
-          <th>Febrero</th>
-          <th>Marzo</th>
-          <th>Abril</th>
-          <th>Mayo</th>
-          <th>Junio</th>
-          <th>Julio</th>
-          <th>Agosto</th>
-          <th>Septiembre</th>
-          <th>Octubre</th>
-          <th>Noviembre</th>
-          <th>Diciembre</th>
-          <tr>
-            <td>{{formatPrice(sumasMeses.enero)}}</td>
-            <td>{{formatPrice(sumasMeses.febrero)}}</td>
-            <td>{{formatPrice(sumasMeses.marzo)}}</td>
-            <td>{{formatPrice(sumasMeses.abril)}}</td>
-            <td>{{formatPrice(sumasMeses.mayo)}}</td>
-            <td>{{formatPrice(sumasMeses.junio)}}</td>
-            <td>{{formatPrice(sumasMeses.julio)}}</td>
-            <td>{{formatPrice(sumasMeses.agosto)}}</td>
-            <td>{{formatPrice(sumasMeses.septiembre)}}</td>
-            <td>{{formatPrice(sumasMeses.octubre)}}</td>
-            <td>{{formatPrice(sumasMeses.noviembre)}}</td>
-            <td>{{formatPrice(sumasMeses.diciembre)}}</td>
-          </tr>
-        </table>
+        {{sumasMeses}}
 
         <div class="row">
           <div class="col-md-10"></div>
@@ -82,6 +61,16 @@
               >
                 <i class="fas fa-download" /> XLS
               </download-excel>
+              <download-excel
+                v-if="lista != []"
+                class="btn btn-secondary btn-sm"
+                :data="listaCargos"
+                :fields="columnExport"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.csv'"
+              >
+                <i class="fas fa-download" /> CSV
+              </download-excel>
             </div>
           </div>
         </div>
@@ -92,167 +81,130 @@
           :line-numbers="true"
           @on-search="onSearch"
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
+          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
         >
           <template slot="table-row" slot-scope="props">
+
             <span v-if="props.column.field == 'enero'">
-              <span>{{ obtenerValorCargo(props.row.enero)}}</span>
+              <span>{{props.row.enero != null ? props.row.enero.cargo:0}}</span>
+              <!--<CeldaMesMensualidad
+                :value="props.row.enero"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />-->
             </span>
             <span v-else-if="props.column.field == 'descuento_enero'">
-              <span>{{obtenerValorDescuento(props.row.enero)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.enero != null && props.row.enero.descuento_aplicado) ? props.row.enero.nombre_descuento : ''}}</span>
+              <span>{{props.row.enero != null ? props.row.enero.descuento : ''}}</span>
             </span>
             <span v-else-if="props.column.field == 'importe_enero'">
-              <span>{{props.row.enero != null ? props.row.enero.total_pagado : 0}}</span>
+              <span>{{props.row.enero != null ? props.row.enero.total : 0}}</span>
             </span>
-
+                     
             <span v-else-if="props.column.field == 'febrero'">
-              <span>{{obtenerValorCargo(props.row.febrero)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.febrero"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_febrero'">
-              <span>{{obtenerValorDescuento(props.row.febrero)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.febrero != null && props.row.febrero.descuento_aplicado) ? props.row.febrero.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_febrero'">
-              <span>{{props.row.febrero != null ? props.row.febrero.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'marzo'">
-              <span>{{obtenerValorCargo(props.row.marzo)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.marzo"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_marzo'">
-              <span>{{obtenerValorDescuento(props.row.marzo)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.marzo != null && props.row.marzo.descuento_aplicado) ? props.row.marzo.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_marzo'">
-              <span>{{props.row.marzo != null ? props.row.marzo.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'abril'">
-              <span>{{obtenerValorCargo(props.row.abril)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.abril"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_abril'">
-              <span>{{obtenerValorDescuento(props.row.abril)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.abril != null && props.row.abril.descuento_aplicado) ? props.row.abril.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_abril'">
-              <span>{{props.row.abril != null ? props.row.abril.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'mayo'">
-              <span>{{obtenerValorCargo(props.row.mayo)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.mayo"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_mayo'">
-              <span>{{obtenerValorDescuento(props.row.mayo)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.mayo != null && props.row.mayo.descuento_aplicado) ? props.row.mayo.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_mayo'">
-              <span>{{props.row.mayo != null ? props.row.mayo.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'junio'">
-              <span>{{obtenerValorCargo(props.row.junio)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.junio"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_junio'">
-              <span>{{obtenerValorDescuento(props.row.junio)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.junio != null && props.row.junio.descuento_aplicado) ? props.row.junio.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_junio'">
-              <span>{{props.row.junio != null ? props.row.junio.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'julio'">
-              <span>{{obtenerValorCargo(props.row.julio)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.julio"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_julio'">
-              <span>{{obtenerValorDescuento(props.row.julio)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.julio != null && props.row.julio.descuento_aplicado) ? props.row.julio.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_julio'">
-              <span>{{props.row.julio != null ? props.row.julio.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'agosto'">
-              <span>{{obtenerValorCargo(props.row.agosto)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.agosto"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_agosto'">
-              <span>{{obtenerValorDescuento(props.row.agosto)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.agosto != null && props.row.agosto.descuento_aplicado) ? props.row.agosto.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_agosto'">
-              <span>{{props.row.agosto != null ? props.row.agosto.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'septiembre'">
-              <span>{{obtenerValorCargo(props.row.septiembre)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.septiembre"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_septiembre'">
-              <span>{{obtenerValorDescuento(props.row.septiembre)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.septiembre != null && props.row.septiembre.descuento_aplicado) ? props.row.septiembre.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_septiembre'">
-              <span>{{props.row.septiembre != null ? props.row.septiembre.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'octubre'">
-              <span>{{obtenerValorCargo(props.row.octubre)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.octubre"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_octubre'">
-              <span>{{obtenerValorDescuento(props.row.octubre)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.octubre != null && props.row.octubre.descuento_aplicado) ? props.row.octubre.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_octubre'">
-              <span>{{props.row.octubre != null ? props.row.octubre.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'noviembre'">
-              <span>{{obtenerValorCargo(props.row.noviembre)}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.noviembre"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
-            <span v-else-if="props.column.field == 'descuento_noviembre'">
-              <span>{{obtenerValorDescuento(props.row.noviembre)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.noviembre != null && props.row.noviembre.descuento_aplicado) ? props.row.noviembre.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_noviembre'">
-              <span>{{props.row.noviembre != null ? props.row.noviembre.total_pagado : 0}}</span>
-            </span>
-
             <span v-else-if="props.column.field == 'diciembre'">
-              <span>{{obtenerValorCargo(props.row.noviembre)}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'descuento_diciembre'">
-              <span>{{obtenerValorDescuento(props.row.diciembre)}}</span>
-              <span
-                class="text-primary small"
-              >{{(props.row.diciembre != null && props.row.diciembre.descuento_aplicado) ? props.row.diciembre.nombre_descuento : ''}}</span>
-            </span>
-            <span v-else-if="props.column.field == 'importe_diciembre'">
-              <span>{{props.row.diciembre != null ? props.row.diciembre.total_pagado : 0}}</span>
+              <CeldaMesMensualidad
+                :value="props.row.diciembre"
+                :mostrar_mes="mostrar_mes"
+                :mostrar_monto="mostrar_monto"
+                :mostrar_pagado="mostrar_pagado"
+                :mostrar_adeuda="mostrar_adeuda"
+              />
             </span>
 
             <span v-else-if="props.column.field == 'alumno'">
-              <span>{{ props.row.alumno }}</span>
+              <span>{{ props.row.alumno }} </span>
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
@@ -428,5 +380,5 @@
   </div>
 </template>
 
-<script src="../controller/ReporteMensualidadesController.js" >
+<!--<script src="../controller/ReporteMensualidadesController.js" >-->
 </script>
