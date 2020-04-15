@@ -19,7 +19,7 @@
         <h5 class="text-muted">Mensualidades</h5>
         <h2>{{sucursal_seleccionada.nombre}}</h2>
         <h2>{{anio_seleccionado != null ? ('('+anio_seleccionado+')'):''}}</h2>
-  <Loader :loading="isLoading" :mini="false" />        
+        <Loader :loading="isLoading" :mini="false" />
 
         <div class="d-flex flex-row-reverse d-highlight">
           <div class="bd-highlight">
@@ -39,8 +39,88 @@
               </select>
             </div>
           </div>
-        </div>            
-         <div class="row">
+        </div>
+
+        <div style="overflow-x:auto;">
+          <div class="row mx-auto">
+            <table border="1" style="width:100%;border-color:#8D8D8D;">
+              <th></th>
+              <th>Enero</th>
+              <th>Febrero</th>
+              <th>Marzo</th>
+              <th>Abril</th>
+              <th>Mayo</th>
+              <th>Junio</th>
+              <th>Julio</th>
+              <th>Agosto</th>
+              <th>Septiembre</th>
+              <th>Octubre</th>
+              <th>Noviembre</th>
+              <th>Diciembre</th>
+              <tr>
+                <td>Mensualidades</td>
+                <td>{{formatPrice(sumasMeses.enero)}}</td>
+                <td>{{formatPrice(sumasMeses.febrero)}}</td>
+                <td>{{formatPrice(sumasMeses.marzo)}}</td>
+                <td>{{formatPrice(sumasMeses.abril)}}</td>
+                <td>{{formatPrice(sumasMeses.mayo)}}</td>
+                <td>{{formatPrice(sumasMeses.junio)}}</td>
+                <td>{{formatPrice(sumasMeses.julio)}}</td>
+                <td>{{formatPrice(sumasMeses.agosto)}}</td>
+                <td>{{formatPrice(sumasMeses.septiembre)}}</td>
+                <td>{{formatPrice(sumasMeses.octubre)}}</td>
+                <td>{{formatPrice(sumasMeses.noviembre)}}</td>
+                <td>{{formatPrice(sumasMeses.diciembre)}}</td>
+              </tr>
+               <tr>
+                <td>Descuentos</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.enero)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.febrero)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.marzo)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.abril)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.mayo)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.junio)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.julio)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.agosto)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.septiembre)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.octubre)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.noviembre)}}</td>
+                <td>{{formatPrice(sumaTotalDescuentosMeses.diciembre)}}</td>
+              </tr>
+              <tr>
+                <td>Pagado</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.enero)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.febrero)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.marzo)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.abril)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.mayo)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.junio)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.julio)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.agosto)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.septiembre)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.octubre)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.noviembre)}}</td>
+                <td>{{formatPrice(sumaTotalPagadoMeses.diciembre)}}</td>
+              </tr>
+              <tr>
+                <td>Pendiente</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.enero - sumaTotalDescuentosMeses.enero) - sumaTotalPagadoMeses.enero )}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.febrero - sumaTotalDescuentosMeses.febrero) - sumaTotalPagadoMeses.febrero)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.marzo -sumaTotalDescuentosMeses.marzo) - sumaTotalPagadoMeses.marzo)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.abril - sumaTotalDescuentosMeses.abril) - sumaTotalPagadoMeses.abril)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.mayo - sumaTotalDescuentosMeses.mayo) - sumaTotalPagadoMeses.mayo)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.junio - sumaTotalDescuentosMeses.junio) - sumaTotalPagadoMeses.junio)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.julio - sumaTotalDescuentosMeses.agosto) - sumaTotalPagadoMeses.julio)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.agosto - sumaTotalDescuentosMeses.septiembre) - sumaTotalPagadoMeses.agosto)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.septiembre - sumaTotalDescuentosMeses.octubre) - sumaTotalPagadoMeses.septiembre)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.octubre - sumaTotalDescuentosMeses.noviembre ) - sumaTotalPagadoMeses.octubre )}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.noviembre - sumaTotalDescuentosMeses.noviembre)-  sumaTotalPagadoMeses.noviembre)}}</td>
+                <td class="font-weight-bold">{{formatPrice((sumasMeses.diciembre - sumaTotalDescuentosMeses.diciembre) - sumaTotalPagadoMeses.diciembre)}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -56,7 +136,7 @@
               </download-excel>
               <download-excel
                 v-if="listaCargos != []"
-                class="btn btn-secondary  btn-sm"
+                class="btn btn-secondary btn-sm"
                 :data="listaCargos"
                 :fields="columnExport"
                 :worksheet="nombre_libro"
@@ -67,38 +147,6 @@
             </div>
           </div>
         </div>
-      
-      <div class="row mx-auto">
-        <table border="1" style="width:100%">
-          <th>Enero</th>
-          <th>Febrero</th>
-          <th>Marzo</th>
-          <th>Abril</th>
-          <th>Mayo</th>
-          <th>Junio</th>
-          <th>Julio</th>
-          <th>Agosto</th>
-          <th>Septiembre</th>
-          <th>Octubre</th>
-          <th>Noviembre</th>
-          <th>Diciembre</th>
-          <tr>
-            <td>{{formatPrice(sumasMeses.enero)}}</td>
-            <td>{{formatPrice(sumasMeses.febrero)}}</td>
-            <td>{{formatPrice(sumasMeses.marzo)}}</td>
-            <td>{{formatPrice(sumasMeses.abril)}}</td>
-            <td>{{formatPrice(sumasMeses.mayo)}}</td>
-            <td>{{formatPrice(sumasMeses.junio)}}</td>
-            <td>{{formatPrice(sumasMeses.julio)}}</td>
-            <td>{{formatPrice(sumasMeses.agosto)}}</td>
-            <td>{{formatPrice(sumasMeses.septiembre)}}</td>
-            <td>{{formatPrice(sumasMeses.octubre)}}</td>
-            <td>{{formatPrice(sumasMeses.noviembre)}}</td>
-            <td>{{formatPrice(sumasMeses.diciembre)}}</td>
-          </tr>
-        </table>
-        </div>
-     
 
         <vue-good-table
           :columns="columnsCargos"
@@ -444,3 +492,18 @@
 
 <script src="../controller/ReporteMensualidadesController.js" >
 </script>
+
+<style scoped>
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: #f5f5f5;
+}
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+</style>

@@ -63,6 +63,16 @@ export default {
         junio: 0, julio: 0, agosto: 0, septiembre: 0,
         octubre: 0, noviembre: 0, diciembre: 0,
       },
+      sumaTotalPagadoMeses: {
+        enero: 0, febrero: 0, marzo: 0, abril: 0, mayo: 0,
+        junio: 0, julio: 0, agosto: 0, septiembre: 0,
+        octubre: 0, noviembre: 0, diciembre: 0,
+      },
+      sumaTotalDescuentosMeses: {
+        enero: 0, febrero: 0, marzo: 0, abril: 0, mayo: 0,
+        junio: 0, julio: 0, agosto: 0, septiembre: 0,
+        octubre: 0, noviembre: 0, diciembre: 0,
+      },
       columnExport: {
         sucursal: "sucursal",
         alumno: "alumno",
@@ -579,6 +589,11 @@ export default {
         return valor.descuento;
       } else { return 0; }
     },
+    obtenerValorTotalPagado(valor) {
+      if (valor != null && valor.total_pagado) {
+        return valor.total_pagado;
+      } else { return 0; }
+    },
     calcularOperaciones() {
       this.sumasMeses.enero = 0;
       this.sumasMeses.febrero = 0;
@@ -651,8 +666,79 @@ export default {
          this.formatPrice((this.obtenerValorCargo(el.abril) / this.sumasMeses.diciembre) * 100):0;
       }
 
+      //-----
+
+      this.calcularOperacionesTotalPagado();
+      this.calcularOperacionesTotalDescuentosMeses();
+    },
+    calcularOperacionesTotalPagado() {
+      this.sumaTotalPagadoMeses.enero = 0;
+      this.sumaTotalPagadoMeses.febrero = 0;
+      this.sumaTotalPagadoMeses.marzo = 0;
+      this.sumaTotalPagadoMeses.abril = 0;
+      this.sumaTotalPagadoMeses.mayo = 0;
+      this.sumaTotalPagadoMeses.junio = 0;
+      this.sumaTotalPagadoMeses.julio = 0;
+      this.sumaTotalPagadoMeses.agosto = 0;
+      this.sumaTotalPagadoMeses.septiembre = 0;
+      this.sumaTotalPagadoMeses.octubre = 0;
+      this.sumaTotalPagadoMeses.noviembre = 0;
+      this.sumaTotalPagadoMeses.diciembre = 0;
 
 
+      for (let i = 0; i < this.listaCargos.length; i++) {
+        let el = this.listaCargos[i];
+        this.sumaTotalPagadoMeses.enero += this.obtenerValorTotalPagado(el.enero);
+        this.sumaTotalPagadoMeses.febrero += this.obtenerValorTotalPagado(el.febrero);
+        this.sumaTotalPagadoMeses.marzo += this.obtenerValorTotalPagado(el.marzo);
+        this.sumaTotalPagadoMeses.abril += this.obtenerValorTotalPagado(el.abril);
+        this.sumaTotalPagadoMeses.mayo += this.obtenerValorTotalPagado(el.mayo);
+        this.sumaTotalPagadoMeses.junio += this.obtenerValorTotalPagado(el.junio);
+        this.sumaTotalPagadoMeses.julio += this.obtenerValorTotalPagado(el.julio);
+        this.sumaTotalPagadoMeses.agosto += this.obtenerValorTotalPagado(el.agosto);
+        this.sumaTotalPagadoMeses.septiembre += this.obtenerValorTotalPagado(el.septiembre);
+        this.sumaTotalPagadoMeses.octubre += this.obtenerValorTotalPagado(el.octubre);
+        this.sumaTotalPagadoMeses.noviembre += this.obtenerValorTotalPagado(el.noviembre);
+        this.sumaTotalPagadoMeses.diciembre += this.obtenerValorTotalPagado(el.diciembre);       
+      }     
+    },
+    calcularOperacionesTotalDescuentosMeses() {
+      this.sumaTotalDescuentosMeses.enero = 0;
+      this.sumaTotalDescuentosMeses.febrero = 0;
+      this.sumaTotalDescuentosMeses.marzo = 0;
+      this.sumaTotalDescuentosMeses.abril = 0;
+      this.sumaTotalDescuentosMeses.mayo = 0;
+      this.sumaTotalDescuentosMeses.junio = 0;
+      this.sumaTotalDescuentosMeses.julio = 0;
+      this.sumaTotalDescuentosMeses.agosto = 0;
+      this.sumaTotalDescuentosMeses.septiembre = 0;
+      this.sumaTotalDescuentosMeses.octubre = 0;
+      this.sumaTotalDescuentosMeses.noviembre = 0;
+      this.sumaTotalDescuentosMeses.diciembre = 0;
+
+
+      for (let i = 0; i < this.listaCargos.length; i++) {
+        let el = this.listaCargos[i];
+        this.sumaTotalDescuentosMeses.enero += this.obtenerValorDescuento(el.enero);
+        this.sumaTotalDescuentosMeses.febrero += this.obtenerValorDescuento(el.febrero);
+        this.sumaTotalDescuentosMeses.marzo += this.obtenerValorDescuento(el.marzo);
+        this.sumaTotalDescuentosMeses.abril += this.obtenerValorDescuento(el.abril);
+        this.sumaTotalDescuentosMeses.mayo += this.obtenerValorDescuento(el.mayo);
+        this.sumaTotalDescuentosMeses.junio += this.obtenerValorDescuento(el.junio);
+        this.sumaTotalDescuentosMeses.julio += this.obtenerValorDescuento(el.julio);
+        this.sumaTotalDescuentosMeses.agosto += this.obtenerValorDescuento(el.agosto);
+        this.sumaTotalDescuentosMeses.septiembre += this.obtenerValorDescuento(el.septiembre);
+        this.sumaTotalDescuentosMeses.octubre += this.obtenerValorDescuento(el.octubre);
+        this.sumaTotalDescuentosMeses.noviembre += this.obtenerValorDescuento(el.noviembre);
+        this.sumaTotalDescuentosMeses.diciembre += this.obtenerValorDescuento(el.diciembre);       
+      }     
+    },
+    filtrarPorMes(concepto,mes){
+      for (let i = 0; i < this.listaCargos.length; i++) {
+        let valor= this.listaCargos[i];
+
+        console.log("--- "+JSON.stringify(valor));
+      }
     },
     onRowClick(params) {
       console.log(JSON.stringify(params));
