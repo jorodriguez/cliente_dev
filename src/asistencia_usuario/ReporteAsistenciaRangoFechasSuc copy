@@ -1,7 +1,7 @@
 <template>
   <div id="reporte-asistencia-miss-rango-fecha">
     <div>
-      <h1>Asistencias y sueldos de Miss</h1>      
+      <h1>Reporte de Asistencias Miss</h1>      
       <small>{{usuarioSesion.nombre_sucursal}}</small> 
       <div class="text-left">
         <router-link to="/AsistenciasUsuarios" class="btn btn-secondary btn-lg">
@@ -61,7 +61,7 @@
 
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'count_dias_asistencia'" class="text-center">
-              <span>{{props.row.count_dias_asistencia}}/{{props.row.dias_laborables}}</span>
+              <span>{{props.row.count_dias_asistencia}}/{{props.row.dias_trabajo}}</span>
             </span>
             <span v-else-if="props.column.field == 'usuario'">
               <button class="btn btn-link" @click="verDetalleUsuario(props.row)">
@@ -73,7 +73,7 @@
                 <span
                   v-if="props.row.count_dias_faltas > 0"
                   class="text-danger font-weight-bold"
-                >{{props.row.count_dias_faltas}} Días faltó (-{{props.row.porcentaje_falta}}%)</span>
+                >{{props.row.count_dias_faltas}}</span>
                 <span v-else>{{props.row.count_dias_faltas}}</span>
               </button>
             </span>
