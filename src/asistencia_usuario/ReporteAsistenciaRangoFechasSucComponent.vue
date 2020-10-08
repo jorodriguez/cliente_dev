@@ -1,5 +1,5 @@
 <template>
-  <div id="reporte-asistencia">    
+  <div id="reporte-asistencia">
     <div class="card">
       <div class="card-body">
         <div v-if="mensaje" class="alert alert-warning">{{mensaje}}</div>
@@ -18,11 +18,11 @@
                 input-class="form-control"
                 @selected="cambiarFechaInicio"
               ></datepicker>
-            </div>            
             </div>
-            <div class="col">
-              <div class="float-right">
-                Fecha inicio
+          </div>
+          <div class="col">
+            <div class="float-right">
+              Fecha inicio
               <datepicker
                 name="fecha_fin"
                 v-model="fecha_fin"
@@ -32,6 +32,8 @@
             </div>
           </div>
         </div>
+    
+
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistencia"
@@ -76,16 +78,15 @@
                 <i
                   :class="props.row.hora_salida != null ? 'fas fa-check':''"
                 ></i>
-              </span>             
+              </span>
             </span>
             <span v-else-if="props.column.field == 'grafica'">
               <!--<GraficaCalendarioAsistencia :idalumno="props.row.id_alumno"></GraficaCalendarioAsistencia >-->
             </span>
-            
+
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
         </vue-good-table>
-       
       </div>
     </div>
   </div>

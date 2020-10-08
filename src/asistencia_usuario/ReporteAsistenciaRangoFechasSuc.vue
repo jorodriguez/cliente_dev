@@ -1,8 +1,8 @@
 <template>
   <div id="reporte-asistencia-miss-rango-fecha">
     <div>
-      <h1>Asistencias y sueldos de Miss</h1>      
-      <small>{{usuarioSesion.nombre_sucursal}}</small> 
+      <h1>Asistencias y sueldos de Miss</h1>
+      <small>{{usuarioSesion.nombre_sucursal}}</small>
       <div class="text-left">
         <router-link to="/AsistenciasUsuarios" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
@@ -17,36 +17,49 @@
             <span class="sr-only">Cargando...</span>
           </div>
         </div>
-        <div class="row">
-          <div class="row">
-            <div class="col text-right">
-              <label>Fecha de Inicio</label>
-            </div>
-            <div class="col text-left">
-              <datepicker
-                name="fecha_inicio"
-                v-model="fecha_inicio"
-                input-class="form-control"
-                @selected="cambiarFechaInicio"
-              ></datepicker>
-            </div>
-            <div class="col text-right">
-              <label>Fecha de Fin</label>
-            </div>
-            <div class="col">
-              <datepicker
-                name="fecha_fin"
-                v-model="fecha_fin"
-                input-class="form-control"
-                @selected="cambiarFechaFin"
-              ></datepicker>
-            </div>
-          </div>
 
-          <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-4">            
+            <select
+              v-model="anio_seleccionado"
+              class="form-control"
+              placeholder="Año"
+              v-on:change="cargarFiltroQuincenas()"
+            >
+            <option selected
+                v-bind:value="0"
+                v-bind:key="0"
+            >Año..</option>
+              <option
+                v-for="anio in listaAnios"
+                v-bind:value="anio"
+                v-bind:key="anio.numero_anio"
+              >{{ anio.numero_anio }}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">            
+            <select
+              v-model="quincena_seleccionada"
+              class="form-control"
+              placeholder="Año"
+              v-on:change="cargarFechasQuincena()"
+            >
+              <option selected
+                v-bind:value="{}"
+                v-bind:key="0"
+                >Quincena..</option>
+              <option
+                v-for="quincena in listaQuincenas"
+                v-bind:value="quincena"
+                v-bind:key="quincena.index"
+              >{{quincena.numero_primer_dia_quincena}} al {{quincena.numero_ultimo_dia_quincena}} de {{ quincena.nombre_mes }}</option>
+            </select>
+          </div>
+            <div class="form-group col-md-4">               
             <button class="btn btn-primary" @click="cargarRegistros">Buscar</button>
           </div>
         </div>
+
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistenciaSucursal"
@@ -60,22 +73,50 @@
           </template>
 
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'count_dias_asistencia'" class="text-center">
-              <span>{{props.row.count_dias_asistencia}}/{{props.row.dias_laborables}}</span>
+            <div v-if="props.column.field == 'usuario'">
+              <div class="text-left">
+                <span class="h3 pointer" @click="verDetalleUsuario(props.row)">{{props.row.usuario}}</span>
+                <p>
+                  Horario:
+                  <strong>{{props.row.hora_entrada}} a {{props.row.hora_salida}}</strong>
+                </p>
+                <span v-if="props.row.count_dias_faltas > 0" class="text-danger">
+                  <i class="far fa-hand-point-right"></i>
+                  <strong>{{props.row.count_dias_faltas}}</strong> de
+                  <strong>{{props.row.dias_laborables}}</strong>
+                  <span v-if="props.row.count_dias_faltas > 1">días</span>
+                  <span v-else>día</span>
+                  faltó (-{{props.row.porcentaje_falta}}%)
+                </span>
+                <span v-else>
+                  <i class="far fa-thumbs-up"></i> 100% asistencia
+                </span>
+                <p
+                  class="text-danger"
+                  v-if="(props.row.count_checo_entrada-props.row.count_checo_salida) > 0"
+                >
+                  <i class="far fa-hand-point-right"></i>
+                  <span
+                    class="font-weight-bold"
+                  >{{props.row.count_checo_entrada-props.row.count_checo_salida}}</span>
+                  <span v-if="(props.row.count_checo_entrada-props.row.count_checo_salida) > 1">días</span>
+                  <span v-else>día</span> no registró salida
+                </p>
+              </div>
+              <p
+                class="text-primary pointer"
+                @click="verDetalleUsuario(props.row)"
+              >Ver detalle de asistencia</p>
+            </div>
+            <span v-else-if="props.column.field == 'sueldo_base_quincenal'">
+              <span>
+                <strong>${{props.row.sueldo_base_quincenal}}</strong>
+              </span>
             </span>
-            <span v-else-if="props.column.field == 'usuario'">
-              <button class="btn btn-link" @click="verDetalleUsuario(props.row)">
-                <span>{{props.row.usuario}}</span>
-              </button>
-            </span>
-            <span v-else-if="props.column.field == 'count_dias_faltas'">
-              <button class="btn btn-link" @click="verDetalleUsuario(props.row)">
-                <span
-                  v-if="props.row.count_dias_faltas > 0"
-                  class="text-danger font-weight-bold"
-                >{{props.row.count_dias_faltas}} Días faltó (-{{props.row.porcentaje_falta}}%)</span>
-                <span v-else>{{props.row.count_dias_faltas}}</span>
-              </button>
+            <span v-else-if="props.column.field == 'pago_sueldo_quincenal'">
+              <span class="text-primary">
+                <strong>${{props.row.pago_sueldo_quincenal}}</strong>
+              </span>
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
@@ -87,19 +128,54 @@
       <div slot="header">Registro de asistencias</div>
       <div slot="content">
         <div class="container">
-          <table class="table border" v-if="usuario_seleccionado != null">
+          <table class="table border text-left" v-if="usuario_seleccionado != null">
             <tr>
               <td>
-                <strong>{{usuario_seleccionado.usuario}}</strong>
+                <span>
+                  <strong>{{usuario_seleccionado.usuario}}</strong>
+                </span>
               </td>
               <td>
-                Horario de Entrada :
-                <strong>{{usuario_seleccionado.hora_entrada}}</strong>
+                Horario :
+                <strong>{{usuario_seleccionado.hora_entrada}} a {{usuario_seleccionado.hora_salida}}</strong>
               </td>
               <td>
-                Horario de Salida :
-                <strong>{{usuario_seleccionado.hora_salida}}</strong>
+                <strong>{{usuario_seleccionado.dias_laborables}}</strong> días Laborables
               </td>
+            </tr>
+            <tr>
+              <td>
+                <span v-if="usuario_seleccionado.count_dias_faltas > 0" class="text-danger">
+                  <span>
+                    <i class="far fa-hand-point-right"></i>
+                    {{usuario_seleccionado.count_dias_faltas}}
+                    <span
+                      v-if="usuario_seleccionado.count_dias_faltas > 1"
+                    >días</span>
+                    <span v-else>día</span>
+                    faltó (-{{usuario_seleccionado.porcentaje_falta}}%)
+                  </span>
+                </span>
+                <span v-else>
+                  <i class="far fa-thumbs-up"></i> 100% asistencia
+                </span>
+              </td>
+              <td>
+                <span
+                  class="text-danger"
+                  v-if="usuario_seleccionado.count_checo_entrada != null && (usuario_seleccionado.count_checo_entrada-usuario_seleccionado.count_checo_salida) > 0"
+                >
+                  <i class="far fa-hand-point-right"></i>
+                  <span
+                    class="font-weight-bold"
+                  >{{usuario_seleccionado.count_checo_entrada-usuario_seleccionado.count_checo_salida}}</span>
+                  <span
+                    v-if="(usuario_seleccionado.count_checo_entrada-usuario_seleccionado.count_checo_salida) > 1"
+                  >días</span>
+                  <span v-else>día</span> no registró salida
+                </span>
+              </td>
+              <td></td>
             </tr>
           </table>
 
@@ -117,16 +193,18 @@
 
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'fecha_rango'">
-                <span class="badge badge-pill badge-secondary" v-if="props.row.dia_asueto">Asueto</span>
-                <span>{{props.row.fecha_rango}}</span>                
+                <span>{{props.row.fecha_rango}}</span>
               </span>
               <span v-else-if="props.column.field == 'hora_entrada'">
                 <span>{{props.row.hora_entrada}}</span>
-                <span class="badge badge-danger" v-if="props.row.falta">No Asistió</span>
+                <span
+                  class="badge badge-danger"
+                  v-if="props.row.falta && !props.row.dia_asueto"
+                >No Asistió</span>
+                <span class="badge badge-pill badge-secondary" v-if="props.row.dia_asueto">Asueto</span>
               </span>
-               <span v-else-if="props.column.field == 'comentario_salida'">
-                 <p class="text-justify"> {{props.row.comentario_salida}}</p>
-                                
+              <span v-else-if="props.column.field == 'comentario_salida'">
+                <p class="text-justify">{{props.row.comentario_salida}}</p>
               </span>
 
               <span v-else>{{props.formattedRow[props.column.field]}}</span>
@@ -141,3 +219,9 @@
 
 <script src="../asistencia_usuario/ReporteAsistenciaRangoFechasSucController.js" >
 </script>
+
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
+</style>

@@ -95,6 +95,8 @@ const URL = {
     ASISTENCIA_USUARIO_SALIDA : ASISTENCIA_USUARIO_BASE + '/salida', // parametro en body
     ASISTENCIA_USUARIO_REPORTE_SUC_RANGO_FECHA : ASISTENCIA_USUARIO_BASE + '/reporte_mes/', // id_sucursal,fecha_inicio,fecha_fin
     ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA : ASISTENCIA_USUARIO_BASE + '/usuario/', // id_usuario,fecha_inicio,fecha_fin
+    ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS : ASISTENCIA_USUARIO_BASE + '/filtros_anios', // co_empresa
+    ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS : ASISTENCIA_USUARIO_BASE + '/filtros_quincenas', // co_empresa,anio
 
     BALANCE_BASE : BALANCE_BASE,
     SUCURSAL_BASE : SUCURSAL_BASE,

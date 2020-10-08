@@ -21,10 +21,14 @@ export default {
     return {
       usuarioSesion: {},
       //sesion: {}, 
+      anio_seleccionado:0,
+      quincena_seleccionada:{},
       fecha_inicio: Date,
       fecha_fin: Date,
       listaAsistenciaSucursal: [],
       listaAsistenciaUsuario: [],
+      listaAnios: [],
+      listaQuincenas: [],
       usuario_seleccionado: null,
       columnas: COLUMNS_TABLE_ASISTENCIA_SUCURSAL,
       columnasUsuario: COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE,
@@ -44,6 +48,7 @@ export default {
       this.fecha_inicio = new Date();
       this.fecha_fin = new Date();
       this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
+      this.cargarFiltroAnios();
     },
     cambiarFechaInicio() {
       this.$nextTick(() => {
@@ -72,7 +77,7 @@ export default {
         URL.ASISTENCIA_USUARIO_REPORTE_SUC_RANGO_FECHA + this.usuarioSesion.co_sucursal + "/" + this.fecha_inicio + "/" + this.fecha_fin,
 
         (result) => {
-          console.log("Consulta " + result.data);
+          console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null) {
             this.listaAsistenciaSucursal = result.data;
           }
@@ -92,6 +97,59 @@ export default {
           }
           this.loading = false;
         });
+    },
+    cargarFiltroAnios(){
+      console.log(" cargarFiltroAnios" +`${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS}/${this.usuarioSesion.id_empresa}`);
+      
+      this.get(
+      `${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS}/${this.usuarioSesion.id_empresa}`,
+        (result) => {
+          console.log("Consulta " + JSON.stringify(result.data));
+          if (result.data != null) {
+            this.listaAnios = result.data;
+          }
+          this.loading = false;
+        });
+    },
+    cargarFiltroQuincenas(){
+      console.log(" cargarFiltroQuincenas" +`${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS}/${this.usuarioSesion.id_empresa}/${this.anio_seleccionado}`);
+      this.listaQuincenas = [];
+      this.get(
+        `${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS}/${this.usuarioSesion.id_empresa}/${this.anio_seleccionado.numero_anio}`,
+        (result) => {
+          console.log("Consulta " + JSON.stringify(result.data));
+          if (result.data != null) {
+            let ind = 1;
+            let lista = result.data;
+            let thus=this;
+            lista.forEach(function(item) {              
+              thus.listaQuincenas.push({  index:(ind++),
+                                          numero_quincena:1,
+                                          nombre_mes:item.nombre_mes,
+                                          primer_dia_quincencena:item.primer_dia_mes, 
+                                          ultimo_dia_quincencena:item.quinceavo_dia_mes,
+                                          numero_primer_dia_quincena:item.numero_primer_dia_mes,                                          
+                                          numero_ultimo_dia_quincena:item.numero_quinceavo_dia_mes
+                                        });
+              thus.listaQuincenas.push({  index:(ind++),
+                                          numero_quincena:2,
+                                          nombre_mes:item.nombre_mes,
+                                          primer_dia_quincencena:item.quinceavo_dia_mes, 
+                                          ultimo_dia_quincencena:item.ultimo_dia_mes,
+                                          numero_primer_dia_quincena:item.numero_quinceavo_dia_mes,                                          
+                                          numero_ultimo_dia_quincena:item.numero_ultimo_dia_mes
+                                        });
+            });            
+          }
+          this.loading = false;
+        });
+    },
+    cargarFechasQuincena(){
+      console.log("Seleccion de fechas "+JSON.stringify(this.quincena_seleccionada));
+      if(quincena_seleccionada != {}){
+        this.fecha_inicio =  this.quincena_seleccionada.primer_dia_quincencena;
+        this.fecha_fin =  this.quincena_seleccionada.ultimo_dia_quincencena;
+      }        
     }
   }
 };
