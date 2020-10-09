@@ -1,26 +1,36 @@
 <template>
-  <span id="administracion">
-    <div class="card">
-      <div class="card-body">
-        <div class="row mb-4">
-          <Card
-            titulo="Administrar"
-            sub_titulo="Usuarios"
-            clase_icono="fas fa-user"
-            clase_color="icon icon-shape bg-white rounded-circle shadow"
-            clase_fondo="bg-gradient-info pointer"
-            icono_etiqueta="fa fa-cog"
-            :etiqueta="usuarioSesion.nombre_sucursal"
-            descripcion
-            @click="irAdministrarUsuario()"
-          ></Card>
-          <!--<router-link to="/CatalogoUsuario" class="nav-link">
-        <i class="fa fa-cash-register text-blue"></i> Usuarios
-          </router-link>-->
-        </div>
+  <div>
+    <h1>Administración</h1>
+
+    <div class="row mt-1">
+      <div class="col-4">
+        <Card
+          titulo="Catalogo"
+          sub_titulo="Usuarios"
+          clase_icono="fas fa-user"
+          clase_color="icon icon-shape bg-white rounded-circle shadow"
+          clase_fondo="bg-primary pointer"
+          icono_etiqueta="fa fa-cog"
+          :etiqueta="usuarioSesion.nombre_sucursal"
+          descripcion
+          @click="irAdministrarUsuario()"
+        ></Card>
+      </div>
+      <div class="col-4">
+        <Card
+          titulo="Asistencias"
+          sub_titulo="Maestras"
+          clase_icono="fas fa-calendar-check"
+          clase_color="icon text-white  shadow"
+          clase_fondo="bg-primary pointer"
+          icono_etiqueta="fa fa-calendar"
+          :etiqueta="usuarioSesion.nombre_sucursal"
+          descripcion
+          @click="irReporteSueldos()"
+        ></Card>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -45,6 +55,9 @@ export default {
   methods: {
     irAdministrarUsuario() {
       this.$router.push({ name: "CatalogoUsuario" });
+    },
+    irReporteSueldos() {
+      this.$router.push({ name: "AsistenciasUsuarioSucursal" });
     }
   }
 };

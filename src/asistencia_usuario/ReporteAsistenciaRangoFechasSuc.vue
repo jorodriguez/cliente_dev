@@ -3,11 +3,11 @@
     <div>
       <h1>Asistencias y sueldos de Miss</h1>
       <small>{{usuarioSesion.nombre_sucursal}}</small>
-      <div class="text-left">
+      <!--<div class="text-left">
         <router-link to="/AsistenciasUsuarios" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-      </div>
+      </div>-->
     </div>
     <div class="card">
       <div class="card-body">
@@ -19,17 +19,14 @@
         </div>
 
         <div class="form-row">
-          <div class="form-group col-md-4">            
+          <div class="form-group col-md-4">
             <select
               v-model="anio_seleccionado"
               class="form-control"
               placeholder="Año"
               v-on:change="cargarFiltroQuincenas()"
             >
-            <option selected
-                v-bind:value="0"
-                v-bind:key="0"
-            >Año..</option>
+              <option selected v-bind:value="0" v-bind:key="0">Año..</option>
               <option
                 v-for="anio in listaAnios"
                 v-bind:value="anio"
@@ -37,17 +34,14 @@
               >{{ anio.numero_anio }}</option>
             </select>
           </div>
-          <div class="form-group col-md-4">            
+          <div class="form-group col-md-4">
             <select
               v-model="quincena_seleccionada"
               class="form-control"
               placeholder="Año"
               v-on:change="cargarFechasQuincena()"
             >
-              <option selected
-                v-bind:value="{}"
-                v-bind:key="0"
-                >Quincena..</option>
+              <option selected v-bind:value="{}" v-bind:key="0">Quincena..</option>
               <option
                 v-for="quincena in listaQuincenas"
                 v-bind:value="quincena"
@@ -55,11 +49,153 @@
               >{{quincena.numero_primer_dia_quincena}} al {{quincena.numero_ultimo_dia_quincena}} de {{ quincena.nombre_mes }}</option>
             </select>
           </div>
-            <div class="form-group col-md-4">               
-            <button class="btn btn-primary" @click="cargarRegistros">Buscar</button>
+          <div class="form-group col-md-4">
+            <button
+              class="btn btn-primary"
+              :disabled="quincena_seleccionada == {} && anio == 0"
+              @click="cargarRegistros"
+            >Buscar</button>
           </div>
         </div>
 
+        <span v-for="row in listaAsistenciaSucursal" :key="row.id">
+          <div class="card text-left m-2 border border-info">
+            <div class="row p-3">
+              <div class="col-4">
+                <h2><span class="pointer" @click="verDetalleUsuario(row)">{{row.usuario}}</span></h2>
+              </div>
+              <div class="col-4">
+                <span>                                                            
+                    <!--<strong v-if="quincena_seleccionada != {}">{{quincena_seleccionada.numero_primer_dia_quincena}} al {{quincena_seleccionada.numero_ultimo_dia_quincena}} de {{quincena.nombre_mes}}</strong>-->
+                    <strong>{{row.hora_entrada}} a {{row.hora_salida}}</strong>
+                    <div class="text-left">                      
+                      <span v-if="row.count_dias_faltas > 0" class="text-danger">
+                        <i class="far fa-hand-point-right"></i>
+                        <strong>{{row.count_dias_faltas}}</strong> de
+                        <strong>{{row.dias_laborables}}</strong>
+                        <span v-if="row.count_dias_faltas > 1">días</span>
+                        <span v-else>día</span>
+                        faltó (-{{row.porcentaje_falta}}%)
+                      </span>
+                      <span v-else>
+                        <i class="far fa-thumbs-up"></i> 100% asistencia
+                      </span>
+                      <p
+                        class="text-danger"
+                        v-if="(row.count_checo_entrada-row.count_checo_salida) > 0"
+                      >
+                        <i class="far fa-hand-point-right"></i>
+                        <span
+                          class="font-weight-bold"
+                        >{{row.count_checo_entrada-row.count_checo_salida}}</span>
+                        <span v-if="(row.count_checo_entrada-row.count_checo_salida) > 1">días</span>
+                        <span v-else>día</span> no registró salida
+                      </p>
+                      <p  class="text-primary pointer"
+                        @click="verDetalleUsuario(row)"
+                        >Más detalle</p>
+                    </div>
+
+                  </span>
+              </div>
+              <div class="col-4 d-flex justify-content-end">                   
+                    <table>
+                      <tr>
+                        <td>Quincena</td>
+                        <td>
+                          <strong>${{row.sueldo_base_quincenal}}</strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="text-danger" v-if="row.count_dias_faltas > 0" >
+                            -{{row.count_dias_faltas}} días ({{row.porcentaje_falta}}%)
+                          </span>
+                        </td>
+                        <td> 
+                            <span class="text-danger" v-if="row.count_dias_faltas > 0" > 
+                            ${{row.sueldo_base_quincenal-row.pago_sueldo_quincenal}}
+                            </span>
+                        </td>
+                      </tr>
+                      <!--<tr>
+                        <td><h2>Total</h2> </td>
+                        <td><h2>${{row.pago_sueldo_quincenal}}</h2></td>
+                      </tr>-->
+                    </table>                    
+                  
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+               <h2>Total : ${{row.pago_sueldo_quincenal}}</h2>
+            </div>
+          </div>
+        </span>
+
+        <!--<span v-for="row in listaAsistenciaSucursal" :key="row.id">
+          <div class="card text-left">            
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h2 class="mb-1">
+                    <span class="pointer" @click="verDetalleUsuario(row)">{{row.usuario}}</span>
+                  </h2>
+                  <span>
+                    Horario:
+                    <strong>{{row.hora_entrada}} a {{row.hora_salida}}</strong>
+                    <div class="text-left">
+                      <span v-if="row.count_dias_faltas > 0" class="text-danger">
+                        <i class="far fa-hand-point-right"></i>
+                        <strong>{{row.count_dias_faltas}}</strong> de
+                        <strong>{{row.dias_laborables}}</strong>
+                        <span v-if="row.count_dias_faltas > 1">días</span>
+                        <span v-else>día</span>
+                        faltó (-{{row.porcentaje_falta}}%)
+                      </span>
+                      <span v-else>
+                        <i class="far fa-thumbs-up"></i> 100% asistencia
+                      </span>
+                      <p
+                        class="text-danger"
+                        v-if="(row.count_checo_entrada-row.count_checo_salida) > 0"
+                      >
+                        <i class="far fa-hand-point-right"></i>
+                        <span
+                          class="font-weight-bold"
+                        >{{row.count_checo_entrada-row.count_checo_salida}}</span>
+                        <span v-if="(row.count_checo_entrada-row.count_checo_salida) > 1">días</span>
+                        <span v-else>día</span> no registró salida
+                      </p>
+                    </div>
+                  </span>
+                  <span class="text-primary">
+                    <table>
+                      <tr>
+                        <td>Quincena</td>
+                        <td>
+                          <strong>${{row.sueldo_base_quincenal}}</strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="text-danger" v-if="row.count_dias_faltas > 0">
+                            -{{row.count_dias_faltas}} días ({{row.porcentaje_falta}}%)
+                          </span>
+                        </td>
+                        <td>${{row.sueldo_base_quincenal-row.pago_sueldo_quincenal}}</td>
+                      </tr>
+                      <tr>
+                        <td><h2>Total</h2> </td>
+                        <td><h2>${{row.pago_sueldo_quincenal}}</h2></td>
+                      </tr>
+                    </table>                    
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </span>-->
+<!--
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistenciaSucursal"
@@ -120,7 +256,7 @@
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
-        </vue-good-table>
+        </vue-good-table>-->
       </div>
     </div>
     <!-- popup para detalle de asistencias en el rango de fechas seleccionado -->

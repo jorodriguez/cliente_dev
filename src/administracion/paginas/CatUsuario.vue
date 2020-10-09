@@ -11,12 +11,12 @@
       <div class="col-1">
         <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
       </div>
-      <div class="col-10 text-right">
+      <!--<div class="col-10 text-right">
         <router-link
           to="/AsistenciasUsuarioSucursal"
           class="btn btn-outline-primary btn-lg outline"
         >Reporte de Asistencias</router-link>
-      </div>
+      </div>-->
     </div>   
     <Loader :loading="loader" />
     <br/>

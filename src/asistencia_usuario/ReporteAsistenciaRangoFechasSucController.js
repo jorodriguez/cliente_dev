@@ -9,7 +9,7 @@ import COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE from "../helpers/DatatableConfig
 import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
-import { getUsuarioSesion, token } from '../helpers/Sesion';
+import { getUsuarioSesion,getSesion, token } from '../helpers/Sesion';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
@@ -34,13 +34,13 @@ export default {
       columnasUsuario: COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE,
       TABLE_CONFIG: TABLE_CONFIG,
       mensaje: "",
-      loading: false
+      loading: false,
+      sesion:null
     };
   },
   mounted() {
     console.log("iniciando el componente reporte de asistencia ");   
-    this.usuarioSesion = getUsuarioSesion();
-    
+    this.usuarioSesion = getUsuarioSesion();    
     this.init();
   },
   methods: {
@@ -86,6 +86,13 @@ export default {
     },
     loadFunctionAsistenciaUsuario() {
       console.log(" " + URL.ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA);
+
+      this.listaAsistenciaUsuario = [];
+
+      if(this.quincena_seleccionada == {} && this.anio_seleccionado ==0){
+        return;
+      }
+
       this.loading = true;
       this.get(
         URL.ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA + this.usuario_seleccionado.id + "/" + this.fecha_inicio + "/" + this.fecha_fin,
@@ -114,6 +121,9 @@ export default {
     cargarFiltroQuincenas(){
       console.log(" cargarFiltroQuincenas" +`${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS}/${this.usuarioSesion.id_empresa}/${this.anio_seleccionado}`);
       this.listaQuincenas = [];
+      if(this.anio_seleccionado == 0){
+        return;
+      }
       this.get(
         `${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS}/${this.usuarioSesion.id_empresa}/${this.anio_seleccionado.numero_anio}`,
         (result) => {
@@ -146,7 +156,7 @@ export default {
     },
     cargarFechasQuincena(){
       console.log("Seleccion de fechas "+JSON.stringify(this.quincena_seleccionada));
-      if(quincena_seleccionada != {}){
+      if(this.quincena_seleccionada != {}){
         this.fecha_inicio =  this.quincena_seleccionada.primer_dia_quincencena;
         this.fecha_fin =  this.quincena_seleccionada.ultimo_dia_quincencena;
       }        
