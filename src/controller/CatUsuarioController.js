@@ -12,12 +12,14 @@ import Loader from "../components_utils/Loader";
 import { validarDatosUsuario } from '../helpers/UsuarioValidacion';
 import * as moment from 'moment';
 import CONSTANTES  from '../helpers/Constantes'
+import PopupOperacionesUsuario from '../administracion/paginas/PopupOperacionesUsuario';
+import PopupNuevoUsuario from '../administracion/paginas/PopupNuevoUsuario';
 
 export default {
   name: "cat-usuario",
   mixins: [operacionesApi],
   components: {
-    VueGoodTable, Datepicker, VueTimepicker, Popup, Loader
+    VueGoodTable, Datepicker, VueTimepicker, Popup, Loader,PopupOperacionesUsuario,PopupNuevoUsuario
   },
   data() {
     return {
@@ -87,13 +89,12 @@ export default {
         return;
       }
 
-    //  this.usuario.hora_entrada = moment({hour:this.usuario.hora_entrada.HH,minute:this.usuario.hora_entrada.mm}).format('H:mm');
-     // this.usuario.hora_salida = moment({hour:this.usuario.hora_salida.HH,minute:this.usuario.hora_salida.mm}).format('H:mm'); 
       console.log(`entrada ${this.usuario.hora_entrada} salida ${this.usuario.hora_entrada}`);
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
       this.usuario.genero = this.usuarioSesion.id;
       this.usuario.id_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
-
+      //this.usuario.sueldo_mensual = 0;
+      //this.usuario.sueldo_mensual = 0;
       this.post(URL.USUARIO_BASE,
         this.usuario,
         (result) => {

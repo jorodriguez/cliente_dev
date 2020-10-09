@@ -9,7 +9,8 @@
         </router-link>        
       </div>
       <div class="col-1">
-        <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
+        <!--<button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>-->
+        <PopupNuevoUsuario :metodo_refrescar="init"></PopupNuevoUsuario>
       </div>
       <!--<div class="col-10 text-right">
         <router-link
@@ -36,7 +37,7 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'nombre'">
-              <span class="btn btn-link"   v-on:click="seleccionar(props.row,'EDIT')"> {{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> 
+              <span > {{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> 
               </span>
               </span>
             <span v-else-if="props.column.field == 'botones'">
@@ -49,6 +50,7 @@
                 <i class="fas fa-key"  ></i>
               </button>
               -->
+              <!--
               <button
                 type="button"
                 class="btn btn-primary btn-sm"
@@ -64,7 +66,8 @@
                 v-on:click="seleccionar(props.row,'DELETE')"
               >
                 <i class="fas fa-trash-alt"></i>
-              </button>
+              </button>-->
+              <PopupOperacionesUsuario :usuario_value="props.row" :metodo_refrescar="init"/>
             </span>
             <span v-else>{{props.formattedRow[props.column.field]}}</span>
           </template>
@@ -72,18 +75,18 @@
       </div>
     </div>
 
-
+<!--
     <Popup id="popup_usuario" :show_button_close="false" size="md">
       <div slot="header">Registro de usuario</div>
       <div slot="content">
         <div class="container text-left">
-          <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
+          
           <div class="form-group">
             <label for="nombreInput">
               Nombre
               <span class="text-danger">*</span>
             </label>
-            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
+          
             <input
               id="nombreInput"
               type="text"
@@ -93,21 +96,8 @@
               required
               autofocus
             />
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
           </div>
-          <!--<label>
-            Fecha de entrada
-            <span class="text-danger">*</span>
-          </label>
-          <datepicker
-            name="fecha_entrada"
-            v-model="usuario.fecha_entrada"
-            input-class="form-control"
-            :bootstrap-styling="true"
-            :language="es"
-            required
-          ></datepicker>-->
+        
 
           <div class="form-group">
             <label for="correoInput">
@@ -160,7 +150,7 @@
               ></vue-timepicker>              
             </div>
           </div>
-          <!--</ValidationObserver>-->
+          
         </div>
       </div>
       <div slot="footer">                
@@ -169,9 +159,10 @@
         <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>        
       </div>    
     </Popup>
+    -->
 
     <!-- Add acceso -->
-    <Popup id="popup_acceso" show_button_close="true" size="md">
+  <!--  <Popup id="popup_acceso" show_button_close="true" size="md">
       <div slot="header">Acceso al Sistema</div>
       <div slot="content">
         <div class="container text-left">          
@@ -194,9 +185,6 @@
         </div>
       </div>
       <div slot="footer">
-        <!--<button class="btn btn-primary" @click="guardarAcceso()" v-if="operacion == 'INSERT'">Guardar</button>
-        <button class="btn btn-primary" @click="modificar()" v-if="operacion == 'EDIT'">Modificar</button>
-        -->
       </div>
     </Popup>
 
@@ -229,7 +217,7 @@
         <button class="btn btn-danger" @click="eliminar()">Confirmar Baja</button>        
       </div>
     </Popup>
-
+-->
 
   </div>
 </template>

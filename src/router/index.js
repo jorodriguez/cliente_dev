@@ -19,7 +19,7 @@ import Bienvenido from '@/components/Bienvenido'
 import CatUsuario from '../administracion/paginas/CatUsuario'
 import Administracion from '../administracion/Administracion'
 import Reportes from '../reportes/Reportes'
-import { getUsuarioSesion,getSesion, getToken } from '../helpers/Sesion';
+import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 
 import VueSession from 'vue-session'
 
@@ -29,13 +29,13 @@ Vue.use(VueSession);
 const router = new Router({
   routes: [
     {
-      path: '/', 
+      path: '/',
       beforeEnter(to, from, next) {
         console.log("REVISNADO SESION ");
         const sesion = getSesion();
-        console.log(" SESION "+JSON.stringify(sesion));
+        console.log(" SESION " + JSON.stringify(sesion));
         if (sesion != null && sesion.auth) {
-          console.log("REDIRECCION A "+sesion.paginaPrincipal);
+          console.log("REDIRECCION A " + sesion.paginaPrincipal);
           next({ path: sesion.paginaPrincipal });
         } else {
           next({ name: 'Login' });
@@ -46,25 +46,25 @@ const router = new Router({
     {
       path: '/bienvenido', name: 'Bienvenido', component: Bienvenido, meta: { requiresAuth: true },
       children: [
-        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true } },
-        { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true } },
-        { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true } },
-        { path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true } },
-        { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true } },
-        { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true } },
-        { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true } },
-        { path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia, meta: { requiresAuth: true } },
-        { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true } },
-        { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true } },
-        { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true } },
-        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true } },
-        { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true } },
-        { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true } },
-        
-        { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true } },
-        { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true } },        
-        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true } }
-        
+        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
+        { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
+        { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
+        { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
+        { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true, validar: false } },
+        { path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia, meta: { requiresAuth: true, validar: false } },
+        { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true, validar: false } },
+        { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true, validar: false } },
+        { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true, validar: true } },
+        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: false } },
+        { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
+        { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
+
+        { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true, validar: false } },
+        { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true, validar: false } },
+        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, validar: false } }
+
       ]
     },
     /*{ si se activa no se ve el menu
@@ -103,8 +103,24 @@ router.beforeEach((to, from, next) => {
           next({ name: 'ReporteAdmin' })
         }
       } else {
-        console.log("PASA a URL");
-        next()
+        if (to.matched.some(record => record.meta.validar)) {
+          console.log("#### VALIDAR ### " + JSON.stringify(to.name));
+          let roles = user.opciones_acceso || [];
+          let pasaValidacion = false;
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].ruta == to.name) {
+              pasaValidacion = true;
+            }
+          }
+          if (pasaValidacion) {
+            next();
+          } else {
+            next({ name: 'PaginaPrincipal' });
+          }
+        } else {
+          console.log("PASA a URL");
+          next();
+        }
       }
     }
   } else {

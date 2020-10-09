@@ -85,6 +85,7 @@ const URL = {
     ASISTENCIA_REPORTE_MES_SUCURSAL : ASISTENCIA_BASE + '/reporte_mes_sucursal/', //id_sucursal y numero_mes
     ASISTENCIA_MENSUAL_ALUMNO : ASISTENCIA_BASE + '/mensual/', //id_alumno
     USUARIO_BASE:  USUARIO_BASE,
+    USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario
     
     //Usuari
     //Asistencia Usuarios

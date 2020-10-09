@@ -10,11 +10,12 @@ import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
 import { getUsuarioSesion,getSesion, token } from '../helpers/Sesion';
+import PopupOperacionesUsuario from '@/administracion/paginas/PopupOperacionesUsuario';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
   components: {
-    Datepicker, VueGoodTable, Popup
+    Datepicker, VueGoodTable, Popup,PopupOperacionesUsuario
   },
   mixins: [operacionesApi],
   data() {
@@ -23,6 +24,7 @@ export default {
       //sesion: {}, 
       anio_seleccionado:0,
       quincena_seleccionada:{},
+      quincena_enlistada:{},
       fecha_inicio: Date,
       fecha_fin: Date,
       listaAsistenciaSucursal: [],
@@ -71,6 +73,7 @@ export default {
 
     },
     loadFunctionAsistenciaSuc() {
+      this.quincena_enlistada = this.quincena_seleccionada;
       console.log(" " + URL.ASISTENCIA_USUARIO_REPORTE_SUC_RANGO_FECHA);
       this.loading = true;
       this.get(

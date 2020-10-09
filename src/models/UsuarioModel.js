@@ -16,7 +16,8 @@ export class UsuarioModel {
         this.fechaBaja =  '';
         this.nombreSucursal =  '';
         this.tipoUsuario = '';
-        
+        this.sueldo_mensual = 0;
+        this.sueldo_quincenal = 0;
        /* console.log("En el cos");
         this.id = usuario.id || null;
         this.nombre = usuario.nombre || '';
@@ -54,7 +55,7 @@ export class UsuarioBuilder {
     setFoto(foto) { this.foto = foto; return this; }
     setActivo(activo) { this.activo = activo; return this; }
     setMotivoBaja(motivoBaja) { this.genero = motivoBaja; return this; }
-    setNombreSucursal(nombreSucursal) { this.nombreSucursal = nombreSucursal; return this; }
+    setNombreSucursal(nombreSucursal) { this.nombreSucursal = nombreSucursal; return this; }    
     setTipoUsuario(tipoUsuario) { this.tipoUsuario = tipoUsuario; return this; }
     clear() {
         this.setId(0);
