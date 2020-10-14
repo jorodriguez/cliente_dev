@@ -26,7 +26,7 @@
               placeholder="Año"
               v-on:change="cargarFiltroQuincenas()"
             >
-              <option selected v-bind:value="0" v-bind:key="0">Año..</option>
+              <!--<option selected v-bind:value="0" v-bind:key="0">Año..</option>-->
               <option
                 v-for="anio in listaAnios"
                 v-bind:value="anio"
@@ -41,7 +41,7 @@
               placeholder="Año"
               v-on:change="cargarFechasQuincena()"
             >
-              <option selected v-bind:value="{}" v-bind:key="0">Quincena..</option>
+              <!--<option selected v-bind:value="{}" v-bind:key="0">Quincena..</option>-->
               <option
                 v-for="quincena in listaQuincenas"
                 v-bind:value="quincena"
@@ -73,7 +73,7 @@
                   <!--<strong v-if="quincena_seleccionada != {}">{{quincena_seleccionada.numero_primer_dia_quincena}} al {{quincena_seleccionada.numero_ultimo_dia_quincena}} de {{quincena.nombre_mes}}</strong>-->
                   <strong>{{row.hora_entrada}} a {{row.hora_salida}}</strong>
                   <div class="text-left">
-                    <span v-if="row.count_dias_faltas > 0" class="text-danger">
+                    <span v-if="row.count_dias_faltas > 0" class="text-danger pointer" @click="verDetalleUsuario(row)">
                       <i class="far fa-hand-point-right"></i>
                       <strong>{{row.count_dias_faltas}}</strong> de
                       <strong>{{row.dias_laborables}}</strong>
@@ -85,8 +85,9 @@
                       <i class="far fa-thumbs-up"></i> 100% asistencia
                     </span>
                     <p
-                      class="text-danger"
+                      class="text-danger pointer"
                       v-if="(row.count_checo_entrada-row.count_checo_salida) > 0"
+                      @click="verDetalleUsuario(row)"
                     >
                       <i class="far fa-hand-point-right"></i>
                       <span
@@ -131,7 +132,8 @@
                   <tr>
                     <td>
                       <span
-                        class="text-danger"
+                        class="text-danger pointer"
+                        @click="verDetalleUsuario(row)"
                         v-if="row.count_dias_faltas > 0"
                       >-{{row.count_dias_faltas}} días</span>
                     </td>
@@ -371,7 +373,5 @@
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+
 </style>

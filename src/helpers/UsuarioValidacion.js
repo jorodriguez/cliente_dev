@@ -22,6 +22,13 @@ export const validarDatosUsuario = (usuario) => {
       }
     }
 
+    if (usuario.sueldo_mensual == null 
+              || usuario.sueldo_mensual == undefined 
+              || usuario.sueldo_mensual == '') {      
+        Vue.prototype.$notificacion.error('Escribe el sueldo mensual', 'El sueldo mensual es requerido.');
+        return false;      
+    }
+
     if (usuario.hora_entrada == null || usuario.hora_salida == null
       || usuario.hora_entrada == '' || usuario.hora_salida == '') {
       Vue.prototype.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');

@@ -8,11 +8,11 @@
           <i class="fas fa-arrow-circle-left text-gray"></i>          
         </router-link>
         </div>
-        <div class="col-11 text-right ">
+        <!--<div class="col-11 text-right ">
         <router-link to="/AsistenciasUsuarioSucursal" class="btn btn-primary btn-lg">
           Reporte de Asistencias
         </router-link>
-        </div>        
+        </div>        -->
       
     </div>
     <br />

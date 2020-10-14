@@ -30,7 +30,7 @@
 
        <span v-if="loading" class="spinner-border" role="status" aria-hidden="true"></span> {{loading ? 'Validando..':'Entrar'}}       
       </a> 
-      <small class="text-muted">(vluci-2)</small>
+      <!--<small class="text-muted">()</small>-->
       <br>
       <br>
 

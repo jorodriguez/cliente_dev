@@ -39,16 +39,16 @@
       <tbody v-for="row in listaGastos" :key="row.id">
         <tr>          
           <td>                        
-            <span class="small">{{row.fecha | moment("DD-MMM-YY")}}</span>
+            <span >{{row.fecha_text}}</span>
           </td>
           <td>
-            <button v-on:click="seleccionarGasto(row,'UPDATE')" type="button" class="btn btn-link">
-              <span class="small">{{row.nombre_tipo_gasto}}</span>              
-            </button>
+            <p v-on:click="seleccionarGasto(row,'UPDATE')" class="text-primary pointer">
+              <span>{{row.nombre_tipo_gasto}}</span>              
+            </p>
           </td>
           <td>
             <strong>
-              <span class="small font-weight-bold">{{row.nombre_tipo_pago}}</span>
+              <span class="font-weight-bold">{{row.nombre_tipo_pago}}</span>
             </strong>
           </td>      
           <td>
@@ -56,7 +56,7 @@
           </td>   
           <td>
             <span
-              class="d-inline-block text-truncate small"
+              class="d-inline-block text-truncate "
               style="max-width: 120px;"
               :title="row.observaciones"
             >{{row.observaciones}}</span>

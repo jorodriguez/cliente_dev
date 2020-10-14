@@ -2,7 +2,7 @@
   <span>
     <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
 
-    <Popup :id="'popup_usuario'" :show_button_close="true" size="md">
+    <Popup id="popup_usuario" :show_button_close="true" size="md">
       <div slot="header">Usuario</div>
       <div slot="content">
         <div class="container text-left">
@@ -37,6 +37,21 @@
               class="form-control"
               placeholder="micorreo@ejemplo.com"
             />
+          </div>
+
+           <div class="form-group">
+            <label for="sueldoMensualInput">
+              Sueldo Mensual
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              id="sueldoMensualInput"
+              type="number"
+              v-model="usuario.sueldo_mensual"
+              class="form-control"
+              placeholder="Sueldo mensual"
+              required
+            />             
           </div>
 
           <div class="row">
@@ -162,7 +177,7 @@ export default {
         let respuesta = result.body;
         if (respuesta.estatus) {
           this.metodo_refrescar();
-          $("#popup_usuario_" + this.usuario.id).modal("hide");
+          $("#popup_usuario").modal("hide");
           this.$notificacion.info(
             "Registro de usuario",
             "Se registró el usuario."

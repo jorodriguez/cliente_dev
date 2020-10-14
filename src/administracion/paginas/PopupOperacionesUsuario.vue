@@ -14,7 +14,7 @@
     <button
       type="button"
       class="btn btn-outline-danger btn-sm"
-      title="Eliminar registro"
+      :title="'Eliminar registro de la maestra '"
       v-on:click="seleccionar('DELETE')"
       :disabled="loader_eliminar"
     >
@@ -69,7 +69,8 @@
               type="number"
               v-model="usuario.sueldo_mensual"
               class="form-control"
-              placeholder="00.00"
+              placeholder="Sueldo mensual"
+              required
             />             
           </div>
 

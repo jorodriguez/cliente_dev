@@ -70,7 +70,6 @@ export default {
       this.usuario_seleccionado = item;
       this.loadFunctionAsistenciaUsuario();
       $("#popup_detalle_asistencia").modal("show");
-
     },
     loadFunctionAsistenciaSuc() {
       this.quincena_enlistada = this.quincena_seleccionada;
@@ -117,6 +116,8 @@ export default {
           console.log("Consulta " + JSON.stringify(result.data));
           if (result.data != null) {
             this.listaAnios = result.data;
+            this.anio_seleccionado = this.listaAnios.length ? this.listaAnios[0]:{};     
+            this.cargarFiltroQuincenas();
           }
           this.loading = false;
         });
@@ -154,6 +155,7 @@ export default {
                                         });
             });            
           }
+          this.quincena_seleccionada = this.listaQuincenas.length ? this.listaQuincenas[0]:{};            
           this.loading = false;
         });
     },
@@ -164,5 +166,6 @@ export default {
         this.fecha_fin =  this.quincena_seleccionada.ultimo_dia_quincencena;
       }        
     }
+
   }
 };

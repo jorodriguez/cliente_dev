@@ -43,6 +43,7 @@ export default {
         { label: "Correo", field: "correo" },
         { label: "Hora Entrada", field: "hora_entrada" },
         { label: "Hora Salida", field: "hora_salida" },
+        { label: "Sueldo Mensual", field: "sueldo_mensual" },
         { label: "acceso sistema", field: "acceso_sistema" ,hidden:true},
         { label: "nuevo ingreso", field: "nuevo_ingreso" ,hidden:true},
         { label: "", field: "botones" }

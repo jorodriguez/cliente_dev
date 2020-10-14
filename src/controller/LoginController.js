@@ -1,5 +1,6 @@
 
 import URL from "../helpers/Urls";
+import {BRANCH} from "../helpers/Urls";
 import CONSTANTES from "../helpers/Constantes";
 import {setSession,setToken} from '../helpers/Sesion';
 import {cargarSesion } from './LoginHelper';
@@ -22,6 +23,7 @@ export default {
   mounted() {
     //console.log("iniciando login "+process.env.ROOT_API);
     console.log("URL BASE " + URL.LOGIN);
+    console.log("URL BASE " + BRANCH);
     this.$session.clear();
     this.$root.$emit('LOGOUT', CONSTANTES.LOGOUT);
 
