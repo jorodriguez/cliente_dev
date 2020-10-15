@@ -63,6 +63,7 @@ export default {
       });
     },
     cargarRegistros() {
+      this.cargarFechasQuincena();            
       this.loadFunctionAsistenciaSuc();
     },
     verDetalleUsuario(item) {
@@ -107,7 +108,7 @@ export default {
           this.loading = false;
         });
     },
-    cargarFiltroAnios(){
+   cargarFiltroAnios(){
       console.log(" cargarFiltroAnios" +`${URL.ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS}/${this.usuarioSesion.id_empresa}`);
       
       this.get(
@@ -117,7 +118,7 @@ export default {
           if (result.data != null) {
             this.listaAnios = result.data;
             this.anio_seleccionado = this.listaAnios.length ? this.listaAnios[0]:{};     
-            this.cargarFiltroQuincenas();
+            this.cargarFiltroQuincenas();                        
           }
           this.loading = false;
         });
