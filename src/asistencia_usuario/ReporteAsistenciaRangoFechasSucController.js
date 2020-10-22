@@ -34,7 +34,7 @@ export default {
       usuario_seleccionado: null,
       columnas: COLUMNS_TABLE_ASISTENCIA_SUCURSAL,
       columnasUsuario: COLUMNS_TABLE_ASISTENCIA_USUARIO_DETALLE,
-      TABLE_CONFIG: TABLE_CONFIG,
+      TABLE_CONFIG: {},
       mensaje: "",
       loading: false,
       sesion:null
@@ -43,13 +43,15 @@ export default {
   mounted() {
     console.log("iniciando el componente reporte de asistencia ");   
     this.usuarioSesion = getUsuarioSesion();    
+    this.TABLE_CONFIG = Object.assign({},TABLE_CONFIG);    
+    //this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 20;
+    this.TABLE_CONFIG.PAGINATION_OPTIONS.enabled = false;
     this.init();
   },
   methods: {
     init() {
       this.fecha_inicio = new Date();
-      this.fecha_fin = new Date();
-      this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
+      this.fecha_fin = new Date();      
       this.cargarFiltroAnios();
     },
     cambiarFechaInicio() {
@@ -149,9 +151,9 @@ export default {
               thus.listaQuincenas.push({  index:(ind++),
                                           numero_quincena:2,
                                           nombre_mes:item.nombre_mes,
-                                          primer_dia_quincencena:item.quinceavo_dia_mes, 
+                                          primer_dia_quincencena:item.dieciseisavo_dia_mes, 
                                           ultimo_dia_quincencena:item.ultimo_dia_mes,
-                                          numero_primer_dia_quincena:item.numero_quinceavo_dia_mes,                                          
+                                          numero_primer_dia_quincena:item.numero_dieciseisavo_dia_mes,                                          
                                           numero_ultimo_dia_quincena:item.numero_ultimo_dia_mes
                                         });
             });            
