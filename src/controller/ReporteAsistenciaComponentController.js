@@ -25,8 +25,29 @@ export default {
       columnas:COLUMNS_TABLE_ASISTENCIA,
       TABLE_CONFIG:TABLE_CONFIG,
       mensaje: "",
-      loading:Boolean,
-      loadFunction:null
+      loading:Boolean,      
+      nombre_reporte: "reporteAsistencias.xls",
+      nombre_libro: "libro1",
+      columnasFiltradas:{},
+      columnsExport: {
+        fecha:"fecha",
+        alumno: "nombre_alumno",
+        apellido:"apellido_alumno",        
+        grupo:"nombre_grupo",   
+        entro:"hora_entrada",
+        salio:"hora_salida",  
+        tiempo_dentro:"tiempo_dentro",
+        //tiempo_extra:"tiempo",
+        "Tiempo extra": {
+          field: "tiempo",
+          callback: (value) => {
+            return `${value.includes('-') ? value:''}`;
+          }
+        },
+        horario_entrada:"hora_entra",      
+        horario_sale:"hora_sale"        
+
+      },
     };
   },
   mounted() {
@@ -34,28 +55,30 @@ export default {
     
     this.usuarioSesion = getUsuarioSesion();
     this.fecha = new Date();
-    this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
-
-    this.loadFunction = ()=> {
+    this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;   
+    this.columnasFiltradas = this.columnsExport;
+    this.init();    
+  },
+  methods: {
+    init(){
+      this.nombre_reporte = `Reporte de Asistencias del ${this.fecha}`;
+      this.nombre_libro = `Asistencias`;     
+      this.loadFunction();
+    },
+    loadFunction(){
       console.log("invocando el api "+this.usuarioSesion.co_sucursal+"  "+this.fecha);
       console.log(" "+URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha);
       this.loading = true;
       this.get(
-        URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha,
-        
+        URL.ASISTENCIA_REPORTE + this.usuarioSesion.co_sucursal+"/"+this.fecha,        
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {
             this.listaAsistencia = result.data;                        
           }
           this.loading = false;
-        });    
-    };
-
-    this.loadFunction();
-    
-  },
-  methods: {
+        });   
+    },
     cambiarFecha(){
          this.$nextTick(() => {
            console.log(this.fecha)

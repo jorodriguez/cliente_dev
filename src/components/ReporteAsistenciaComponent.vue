@@ -19,7 +19,22 @@
               ></datepicker>
             </div>
           </div>
+          <div class="row">
+            <div class="float-right">
+              <download-excel
+                v-if="listaAsistencia != []"
+                class="btn btn-success "
+                :data="listaAsistencia"
+                :fields="columnasFiltradas"
+                :worksheet="nombre_libro"
+                :name="nombre_reporte+'.xls'"
+              >
+                <i class="fas fa-download" /> XLS
+              </download-excel>
+              </div>
+          </div>
         </div>
+
         <vue-good-table
           :columns="columnas"
           :rows="listaAsistencia"
