@@ -1,6 +1,6 @@
 
-const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
-//const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
+//const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
+const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 export const BRANCH = "2010.calculo.sueldos";
 
