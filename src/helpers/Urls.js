@@ -1,8 +1,8 @@
 
-//const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
+const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
-const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
-export const BRANCH = "2010-reporte-diario ";
+//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+export const BRANCH = "20208-reenvio-correos ";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -71,6 +71,8 @@ const CAT_DESCUENTOS = BASE + '/descuento';
 
 const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 
+
+
 const URL = {    
     LOGIN : BASE+'/auth/login',    
     ASISTENCIA_BASE : ASISTENCIA_BASE,
@@ -109,6 +111,7 @@ const URL = {
     CARGOS_BASE : CARGOS_BASE,
     CARGO_REGISTRAR : CARGOS_BASE + '/registrar',
     MESES_ADEUDA : CARGOS_BASE + '/meses_adeuda/',  //id_alumno
+    REENVIAR_COMPROBANTE: PAGOS_BASE+'/reenviar_comprobante',
 
     MENSUALIDAD_VENCE_SEMANA_ACTUAL : REPORTE_MENSUALIDAD_BASE + '/vence_semana_actual/',//id_sucursal
     

@@ -463,10 +463,11 @@
               <th>Factura</th>
               <th>Ident.</th>
               <th>Nota</th>
+              <th>Actions</th>
             </thead>
             <tbody v-for="row in listaPagosCargo" :key="row.id">
               <tr>
-                <td>
+                <td>                  
                   <label>{{row.fecha_format }}</label>
                 </td>
                 <td>
@@ -478,7 +479,10 @@
                 <td>{{row.identificador_factura}}</td>
                 <td>{{row.identificador_pago}}</td>
                 <td>
-                  <div class="text-wrap" style="width: 8rem;">{{row.nota}}</div>
+                  <div class="text-wrap" style="width: 4rem;">{{row.nota}}</div>
+                </td>
+                <td >
+                  <ReenviarComprobantePago :id_alumno="idalumno" :id_pago="row.id_pago" />
                 </td>
               </tr>
             </tbody>

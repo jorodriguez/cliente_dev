@@ -203,7 +203,7 @@
         </div>
         <div class="col text-center">          
           <img
-            :src="alumno.foto"
+            :src="alumno.foto == null ? (alumno.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):alumno.foto"
             alt
             class="rounded-circle"
             width="50"

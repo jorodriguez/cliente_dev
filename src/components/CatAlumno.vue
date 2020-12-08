@@ -305,7 +305,7 @@
             <tr v-for="row in lista" :key="row.id">
               <td class="text-right">
                 <img
-                  :src="row.foto"
+                  :src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"
                   width="50"
                   height="50"
                   v-on:click="verPerfil(row)"

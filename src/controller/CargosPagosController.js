@@ -7,12 +7,13 @@ import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
 import CONSTANTES from "../helpers/Constantes";
 import { getUsuarioSesion } from '../helpers/Sesion';
+import ReenviarComprobantePago from '../components_utils/ReenviarComprobantePago';
 
 
 export default {
   name: "cargos-pagos",
   components: {
-    Popup, Datepicker
+    Popup, Datepicker,ReenviarComprobantePago
   },
   props: ['idalumno', 'requiere_factura'],
   mixins: [operacionesApi],
@@ -54,7 +55,9 @@ export default {
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
       loadFunctionMesesAdeuda: null,
-      motivo_eliminacion: ""
+      motivo_eliminacion: "",
+      loader_reenvio:false,
+      mensaje_reenvio:""
     };
   },
   mounted() {
@@ -585,7 +588,7 @@ export default {
           }
         }
       );
-    }
+    }   
   },
 };
 
