@@ -8,8 +8,7 @@
       title="Reenviar el comprobante de este pago"
     >
       <i v-if="!loader" class="fas fa-paper-plane"></i>
-      <div v-if="loader" class="spinner-border spinner-border-sm" role="status">        
-      </div>
+      <div v-if="loader" class="spinner-border spinner-border-sm" role="status"></div>
       <small>{{label}}</small>
     </a>
   </span>
@@ -56,15 +55,15 @@ export default {
         },
         results => {
           console.log("reenviando comprobante " + results.data);
-          if (results.data != null) {
-            console.log("Reenvio respuesta " + JSON.stringify(results));
-            //this.mensaje_reenvio = `(${results.body})`;
-          }
           let thus = this;
           setTimeout(function() {
             thus.loader = false;
             thus.label = "Enviado";
           }, 3000);
+          if (results.data != null) {
+            console.log("Reenvio respuesta " + JSON.stringify(results));
+            //this.mensaje_reenvio = `(${results.body})`;
+          }
         }
       );
     }
