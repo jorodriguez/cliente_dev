@@ -69,6 +69,11 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }
 
+    if (alumno.mostrar_nombre_carino && alumno.nombre_carino.replace(/ /g, "") == '') {     
+      Vue.prototype.$notificacion.error('Nombre de cariño', 'Escribe un nombre de cariño.');
+      return false;
+    }
+
     return true;
   }
 }

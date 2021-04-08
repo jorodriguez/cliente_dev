@@ -184,7 +184,14 @@ export default {
         this.lista = this.listaRespaldo;
       } else {
 
-        this.lista = this.listaRespaldo.filter(e => e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase()));
+        this.lista = this.listaRespaldo
+                      .filter(
+                          e => 
+                              e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase()) 
+                              || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()):false)
+                              
+                          
+                       );     
 
       }
     },

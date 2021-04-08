@@ -214,6 +214,9 @@
             {{alumno.apellidos}}
           </p>
           <p>
+            {{alumno.nombre_carino}}
+          </p>
+          <p>
             <small>{{alumno.nombre_grupo}}</small>
           </p>
         </div>
@@ -595,9 +598,15 @@
                         type="text"
                         v-model="alumno.nombre_carino"
                         class="form-control"
+                        style="text-transform:uppercase;"
                         placeholder="Nombre de cariño"
                         required
                       >
+                      <input
+                          type="checkbox"
+                          id="checkboxMostrarNombreCarino"
+                          v-model="alumno.mostrar_nombre_carino"                          
+                          /> Mostrar este nombre en la asistencia
                     </div>
                     <div class="form-group">
                       <label for="inputHermanos">No. Hermanos</label>
