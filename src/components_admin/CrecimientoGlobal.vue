@@ -72,7 +72,7 @@
                   <tr v-for="row in listaNuevosAlumno" :key="row.id" class="text-left">
                     <td>
                       <img
-                        src="https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg"
+                        :src="row.foto"
                         width="50"
                         height="50"
                         alt="..."                        

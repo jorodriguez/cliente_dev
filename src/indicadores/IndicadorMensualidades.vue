@@ -42,10 +42,14 @@
               :groupOptions="{        enabled: false   }"
             >
               <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'nombre_cargo'">
+                <span v-if="props.column.field == 'nombre_alumno'">
+                    <span><strong>{{props.row.nombre_alumno}}</strong></span>                      
+                    <span v-if="props.row.mostrar_nombre_carino"><strong>({{props.row.nombre_carino}})</strong></span> 
+                </span>
+                <span v-else-if="props.column.field == 'nombre_cargo'">
                     <span >{{props.row.nombre_cargo}}</span>  
                     <span >{{props.row.texto_ayuda}}</span>                    
-                </span>
+                </span>                
                 <span v-else-if="props.column.field == 'total_pagado'">
                     <span class="text-primary"><strong>${{props.row.total_pagado}}</strong></span>  
                 </span>

@@ -1,8 +1,8 @@
 
-const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
-//const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
+//const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
+const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
-export const BRANCH = "20208-reenvio-correos ";
+export const BRANCH = "20210407-nombre-corto-alumno ";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -71,6 +71,7 @@ const CAT_DESCUENTOS = BASE + '/descuento';
 
 const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 
+const GENERO_ALUMNO = BASE + '/genero_alumno';
 
 
 const URL = {    
@@ -121,6 +122,7 @@ const URL = {
     GASTOS_BASE : GASTOS_BASE,
     HISTORICO_GASTOS:HISTORICO_GASTOS,
     TIPOS_GASTO : TIPOS_GASTO,
+    GENERO_ALUMNO:GENERO_ALUMNO,
 
     FAMILIAR_BASE : FAMILIAR_BASE,
     PARENTESCO_BASE : PARENTESCO_BASE,
@@ -164,6 +166,7 @@ const URL = {
     CAT_DESCUENTOS:CAT_DESCUENTOS,
     
     REPORTE_CONBRANZA:REPORTE_CONBRANZA
+
 }
 
 export default URL;

@@ -42,6 +42,7 @@
               <span :class="props.row.numero_asistencias == 0 ? 'font-weight-bold text-danger':''" >
                 {{props.row.nombre}}
                 <span >{{props.row.apellidos}}</span>
+                <span v-if="props.row.mostrar_nombre_carino" >({{props.row.nombre_carino}})</span>
               </span>
             </span>
             <span v-else-if="props.column.field == 'nombre_grupo'">

@@ -14,7 +14,7 @@
         </div>
         <div class="col-auto">
           <div class="icon icon-shape bg-white rounded-circle shadow">
-            <img v-if="foto == null" src="../../assets/magic.png" class="avatar" />
+            <img v-if="foto == null" src="../../assets/barita_magica.png" class="avatar" />
             <img v-else alt="No Image" :src="foto" class="avatar" />
           </div>
         </div>

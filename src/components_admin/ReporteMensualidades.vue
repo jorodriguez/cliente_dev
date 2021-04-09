@@ -14,6 +14,7 @@
               etiqueta="Mensualidades"
               descripcion
             />
+             <!--<img src="../assets/magic.png" class="rounded-lg" width="235" height="110" />-->
           </div>
         </div>
         <h5 class="text-muted">Mensualidades</h5>

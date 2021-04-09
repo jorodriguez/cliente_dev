@@ -105,10 +105,17 @@ export default {
       if (this.listaSeleccion.length > 0) {
         var ids = [];
 
-        for (var i = 0; i < this.listaSeleccion.length; i++) {
-          var elem = this.listaSeleccion[i];
+        //Sin duplicados
+        let listaSet = new Set(this.listaSeleccion);
+        
+        for (let elem of listaSet.values()) {        
           ids.push(elem.id);
         }
+
+        /*for (var i = 0; i < this.listaSeleccion.length; i++) {
+          var elem = this.listaSeleccion[i];
+          ids.push(elem.id);
+        }*/
 
         this.post(
           URL.ASISTENCIA_ENTRADA_ALUMNOS,

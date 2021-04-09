@@ -41,10 +41,11 @@ export default {
                 fecha_nacimiento: null,
                 correo: "",
                 genero: 0
-            },
+            },            
             listaFamiliares: [],
             metadatos: Utils,
             listaGrupos: [],
+            listaGeneroAlumno:[],
             listaParentesco: [],
             listaServicios: [],
             listaValoresEsperados: [],
@@ -225,6 +226,22 @@ export default {
                     );
                 };
 
+                 //generoAlumno
+                 this.loadCatalogoGeneroAlumno = function () {
+
+                    this.get(
+                        URL.GENERO_ALUMNO,
+                        (result) => {
+                            this.response = result.data;
+                            console.log("Genero alumno " + this.response);
+                            if (this.response != null) {
+                                this.listaGeneroAlumno = this.response;
+                            }
+                        }
+                    );
+                };
+
+
 
                 this.loadFunctionPosiblesFamiliares = function (id_parentesco, apellidos_alumno, id_sucursal) {
                     this.get(
@@ -243,20 +260,21 @@ export default {
                 this.loadAlumnoFuncion();
                 this.loadFamiliaresFuncion();
                 this.loadFunctionGrupos();
+                this.loadCatalogoGeneroAlumno();
             }
 
         },
         //FIXME : pasar al servicio
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
-
-            // if(!this.validacionGuardarFunction){
+           
             if (!validacionDatosAlumno(this.alumno)) {
                 console.log("No paso la validacion ");
                 return;
             }
 
-            this.alumno.genero = this.usuarioSesion.id;
+            this.alumno.genero = this.usuarioSesion.id;            
+            this.alumno.foto = this.getFoto();
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
             this.put(
@@ -587,6 +605,10 @@ export default {
         cancelarModificarFechaPago() {
             this.alumno.fecha_limite_pago_mensualidad = this.fecha_memento;
             $("#popup_captura_fecha_pago").modal("hide");
-        }
+        },
+        getFoto(){        
+            let elemento = this.listaGeneroAlumno.find(e=>e.id == this.alumno.cat_genero);
+            return elemento.foto;    
+        },
     }
 };  

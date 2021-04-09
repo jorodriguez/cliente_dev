@@ -14,13 +14,15 @@ export default {
   mixins: [operacionesApi],
   data() {
     return {
-      input: AlumnoModel,
+      input: AlumnoModel, 
+      generoAlumno:{id:-1,nombre:"",foto:""},
       response: "",
       usuarioSesion: {},
       sesion: {},
       operacion: "INSERT",
       criterioNombre: "",
       lista: [],
+      listaGeneroAlumno:[],
       listaRespaldo: [],
       listaGrupos: [],
       loadFunction: null,
@@ -63,8 +65,24 @@ export default {
         });
     };
 
+     //generoAlumno
+     this.loadCatalogoGeneroAlumno = function () {
+
+      this.get(
+          URL.GENERO_ALUMNO,
+          (result) => {
+              this.response = result.data;
+              console.log("Genero alumno " + this.response);
+              if (this.response != null) {
+                  this.listaGeneroAlumno = this.response;
+              }
+          }
+      );
+  };
+
     this.loadFunction();
-    this.loadFunctionGrupos();
+    //this.loadFunctionGrupos();
+    //this.loadCatalogoGeneroAlumno();
   },
   methods: {
     nuevo() {
@@ -76,8 +94,8 @@ export default {
         co_grupo: 0,
         nombre: "",
         apellidos: "",
-        nombre_carino: "",
-        sexo: "",
+        nombre_carino: "",        
+        cat_genero:-1,        
         nombre_grupo: "",
         nombre_sucursal: "",
         fecha_nacimiento: null,
@@ -93,16 +111,22 @@ export default {
         foto: "",
         genero: 1
       };
+      this.generoAlumno= {id:-1,nombre:"",foto:""},
+       this.loadFunctionGrupos();
+       this.loadCatalogoGeneroAlumno();
 
       $("#modal_alumno").modal("show");
     },
     guardar() {      
-      console.log("Insertar");      
+      console.log("Insertar");    
+            
       if (!validacionDatosAlumno(this.input)) {
       //if(!validacionDatosAlumno(this.input)){
         console.log("No paso la validacion");
         return;
       }
+      
+      this.input.foto = this.getFoto();
 
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
       this.input.genero = this.usuarioSesion.id;
@@ -158,6 +182,11 @@ export default {
           }
         }
       );
+
+    },
+    getFoto(){        
+        let elemento = this.listaGeneroAlumno.find(e=>e.id == this.input.cat_genero);
+        return elemento.foto;
 
     },
     select(rowSelect, operacion) {

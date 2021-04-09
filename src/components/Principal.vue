@@ -281,7 +281,7 @@
                   >
                     <span
                       :style="alumnoItem.color == '' ? '':'background-color:'+alumnoItem.color"
-                      class="badge badge-pill badge-info"
+                      class="badge badge-pill badge-info"                      
                       v-if="alumnoItem.seleccionado"
                     >
                       {{alumnoItem.nombre_alumno}}
@@ -318,16 +318,15 @@
                   v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                   v-bind:key="alumnoItem.id"
                 >
-                  <td>{{alumnoItem.nombre_alumno}}</td>
+                  <td><span style="text-transform: uppercase;">{{alumnoItem.nombre_alumno}}</span> </td>
                   <td>
-                    <div class="badge badge-pill badge-warning">
+                    <div class="badge badge-pill badge-warning" style="font-size:12px;">
                       <small>
                         <i class="fas fa-plus"></i>
                       </small>
                       <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
                       <span
-                        class="text-muted"
-                        style="font-size:12px;"
+                        class="text-muted"                        
                       >{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
                       {{alumnoItem.tiempo_extra.minutes}}
                       <span

@@ -62,6 +62,7 @@
               <span>
                 {{props.row.nombre_alumno}}
                 <span class="text-muted">{{props.row.apellido_alumno}}</span>
+                <span v-if="props.row.mostrar_nombre_carino" class="text-muted">({{props.row.nombre_carino}})</span>
               </span>
             </span>
             <span v-else-if="props.column.field == 'nombre_grupo'">              

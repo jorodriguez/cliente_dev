@@ -203,7 +203,7 @@
         </div>
         <div class="col text-center">          
           <img
-            :src="alumno.foto == null ? (alumno.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):alumno.foto"
+            :src="alumno.foto"
             alt
             class="rounded-circle"
             width="50"
@@ -212,10 +212,8 @@
           <p class="font-weight-bold h4">
             {{alumno.nombre}}
             {{alumno.apellidos}}
-          </p>
-          <p>
-            {{alumno.nombre_carino}}
-          </p>
+            <span v-if="alumno.mostrar_nombre_carino">({{alumno.nombre_carino}})</span>
+          </p>          
           <p>
             <small>{{alumno.nombre_grupo}}</small>
           </p>
@@ -390,6 +388,20 @@
                         Sexo
                         <span class="text-danger">*</span>
                       </label>
+                       <select
+                        v-model="alumno.cat_genero"
+                        class="form-control"
+                        placeholder="Grupo"
+                        required
+                      >
+                        <option
+                          id="selectGeneroAlumno"
+                          v-for="genero in listaGeneroAlumno"
+                          v-bind:value="genero.id"
+                          v-bind:key="genero.id"
+                        >{{ genero.nombre }}</option>
+                      </select>
+<!--
                       <select
                         id="inputSexo"
                         v-model="alumno.sexo"
@@ -400,6 +412,7 @@
                         <option value="Niño" selected>Niño</option>
                         <option value="Niña">Niña</option>
                       </select>
+                      -->
                     </div>
 
                     <div class="form-group">
@@ -598,7 +611,7 @@
                         type="text"
                         v-model="alumno.nombre_carino"
                         class="form-control"
-                        style="text-transform:uppercase;"
+                        
                         placeholder="Nombre de cariño"
                         required
                       >

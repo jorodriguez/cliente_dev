@@ -1,6 +1,6 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length:0}}) </h1>
+    <h1>Alumnos ({{ lista != [] ? lista.length:0}})</h1>
     <small>{{usuarioSesion.nombre_sucursal}}</small>
     <div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
@@ -10,50 +10,50 @@
     </div>
     <br />
     <!--<form>-->
-      <div
-        id="modal_alumno"
-        class="modal"
-        tabindex="-1"
-        data-keyboard="false"
-        data-backdrop="static"
-        role="dialog"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Registro de Alumno</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body text-left">
-              <!--<span class="text-danger text-sm">{{mensaje}}</span>-->
-              <div>
-                <label>
-                  Nombre
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  v-model="input.nombre"
-                  class="form-control"
-                  placeholder="Nombre"
-                  required
-                  autofocus
-                />
-                <label>Apellidos</label>
-                <input
-                  type="text"
-                  v-model="input.apellidos"
-                  class="form-control"
-                  placeholder="Apellidos"
-                  required
-                />
-                <label>
-                  Fecha de nacimiento
-                  <span class="text-danger">*</span>
-                </label>
-                <!--
+    <div
+      id="modal_alumno"
+      class="modal"
+      tabindex="-1"
+      data-keyboard="false"
+      data-backdrop="static"
+      role="dialog"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Registro de Alumno</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-left">
+            <!--<span class="text-danger text-sm">{{mensaje}}</span>-->
+            <div>
+              <label>
+                Nombre
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                v-model="input.nombre"
+                class="form-control"
+                placeholder="Nombre"
+                required
+                autofocus
+              />
+              <label>Apellidos</label>
+              <input
+                type="text"
+                v-model="input.apellidos"
+                class="form-control"
+                placeholder="Apellidos"
+                required
+              />
+              <label>
+                Fecha de nacimiento
+                <span class="text-danger">*</span>
+              </label>
+              <!--
                 <input
                   type="date"
                   pattern="yyyy-MM-dd"
@@ -61,20 +61,29 @@
                   class="form-control"
                   placeholder="F. Nacimiento"
                   required
-                >-->
-                <datepicker
-                  name="fecha_nacmiento"
-                  v-model="input.fecha_nacimiento"
-                  input-class="form-control"
-                  :bootstrap-styling="true"              
-                  :language="es"
-                  required
-                ></datepicker>
+              >-->
+              <datepicker
+                name="fecha_nacmiento"
+                v-model="input.fecha_nacimiento"
+                input-class="form-control"
+                :bootstrap-styling="true"
+                :language="es"
+                required
+              ></datepicker>
 
-                <label>
-                  Sexo
-                  <span class="text-danger">*</span>
-                </label>
+              <label>
+                Sexo
+                <span class="text-danger">*</span>
+              </label>
+              <select v-model="input.cat_genero" class="form-control" placeholder="Grupo" required>
+                <option
+                  id="selectGeneroAlumno"
+                  v-for="genero in listaGeneroAlumno"
+                  v-bind:value="genero.id"
+                  v-bind:key="genero.id"
+                >{{ genero.nombre }}</option>
+              </select>
+              <!--
                 <select
                   id="inputServicioContratar"
                   v-model="input.sexo"
@@ -85,152 +94,150 @@
                   <option value="Niño" selected>Niño</option>
                   <option value="Niña">Niña</option>
                 </select>
+              -->
 
-                <label>Alergias</label>
-                <input
-                  type="textarea"
-                  class="form-control"
-                  v-model="input.alergias"
-                  placeholder="Alergias"
-                />
+              <label>Alergias</label>
+              <input
+                type="textarea"
+                class="form-control"
+                v-model="input.alergias"
+                placeholder="Alergias"
+              />
 
-                <label>
-                  Grupo
-                  <span class="text-danger">*</span>
-                </label>
-                <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
-                  <option
-                    v-for="grupo in listaGrupos"
-                    v-bind:value="grupo.id"
-                    v-bind:key="grupo.id"
-                  >{{ grupo.nombre }}</option>
-                </select>
+              <label>
+                Grupo
+                <span class="text-danger">*</span>
+              </label>
+              <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
+                <option
+                  v-for="grupo in listaGrupos"
+                  v-bind:value="grupo.id"
+                  v-bind:key="grupo.id"
+                >{{ grupo.nombre }}</option>
+              </select>
 
-                <div class="row">
-                  <div class="col-sm-6">
-                    <label>
-                      Hora Entrada <small class="text-muted">(Pe. 08:00)</small>
-                      <span class="text-danger">*</span>
-                    </label>
-                    <input
-                      type="time"
-                      v-model="input.hora_entrada"
-                      class="form-control"
-                      placeholder="H. Entrada"
-                      required
-                    />
-                  </div>
-                  <div class="col-sm-6">
-                    <label>
-                      Hora Salida <small class="text-muted">(Pe. 20:00)</small>
-                      <span class="text-danger">*</span>
-                    </label>
-                    <input
-                      type="time"
-                      v-model="input.hora_salida"
-                      class="form-control"
-                      placeholder="H. Salida"
-                      required
-                    />
-                  </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label>
+                    Hora Entrada
+                    <small class="text-muted">(Pe. 08:00)</small>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="time"
+                    v-model="input.hora_entrada"
+                    class="form-control"
+                    placeholder="H. Entrada"
+                    required
+                  />
                 </div>
+                <div class="col-sm-6">
+                  <label>
+                    Hora Salida
+                    <small class="text-muted">(Pe. 20:00)</small>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="time"
+                    v-model="input.hora_salida"
+                    class="form-control"
+                    placeholder="H. Salida"
+                    required
+                  />
+                </div>
+              </div>
 
-                <label>
-                  Minutos de Gracia
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="input.minutos_gracia"
-                  class="form-control"
-                  placeholder="Min. Gracia"
-                  min="0"
-                  required
-                />
+              <label>
+                Minutos de Gracia
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                v-model="input.minutos_gracia"
+                class="form-control"
+                placeholder="Min. Gracia"
+                min="0"
+                required
+              />
 
-                <label>
-                  F. de Inscripción
-                  <span class="text-danger">*</span>
-                </label>
-                <!--<input
+              <label>
+                F. de Inscripción
+                <span class="text-danger">*</span>
+              </label>
+              <!--<input
                   type="date"
                    pattern="yyyy-MM-dd"
                   v-model="input.fecha_reinscripcion"
                   class="form-control"
                   placeholder="F. Reinscripcion"
                   required
-                >-->
+              >-->
+              <datepicker
+                name="fecha_inscripcion"
+                v-model="input.fecha_inscripcion"
+                input-class="form-control"
+                :bootstrap-styling="true"
+                :language="es"
+                required
+              ></datepicker>
+
+              <label>
+                Costo Colegiatura
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                v-model="input.costo_colegiatura"
+                class="form-control"
+                placeholder="Costo Colegiatura"
+                min="0"
+                required
+              />
+
+              <label>
+                Costo Inscripción
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                v-model="input.costo_inscripcion"
+                class="form-control"
+                placeholder="Costo Inscripcion"
+                min="0"
+                required
+              />
+
+              <div class="form-group">
+                <label for="inputFechaLimitePago">
+                  Fecha Pago
+                  <span class="text-danger">*</span>
+                </label>
                 <datepicker
-                  name="fecha_inscripcion"
-                  v-model="input.fecha_inscripcion"
+                  id="inputFechaLimitePagoColegiatura"
+                  v-model="input.fecha_limite_pago_mensualidad"
                   input-class="form-control"
                   :bootstrap-styling="true"
-                              
-                    :language="es"
+                  :language="es"
                   required
                 ></datepicker>
-
-                <label>
-                  Costo Colegiatura
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="input.costo_colegiatura"
-                  class="form-control"
-                  placeholder="Costo Colegiatura"
-                  min="0"
-                  required
-                />
-
-                <label>
-                  Costo Inscripción
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="input.costo_inscripcion"
-                  class="form-control"
-                  placeholder="Costo Inscripcion"
-                  min="0"
-                  required
-                />
-
-                <div class="form-group">
-                      <label for="inputFechaLimitePago">
-                        Fecha Pago 
-                        <span class="text-danger">*</span>
-                      </label>
-                       <datepicker
-                        id="inputFechaLimitePagoColegiatura"
-                        v-model="input.fecha_limite_pago_mensualidad"
-                        input-class="form-control"
-                        :bootstrap-styling="true"                        
-                        :language="es"
-                        required
-                      >
-                      </datepicker>                     
-                      
-                    </div>                    
-
-
-                <label>Nota</label>
-                <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
               </div>
+              <label>Nota</label>
+              <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
             </div>
-            <div class="modal-footer">
-              <div v-if="operacion == 'INSERT'">
-                <button class="btn btn-lg btn-primary" v-on:click="guardar()">Guardar</button>
-              </div>
-              <div v-else-if="operacion == 'UPDATE'">
-                <button class="btn btn-lg btn-primary" v-on:click="modificar()">Modificar</button>
-              </div>
-              <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+          <div class="modal-footer">
+            <div v-if="operacion == 'INSERT'">
+              <button class="btn btn-lg btn-primary" v-on:click="guardar()">Guardar</button>
             </div>
+            <div v-else-if="operacion == 'UPDATE'">
+              <button class="btn btn-lg btn-primary" v-on:click="modificar()">Modificar</button>
+            </div>
+            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
-   <!-- </form>-->
+    </div>
+    <!-- </form>-->
 
     <!-- ELIMINAR MODAL -->
     <div
@@ -303,7 +310,7 @@
               <!--<th></th>-->
             </thead>
             <tr v-for="row in lista" :key="row.id">
-              <td class="text-right">
+              <td class="text-right" style="padding-left:2px;padding-right:2px;">
                 <img
                   :src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"
                   width="50"
@@ -314,7 +321,7 @@
                   class="rounded-circle"
                 />
               </td>
-              <td>
+              <td class="text-left" style="padding-left:0px;">
                 <button
                   type="button"
                   class="btn btn-link"
@@ -322,12 +329,16 @@
                   v-on:click="verPerfil(row)"
                 >
                   {{ row.nombre }}
+                  <span v-if="row.mostrar_nombre_carino">({{row.nombre_carino}})</span>
                   <span class="text-danger">{{row.adeuda ? '*':''}}</span>
                 </button>
               </td>
               <td class="hidden-xs">{{ row.apellidos }}</td>
               <td>
-                <span :style="row.color ? 'background-color:'+row.color:'' " class="badge badge-info text-wrap">{{ row.nombre_grupo }}</span>
+                <span
+                  :style="row.color ? 'background-color:'+row.color:'' "
+                  class="badge badge-info text-wrap"
+                >{{ row.nombre_grupo }}</span>
               </td>
               <td>{{ row.hora_entrada }}</td>
               <td>{{ row.hora_salida }}</td>
@@ -340,19 +351,23 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                  <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-ellipsis-v"></i>
                   </button>
-                  <div class="dropdown-menu  bg-light">                                                                              
-                    <button                      
+                  <div class="dropdown-menu bg-light">
+                    <button
                       class="dropdown-item"
                       v-on:click="cambiarSucursal(row)"
                       title="Cambiar de sucursal."
-                    ><i class="fas fa-exchange-alt"></i>Cambiar de sucursal </button>          
-                    <button                      
+                    >
+                      <i class="fas fa-exchange-alt"></i>Cambiar de sucursal
+                    </button>
+                    <button
                       class="dropdown-item text-danger"
                       v-on:click="select(row,'DELETE')"
                       title="Dar de baja el alumno."
-                    ><i class="fas fa-user-minus"></i> Iniciar Baja</button>                                                                              
+                    >
+                      <i class="fas fa-user-minus"></i> Iniciar Baja
+                    </button>
                   </div>
                 </div>
               </td>

@@ -24,8 +24,8 @@ export const validacionDatosAlumno = (alumno) => {
       Vue.prototype.$notificacion.error('Selecciona la fecha de nacimiento', 'La fecha de nacimiento es requerida.');
       return false;
     }
-
-    if (alumno.sexo == '') {
+   
+      if (alumno.cat_genero == -1) {
       //this.mensaje = "* Selecciona el sexo";
       Vue.prototype.$notificacion.error('Seleciona el sexo', 'El dato de sexo es requerido.');
       return false;

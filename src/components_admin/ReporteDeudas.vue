@@ -172,10 +172,11 @@
 
                 <span v-else-if="props.column.field == 'foto'">
                   <img
-                    :src="props.row.foto != '' ? props.row.foto :'https://library.kissclipart.com/20180926/pe/kissclipart-student-clipart-utrecht-university-student-vu-univ-01ccd8efac8776f3.jpg' "
+                    :src="props.row.foto"
                     width="50"
                     height="50"
                     alt="..."
+                    v-if="props.row.foto"
                     class="rounded-circle"
                     v-on:click="verPerfil(props.row)"
                   />
