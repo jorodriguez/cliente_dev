@@ -1,5 +1,5 @@
 
-import Vue from "vue";
+
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";

@@ -56,6 +56,7 @@
       </div>
       <!-- MODAL TOAST -->
     </form>
+    <a link @click="subirImagen()">Subir img</a>
   </div>
 </template>
 
