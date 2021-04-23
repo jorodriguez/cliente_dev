@@ -1,9 +1,9 @@
 
-//const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
+const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
-const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 export const BRANCH = "20210407-nombre-corto-alumno ";
-
+git 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
 const BALANCE_BASE = BASE +'/balance';
