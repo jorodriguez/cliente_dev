@@ -20,6 +20,7 @@ import CatUsuario from '../administracion/paginas/CatUsuario'
 import Administracion from '../administracion/Administracion'
 import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
+import SubirFotoAlumno from '@/components/SubirFotoAlumno'
 
 import VueSession from 'vue-session'
 
@@ -33,7 +34,6 @@ const router = new Router({
       beforeEnter(to, from, next) {
         console.log("REVISNADO SESION ");
         const sesion = getSesion();
-        console.log(" SESION " + JSON.stringify(sesion));
         if (sesion != null && sesion.auth) {
           console.log("REDIRECCION A " + sesion.paginaPrincipal);
           next({ path: sesion.paginaPrincipal });
@@ -42,8 +42,9 @@ const router = new Router({
         }
       },
     },
-    { path: '/login', name: 'Login', component: Login },
-    {
+    //{ path: '/login', name: 'Login', component: Login },
+    {path: '/login', name: 'Login', component: SubirFotoAlumno},
+    {       
       path: '/bienvenido', name: 'Bienvenido', component: Bienvenido, meta: { requiresAuth: true },
       children: [
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
@@ -126,18 +127,7 @@ router.beforeEach((to, from, next) => {
   } else {
     console.log("No requiere AUTH");
     next();
-  } /*else if (to.matched.some(record => record.meta.guest)) {
-    if (localStorage.getItem('jwt') == null) {
-
-      next()
-    }
-    else {
-      next({ name: 'principal' })
-    }
-  } else {
-    next()
-  }*/
-
+  } 
 });
 
 router.beforeResolve((to, from, next) => {

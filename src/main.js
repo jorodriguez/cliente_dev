@@ -14,14 +14,6 @@ import VuePageTransition from 'vue-page-transition'
 import JsonExcel from 'vue-json-excel'
  
 
-/*import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
-import { required, email } from 'vee-validate/dist/rules';
-extend('required', {
-  ...required,
-  message: 'Campo requerido'
-});
-extend('email', email);*/
-
 Vue.use(VueResource);
 Vue.use(VueSessionStorage)
 Vue.use(require('vue-moment'));
@@ -33,10 +25,6 @@ Vue.use(VuePageTransition);
 Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$notificacion = Notificaciones;
 //Vue.forceUpdate();
-
-/*Vue.component("ValidationProvider", ValidationProvider);
-Vue.component("ValidationObserver", ValidationObserver);
-*/
 Vue.config.productionTip = false
 
 /* eslint-disable */

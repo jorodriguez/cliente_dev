@@ -51,24 +51,7 @@ export default {
               console.log("PATH "+path);
               this.$router.push({ path: path });
             });
-            /*
-            setSession(this.response);
-            setToken(this.response.token);           
-           
-            console.log("JSON " + JSON.stringify(this.response));
-            if (this.response.usuario.permiso_gerente) {
-              console.log("Mandar evento para admin");              
-              //this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN_ADMIN);
-              this.$router.push({ path: "/ReporteAdmin" });
-              //this.$router.replace({ path: "/ReporteAdmin" });              
-            } else {
-              console.log("Mandar evento para usuario general");              
-              console.log("MENSAJE "+CONSTANTES.EVENTO_LOGIN);
-              //this.$root.$emit('loginEnter', CONSTANTES.EVENTO_LOGIN);
-              //this.$router.replace({ path: "/principal" });              
-              this.$router.push({ path: "/principal" });
-            }*/
-
+         
           } else {
             this.$notificacion.error('Login', 'No se encuentra el usuario.');
           }
@@ -83,6 +66,9 @@ export default {
           //this.response = error;
         }
       );
+    },
+    subirImagen(){
+      this.$router.push({ path:'subirFoto' });
     }
   }
 };

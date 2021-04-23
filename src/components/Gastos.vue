@@ -22,10 +22,7 @@
     </div>
     
     <br>   
-    <!--<vue-good-table
-      :columns="columns"
-       :rows="listaGastos"/>
-   -->
+    
    <form>
     <table class="table">
       <thead>        
