@@ -610,5 +610,9 @@ export default {
             let elemento = this.listaGeneroAlumno.find(e=>e.id == this.alumno.cat_genero);
             return elemento.foto;    
         },
+        subirFotoPerfil(id){
+
+            this.$router.push({ name: "SubirFotoAlumno", params: { id: id } });
+        }
     }
 };  

@@ -3,7 +3,7 @@ const BASE = (function() {return process.env.URL_API || "http://localhost:5000" 
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 export const BRANCH = "20210407-nombre-corto-alumno ";
-git 
+
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
 const BALANCE_BASE = BASE +'/balance';
@@ -72,6 +72,8 @@ const CAT_DESCUENTOS = BASE + '/descuento';
 const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 
 const GENERO_ALUMNO = BASE + '/genero_alumno';
+
+const IMAGEN_PERFIL = BASE + '/foto_perfil';
 
 
 const URL = {    
@@ -165,7 +167,9 @@ const URL = {
 
     CAT_DESCUENTOS:CAT_DESCUENTOS,
     
-    REPORTE_CONBRANZA:REPORTE_CONBRANZA
+    REPORTE_CONBRANZA:REPORTE_CONBRANZA,
+    
+    IMAGEN_PERFIL:IMAGEN_PERFIL
 
 }
 

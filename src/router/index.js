@@ -42,14 +42,14 @@ const router = new Router({
         }
       },
     },
-    //{ path: '/login', name: 'Login', component: Login },
-    {path: '/login', name: 'Login', component: SubirFotoAlumno},
+    { path: '/login', name: 'Login', component: Login },    
     {       
       path: '/bienvenido', name: 'Bienvenido', component: Bienvenido, meta: { requiresAuth: true },
       children: [
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         { path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
         { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
