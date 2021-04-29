@@ -1,10 +1,10 @@
 import AlumnoModel from "../models/AlumnoModel";
 import Datepicker from 'vuejs-datepicker';
 import URL from "../helpers/Urls";
-import {validacionDatosAlumno} from "../helpers/AlumnoValidacion";
+import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
-import {en, es} from 'vuejs-datepicker/dist/locale'
-import {getUsuarioSesion} from '../helpers/Sesion';
+import { en, es } from 'vuejs-datepicker/dist/locale'
+import { getUsuarioSesion } from '../helpers/Sesion';
 
 export default {
   name: "Alumno",
@@ -14,33 +14,33 @@ export default {
   mixins: [operacionesApi],
   data() {
     return {
-      input: AlumnoModel, 
-      generoAlumno:{id:-1,nombre:"",foto:""},
+      input: AlumnoModel,
+      generoAlumno: { id: -1, nombre: "", foto: "" },
       response: "",
       usuarioSesion: {},
       sesion: {},
       operacion: "INSERT",
       criterioNombre: "",
       lista: [],
-      listaGeneroAlumno:[],
+      listaGeneroAlumno: [],
       listaRespaldo: [],
       listaGrupos: [],
       loadFunction: null,
       loadFunctionGrupos: null,
       mensaje: "",
-      es:es,
-      disableDaysFechaLimitePago:{days:[6,0],to: new Date()},
+      es: es,
+      disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
     };
-  },   
+  },
   mounted() {
     console.log("##### iniciando catalogo alumno ####");
-   
+
     this.usuarioSesion = getUsuarioSesion();
 
     console.log("Cargando lista alumno");
     this.loadFunction = function () {
       this.get(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
-        
+
         (result) => {
           this.response = result.data;
           console.log("Consulta " + this.response);
@@ -55,7 +55,7 @@ export default {
 
     this.loadFunctionGrupos = function () {
       this.get(URL.GRUPOS_BASE,
-        
+
         (result) => {
           this.response = result.data;
           console.log("Grupos " + this.response);
@@ -65,20 +65,20 @@ export default {
         });
     };
 
-     //generoAlumno
-     this.loadCatalogoGeneroAlumno = function () {
+    //generoAlumno
+    this.loadCatalogoGeneroAlumno = function () {
 
       this.get(
-          URL.GENERO_ALUMNO,
-          (result) => {
-              this.response = result.data;
-              console.log("Genero alumno " + this.response);
-              if (this.response != null) {
-                  this.listaGeneroAlumno = this.response;
-              }
+        URL.GENERO_ALUMNO,
+        (result) => {
+          this.response = result.data;
+          console.log("Genero alumno " + this.response);
+          if (this.response != null) {
+            this.listaGeneroAlumno = this.response;
           }
+        }
       );
-  };
+    };
 
     this.loadFunction();
     //this.loadFunctionGrupos();
@@ -94,8 +94,8 @@ export default {
         co_grupo: 0,
         nombre: "",
         apellidos: "",
-        nombre_carino: "",        
-        cat_genero:-1,        
+        nombre_carino: "",
+        cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
         fecha_nacimiento: null,
@@ -107,32 +107,32 @@ export default {
         costo_colegiatura: "",
         minutos_gracia: "",
         fecha_inscripcion: null,
-        fecha_limite_pago:null,
+        fecha_limite_pago: null,
         foto: "",
         genero: 1
       };
-      this.generoAlumno= {id:-1,nombre:"",foto:""},
-       this.loadFunctionGrupos();
-       this.loadCatalogoGeneroAlumno();
+      this.generoAlumno = { id: -1, nombre: "", foto: "" },
+        this.loadFunctionGrupos();
+      this.loadCatalogoGeneroAlumno();
 
       $("#modal_alumno").modal("show");
     },
-    guardar() {      
-      console.log("Insertar");    
-            
+    guardar() {
+      console.log("Insertar");
+
       if (!validacionDatosAlumno(this.input)) {
-      //if(!validacionDatosAlumno(this.input)){
+        //if(!validacionDatosAlumno(this.input)){
         console.log("No paso la validacion");
         return;
       }
-      
+
       this.input.foto = this.getFoto();
 
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
       this.input.genero = this.usuarioSesion.id;
 
       this.post(URL.ALUMNOS_BASE,
-        this.input,        
+        this.input,
         (result) => {
           this.response = result.data;
           console.log("this.response " + this.response);
@@ -147,14 +147,14 @@ export default {
       console.log("Modificar el id " + this.input.id);
 
       //if (!this.validacionGuardarFunction()) {
-      if(!validacionDatosAlumno(this.input)){ 
+      if (!validacionDatosAlumno(this.input)) {
         console.log("No paso la validacion");
         return;
       }
 
       this.put(URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.input, 
-        
+        this.input,
+
         (result) => {
           this.response = result.data;
           if (this.response != null) {
@@ -166,27 +166,27 @@ export default {
           }
         }
       );
- 
+
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
-      
+
       this.remove(URL.ALUMNOS_BASE + "/" + this.input.id,
-        
-        (result) => {      
-          console.log(" "+result.data);    
-          if ( result.data != null) {
-            console.log("" +  result.data);
-            this.$notificacion.error('Registro de Baja de alumno', 'Se registro la baja del alumno '+this.input.nombre+'.');
+
+        (result) => {
+          console.log(" " + result.data);
+          if (result.data != null) {
+            console.log("" + result.data);
+            this.$notificacion.error('Registro de Baja de alumno', 'Se registro la baja del alumno ' + this.input.nombre + '.');
             this.loadFunction();
           }
         }
       );
 
     },
-    getFoto(){        
-        let elemento = this.listaGeneroAlumno.find(e=>e.id == this.input.cat_genero);
-        return elemento.foto;
+    getFoto() {
+      let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
+      return elemento.foto;
 
     },
     select(rowSelect, operacion) {
@@ -209,23 +209,27 @@ export default {
     },
     buscarPorNombre() {
       console.log("Buscar por nombre " + this.criterioNombre);
-      if (this.criterio == '') {
+      if (this.criterioNombre == '') {
         this.lista = this.listaRespaldo;
       } else {
 
         this.lista = this.listaRespaldo
-                      .filter(
-                          e => 
-                              e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase()) 
-                              || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()):false)
-                              
-                          
-                       );     
+          .filter(
+            e =>
+              e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+
+
+          );
 
       }
     },
     cambiarSucursal(row) {
       this.$router.push({ name: "CambioSucursal", params: { id_alumno: row.id } });
+    },
+    subirFotoPerfil(id) {
+
+      this.$router.push({ name: "SubirFotoAlumno", params: { id: id } });
     }
   }
 };

@@ -1,7 +1,7 @@
 
 <template>
-  <div class="container">
-    <div class="row">
+  <div>
+    <div class="row mb-3">
       <router-link
         :to="{ name: 'CatAlumno', params: {} }"
         class="btn btn-secondary btn-lg"
@@ -11,15 +11,91 @@
       </router-link>
     </div>
     <div class="row">
-      <div class="col-2">
-        <button
-          type="button"
-          class="btn btn-link"
-          data-toggle="button"
-          aria-pressed="false"
-          autocomplete="off"
-          @click="rotate()"
-        >Mostrar alumnos</button>
+      <div class="col-3">
+        <table class="table text-left">
+          <tr>
+            <td>
+              <h4>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>{{this.alumno.nombre_sucursal}}</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>{{this.alumno.nombre_grupo}}</h4>
+            </td>
+          </tr>
+        </table>
+
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button
+                  class="btn btn-link"
+                  data-toggle="collapse"
+                  data-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                  @click="cargarCatalogoAlumnos()"
+                >Seleccionar otro alumno</button>
+              </h5>
+            </div>
+            <div
+              id="collapseOne"
+              class="collapse"
+              aria-labelledby="headingOne"
+              data-parent="#accordion"
+            >
+              <label v-if="loadingCatalogo" class="text-muted">Cargando...</label>
+              <div class="card-body" v-if="listaAlumnos.length > 0">
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar por nombre.."
+                    v-model="criterioNombre"
+                    v-on:keyup.enter="buscarPorNombre()"
+                    aria-label="Buscar por nombre.."
+                    aria-describedby="basic-addon2"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary border"
+                      type="button"
+                      v-on:click="buscarPorNombre()"
+                    >
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table">
+                    <tr v-for="row in lista" :key="row.id">
+                      <td
+                        class="text-left"
+                        style="fontsize:18px, padding-left:2px;padding-right:2px;"
+                      >
+                        <ItemCapsulaAlumno
+                          :texto="row.nombre + (row.mostrar_nombre_carino ? ' ('+row.nombre_carino+')':'')"
+                          :foto="row.foto"
+                          :color="row.color"
+                          :seleccion="()=>{seleccionarAlumno(row)}"                          
+                        >
+                          <span slot="cuerpo"></span>
+                        </ItemCapsulaAlumno>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="col-3">
@@ -68,9 +144,29 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                  @click="flipX()"
+                >
+                  <i class="fas fa-arrows-alt-h"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  data-toggle="button"
+                  aria-pressed="false"
+                  autocomplete="off"
                   @click="rotate()"
                 >
                   <i class="fas fa-redo"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  data-toggle="button"
+                  aria-pressed="false"
+                  autocomplete="off"
+                  @click="flipY()"
+                >
+                  <i class="fas fa-arrows-alt-v"></i>
                 </button>
                 <button
                   type="button"
@@ -83,44 +179,7 @@
                   <i class="fa fa-search-plus" aria-hidden="true"></i>
                 </button>
               </div>
-              <div class="row">
-                <div
-                  class="btn-group btn-group-sm mb-2 mx-auto"
-                  role="group"
-                  aria-label="Basic example"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    data-toggle="button"
-                    aria-pressed="false"
-                    autocomplete="off"
-                    @click="flipX()"
-                  >
-                    <i class="fas fa-arrows-alt-h"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-toggle="button"
-                    aria-pressed="false"
-                    autocomplete="off"
-                    @click="remove()"
-                  >
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    data-toggle="button"
-                    aria-pressed="false"
-                    autocomplete="off"
-                    @click="flipY()"
-                  >
-                    <i class="fas fa-arrows-alt-v"></i>
-                  </button>
-                </div>
-              </div>
+
               <div class="row">
                 <button
                   type="button"
@@ -130,6 +189,14 @@
                   autocomplete="off"
                   @click="generateImage(true)"
                 >Previsualizar</button>
+                <button
+                  type="button"
+                  class="btn btn-success btn-block"
+                  data-toggle="button"
+                  aria-pressed="false"
+                  autocomplete="off"
+                  @click="generateImage(false)"
+                >{{this.loadingUpload ? 'Actualizando foto..':'Actualizar foto'}}</button>
               </div>
             </div>
           </div>
@@ -137,49 +204,16 @@
       </div>
 
       <div class="col-3">
-        <img
-          crossorigin="anonymous"
-          style="border-radius:100px;width:200px;heigth:200px"
-          class="mb-1"
-          :src="alumno.foto"
-        />
+        <img style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" />
         <div class="mb-4">
-        <ItemCapsulaAlumno :texto="alumno.nombre" :foto="alumno.foto" :color="alumno.color">
-          <span slot="cuerpo">
-            <button type="button" class="btn btn-link btn-xs text-white">
-              <span class="badge badge-pill badge-danger">x</span>
-            </button>
-          </span>
-        </ItemCapsulaAlumno>
+          <ItemCapsulaAlumno :texto="alumno.nombre" :foto="alumno.foto" :color="alumno.color">
+            <span slot="cuerpo">
+              <button type="button" class="btn btn-link btn-xs text-white">
+                <span class="badge badge-pill badge-danger">x</span>
+              </button>
+            </span>
+          </ItemCapsulaAlumno>
         </div>
-        <button
-          type="button"
-          class="btn btn-success btn-block"
-          data-toggle="button"
-          aria-pressed="false"
-          autocomplete="off"
-          @click="generateImage(false)"
-        >{{this.loadingUpload ? 'Actualizando foto..':'Actualizar foto'}}</button>
-      </div>
-
-      <div class="col text-left">
-        <table class="table">
-          <tr>
-            <td>
-              <h3>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h3>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Sucursal : {{this.alumno.nombre_sucursal}}</h3>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Grupo : {{this.alumno.nombre_grupo}}</h3>
-            </td>
-          </tr>
-        </table>
       </div>
     </div>
   </div>
@@ -189,6 +223,7 @@
 import Popup from "../controller/Popup";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
+import { filtrarNombreAlumno } from "../helpers/FiltarUtils";
 import URL from "../helpers/Urls";
 import Vue from "vue";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
@@ -209,11 +244,14 @@ export default {
       id: 0,
       resultado: {},
       usuarioSesion: {},
+      criterioNombre: "",
       listaAlumnos: [],
+      lista: [],
       alumno: { id: 0, nombre: "", foto: "" },
       myCroppa: {},
       imgUrl: "",
       cargaAlumno: false,
+      loadingCatalogo: false,
       loadingUpload: false
     };
   },
@@ -247,22 +285,33 @@ export default {
     },
 
     cargarCatalogoAlumnos() {
-      this.get(
-        URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
-        result => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;
+      if (this.listaAlumnos.length == 0) {
+        this.loadingCatalogo = true;
+        this.get(
+          URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
+          result => {
+            this.response = result.data;
+            console.log("Consulta " + JSON.stringify(this.response));
+            if (this.response != null) {
+              this.listaAlumnos = this.response;
+              this.lista = this.response;
+              this.loadingCatalogo = false;
+            }
           }
-        }
-      );
+        );
+      } else {
+        console.log("La lista ya se encuentra cargada");
+      }
     },
     cargarAlumno() {
       this.get(URL.ALUMNOS_BASE + "/id/" + this.id, result => {
         this.alumno = result.data;
         this.loadingUpload = false;
       });
+    },
+    seleccionarAlumno(row) {
+      console.log("seleccion " + JSON.stringify(row));
+      this.alumno = row;
     },
     onFileTypeMismatch(file) {
       alert("Tipo de archivo invalido. Por favor seleccione jpeg ó png.");
@@ -299,22 +348,44 @@ export default {
       data.append("id_alumno", this.alumno.id);
       data.append("genero", this.usuarioSesion.id);
       this.loadingUpload = true;
+      let thus = this;
       this.post(URL.IMAGEN_PERFIL, data, result => {
         console.log(JSON.stringify(result));
         let respuesta = result.data;
         if (respuesta != null) {
-          this.cargaAlumno();
-          this.$notificacion.info(
+          thus.cargaAlumno();
+          thus.$notificacion.info(
             "Actualización de la foto",
             "Se actualizó la foto de perfil del alumno."
           );
         } else {
-          this.$notificacion.error(
+          thus.$notificacion.error(
             "Error en lactualización de la foto",
             "Sucedió un error al tratar de actualizar la foto de perfil."
           );
         }
       });
+    },
+    buscarPorNombre() {
+      console.log("Buscar por nombre " + this.criterioNombre);
+
+      this.lista = filtrarNombreAlumno(this.criterioNombre, this.listaAlumnos);
+
+      /* if (this.criterioNombre == "") {
+        this.lista = this.listaAlumnos;
+      } else {
+        this.lista = this.listaAlumnos.filter(
+          e =>
+            e.nombre
+              .toUpperCase()
+              .includes(this.criterioNombre.toUpperCase()) ||
+            (e.nombre_carino
+              ? e.nombre_carino
+                  .toUpperCase()
+                  .includes(this.criterioNombre.toUpperCase())
+              : false)
+        );
+      }*/
     },
     zoomIn() {
       this.myCroppa.zoomIn();

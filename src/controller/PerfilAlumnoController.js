@@ -274,7 +274,9 @@ export default {
             }
 
             this.alumno.genero = this.usuarioSesion.id;            
-            this.alumno.foto = this.getFoto();
+            /*this.alumno.foto = (!this.alumno.foto || this.alumno.foto === '' || this.alumno.foto == null) ?
+                                 this.getFoto():
+                                 this.alumno.foto;*/
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
             this.put(

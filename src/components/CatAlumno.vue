@@ -311,11 +311,12 @@
             </thead>
             <tr v-for="row in lista" :key="row.id">
               <td class="text-right" style="padding-left:2px;padding-right:2px;">
+                <!--src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"-->
                 <img
-                  :src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"
+                  :src="row.foto"
                   width="50"
                   height="50"
-                  v-on:click="verPerfil(row)"
+                  v-on:click="subirFotoPerfil(row.id)"
                   alt="..."
                   title="Ver el perfil del alumno"
                   class="rounded-circle"
