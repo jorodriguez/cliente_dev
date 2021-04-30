@@ -1296,25 +1296,7 @@
           </div>
         </Popup>   
 
-        <!-- Actualizar foto-->
-         <Popup id="popup_foto_perfil"  :show_button_close="false">
-          <div slot="header">Foto de <strong> {{alumno.nombre}} {{alumno.apellidos}}</strong></div>
-          <div slot="content">                                      
-            <div class="row justify-content-md-center">
-                            
-              </div>                                    
-          </div>
-          <div slot="footer">            
-            <button
-                      class="btn btn-secondary"
-                      v-on:click="cancelarModificarFechaPago()"                      
-                    >Cancelar</button>  
-               <button
-                      class="btn btn-primary"
-                      v-on:click="modificarFechaLimitePago()"                      
-                    >Seleccionar</button>            
-          </div>
-        </Popup>   
+             
 
 
   </div>

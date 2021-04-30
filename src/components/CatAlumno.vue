@@ -306,8 +306,7 @@
               <th>Grupo</th>
               <th>Hora de Entrada</th>
               <th>Hora de Salida</th>
-              <th></th>
-              <!--<th></th>-->
+              <th></th>              
             </thead>
             <tr v-for="row in lista" :key="row.id">
               <td class="text-right" style="padding-left:2px;padding-right:2px;">

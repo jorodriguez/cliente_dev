@@ -29,7 +29,7 @@
             </td>
           </tr>
         </table>
-
+<!--
         <div id="accordion">
           <div class="card">
             <div class="card-header" id="headingOne">
@@ -96,6 +96,7 @@
             </div>
           </div>
         </div>
+        -->
       </div>
 
       <div class="col-3">
@@ -195,6 +196,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                  :disabled="this.loadingUpload"
                   @click="generateImage(false)"
                 >{{this.loadingUpload ? 'Actualizando foto..':'Actualizar foto'}}</button>
               </div>
@@ -353,7 +355,7 @@ export default {
         console.log(JSON.stringify(result));
         let respuesta = result.data;
         if (respuesta != null) {
-          thus.cargaAlumno();
+          thus.cargarAlumno();
           thus.$notificacion.info(
             "Actualización de la foto",
             "Se actualizó la foto de perfil del alumno."
