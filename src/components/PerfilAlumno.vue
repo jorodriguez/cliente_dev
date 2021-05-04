@@ -203,11 +203,12 @@
         </div>
         <div class="col text-center">          
           <img
-            :src="alumno.foto"
-            alt
+            :src="alumno.foto"            
             class="rounded-circle"
             width="50"
             height="50"
+            style="cursor:pointer"
+            title="Actualizar foto de perfil"
             @click="subirFotoPerfil(alumno.id)"
           />
           <p class="font-weight-bold h4">

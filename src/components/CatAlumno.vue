@@ -317,8 +317,9 @@
                   height="50"
                   v-on:click="subirFotoPerfil(row.id)"
                   alt="..."
-                  title="Ver el perfil del alumno"
+                  title="Actualizar foto de perfil"
                   class="rounded-circle"
+                  style="cursor:pointer"
                 />
               </td>
               <td class="text-left" style="padding-left:0px;">
