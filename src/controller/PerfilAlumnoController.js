@@ -14,6 +14,7 @@ import { getUsuarioSesion } from '../helpers/Sesion';
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
 import {validacionCorreo} from "../helpers/ValidacionUtils"
+import EstadoCuenta from '../components/EstadoCuenta.vue'
 
 
 export default {
@@ -23,7 +24,8 @@ export default {
         Datepicker,
         CargosPagos,
         BalanceAlumno,
-        Popup
+        Popup,
+        EstadoCuenta
     },
     data() {
         return {

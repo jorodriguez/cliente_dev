@@ -76,6 +76,8 @@ const GENERO_ALUMNO = BASE + '/genero_alumno';
 const IMAGEN_PERFIL = BASE + '/foto_perfil';
 
 const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
+const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuenta/preview/:id_alumno
+const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
 
 
 const URL = {    
@@ -172,7 +174,9 @@ const URL = {
     REPORTE_CONBRANZA:REPORTE_CONBRANZA,
     
     IMAGEN_PERFIL:IMAGEN_PERFIL,
-    ESTADO_CUENTA:ESTADO_CUENTA
+    ESTADO_CUENTA:ESTADO_CUENTA,
+    ESTADO_CUENTA_ENVIAR:ESTADO_CUENTA_ENVIAR,
+    ESTADO_CUENTA_PREVIEW:ESTADO_CUENTA_PREVIEW
 
 }
 

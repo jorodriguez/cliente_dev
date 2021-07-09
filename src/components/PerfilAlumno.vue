@@ -227,11 +227,7 @@
             <p>
               $<balance-alumno :idalumno="id" mostrarfecha="true"></balance-alumno>
             </p>
-                <button
-                      type="button"
-                      class="btn btn-sm btn-link"
-                      v-on:click="mostrarEstadoCuenta()"
-                    >Estado de cuenta</button>
+                <estado-cuenta :idAlumno="id" />                                
             </div>
           </div>
         </div>
