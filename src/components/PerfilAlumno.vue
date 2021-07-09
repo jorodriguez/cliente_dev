@@ -36,7 +36,7 @@
                       v-bind:key="p.id"
                     >{{ p.nombre }}  </option>
                   </select>                  
-                </div>
+               </div>
                 <div class="form-group" v-else-if="operacion == 'UPDATE'">
                   <input type="text" v-model="familiar.parentesco" class="form-control" disabled>
                 </div>
@@ -225,8 +225,13 @@
             <div class="card-body">
             Balance
             <p>
-            $<balance-alumno :idalumno="id" mostrarfecha="true"></balance-alumno>
+              $<balance-alumno :idalumno="id" mostrarfecha="true"></balance-alumno>
             </p>
+                <button
+                      type="button"
+                      class="btn btn-sm btn-link"
+                      v-on:click="mostrarEstadoCuenta()"
+                    >Estado de cuenta</button>
             </div>
           </div>
         </div>

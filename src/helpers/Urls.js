@@ -1,7 +1,7 @@
 
-//const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
+const BASE = (function() {return process.env.URL_API || "http://localhost:5000" })();
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
-const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 export const BRANCH = "202104-imagen-perfil";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -74,6 +74,8 @@ const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 const GENERO_ALUMNO = BASE + '/genero_alumno';
 
 const IMAGEN_PERFIL = BASE + '/foto_perfil';
+
+const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
 
 
 const URL = {    
@@ -169,7 +171,8 @@ const URL = {
     
     REPORTE_CONBRANZA:REPORTE_CONBRANZA,
     
-    IMAGEN_PERFIL:IMAGEN_PERFIL
+    IMAGEN_PERFIL:IMAGEN_PERFIL,
+    ESTADO_CUENTA:ESTADO_CUENTA
 
 }
 
