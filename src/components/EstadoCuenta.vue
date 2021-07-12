@@ -1,10 +1,10 @@
 <template>
   <span>
   <button
-                      type="button"
-                      class="btn btn-sm btn-link"
-                      v-on:click="verEstadoCuenta()"
-                    >Enviar estado de cuenta</button>
+        type="button"
+        class="btn btn-sm btn-link"
+        v-on:click="verEstadoCuenta()"
+        >Enviar estado de cuenta</button>
 
   <Popup id="popup_preview" size="lg" :show_button_close="true">
     <div slot="header">
@@ -12,7 +12,7 @@
       <strong v-if="this.estadoCuenta">{{this.estadoCuenta.alumno.nombre}} {{this.estadoCuenta.alumno.apellidos}}</strong>
     </div>
     <div slot="content" >      
-      <div class="row">
+      <div class="row">      
         <table v-if="this.estadoCuenta" class="table">
           <tr align="left">
             <td>Padres </td>
@@ -22,14 +22,16 @@
             <td>Correos </td>
             <td>{{this.estadoCuenta.padres.correos}}</td>
           </tr>
-        </table>
+        </table>        
       </div>      
         <span v-if="this.loadingPage">Cargando..</span>
         <span v-else v-html="this.pagePreview"></span>      
       
     </div>
     <div slot="footer">            
-      <button class="btn btn-primary" @click="enviarEstadoCuenta()">Enviar </button>
+      <button 
+        class="btn btn-primary"
+         @click="enviarEstadoCuenta()"> Enviar </button>
     </div>
   </Popup>
   </span>
@@ -60,6 +62,7 @@ export default {
       criterioNombre: "",
       estadoCuenta: null,
       loading:false,
+      loadingEnvio:false,
       loadingPage:false,
       pagePreview:null
     };
@@ -81,19 +84,20 @@ export default {
     },    
     
     enviarEstadoCuenta(){
-        this.loading = true;
+        this.loadingEnvio = true;
         this.post(
           URL.ESTADO_CUENTA_ENVIAR,          
           {
             id_alumno:this.idAlumno
           }, 
           (result) => {
-                    let respuesta = result.data;                    
-                    this.loading = false;
-                    if (respuesta != null) {                        
+                    let respuesta = result.data;                       
+                    this.loadingEnvio = false;
+                    console.log(respuesta);
+                    if (respuesta != null) {    
+                         this.$notificacion.info('Envio de estado de cuenta', 'Se envio el estado de cuenta.');                    
                         if (respuesta.estatus) {
                             $("#popup_preview").modal("hide");                            
-
                         }
                     }
            }
