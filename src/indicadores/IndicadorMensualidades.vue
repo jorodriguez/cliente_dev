@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="sucItem.existen_mensualidades_vencidas">    
     <a
-     :key="usuarioSesion.co_sucursal"
+     :key="usuarioSesion.co_sucursal"      
       class="nav-link pr-0"
       href="#"
       role="button"

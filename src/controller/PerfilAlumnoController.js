@@ -1,20 +1,17 @@
 
-import router from "@/router/index";
-import AlumnoModel from "../models/AlumnoModel";
-import FormatoModel from "../models/FormatoModel";
-import FamiliarModel from "../models/FamiliarModel";
-import Utils from "../models/FormatoUtils";
 import Datepicker from 'vuejs-datepicker';
-import CargosPagos from '../components/CargosPago.vue'
-import BalanceAlumno from './BalanceAlumnoController'
-import URL from "../helpers/Urls";
-import Popup from './Popup';
+import { es } from 'vuejs-datepicker/dist/locale';
+import CargosPagos from '../components/CargosPago.vue';
+import EstadoCuenta from '../components/EstadoCuenta.vue';
+import { validacionDatosAlumno, validacionFechaLimitePagoAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from '../helpers/Sesion';
-import {en, es} from 'vuejs-datepicker/dist/locale'
-import {validacionDatosAlumno,validacionFechaLimitePagoAlumno} from "../helpers/AlumnoValidacion";
-import {validacionCorreo} from "../helpers/ValidacionUtils"
-import EstadoCuenta from '../components/EstadoCuenta.vue'
+import URL from "../helpers/Urls";
+import { validacionCorreo } from "../helpers/ValidacionUtils";
+import AlumnoModel from "../models/AlumnoModel";
+import Utils from "../models/FormatoUtils";
+import BalanceAlumno from './BalanceAlumnoController';
+import Popup from './Popup';
 
 
 export default {

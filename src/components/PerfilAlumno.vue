@@ -40,8 +40,8 @@
                 <div class="form-group" v-else-if="operacion == 'UPDATE'">
                   <input type="text" v-model="familiar.parentesco" class="form-control" disabled>
                 </div>
-              <!-- posible familiar -->
-              <div class="form-group" v-if="operacion == 'INSERT' && (familiar.co_parentesco == 1 || familiar.co_parentesco == 2)">
+              <!-- posible familiar -->              
+              <div class="form-group" v-if="operacion == 'INSERT' && (co_parentesco_seleccionado.id == 1 || co_parentesco_seleccionado.id == 2)">
                   <label for="selectPosiblePadres">
                     Seleccionar una persona ya registrada
                   </label>
