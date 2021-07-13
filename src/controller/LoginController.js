@@ -23,6 +23,7 @@ export default {
   mounted() {
     //console.log("iniciando login "+process.env.ROOT_API);
     console.log("URL BASE " + URL.LOGIN);
+    console.log("URL BASE " + process.env);
     console.log("URL BASE " + BRANCH);
     this.$session.clear();
     this.$root.$emit('LOGOUT', CONSTANTES.LOGOUT);
