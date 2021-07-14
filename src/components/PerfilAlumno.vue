@@ -111,7 +111,7 @@
                     :bootstrap-styling="true"              
                     :language="es"
                     required
-                  ></datepicker>                  
+                  ></datepicker>                                    
                 </div>
                 <div class="form-group" >
                   <label for="inputCorreoFamiliar">
@@ -385,6 +385,7 @@
                         :language="es"
                         required
                       ></datepicker>
+                      {{alumno.fecha_nacimiento}}
                     </div>
                     <div class="form-group">
                       <label for="inputSexo">
