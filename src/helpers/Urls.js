@@ -1,7 +1,7 @@
-//const BASE = process.env.URL_API || "http://localhost:5000";
+const BASE = process.env.URL_API || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
-const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
-export const BRANCH = "202107-enviar-estado-cuenta";
+//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+export const BRANCH = "202107-reporte-asistencia";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -106,6 +106,9 @@ const URL = {
     ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA : ASISTENCIA_USUARIO_BASE + '/usuario/', // id_usuario,fecha_inicio,fecha_fin
     ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS : ASISTENCIA_USUARIO_BASE + '/filtros_anios', // co_empresa
     ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS : ASISTENCIA_USUARIO_BASE + '/filtros_quincenas', // co_empresa,anio
+
+    // reporte RH
+    REPORTE_ASISTENCIA_RH : ASISTENCIA_USUARIO_BASE + '/reporte_rh/', // id_sucursal/fecha_inicio/fecha_fin
 
     BALANCE_BASE : BALANCE_BASE,
     SUCURSAL_BASE : SUCURSAL_BASE,
