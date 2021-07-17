@@ -66,11 +66,11 @@
                 name="fecha_nacmiento"
                 v-model="input.fecha_nacimiento"
                 input-class="form-control"
+                :format="'yyyy-MM-dd'"
                 :bootstrap-styling="true"
                 :language="es"                
                 required
-              ></datepicker>
-              fecha
+              ></datepicker>                   
               <label>
                 Sexo
                 <span class="text-danger">*</span>

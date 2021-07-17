@@ -384,8 +384,7 @@
                         :bootstrap-styling="true"
                         :language="es"
                         required
-                      ></datepicker>
-                      {{alumno.fecha_nacimiento}}
+                      ></datepicker>                          
                     </div>
                     <div class="form-group">
                       <label for="inputSexo">

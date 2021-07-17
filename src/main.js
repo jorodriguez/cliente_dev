@@ -12,6 +12,8 @@ import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
 import VuePageTransition from 'vue-page-transition'
 import JsonExcel from 'vue-json-excel'
+import moment from 'moment'
+Vue.prototype.moment = moment
  
 
 Vue.use(VueResource);

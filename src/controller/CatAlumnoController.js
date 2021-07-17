@@ -5,6 +5,7 @@ import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { en, es } from 'vuejs-datepicker/dist/locale'
 import { getUsuarioSesion } from '../helpers/Sesion';
+import moment from 'moment'
 
 export default {
   name: "Alumno",
@@ -130,7 +131,9 @@ export default {
 
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
       this.input.genero = this.usuarioSesion.id;
-
+      this.input.fecha_nacimiento = moment(this.input.fecha_nacimiento).format('YYYY-MM-DD');
+      this.input.fecha_inscripcion = moment(this.input.fecha_inscripcion).format('YYYY-MM-DD');
+      this.input.fecha_limite_pago = moment(this.input.fecha_limite_pago).format('YYYY-MM-DD');  
       this.post(URL.ALUMNOS_BASE,
         this.input,
         (result) => {
