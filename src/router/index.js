@@ -21,6 +21,7 @@ import Administracion from '../administracion/Administracion'
 import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
+import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
 
 import VueSession from 'vue-session'
 
@@ -58,6 +59,7 @@ const router = new Router({
         { path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true, validar: false } },
         { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true, validar: false } },
         { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true, validar: true } },
+        { path: '/AsistenciasUsuariosRh', name: 'AsistenciasUsuariosRh', component: ReporteAsistenciaUsuariosRh, meta: { requiresAuth: true, validar: true } },
         { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: false } },
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
         { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
