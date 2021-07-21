@@ -51,8 +51,24 @@
           </div>
         </div>
 
-    <div class="row">    
-     <vue-good-table
+    <div class="row" v-for="(item, index) in lista" :key="index">    
+    <h2>{{item.dia_id}} : {{item.name_day}}</h2>    
+    <table class="table table-sm table-striped" >    
+        <tr>
+            <!-- <th>Fecha</th>-->
+            <th class=" d-flex align-items-start">Maestro(a)</th>
+            <th>H. Entrada</th>
+            <th>H. Salida</th>
+        </tr>
+        <tr v-for="(dia,idx) in item.asistencias" :key="idx">
+          <!-- <td> {{dia.fecha}}</td>-->
+          <td align="left"> {{dia.nombre}}</td>
+          <td> {{dia.hora_entrada}}</td>
+          <td> {{dia.hora_salida}}</td>
+        </tr>
+    </table>
+  
+   <!--  <vue-good-table
           :columns="columnas"
           :rows="lista"
           :line-numbers="true"
@@ -78,6 +94,7 @@
           </span>  
           </template>
       </vue-good-table>
+      -->
     </div>    
   </div>
 </template>
