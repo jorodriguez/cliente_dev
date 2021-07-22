@@ -1,74 +1,36 @@
-/* eslint-disable vue/no-parsing-error */
-/* eslint-disable vue/valid-v-bind */
 <template>
   <div>
-    <h1>Lista de Asistencia </h1>            
-    <small>{{usuarioSesion.nombre_sucursal}}</small>     
-    <div class="text-left">      
-      <router-link to="/AsistenciaUsuarioRh" class="btn btn-secondary btn-lg">
+    <h1>Usuarios ({{ lista != [] ? lista.length:0}})</h1>
+    <small>{{usuarioSesion.nombre_sucursal}}</small>
+    <div class="text-left">
+      <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
-      </router-link>
+      </router-link>      
     </div>
+    <br />    
+     <!-- DESACTIVAR USUARIO -->
     
-     <div class="row">
-          <div class="col">
-            <div class="float-right">
-              <datepicker
-                name="fecha"
-                v-model="fechaInicio"
-                input-class="form-control"
-                @selected="cambiarFecha"
-                format="MM/dd/yyyy"
-                :value="fechaInicio"
-              ></datepicker>
-            </div>
-          </div>
-          <div class="col">
-            <div class="float-right">
-              <datepicker
-                name="fecha"
-                v-model="fechaFin"
-                input-class="form-control"
-                format="MM/dd/yyyy"
-                :value="fechaFin"
-                @selected="cambiarFecha"
-              ></datepicker>
-            </div>
-          </div>
-           <div class="col">
-             <button
-            type="button"
-            class="btn btn-primary "
-            :disabled="this.loading"
-            v-on:click="cargarLista()"
-          >Cargar</button>
-           </div>
-       </div>   
-    
-     <div v-if="loading" class="h4">
-          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Cargando...</span>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por nombre.."
+            v-model="criterioNombre"
+            v-on:keyup.enter="buscarPorNombre()"
+            aria-label="Buscar por nombre.."
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" v-on:click="buscarPorNombre()">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
         </div>
 
-    <div class="row" v-for="(item, index) in lista" :key="index">    
-    <h2>{{item.dia_id}} : {{item.name_day}}</h2>    
-    <table class="table table-sm table-striped" >    
-        <tr>
-            <!-- <th>Fecha</th>-->
-            <th class=" d-flex align-items-start">Nombre</th>
-            <th>H. Entrada</th>
-            <th>H. Salida</th>
-        </tr>
-        <tr v-for="(dia,idx) in item.asistencias" :key="idx">
-          <!-- <td> {{dia.fecha}}</td>-->
-          <td align="left"> {{dia.nombre.toUpperCase()}}</td>
-          <td> {{dia.hora_entrada}}</td>
-          <td> {{dia.hora_salida}}</td>
-        </tr>
-    </table>
-  
-   <!--  <vue-good-table
+        <vue-good-table
           :columns="columnas"
           :rows="lista"
           :line-numbers="true"
@@ -94,10 +56,14 @@
           </span>  
           </template>
       </vue-good-table>
-      -->
-    </div>    
+      
+     
+      </div>
+    </div>
   </div>
 </template>
+
+
 
 <script >
 import Vue from "vue";
@@ -193,7 +159,7 @@ export default {
     }  
   },
   mounted() {    
-     console.log("iniciando el componente reporte de asistencia de usuarios de rh");    
+     console.log("iniciando el componente admin");    
      this.usuarioSesion = getUsuarioSesion();
      this.fechaInicio = new Date();
      this.fechaFin = new Date();
@@ -233,3 +199,7 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+</style>
