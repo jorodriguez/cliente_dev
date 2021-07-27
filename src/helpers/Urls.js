@@ -78,6 +78,8 @@ const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
 const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuenta/preview/:id_alumno
 const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
 
+const USUARIOS_RH = BASE + '/usuarios_rh/'; // /usuarios_rh/id_sucursal
+
 
 const URL = {    
     LOGIN : BASE+'/auth/login',    
@@ -175,11 +177,10 @@ const URL = {
     IMAGEN_PERFIL:IMAGEN_PERFIL,
     ESTADO_CUENTA:ESTADO_CUENTA,
     ESTADO_CUENTA_ENVIAR:ESTADO_CUENTA_ENVIAR,
-    ESTADO_CUENTA_PREVIEW:ESTADO_CUENTA_PREVIEW
+    ESTADO_CUENTA_PREVIEW:ESTADO_CUENTA_PREVIEW,
+    USUARIOS_RH:USUARIOS_RH
 
 }
 
 export default URL;
-
-//Me quede en cargos y pagos
 
