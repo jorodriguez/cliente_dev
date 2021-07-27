@@ -118,7 +118,8 @@ export default {
           field: 'correo',
           filterable: true,
           thClass: 'text-center',
-          tdClass: 'text-center'          
+          tdClass: 'text-center'  ,
+          hidden:true        
         }, 
        
         {          
@@ -127,6 +128,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         }, 
         {          
           label: 'Tipo',
@@ -134,6 +136,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         }, 
         {          
           label: 'H. Entrada',
@@ -141,6 +144,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         },  
         {          
           label: 'H. Salida',
@@ -148,6 +152,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         }, 
         {          
           label: 'F. Baja',
@@ -155,6 +160,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         }, 
         {          
           label: 'Motivo',
@@ -162,6 +168,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
         }, 
         {          
           label: 'Baja',
@@ -177,13 +184,15 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',
+          hidden:true
                   }, 
          {          
           label: 'Mensual',
           field: 'sueldo_mensual',
           filterable: true,
           thClass: 'text-center',
-          tdClass: 'text-center',          
+          tdClass: 'text-center', 
+          hidden:true         
         }, 
           {          
           label: 'Quincenal',
@@ -191,6 +200,7 @@ export default {
           filterable: true,
           thClass: 'text-center',
           tdClass: 'text-center',          
+          hidden:true
         }, 
         {          
           label: 'Visible Reporte',
