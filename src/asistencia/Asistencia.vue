@@ -2,7 +2,7 @@
   <div class="asistencia">
     <h1>Entrada de Alumnos</h1>
     <small>{{usuarioSesion.nombre_sucursal}}</small> 
-    <span>{{this.mensaje}}</span>
+    <!--<span>{{this.mensaje}}</span>-->
     <div class="row">
       <div class="col-1">
         <router-link to="/principal" class="btn btn-secondary btn-lg">
