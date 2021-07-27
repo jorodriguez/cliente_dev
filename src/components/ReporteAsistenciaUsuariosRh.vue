@@ -59,7 +59,8 @@
             <th class=" d-flex align-items-start">Nombre</th>
             <th>H. Entrada</th>
             <th>H. Salida</th>
-        </tr>
+            
+       </tr>
         <tr v-for="(dia,idx) in item.asistencias" :key="idx">
           <!-- <td> {{dia.fecha}}</td>-->
           <td align="left"> {{dia.nombre.toUpperCase()}}</td>
@@ -68,33 +69,6 @@
         </tr>
     </table>
   
-   <!--  <vue-good-table
-          :columns="columnas"
-          :rows="lista"
-          :line-numbers="true"
-          @on-row-click="onRowClick"          
-          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
-          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
-          @on-selected-rows-change="selectionChanged"
-          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
-          @on-select-all="selectAll"
-          :groupOptions="{
-  	          enabled: false,               
-          }"
-        >      
-         <template slot="table-row" slot-scope="props">  
-          <span v-if="props.column.field == 'fecha_baja'">                 
-              <span :class="props.row.eliminado ?  'text-danger':'text-success'" >{{props.row.fecha_baja}}</span>            
-          </span>  
-           <span v-else-if="props.column.field == 'motivo_baja'">           
-              <span v-if="props.row.eliminado" class="text-danger" >{{props.row.motivo_baja}}</span>            
-          </span>  
-          <span v-else-if="props.column.field == 'eliminado'">           
-              <span v-if="props.row.eliminado" class="text-danger" >{{props.row.eliminado ? 'SI':''}}</span>            
-          </span>  
-          </template>
-      </vue-good-table>
-      -->
     </div>    
   </div>
 </template>

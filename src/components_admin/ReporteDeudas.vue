@@ -45,7 +45,19 @@
           aria-selected="false"
         >Mensualidades</a>
       </li>      
+     
       <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-usuarios-tab"
+          data-toggle="pill"
+          href="#pills-usuarios"
+          role="tab"
+          aria-controls="pills-usuarios"
+          aria-selected="false"
+        >Usuarios</a>
+      </li>
+       <li class="nav-item">
         <a
           class="nav-link"
           id="pills-contabilidad-tab"
@@ -381,6 +393,17 @@
       >
         <div class="card">          
           <ReporteContabilidad/>         
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="pills-usuarios"
+        role="tabpanel"
+        aria-labelledby="pills-usuarios-tab"
+      >
+        <div class="card">    
+       
+          <AdministrarUsuariosRh/>
         </div>
       </div>
     </div>

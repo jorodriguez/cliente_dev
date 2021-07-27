@@ -22,6 +22,7 @@ import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
 import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
+import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
 
 import VueSession from 'vue-session'
 
@@ -66,7 +67,8 @@ const router = new Router({
 
         { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true, validar: false } },
         { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true, validar: false } },
-        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, validar: false } }
+        { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, validar: false } },
+        { path: '/UsuariosRh', name: 'UsuariosRh', component: AdministrarUsuariosRh, meta: { requiresAuth: true, validar: false,is_admin: true, } }
 
       ]
     },

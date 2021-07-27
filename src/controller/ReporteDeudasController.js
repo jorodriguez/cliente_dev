@@ -12,6 +12,7 @@ import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import SucursalCard from '../components_admin/fragmentos/SucursalCard';
 import ReporteContabilidad from '../components_admin/ReporteContabilidad';
+import AdministrarUsuariosRh from '../components_admin/AdministrarUsuariosRh';
 
 export default {
   name: "ReporteDeudas",
@@ -19,6 +20,7 @@ export default {
     SignoutComponent,
     ReporteMensualidades,
     ReporteContabilidad,
+    AdministrarUsuariosRh,
     VueGoodTable,
     Popup,
     SucursalCard
