@@ -78,7 +78,7 @@ const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
 const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuenta/preview/:id_alumno
 const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
 
-const USUARIOS_RH = BASE + '/usuarios_rh/'; // /usuarios_rh/id_sucursal
+const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
 
 
 const URL = {    

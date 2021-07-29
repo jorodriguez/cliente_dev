@@ -40,10 +40,10 @@
           }"
         >
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'nombre'">
-              <ul class="list-unstyled">
-                <li>
-                  <strong>{{ props.row.nombre }}</strong> 
+            <span v-if="props.column.field == 'nombre'" >
+              <ul :class="props.row.eliminado ? 'tachado list-unstyled':'list-unstyled'">
+                <li >
+                  <strong >{{ props.row.nombre }}</strong> 
                 </li>                
                 <li>
                   Horario de <strong>{{ props.row.hora_entrada }}</strong> a
@@ -54,8 +54,16 @@
                     props.row.correo ? props.row.correo : "sin correo"
                   }}</span>
                   </li>
+                   <li><span class="small">F. de registro {{props.row.fecha_registro}}</span></li>
+                  <li><span v-if="props.row.eliminado" class="text-danger small">F. de baja {{props.row.fecha_baja}}</span></li>
+                  <li>                   
+                    <div v-if="props.row.eliminado"
+                         class="text-wrap text-danger small" style="width: 10rem;">
+                      <strong>{{props.row.motivo_baja}}</strong>
+                    </div>              
+                  </li>
               </ul>                             
-              <small><span v-if="props.row.acceso_sistema" class="badge badge-secondary">Acceso a sistema</span></small><br/>
+              <small v-if="props.row.acceso_sistema" ><span class="badge badge-info">Acceso a sistema</span></small><br/>
               <a
                 class="small"                
                 data-toggle="collapse"
@@ -66,7 +74,7 @@
                 Ver mas..
               </a>
               <div class="collapse" :id="'verMas'+props.row.id">
-                <ul class="list-unstyled">                  
+                  <ul :class="props.row.eliminado ? 'tachado list-unstyled':'list-unstyled'">           
                   <li>
                     <span
                       >Mensual <strong>${{
@@ -86,27 +94,32 @@
                 </ul>
               </div>
             </span>
-
+<!--
             <span v-else-if="props.column.field == 'eliminado'">
               <ul class="list-unstyled">                  
-                  <li><span>{{props.row.fecha_baja}}</span></li>
+                  <li><span class="text-danger small">Registro {{props.row.fecha_registro}}</span></li>
+                  <li><span class="text-danger small">Baja {{props.row.fecha_baja}}</span></li>
                   <li>
-                    <!--
-                      <textarea class="form-control" v-model="props.row.motivo_baja" disabled rows="3">                      
-                    </textarea>                    
-                    -->
+                    
                     <div v-if="props.row.eliminado"
                          class="badge badge-ligth text-wrap text-danger" style="width: 15rem;">
                       {{props.row.motivo_baja}}
                     </div>              
                   </li>
-              </ul>
-              
-              
+              </ul>                           
             </span>
+            -->
 
-            <span v-else-if="props.column.field == 'visible_reporte'">
-              <span v-if="props.row.visible_reporte" class="text-danger">{{ props.row.visible_reporte ? "SI" : ""}}</span>
+            <span v-else-if="props.column.field == 'visible_reporte'">              
+               <div class="btn-group" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-sm btn-outline-light" @click="seleccionarUsuario(props.row)">
+                        <i v-if="props.row.visible_reporte" class="fas fa-eye text-primary"></i>
+                        <i v-else class="fas fa-eye text-secondary"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-light">
+                     <i class="fas fa-trash text-danger"></i>
+                    </button>                   
+              </div>
             </span>
           </template>
         </vue-good-table>
@@ -116,11 +129,13 @@
           <div slot="content">
             <div class="row">
               <div class="container">
-                ¿En realidad desea no ver el usuario en el reporte?
+                ¿En realidad deseas no ver a <strong>{{usuarioSeleccionado && usuarioSeleccionado.nombre }}</strong> en el reporte de asistencias?
               </div>
             </div>
           </div>
-          <div slot="footer"></div>
+          <div slot="footer">
+              <button class="btn btn-lg btn-danger" @click="confirmarVisibleReporte()">Aceptar</button>              
+          </div>
         </Popup>
       </div>
     </div>
@@ -137,6 +152,7 @@ import Datepicker from "vuejs-datepicker";
 import SucursalCard from "./fragmentos/SucursalCard";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import Loader from "../components_utils/Loader";
+import Popup from "../controller/Popup";
 
 export default {
   name: "AdministrarUsuriosRh",
@@ -144,7 +160,7 @@ export default {
     Datepicker,
     VueGoodTable,
     SucursalCard,
-    Loader
+    Loader,Popup
   },
   mixins: [operacionesApi],
   props: {},
@@ -154,6 +170,7 @@ export default {
       lista: [],
       listaSucursales: [],
       sucursalSeleccionada: null,
+      usuarioSeleccionado: null,
       loading: false,
       usuarioSesion: {},
       TABLE_CONFIG: TABLE_CONFIG,
@@ -233,7 +250,7 @@ export default {
           filterable: true,
           thClass: "text-center",
           tdClass: "text-center",
-          hidden: false
+          hidden: true
         },
         {
           label: "Acceso sistema",
@@ -292,12 +309,30 @@ export default {
     },
     cargarListaUsuariosSucursal(id_sucursal) {
       this.loading = true;
-      this.get(URL.USUARIOS_RH + id_sucursal, result => {
+      this.get(URL.USUARIOS_RH +"/"+ id_sucursal, result => {
         console.log("Consulta " + result.data);
         if (result.data != null) {
           this.lista = result.data;
         }
         this.loading = false;
+      });
+    },
+    seleccionarUsuario(row){
+      this.usuarioSeleccionado = row;
+      $("#visibleUsurioReporte").modal("show");
+
+    },
+    confirmarVisibleReporte(){
+      this.loading = true;
+      this.post(
+          URL.USUARIOS_RH,
+          {id_usuario:this.usuarioSeleccionado.id,genero:this.usuarioSesion.id},
+          result => {          
+            if (result.data != null) {
+              $("#visibleUsurioReporte").modal("hide");
+              this.cargarLista();
+            }
+          this.loading = false;
       });
     },
     selectionChanged() {},
@@ -306,3 +341,11 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+ .tachado {
+    text-decoration: line-through;
+}
+</style>
+
