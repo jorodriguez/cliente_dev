@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="card">
-      <div class="card-body">
-        <h5>Usuarios</h5>
+      <div class="card-body">        
+        
         <div class="row">
           <div
             v-for="row in listaSucursales"
@@ -10,10 +10,10 @@
             class="col-xl-3 col-sm-4 py-2 mx-auto"
           >
             <SucursalCard
-              @click="cargarListaUsuariosSucursal(row.id_sucursal)"
+              @click="seleccionarSucursal(row)"
               :class_color="row.class_color"
               titulo
-              :nombre="row.nombre_sucursal"
+              :nombre="row.nombre"
               :foto="row.foto"
               icono_etiqueta="fa fa-user"
               etiqueta=""
@@ -23,6 +23,9 @@
             </SucursalCard>
           </div>
         </div>
+        
+        <!--<PopupNuevoUsuario v-if="sucursalSeleccionada" :metodo_refrescar="cargarListaUsuariosSucursal"></PopupNuevoUsuario>-->
+        <h3>Usuarios de {{sucursalSeleccionada && sucursalSeleccionada.nombre}}</h3>
 
         <Loader :loading="loading" :mini="true" />
         <vue-good-table
@@ -40,61 +43,96 @@
           }"
         >
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'nombre'" >
-              <ul :class="props.row.eliminado ? 'tachado list-unstyled':'list-unstyled'">
-                <li >
-                  <strong >{{ props.row.nombre }}</strong> 
-                </li>                
+            <span v-if="props.column.field == 'nombre'">
+              <ul
+                :class="
+                  props.row.eliminado
+                    ? 'tachado list-unstyled'
+                    : 'list-unstyled'
+                "
+              >
+                <li>
+                  <strong>{{ props.row.nombre }}</strong>
+                </li>
                 <li>
                   Horario de <strong>{{ props.row.hora_entrada }}</strong> a
                   <strong>{{ props.row.hora_salida }}</strong>
                 </li>
                 <li>
-                    <span class="text-muted small">{{
+                  <span class="text-muted small">{{
                     props.row.correo ? props.row.correo : "sin correo"
                   }}</span>
-                  </li>
-                   <li><span class="small">F. de registro {{props.row.fecha_registro}}</span></li>
-                  <li><span v-if="props.row.eliminado" class="text-danger small">F. de baja {{props.row.fecha_baja}}</span></li>
-                  <li>                   
-                    <div v-if="props.row.eliminado"
-                         class="text-wrap text-danger small" style="width: 10rem;">
-                      <strong>{{props.row.motivo_baja}}</strong>
-                    </div>              
-                  </li>
-              </ul>                             
-              <small v-if="props.row.acceso_sistema" ><span class="badge badge-info">Acceso a sistema</span></small><br/>
+                </li>
+                <li>
+                  <span class="small"
+                    >F. de registro {{ props.row.fecha_registro }}</span
+                  >
+                </li>
+                <li v-if="!props.row.visible_reporte">
+                  <small><span class="small text-warning" @click="seleccionarUsuario(props.row)">Este usuario <strong>no</strong> es visible en el reporte de asistecias </span></small>
+                </li>
+                <li>
+                  <span v-if="props.row.eliminado" class="text-danger small"
+                    >F. de baja {{ props.row.fecha_baja }}</span
+                  >
+                </li>
+                <li>
+                  <div
+                    v-if="props.row.eliminado"
+                    class="text-wrap text-danger small"
+                    style="width: 10rem;"
+                  >
+                    <strong>{{ props.row.motivo_baja }}</strong>
+                  </div>
+                </li>
+              </ul>
+              <small v-if="props.row.acceso_sistema"
+                ><span class="badge badge-info">Acceso a sistema</span></small
+              ><br />
               <a
-                class="small"                
+                class="small"
                 data-toggle="collapse"
-                :href="'#verMas'+props.row.id"
+                :href="'#verMas' + props.row.id"
                 aria-expanded="false"
-                :aria-controls="'verMas'+props.row.id"
+                :aria-controls="'verMas' + props.row.id"
               >
                 Ver mas..
               </a>
-              <div class="collapse" :id="'verMas'+props.row.id">
-                  <ul :class="props.row.eliminado ? 'tachado list-unstyled':'list-unstyled'">           
+              <div class="collapse" :id="'verMas' + props.row.id">
+                <ul
+                  :class="
+                    props.row.eliminado
+                      ? 'tachado list-unstyled'
+                      : 'list-unstyled'
+                  "
+                >
                   <li>
                     <span
-                      >Mensual <strong>${{
-                        props.row.sueldo_mensual ? props.row.sueldo_mensual : ""
-                      }}</strong></span
+                      >Mensual
+                      <strong
+                        >${{
+                          props.row.sueldo_mensual
+                            ? props.row.sueldo_mensual
+                            : ""
+                        }}</strong
+                      ></span
                     >
                   </li>
                   <li>
                     <span
-                      >Quincenal<strong> ${{
-                        props.row.sueldo_quincenal
-                          ? props.row.sueldo_quincenal
-                          : ""
-                      }}</strong></span
+                      >Quincenal<strong>
+                        ${{
+                          props.row.sueldo_quincenal
+                            ? props.row.sueldo_quincenal
+                            : ""
+                        }}</strong
+                      ></span
                     >
                   </li>
                 </ul>
               </div>
             </span>
-<!--
+            <!--
             <span v-else-if="props.column.field == 'eliminado'">
               <ul class="list-unstyled">                  
                   <li><span class="text-danger small">Registro {{props.row.fecha_registro}}</span></li>
@@ -110,33 +148,81 @@
             </span>
             -->
 
-            <span v-else-if="props.column.field == 'visible_reporte'">              
-               <div class="btn-group" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-sm btn-outline-light" @click="seleccionarUsuario(props.row)">
-                        <i v-if="props.row.visible_reporte" class="fas fa-eye text-primary"></i>
-                        <i v-else class="fas fa-eye text-secondary"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-light">
-                     <i class="fas fa-trash text-danger"></i>
-                    </button>                   
+            <span
+              v-else-if="props.column.field == 'visible_reporte'"
+              class="justify-center align-content-center"
+            >
+              <div class="btn-group" role="group" aria-label="First group">
+                <span>
+                <button
+                  type="button"                           
+                  class="btn btn-outline-light btn-sm"
+                  @click="seleccionarUsuario(props.row)"
+                  :title="props.row.visible_reporte ? 'Actualmente es visible en el reporte de asistencias':'Actualmente NO es visible en el reporte de asistencias'"
+                >
+                  <i
+                    v-if="props.row.visible_reporte"
+                    class="fas fa-eye text-primary"
+                  ></i>
+                  <i v-else class="fas fa-eye-slash text-gray"></i>
+                </button>               
+                </span>
+                 <PopupOperacionesUsuario :usuario_value="props.row" :ocultar_eliminacion="props.row.eliminado" :ocultar_modificacion="props.row.eliminado" :metodo_refrescar="cargarListaUsuariosSucursal"/>
               </div>
             </span>
           </template>
         </vue-good-table>
 
         <Popup id="visibleUsurioReporte" show_button_close="true">
-          <div slot="header">Confirmación</div>
+          <div slot="header">Visible en reporte de asistencias</div>
           <div slot="content">
             <div class="row">
-              <div class="container">
-                ¿En realidad deseas no ver a <strong>{{usuarioSeleccionado && usuarioSeleccionado.nombre }}</strong> en el reporte de asistencias?
+              <div class="container">               
+                <span v-if="usuarioSeleccionado && usuarioSeleccionado.visible_reporte" >
+                ¿Confirmas que 
+                <strong class="text-danger" >{{ usuarioSeleccionado && usuarioSeleccionado.nombre}}</strong>
+                <span class="text-underline ">NO estará visible</span> en el reporte de asistencias?                
+                </span>
+
+                <span v-else>
+                  ¿Confirmas que 
+                <strong>{{ usuarioSeleccionado && usuarioSeleccionado.nombre}}</strong>
+                   <span class="text-underline">estará visible</span>  en el reporte de asistencias?                
+                </span>
               </div>
             </div>
           </div>
           <div slot="footer">
-              <button class="btn btn-lg btn-danger" @click="confirmarVisibleReporte()">Aceptar</button>              
+            <button
+              class="btn btn-lg btn-danger"
+              @click="confirmarVisibleReporte()"
+            >
+              Aceptar
+            </button>
           </div>
         </Popup>
+
+       <Popup id="eliminarUsurio" show_button_close="true">
+          <div slot="header">Eliminar</div>
+          <div slot="content">
+            <div class="row">
+              <div class="container">                              
+                Confirmación de baja 
+                <strong class="text-danger" >{{ usuarioSeleccionado && usuarioSeleccionado.nombre}}</strong>
+                <span class="text-underline ">NO estará visible</span> en el reporte de asistencias?                               
+              </div>
+            </div>
+          </div>
+          <div slot="footer">
+            <button
+              class="btn btn-lg btn-danger"
+              @click="confirmarVisibleReporte()"
+            >
+              Aceptar
+            </button>
+          </div>
+        </Popup>
+
       </div>
     </div>
   </div>
@@ -153,6 +239,9 @@ import SucursalCard from "./fragmentos/SucursalCard";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import Loader from "../components_utils/Loader";
 import Popup from "../controller/Popup";
+import PopupOperacionesUsuario from '../administracion/paginas/PopupOperacionesUsuario';
+//import PopupNuevoUsuario from '../administracion/paginas/PopupNuevoUsuario';
+
 
 export default {
   name: "AdministrarUsuriosRh",
@@ -160,7 +249,10 @@ export default {
     Datepicker,
     VueGoodTable,
     SucursalCard,
-    Loader,Popup
+    Loader,
+  //  PopupNuevoUsuario,
+    PopupOperacionesUsuario,
+    Popup
   },
   mixins: [operacionesApi],
   props: {},
@@ -297,43 +389,56 @@ export default {
   methods: {
     init() {
       this.cargarUsuarioSucursal();
+      
     },
     cargarUsuarioSucursal() {
       this.loader = false;
-      this.get(URL.SUCURSAL_USUARIO + "/" + this.usuarioSesion.id, results => {
+      this.get(URL.SUCURSAL_USUARIO_ASIGNADAS + "/" + this.usuarioSesion.id, results => {
         if (results.data != null) {
           this.loader = false;
-          this.listaSucursales = results.data;
+          this.listaSucursales = results.data;          
         }
       });
     },
-    cargarListaUsuariosSucursal(id_sucursal) {
+    seleccionarSucursal(sucursal) {
+      this.sucursalSeleccionada = sucursal;
+      console.log(JSON.stringify(this.sucursalSeleccionada));
+      this.cargarListaUsuariosSucursal();
+    },
+    cargarListaUsuariosSucursal() {
       this.loading = true;
-      this.get(URL.USUARIOS_RH +"/"+ id_sucursal, result => {
-        console.log("Consulta " + result.data);
-        if (result.data != null) {
-          this.lista = result.data;
+      this.get(
+        URL.USUARIOS_RH + "/" + this.sucursalSeleccionada.id,
+        result => {
+          console.log("Consulta " + result.data);
+          if (result.data != null) {
+            this.lista = result.data;
+          }
+          this.loading = false;
         }
-        this.loading = false;
-      });
+      );
     },
-    seleccionarUsuario(row){
+    seleccionarUsuario(row) {
       this.usuarioSeleccionado = row;
       $("#visibleUsurioReporte").modal("show");
-
     },
-    confirmarVisibleReporte(){
+    confirmarVisibleReporte() {
       this.loading = true;
       this.post(
-          URL.USUARIOS_RH,
-          {id_usuario:this.usuarioSeleccionado.id,genero:this.usuarioSesion.id},
-          result => {          
-            if (result.data != null) {
-              $("#visibleUsurioReporte").modal("hide");
-              this.cargarLista();
-            }
+        URL.USUARIOS_RH,
+        {
+          id_usuario: this.usuarioSeleccionado.id,
+          visible: !this.usuarioSeleccionado.visible_reporte,
+          genero: this.usuarioSesion.id
+        },
+        result => {
+          if (result.data != null) {
+            $("#visibleUsurioReporte").modal("hide");
+            this.cargarListaUsuariosSucursal();
+          }
           this.loading = false;
-      });
+        }
+      );
     },
     selectionChanged() {},
     onRowClick() {},
@@ -342,10 +447,8 @@ export default {
 };
 </script>
 
-
 <style scoped>
- .tachado {
-    text-decoration: line-through;
+.tachado {
+  text-decoration: line-through;
 }
 </style>
-

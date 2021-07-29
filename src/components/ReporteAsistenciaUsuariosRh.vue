@@ -2,12 +2,13 @@
 /* eslint-disable vue/valid-v-bind */
 <template>
   <div>
-    <h1>Lista de Asistencia </h1>            
+    <h1>Lista de Asistencia rh</h1>            
     <small>{{usuarioSesion.nombre_sucursal}}</small>     
     <div class="text-left">      
       <router-link to="/AsistenciaUsuarioRh" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
+      
     </div>
     
      <div class="row">
@@ -81,6 +82,7 @@ import { VueGoodTable } from 'vue-good-table';
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import Datepicker from 'vuejs-datepicker';
 import {getUsuarioSesion} from '../helpers/Sesion';
+
 
 export default {
   name: "ReporteAsistenciaUsuarioRh",
@@ -180,7 +182,7 @@ export default {
     cargarLista(){
       this.loading = true;
       this.get(
-        URL.REPORTE_ASISTENCIA_RH + this.usuarioSesion.co_sucursal+"/"+this.fechaInicio+"/"+this.fechaFin,                
+        URL.REPORTE_ASISTECIAS_RH +'/'+ this.usuarioSesion.co_sucursal+"/"+this.fechaInicio+"/"+this.fechaFin,                
         (result) => {          
           console.log("Consulta " + result.data);
           if (result.data != null) {

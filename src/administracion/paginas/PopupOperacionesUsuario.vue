@@ -7,6 +7,7 @@
       title="Modificar registro"
       v-on:click="seleccionar('EDIT')"
       :disabled="loader_edit"
+      v-if="!ocultar_modificacion"
     >
       <Loader :loading="loader_edit" :mini="true" />
       <i class="fas fa-edit"></i>
@@ -17,6 +18,7 @@
       :title="'Eliminar registro de la maestra '"
       v-on:click="seleccionar('DELETE')"
       :disabled="loader_eliminar"
+      v-if="!ocultar_eliminacion"
     >
       <Loader :loading="loader_eliminar" :mini="true" />
       <i class="fas fa-trash-alt"></i>
@@ -185,7 +187,7 @@ import CONSTANTES from "../../helpers/Constantes";
 export default {
   name: "opciones-usuario",
   mixins: [operacionesApi],
-  props: ["usuario_value", "metodo_refrescar", "id_usuario", "buscar"],
+  props: ["usuario_value", "metodo_refrescar", "id_usuario", "buscar","ocultar_eliminacion","ocultar_modificacion"],
   components: {
     Datepicker,
     VueTimepicker,

@@ -12,18 +12,11 @@
         <!--<button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>-->
         <PopupNuevoUsuario :metodo_refrescar="init"></PopupNuevoUsuario>
       </div>
-      <!--<div class="col-10 text-right">
-        <router-link
-          to="/AsistenciasUsuarioSucursal"
-          class="btn btn-outline-primary btn-lg outline"
-        >Reporte de Asistencias</router-link>
-      </div>-->
+    
     </div>   
     <Loader :loading="loader" />
     <br/>
-    <!-- {{listaUsuario.length}}
-    <button @click="init()">CARGAR</button>
-    -->
+    
     <div class="card">
       <div class="card-body">
         <vue-good-table
