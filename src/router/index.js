@@ -16,7 +16,7 @@ import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistencias
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
 import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsistenciaRangoFechasSuc'
 import Bienvenido from '@/components/Bienvenido'
-import CatUsuario from '../administracion/paginas/CatUsuario'
+import CatUsuario from '../administracion/usuarios/CatUsuario'
 import Administracion from '../administracion/Administracion'
 import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';

@@ -239,7 +239,7 @@ import SucursalCard from "./fragmentos/SucursalCard";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import Loader from "../components_utils/Loader";
 import Popup from "../controller/Popup";
-import PopupOperacionesUsuario from '../administracion/paginas/PopupOperacionesUsuario';
+import PopupOperacionesUsuario from '../administracion/usuarios/PopupOperacionesUsuario';
 //import PopupNuevoUsuario from '../administracion/paginas/PopupNuevoUsuario';
 
 

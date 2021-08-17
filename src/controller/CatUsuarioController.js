@@ -12,8 +12,8 @@ import Loader from "../components_utils/Loader";
 import { validarDatosUsuario } from '../helpers/UsuarioValidacion';
 import * as moment from 'moment';
 import CONSTANTES  from '../helpers/Constantes'
-import PopupOperacionesUsuario from '../administracion/paginas/PopupOperacionesUsuario';
-import PopupNuevoUsuario from '../administracion/paginas/PopupNuevoUsuario';
+import PopupOperacionesUsuario from '../administracion/usuarios/PopupOperacionesUsuario';
+import PopupNuevoUsuario from '../administracion/usuarios/PopupNuevoUsuario';
 
 export default {
   name: "cat-usuario",

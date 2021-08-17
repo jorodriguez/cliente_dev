@@ -10,7 +10,7 @@ import Popup from '../controller/Popup'
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 //import GraficaCalendarioAsistencia from '../componentes_generales/CalendarioAsistenciaComponente';
 import { getUsuarioSesion,getSesion, token } from '../helpers/Sesion';
-import PopupOperacionesUsuario from '@/administracion/paginas/PopupOperacionesUsuario';
+import PopupOperacionesUsuario from '@/administracion/usuarios/PopupOperacionesUsuario';
 
 export default {
   name: "reporte-asistencia-usuario-rango",
