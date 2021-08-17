@@ -2,7 +2,7 @@
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
-const BASE = process.env.URL_API || 'https://magicintelligence-api.herokuapp.com/';
+const BASE = process.env.URL_API || 'https://magicintelligence-api.herokuapp.com';
 
 export const BRANCH = "202107-reporte-asistencia";
 
