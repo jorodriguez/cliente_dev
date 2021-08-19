@@ -1,13 +1,13 @@
 import configEnv from '../../config/configEnv';
 
-const BASE = configEnv.BASE; //process.env.URL_API || "http://localhost:5000";
+//const BASE = configEnv.BASE; //process.env.URL_API || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
-//const BASE = process.env.URL_API || 'https://magic-stagging.herokuapp.com'
+const BASE = process.env.URL_API || 'https://magic-stagging-api.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
 //const BASE = process.env.URL_API || 'https://magicintelligence-api.herokuapp.com';
 
-export const BRANCH = "202107-reporte-asistencia";
+export const BRANCH = "202108-hotfix-parametros";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
