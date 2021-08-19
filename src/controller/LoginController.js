@@ -31,8 +31,7 @@ export default {
   },
   methods: {
     login() {
-      console.log("login con rest ");
-
+      console.log("login con rest ");      
       if (!this.input.correo || !this.input.password) {
         //this.mensajeToast("Escribe tu usuario y tu clave.");
         this.$notificacion.error('Validación', 'Escribe tu usuario y clave de acceso.');
