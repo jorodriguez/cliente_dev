@@ -30,12 +30,11 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'nombre'">
-              <span > {{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> 
-              </span>               
-            </span>
-            <span v-else-if="props.column.field == 'sueldo_mensual'">
-              <span > ${{props.row.sueldo_mensual}} </span>
-            </span>
+              <span><strong>{{props.row.alias}}</strong></span><br/>
+               <span class="small"> {{props.row.nombre}} <span v-if="props.row.nuevo_ingreso" class="badge  badge-pill badge-warning">Nuevo</span> 
+              </span><br/>
+              <span class="small"><i>{{props.row.correo}}</i></span>
+            </span>            
             <span v-else-if="props.column.field == 'botones'">              
               <PopupOperacionesUsuario :usuario_value="props.row" :metodo_refrescar="init"/>
             </span>

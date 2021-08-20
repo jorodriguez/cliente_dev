@@ -1,7 +1,15 @@
-const BASE = process.env.URL_API || "http://localhost:5000";
+import configEnv from '../../config/configEnv';
+
+
+const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = configEnv.BASE; //process.env.URL_API || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-ambiente-desarrollo.herokuapp.com'
+//const BASE = process.env.URL_API || 'https://magic-stagging.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
-export const BRANCH = "202108-aviso";
+
+//const BASE = process.env.URL_API || 'https://magicintelligence-api.herokuapp.com';
+
+export const BRANCH = "202108-hotfix-parametros";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -73,13 +81,12 @@ const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 const GENERO_ALUMNO = BASE + '/genero_alumno';
 
 const IMAGEN_PERFIL = BASE + '/foto_perfil';
+
 const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
 const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuenta/preview/:id_alumno
 const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
 
 const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
-
-const AVISOS = BASE + '/aviso'; // /usuarios_rh/id_sucursal
 
 
 const URL = {    
@@ -181,7 +188,7 @@ const URL = {
     ESTADO_CUENTA_PREVIEW:ESTADO_CUENTA_PREVIEW,
     USUARIOS_RH:USUARIOS_RH,
     REPORTE_ASISTECIAS_RH: ASISTENCIA_USUARIO_BASE +'/reporte_rh',
-    AVISOS: AVISOS,
+
 }
 
 export default URL;

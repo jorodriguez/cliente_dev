@@ -44,6 +44,7 @@ export class UsuarioBuilder {
     constructor() { }
 
     setId(id) { this.id = id; return this; }
+    setAlias(alias) { this.alias = alias; return this; }
     setNombre(nombre) { this.nombre = nombre; return this; }
     setCorreo(correo) { this.correo = correo; return this; }
     setPassword(password) { this.password = password; return this; }
@@ -60,6 +61,7 @@ export class UsuarioBuilder {
     clear() {
         this.setId(0);
         this.setNombre("");
+        this.setAlias("");
         this.setCorreo("");
         this.setPassword("");
         this.setCoSucursal(0);
