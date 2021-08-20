@@ -23,6 +23,7 @@ import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
 import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
 import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
+import CatAvisos from '../administracion/avisos/CatAvisos';
 
 import VueSession from 'vue-session'
 
@@ -50,7 +51,7 @@ const router = new Router({
       children: [
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
-        { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/PerfilAlumno/:id', name: 'PerfCatalogoAvisosilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         { path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
@@ -61,9 +62,10 @@ const router = new Router({
         { path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true, validar: false } },
         { path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true, validar: true } },
         { path: '/AsistenciasUsuariosRh', name: 'AsistenciasUsuariosRh', component: ReporteAsistenciaUsuariosRh, meta: { requiresAuth: true, validar: true } },
-        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: false } },
+        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: true } },
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
         { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
+        { path: '/Avisos', name: 'Avisos', component: CatAvisos, meta: { requiresAuth: true, validar: true }},
 
         { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true, validar: false } },
         { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true, validar: false } },
@@ -109,7 +111,7 @@ router.beforeEach((to, from, next) => {
         }
       } else {
         if (to.matched.some(record => record.meta.validar)) {
-          console.log("#### VALIDAR ### " + JSON.stringify(to.name));
+          console.log("#### VALIDAR PERMISO-ROL### " + JSON.stringify(to.name));
           let roles = user.opciones_acceso || [];
           let pasaValidacion = false;
           for (let i = 0; i < roles.length; i++) {

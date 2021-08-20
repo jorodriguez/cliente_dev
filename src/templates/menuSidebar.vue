@@ -14,7 +14,7 @@
         aria-controls="sidenav-main"
         aria-expanded="false"
         aria-label="Toggle navigation"
-      >
+      >      
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Brand -->
@@ -83,7 +83,7 @@
         <!-- Collapse header -->
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
-            <div class="col-6 collapse-brand">
+              <div class="col-6 collapse-brand">
               <img src="../assets/magic.png" class="rounded-lg" width="90" height="100" />
             </div>
             <div class="col-6 collapse-close">
@@ -164,7 +164,7 @@
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">
             <a class="nav-link" href="#">
-              <i class="ni ni-send text-dark"></i> V.0.1
+              <i class="ni ni-send text-dark"></i> V.0.2
             </a>
           </li>
         </ul>
