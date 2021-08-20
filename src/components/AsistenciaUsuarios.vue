@@ -74,6 +74,10 @@
             <span v-if="props.column.field == 'foto'">
               <img :src="props.row.foto" alt class="rounded-circle" width="100" height="100" />
             </span>           
+            <span v-else-if="props.column.field == 'alias'">
+                <span>{{props.row.alias ? props.row.alias : props.row.nombre}}</span>            
+                <span v-if="!props.row.alias" class="text-danger small">Complete el campo  Miss de su registro</span>            
+            </span>
             <span v-else-if="props.column.field == 'botones'">              
               <button v-if="props.row.hora_asistencia_salida == null" class="btn btn-danger" @click="seleccionarUsuarioAsistencia(props.row)" >Salida</button>
             </span>
