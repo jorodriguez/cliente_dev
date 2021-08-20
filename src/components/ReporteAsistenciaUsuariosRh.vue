@@ -5,7 +5,7 @@
     <h1>Lista de Asistencia rh</h1>            
     <small>{{usuarioSesion.nombre_sucursal}}</small>     
     <div class="text-left">      
-      <router-link to="/AsistenciaUsuarioRh" class="btn btn-secondary btn-lg">
+      <router-link to="/Administracion" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
       

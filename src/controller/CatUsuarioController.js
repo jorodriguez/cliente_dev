@@ -39,11 +39,12 @@ export default {
       columnasUsuario: [
         { label: "Id", field: "id", hidden: true },
         { label: "Foto", field: "foto", hidden: true },
+        { label: "Miss.", field: "alias",hidden:true },
         { label: "Nombre", field: "nombre" },
-        { label: "Correo", field: "correo" },
+        { label: "Correo", field: "correo",hidden:true },
         { label: "Hora Entrada", field: "hora_entrada" },
         { label: "Hora Salida", field: "hora_salida" },
-        { label: "Sueldo Mensual", field: "sueldo_mensual" },
+        { label: "Sueldo Mensual", field: "sueldo_mensual",hidden:true },
         { label: "acceso sistema", field: "acceso_sistema" ,hidden:true},
         { label: "nuevo ingreso", field: "nuevo_ingreso" ,hidden:true},
         { label: "", field: "botones" }
@@ -81,10 +82,7 @@ export default {
     },
     async guardar() {
       console.log("Insertar");
-
-      //const isValid = await this.$refs.observer.validate();      
-      //if(!validarDatosUsuario(this.usuario) && !isValid){
-      console.log(JSON.stringify(this.usuario));
+      
       if (!validarDatosUsuario(this.usuario)) {
         console.log("No paso la validacion");
         return;

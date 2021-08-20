@@ -10,7 +10,12 @@ export const validarDatosUsuario = (usuario) => {
     return false;
   } else {
 
-    if (usuario.nombre == '') {
+    if (usuario.alias == null || usuario.alias == '') {
+      Vue.prototype.$notificacion.error('Escribe el nombre de Miss.', 'El nombre de miss. es requerido.');
+      return false;
+    }
+
+    if (usuario.nombre == null || usuario.nombre == '') {
       Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
       return false;
     }

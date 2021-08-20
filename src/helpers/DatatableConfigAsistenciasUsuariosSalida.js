@@ -16,9 +16,17 @@ const COLUMNS_TABLE_ASISTENCIA_USUARIO_SALIDA =
         hidden:true
       },
       {
+        label: 'Miss',
+        field: 'alias',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+      },
+      {
         label: 'Usuario',
         field: 'nombre',
         filterable: true,
+        hidden:true,
         thClass: 'text-center',
         tdClass: 'text-left',
       },
