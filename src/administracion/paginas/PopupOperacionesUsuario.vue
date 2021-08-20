@@ -9,7 +9,7 @@
       :disabled="loader_edit"
       v-if="!ocultar_modificacion"
     >
-      <Loader :loading="loader_edit" :mini="true" />
+      <Loader :loading="loader_edit" :mini="true" />      
       <i class="fas fa-edit"></i>
     </button>
     <button
@@ -28,10 +28,29 @@
       <div slot="header">Usuario</div>
       <div slot="content">
         <div class="container text-left">
+           <div class="form-group">
+            <label for="aliasInput">
+              Miss.
+              <span class="text-danger">*</span>
+            </label>
+            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
+            <input
+              id="aliasInput"
+              type="text"
+              v-model="usuario.alias"
+              class="form-control"
+              placeholder="Miss"
+              required
+              autofocus
+            />
+           <span class="small">Por ejemplo: Miss. Wendy</span>
+            <!--  <span>{{ errors[0] }}</span>
+            </ValidationProvider>-->
+          </div>
           <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
           <div class="form-group">
             <label for="nombreInput">
-              Nombre
+              Nombre completo
               <span class="text-danger">*</span>
             </label>
             <!--<ValidationProvider rules="required" v-slot="{errors}">-->
@@ -40,12 +59,11 @@
               type="text"
               v-model="usuario.nombre"
               class="form-control"
-              placeholder="Nombre "
+              placeholder="Nombre completo "
               required
               autofocus
             />
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
+             <span class="small">Por ejemplo: Wendy Villareal Romero</span>            
           </div>
           <div class="form-group">
             <label for="correoInput">
@@ -228,7 +246,7 @@ export default {
       if (this.usuario_value == null || this.usuario_value == undefined) {
         this.usuario = new UsuarioModel();
       } else {
-        this.usuario = Object.assign({}, this.usuario_value);
+        this.usuario = this.usuario_value;// Object.assign({}, this.usuario_value);
       }
     },
 

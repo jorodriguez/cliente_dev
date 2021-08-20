@@ -8,6 +8,12 @@
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
       </div>-->
+      <div class="text-left">      
+      <router-link to="/Administracion" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+      </router-link>
+      
+    </div>
     </div>
     <div class="card">
       <div class="card-body">

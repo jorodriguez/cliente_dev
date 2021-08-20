@@ -8,8 +8,27 @@
         <div class="container text-left">
           <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
           <div class="form-group">
+            <label for="aliasInput">
+              Miss.
+              <span class="text-danger">*</span>
+            </label>
+            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
+            <input
+              id="aliasInput"
+              type="text"
+              v-model="usuario.alias"
+              class="form-control"
+              placeholder="Miss"
+              required
+              autofocus
+            />
+            <span class="small">Por ejemplo: Miss. Wendy</span>
+            <!--  <span>{{ errors[0] }}</span>
+            </ValidationProvider>-->
+          </div>
+          <div class="form-group">
             <label for="nombreInput">
-              Nombre
+              Nombre completo
               <span class="text-danger">*</span>
             </label>
             <!--<ValidationProvider rules="required" v-slot="{errors}">-->
@@ -18,10 +37,11 @@
               type="text"
               v-model="usuario.nombre"
               class="form-control"
-              placeholder="Nombre "
+              placeholder="Nombre completo"
               required
               autofocus
             />
+             <span class="small">Por ejemplo: Wendy Villareal Romero</span>   
             <!--  <span>{{ errors[0] }}</span>
             </ValidationProvider>-->
           </div>
@@ -160,7 +180,6 @@ export default {
     async guardar() {
       console.log("Insertar");
 
-      console.log(JSON.stringify(this.usuario));
       if (!validarDatosUsuario(this.usuario)) {
         console.log("No paso la validacion");
         return;

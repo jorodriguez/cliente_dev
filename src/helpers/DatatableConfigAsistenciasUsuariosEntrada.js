@@ -14,11 +14,18 @@ const COLUMNS_TABLE_ASISTENCIA_USUARIO_ENTRADA =
         thClass: 'text-center',
         tdClass: 'text-center',
         hidden:true
+      },{
+        label: 'Miss',
+        field: 'alias',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
       },
       {
         label: 'Usuario',
         field: 'nombre',
         filterable: true,
+        hidden:true,
         thClass: 'text-center',
         tdClass: 'text-left',
       },

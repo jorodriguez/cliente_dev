@@ -38,8 +38,12 @@
 
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'foto'">
-              <img :src="props.row.foto" alt class="rounded-circle" width="100" height="100" />
+              <img :src="props.row.foto" alt class="rounded-circle" width="100" height="100" />            
             </span>            
+            <span v-else-if="props.column.field == 'alias'">
+                <span>{{props.row.alias ? props.row.alias : props.row.nombre}}</span>            
+                <span v-if="!props.row.alias" class="text-danger small">Complete el campo  Miss de su registro</span>            
+            </span>
             <span v-else-if="props.column.field == 'botones'">
               <button class="btn  btn-primary" @click="seleccionarUsuario(props.row)">Entrada</button>
             </span>
@@ -70,6 +74,10 @@
             <span v-if="props.column.field == 'foto'">
               <img :src="props.row.foto" alt class="rounded-circle" width="100" height="100" />
             </span>           
+            <span v-else-if="props.column.field == 'alias'">
+                <span>{{props.row.alias ? props.row.alias : props.row.nombre}}</span>            
+                <span v-if="!props.row.alias" class="text-danger small">Complete el campo  Miss de su registro</span>            
+            </span>
             <span v-else-if="props.column.field == 'botones'">              
               <button v-if="props.row.hora_asistencia_salida == null" class="btn btn-danger" @click="seleccionarUsuarioAsistencia(props.row)" >Salida</button>
             </span>
@@ -86,7 +94,8 @@
         <div class="container">
           <table class="table">
             <tr>
-              <td><h3>{{usuarioSeleccionado.nombre}}</h3></td>
+              <td><h3>{{usuarioSeleccionado.alias}}</h3>
+              <small>{{usuarioAsistenciaSeleccionado.nombre}}</small></td>
             </tr>
             <tr>
               <td>                
@@ -107,7 +116,8 @@
         <div class="container">
           <table class="table">
             <tr>
-              <td><h3> {{usuarioAsistenciaSeleccionado.nombre}} </h3></td>
+              <td><h3> {{usuarioAsistenciaSeleccionado.alias}}</h3>
+              <small>{{usuarioAsistenciaSeleccionado.nombre}}</small> </td>
             </tr>
             <tr>
               <td><h5 class="text-muted"> Entró a las <strong>{{usuarioAsistenciaSeleccionado.hora_asistencia_entrada}}.</strong></h5></td>
