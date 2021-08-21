@@ -15,18 +15,31 @@
           >Nuevo</Button
         >
       </div>
+      <div class="col-1">
+        <Button
+          type="button"
+          class="btn btn-primary btn-lg"
+          v-on:click="enviar()"
+          >Enviar</Button
+        >
+      </div>
     </div>
     <Loader :loading="loader" />
 
     <div class="card">
       <div class="card-body">
-       
-          <div class="form-group row">
-            <label @click="()=>{this.mostrarLabels=!this.mostrarLabels}"  
-            for="staticEmail" class="col-sm-1 col-form-label"
-              >Para</label
-            >
-            <div class="col-10">
+        <div class="form-group row">
+          <label
+            @click="
+              () => {
+                this.mostrarLabels = !this.mostrarLabels;
+              }
+            "
+            for="staticEmail"
+            class="col-sm-1 col-form-label"
+            >Para</label
+          >
+          <div class="col-10">
             <!--
               <input
                 type="text"
@@ -35,52 +48,81 @@
                 v-model="aviso.para"
                 v-if="!mostrarLabels"
               />-->
-              <tags-input element-id="tags"
-    v-model="contactosSeleccionados"
-    :existing-tags="contactos"
-    id-field="id_alumno_familiar" 
-    text-field="nombre_familiar"
-    typeahead-style="dropdown"
-    :typeahead="true"></tags-input>
-    {{contactosSeleccionados}}
-    
-    <!--
+            <tags-input
+              element-id="tags"
+              discard-search-text="Descargar resultados"
+              placeholder="Agregar"
+              v-model="contactosSeleccionados"
+              :existing-tags="contactos"
+              id-field="id_alumno_familiar"
+              text-field="nombre_familiar"
+              typeahead-style="dropdown"
+              :typeahead="true"
+              @tag-added="onTagAdded"
+              @tag-removed="onTagRemoved"
+            >
+              <template v-slot:selected-tag="{ tag, index, removeTag }">
+                <img
+                  :src="tag.foto"
+                  width="30"
+                  height="30"
+                  alt=".."
+                  class="rounded-circle"
+                  @click="verDetalle(tag)"
+                />
+                <span @click="verDetalle(tag)">{{ tag.nombre_familiar }}</span
+                ><br />
+                <span
+                  @click="verDetalle(tag)"
+                  class="badge badge-pill badge-info"
+                >
+                  <!--<span @click="verDetalle(tag)" style="font-size:7px;padding-top:0px">{{tag.sucursal}}</span>-->
+                </span>
+                <a
+                  v-show="true"
+                  href="#"
+                  class="tags-input-remove"
+                  @click.prevent="removeTag(index)"
+                ></a>
+              </template>
+            </tags-input>
+
+            <!--
               <div v-else class="d-flex justify-content-start form-control" >
                  <span v-for="item in contactos" :key="item.id_alumno_familiar">
                       <span v-if="item.seleccionado" class="badge badge-primary">{{item.nombre_familiar}}</span>
                   </span>
               </div>
               -->
-            </div>
-            <Button
-              for="staticEmail"
-              @click="seleccionarPara()"
-              class="col-sm-1 btn btn-link"
-              >+
-            </Button>
           </div>
-          <div class="form-group row">
-            <label for="staticEmail" class="col-sm-1 col-form-label"
-              >Titulo</label
-            >
-            <div class="col-sm-10">
-              <input
-                type="text"
-                class="form-control"
-                id="staticEmail"
-                placeholder="titulo"
-                v-model="aviso.titulo"
-              />
-            </div>
+          <Button
+            for="staticEmail"
+            @click="seleccionarPara()"
+            class="col-sm-1 btn btn-link"
+            >+
+          </Button>
+        </div>
+        <div class="form-group row">
+          <label for="staticEmail" class="col-sm-1 col-form-label"
+            >Titulo</label
+          >
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              id="staticEmail"
+              placeholder="titulo"
+              v-model="aviso.titulo"
+            />
           </div>
-          <div class="form-group row">
-            <vue-editor
-              v-model="aviso.aviso"
-              focus
-              placeholder="Escribe tu aviso.."
-            ></vue-editor>
-          </div>
-     
+        </div>
+        <div class="form-group row">
+          <vue-editor
+            v-model="aviso.aviso"
+            focus
+            placeholder="Escribe tu aviso.."
+          ></vue-editor>
+        </div>
       </div>
     </div>
 
@@ -125,207 +167,358 @@
     <Popup id="popup_para" show_button_close="true" size="lg">
       <div slot="header">Directorio</div>
       <div slot="content" style="min-height:300px">
-        
-          <div class="card">
-            <div class="card-body row">
-              <div class="col-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="buscar"
-                  id="buscar"
-                />
-                <ul class="nav nav-justified" id="pills-tab" role="tablist">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="pills-todos-tab"
-                      data-toggle="pill"
-                      href="#pills-todos"
-                      role="tab"
-                      aria-controls="pills-todos"
-                      aria-selected="true"
-                      >Todos</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="pills-sucursal-tab"
-                      data-toggle="pill"
-                      href="#pills-sucursal"
-                      role="tab"
-                      aria-controls="pills-sucursal"
-                      aria-selected="false"
-                      >Sucursal</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="pills-grupos-tab"
-                      data-toggle="pill"
-                      href="#pills-grupos"
-                      role="tab"
-                      aria-controls="pills-grupos"
-                      aria-selected="false"
-                      >Grupos</a
-                    >
-                  </li>
-                </ul>
-                <!-- contenido tabs-->
-                <div class="tab-content" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="pills-todos"
-                    role="tabpanel"
-                    aria-labelledby="pills-todos-tab"
+        <div class="card">
+          <div class="card-body row">
+            <div class="col-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar"
+                id="buscar"
+              />
+
+              <ul class="nav nav-justified" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="pills-todos-tab"
+                    data-toggle="pill"
+                    href="#pills-todos"
+                    role="tab"
+                    aria-controls="pills-todos"
+                    aria-selected="true"
+                    >Todos</a
                   >
-                    <div class="card">
-                      <div class="card-body">
-                        <p v-if="loaderContactos">cargando..</p>
-                        <div
-                          class="d-flex justify-content-end align-items-start"
-                          style="height:12px"
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="pills-sucursal-tab"
+                    data-toggle="pill"
+                    href="#pills-sucursal"
+                    role="tab"
+                    aria-controls="pills-sucursal"
+                    aria-selected="false"
+                    >Sucursal</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="pills-grupos-tab"
+                    data-toggle="pill"
+                    href="#pills-grupos"
+                    role="tab"
+                    aria-controls="pills-grupos"
+                    aria-selected="false"
+                    >Grupos</a
+                  >
+                </li>
+              </ul>
+              <!-- contenido tabs-->
+              <div class="tab-content" id="pills-tabContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="pills-todos"
+                  role="tabpanel"
+                  aria-labelledby="pills-todos-tab"
+                >
+                  <div class="card">
+                    <div class="card-bod">
+                      <div
+                        class="d-flex justify-content-end align-items-start"
+                        style="height:12px"
+                      >
+                        <button
+                          class="btn btn-link btn-sm"
+                          type="button"
+                          @click="seleccionarTodos()"
                         >
+                          Seleccionar todos
+                        </button>
+                        <div class="dropdown">
                           <button
-                            class="btn btn-link btn-sm"
+                            class="btn btn-link btn-sm dropdown-toggle"
                             type="button"
-                            @click="seleccionarTodos()"
+                            id="dropdownMenu2"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
                           >
-                            Seleccionar todos
+                            Nombre
                           </button>
-                          <div class="dropdown">
-                            <button
-                              class="btn btn-link btn-sm dropdown-toggle"
-                              type="button"
-                              id="dropdownMenu2"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
-                              Nombre
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenu2"
+                          >
+                            <button class="dropdown-item" type="button">
+                              Grupo
                             </button>
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenu2"
-                            >
-                              <button class="dropdown-item" type="button">
-                                Grupo
-                              </button>
-                            </div>
                           </div>
                         </div>
-                        <div class=" divScoll">
-                          <span
-                            v-for="item in contactos"
-                            :key="item.id_alumno_familiar"
+                      </div>
+                      <div class=" divScoll">
+                        <span
+                          v-for="item in contactos"
+                          :key="item.id_alumno_familiar"
+                          class="pointer"
+                        >
+                          <div
+                            class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
+                            @click="seleccionar(item, 'ADD')"
+                            v-if="!item.seleccionado"
                           >
-                            <div
-                              class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
-                              @click="seleccionar(item)"
-                              v-if="!item.seleccionado"
-                            >
-                              <div class="col-2 ">
-                                <img
-                                  :src="item.foto"
-                                  width="50"
-                                  height="50"
-                                  alt=".."
-                                  class="rounded-circle"
-                                />
-                              </div>
-                              <div class="col-10 pl-4 text-left">
-                                <small class="font-weight-bold">{{
-                                  item.nombre_familiar
-                                }}</small
-                                ><br />
-                                <small
-                                  >{{ item.parentesco }} de
-                                  {{ item.nombre_alumno }}</small
-                                ><br />
-                                <small>{{ item.correo }}</small>
-                              </div>
+                            <div class="col-2 ">
+                              <img
+                                :src="item.foto"
+                                width="50"
+                                height="50"
+                                alt=".."
+                                class="rounded-circle"
+                              />
                             </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="tab-pane fade show"
-                    id="pills-sucursal"
-                    role="tabpanel"
-                    aria-labelledby="pills-sucursal-tab"
-                  >
-                    <div class="card">
-                      <div class="card-body">
-                        sucursal
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="tab-pane fade show"
-                    id="pills-grupos"
-                    role="tabpanel"
-                    aria-labelledby="pills-grupos-tab"
-                  >
-                    <div class="card">
-                      <div class="card-body">
-                        grupo
+                            <div class="col-10 pl-4 text-left">
+                              <small class="font-weight-bold">{{
+                                item.nombre_familiar
+                              }}</small
+                              ><br />
+                              <small
+                                >{{ item.parentesco }} de
+                                {{ item.nombre_alumno }}</small
+                              ><br />
+                              <small>{{ item.correo }}</small>
+                              <br />
+                              <span
+                                class="badge badge-pill badge-light"
+                                :style="
+                                  `font-size:10px;padding-top:0px;background-color:${
+                                    item.color_sucursal
+                                  }`
+                                "
+                                >{{ item.sucursal }}</span
+                              >
+                              <span
+                                class="badge badge-pill badge-light"
+                                :style="
+                                  `font-size:10px;padding-top:0px;background-color:${
+                                    item.color_grupo
+                                  }`
+                                "
+                                >{{ item.nombre_grupo }}</span
+                              >
+                            </div>
+                          </div>
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <!-- detalle-->
-              <div class="col-6">
-                <div class="card">
-                  Selecciòn
-                  <div class=" divScoll">
-                    <span
-                      v-for="item in contactos"
-                      :key="item.id_alumno_familiar"
-                    >
-                      <div
-                        class="row pb-1 pt-1 border d-flex align-items-center contentDivScoll"
-                        @click="seleccionar(item)"
-                        v-if="item.seleccionado"
-                      >
-                        <div class="col-2 ">
-                          <img
-                            :src="item.foto"
-                            width="50"
-                            height="50"
-                            alt=".."
-                            class="rounded-circle"
-                          />
-                        </div>
-                        <div class="col-10 pl-4 text-left">
-                          <small class="font-weight-bold">{{
-                            item.nombre_familiar
-                          }}</small
-                          ><br />
-                          <small
-                            >{{ item.parentesco }} de
-                            {{ item.nombre_alumno }}</small
-                          ><br />
-                          <small>{{ item.correo }}</small>
+                <div
+                  class="tab-pane fade show"
+                  id="pills-sucursal"
+                  role="tabpanel"
+                  aria-labelledby="pills-sucursal-tab"
+                >
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card">
+                        <div class="card-bod">                        
+                          <div class=" divScoll">
+                            <span
+                              v-for="item in listaSucursales"
+                              :key="item.id"
+                              class="pointer"
+                            >
+                              <div
+                                class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
+                                @click="seleccionarSucursal(item)"
+                              >
+                                <div class="col-12 pl-4 text-left">
+                                  <span
+                                    class="badge badge-pill badge-light"
+                                    :style="
+                                      `font-size:10px;padding-top:0px;background-color:${
+                                        item.color
+                                      }`
+                                    "
+                                    >{{ item.nombre }}</span
+                                  >
+                                </div>
+                              </div>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </span>
+                      <!-- sucursal fin-->
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="tab-pane fade show"
+                  id="pills-grupos"
+                  role="tabpanel"
+                  aria-labelledby="pills-grupos-tab"
+                >
+                  <div class="card">
+                    <div class="card-body">
+                      <!-- grup -->
+                      <div class=" divScoll">
+                            <span
+                              v-for="item in listaGrupos"
+                              :key="item.id"
+                              class="pointer"
+                            >
+                              <div
+                                class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
+                                @click="seleccionarGrupo(item)"
+                              >
+                                <div class="col-12 pl-4 text-left">
+                                  <span
+                                    class="badge badge-pill badge-light"
+                                    :style="
+                                      `font-size:10px;padding-top:0px;background-color:${
+                                        item.color
+                                      }`
+                                    "
+                                    >{{ item.nombre }}</span
+                                  >
+                                </div>
+                              </div>
+                            </span>
+                          </div>
+                      <!-- fin grupo -->
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- detalle-->
+            <div class="col-6">
+              <div class="card">
+                <br /><br />
+                Selección
+                <div
+                  class="d-flex justify-content-end align-items-start"
+                  style="height:12px"
+                >
+                  <button
+                    class="btn btn-link btn-sm"
+                    type="button"
+                    @click="removerTodos()"
+                  >
+                    Remover todos
+                  </button>
+                </div>
+                <div class="divScoll">
+                  <span
+                    v-for="item in contactosSeleccionados"
+                    :key="item.id_alumno_familiar"
+                    class="pointer"
+                  >
+                    <div
+                      class="row pb-1 pt-1 border d-flex align-items-center contentDivScoll"
+                      @click="seleccionar(item, 'REMOVE')"
+                    >
+                      <div class="col-2 ">
+                        <img
+                          :src="item.foto"
+                          width="50"
+                          height="50"
+                          alt=".."
+                          class="rounded-circle"
+                        />
+                      </div>
+                      <div class="col-10 pl-4 text-left">
+                        <small class="font-weight-bold">{{
+                          item.nombre_familiar
+                        }}</small
+                        ><br />
+                        <small
+                          >{{ item.parentesco }} de
+                          {{ item.nombre_alumno }}</small
+                        ><br />
+                        <small>{{ item.correo }}</small>
+                        <br />
+                        <span
+                          class="badge badge-pill badge-light"
+                          :style="
+                            `font-size:10px;padding-top:0px;background-color:${
+                              item.color_sucursal
+                            }`
+                          "
+                          >{{ item.sucursal }}</span
+                        >
+                        <span
+                          class="badge badge-pill badge-light"
+                          :style="
+                            `font-size:10px;padding-top:0px;background-color:${
+                              item.color_grupo
+                            }`
+                          "
+                          >{{ item.nombre_grupo }}</span
+                        >
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-       
+        </div>
       </div>
-      <div slot="footer">
-        <button class="btn btn-primary" @click="aceptarSeleccion()">
-          Agregar
-        </button>
+      <div slot="footer"></div>
+    </Popup>
+
+    <!-- DETALLE -->
+    <Popup id="popup_detalle" show_button_close="true" size="md">
+      <div slot="header">
+        {{ this.rowDetalle ? this.rowDetalle.nombre_familiar : "" }}
+      </div>
+      <div slot="content">
+        <div class="card">
+          <div v-if="this.rowDetalle" class="card-body row">
+            <div class="col-4 ">
+              <img
+                :src="this.rowDetalle.foto"
+                width="130"
+                height="130"
+                alt=".."
+                class="rounded-circle"
+              />
+            </div>
+            <div class="col-6 pl-4 text-left">
+              <small class="font-weight-bold">{{
+                this.rowDetalle.nombre_familiar
+              }}</small
+              ><br />
+              <small
+                >{{ this.rowDetalle.parentesco }} de
+                {{ this.rowDetalle.nombre_alumno }}</small
+              ><br />
+              <small class="text-primary">{{ this.rowDetalle.correo }}</small>
+              <br />
+              <span
+                class="badge badge-pill badge-light"
+                :style="
+                  `font-size:10px;padding-top:0px;background-color:${
+                    this.rowDetalle.color_sucursal
+                  }`
+                "
+                >{{ this.rowDetalle.sucursal }}</span
+              >
+              <span
+                class="badge badge-pill badge-light"
+                :style="
+                  `font-size:10px;padding-top:0px;background-color:${
+                    this.rowDetalle.color_grupo
+                  }`
+                "
+                >{{ this.rowDetalle.nombre_grupo }}</span
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </Popup>
   </div>
@@ -349,10 +542,10 @@ import * as moment from "moment";
 import CONSTANTES from "../../helpers/Constantes";
 import { VueEditor, Quill } from "vue2-editor";
 import AvatarAlumno from "../../components_utils/AvatarAlumno";
-import VoerroTagsInput from '@voerro/vue-tagsinput';
+import VoerroTagsInput from "@voerro/vue-tagsinput";
 import Vue from "vue";
-require('@voerro/vue-tagsinput/dist/style.css');
-Vue.component('tags-input', VoerroTagsInput);
+require("@voerro/vue-tagsinput/dist/style.css");
+Vue.component("tags-input", VoerroTagsInput);
 
 export default {
   name: "catalogo-avisos",
@@ -373,19 +566,22 @@ export default {
       avisoMemento: AvisoModel,
       usuarioSesion: null,
       response: "",
-      operacion: "INSERT",     
+      operacion: "INSERT",
       es: es,
       TABLE_CONFIG: TABLE_CONFIG,
       loader: false,
       loaderContactos: false,
       contador: 0,
       content: "",
-      historial:[],
+      historial: [],
       contactos: [],
       contactosSeleccionados: [],
-      contactosRespaldo:[],
-      contactosTags:[],
-      mostrarLabels:true,
+      contactosRespaldo: [],
+      contactosTags: [],
+      listaSucursales: [],
+      listaGrupos: [],
+      mostrarLabels: true,
+      rowDetalle: null,
       columnas: [
         { label: "Id", field: "id", hidden: true },
         { label: "Empresa", field: "empresa", hidden: true },
@@ -419,6 +615,7 @@ export default {
         }
       });
       this.cargarContactos();
+      this.nuevo();
     },
     nuevo() {
       console.log("Nuevo");
@@ -428,20 +625,30 @@ export default {
     },
 
     seleccionarPara() {
-      this.cargarContactos();
+      //this.cargarContactos();
+      this.obtenerFiltros();
       $("#popup_para").modal("show");
     },
-    async guardar() {
+
+    async enviar() {
       console.log("Insertar");
+        let correosPara = "";
+        this.contactos.filter(function(item) {        
+            correosPara+=item.correo;
+        
+      });
+      
+      this.aviso.para = correosPara;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
-        return;
+        return;      
       }
-      this.usuario.genero = this.usuarioSesion.id;
+      this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
+      this.aviso.genero = this.usuarioSesion.id;
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
         if (respuesta.estatus) {
-          this.init();
+         // this.init();
           //$("#popup_aviso").modal("hide");
           this.$notificacion.info("Aviso ", "Se registró el aviso.");
         } else {
@@ -494,54 +701,125 @@ export default {
         }
       );*/
     },
-    seleccionar(rowSelect) {
+    seleccionar(rowSelect, operacion) {
       console.log(
         "fila seleccionada " +
           rowSelect.nombre_alumno +
           " selec " +
           rowSelect.seleccionado
       );
-      rowSelect.seleccionado = !rowSelect.seleccionado;     
-      
+
+      //let pos = this.contactosSeleccionados.indexOf(rowSelect) || -1;
+      //rowSelect.seleccionado = !rowSelect.seleccionado;
+
+      if (operacion === "ADD") {
+        rowSelect.seleccionado = true;
+        this.contactosSeleccionados.push(rowSelect);
+      } else {
+        let pos = this.contactosSeleccionados.indexOf(rowSelect);
+        rowSelect.seleccionado = false;
+        this.contactosSeleccionados.splice(pos, 1);
+      }
     },
-    seleccionarTodos() {      
+    seleccionarTodos() {
       this.contactos.forEach(element => {
         element.seleccionado = true;
+        this.contactosSeleccionados.push(element);
       });
     },
-    aceptarSeleccion(){
+    removerTodos() {
+      this.contactosSeleccionados = [];
       this.contactos.forEach(element => {
-        if(element.seleccionado){
-          this.aviso.para = this.aviso.para+','+element.correo;
-        }
+        element.seleccionado = false;
       });
+    },
+    verDetalle(row) {
+      this.rowDetalle = row;
+      $("#popup_detalle").modal("show");
+    },
+    onTagAdded(slug) {
+      console.log(`Tag added: ${JSON.stringify(slug)}`);
+      slug.seleccionado = true;
+    },
+    onTagRemoved(slug) {
+      console.log(`Tag removed: ${slug}`);
+      slug.seleccionado = false;
     },
     cargarContactos() {
       this.loaderContactos = true;
-      if(!this.contactos.length > 0){     
-      this.get(
-        URL.AVISOS +
-          "/contactos/" +
-          JSON.stringify(this.usuarioSesion.sucursales),
-        result => {
-          this.loader = false;
-          this.loaderContactos = false;
-          if (result.body != null) {
-            this.contactos = result.body || [];            
-            /*this.contactos.forEach(element => {
+      if (!this.contactos.length > 0) {
+        this.get(
+          URL.AVISOS +
+            "/contactos/" +
+            JSON.stringify(this.usuarioSesion.sucursales),
+          result => {
+            this.loader = false;
+            this.loaderContactos = false;
+            if (result.body != null) {
+              this.contactos = result.body || [];
+              /*this.contactos.forEach(element => {
                 this.contactosTags.push({id: element.id_alumno_familiar,name:element.nombre_familiar ,value: element });
             });*/
+            }
           }
-        }
-      );
+        );
       }
+    },
+    obtenerFiltros() {
+      let sucursalesFiltradas = [];
+      let gruposFiltrados = [];
+      this.contactos.filter(function(item) {
+        let i = sucursalesFiltradas.findIndex(x => x.nombre == item.sucursal);
+        if (i <= -1) {
+          sucursalesFiltradas.push({
+            id: item.id_sucursal,
+            nombre: item.sucursal,
+            color: item.color_sucursal
+          });
+        }
+      });
+      this.listaSucursales = sucursalesFiltradas;
+
+      this.contactos.filter(function(item) {
+        let i = gruposFiltrados.findIndex(x => x.nombre == item.nombre_grupo);
+        if (i <= -1) {
+          gruposFiltrados.push({
+            id: item.id_grupo,
+            id_sucursal:item.id_sucursal,
+            nombre: item.nombre_grupo+' '+item.sucursal,
+            color: item.color_grupo
+          });
+        }
+      });
+      this.listaGrupos = gruposFiltrados;
+    },
+    seleccionarSucursal(sucursalSeleccionada) {
+      this.contactos.forEach(element => {
+        if (
+          element.id_sucursal === sucursalSeleccionada.id && 
+          !element.seleccionado
+        ) {
+          element.seleccionado = true;
+          this.contactosSeleccionados.push(element);
+        }
+      });
+    },
+     seleccionarGrupo(grupoSeleccionado) {
+      this.contactos.forEach(element => {
+        if (
+          element.id_grupo === grupoSeleccionado.id && element.id_sucursal == grupoSeleccionado.id_sucursal &&
+          !element.seleccionado
+        ) {
+          element.seleccionado = true;
+          this.contactosSeleccionados.push(element);
+        }
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-
 .divScoll {
   margin-top: 10px;
   height: 400px;
@@ -553,4 +831,7 @@ export default {
   height: 800px;
 }
 
+.pointer {
+  cursor: pointer;
+}
 </style>
