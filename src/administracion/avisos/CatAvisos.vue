@@ -39,19 +39,11 @@
             class="col-sm-1 col-form-label"
             >Para</label
           >
-          <div class="col-10">
-            <!--
-              <input
-                type="text"
-                class="form-control"
-                id="staticEmail"
-                v-model="aviso.para"
-                v-if="!mostrarLabels"
-              />-->
+          <div class="col">
             <tags-input
               element-id="tags"
               discard-search-text="Descargar resultados"
-              placeholder="Agregar"
+              placeholder="Escribe un nombre o apellido..."
               v-model="contactosSeleccionados"
               :existing-tags="contactos"
               id-field="id_alumno_familiar"
@@ -74,8 +66,17 @@
                 ><br />
                 <span
                   @click="verDetalle(tag)"
-                  class="badge badge-pill badge-info"
+                  class="badge "
+                  :style="`background:'${tag.color_sucursal}'`"
                 >
+                  <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>                  
+                </span>
+                <span
+                  @click="verDetalle(tag)"
+                  class="badge "
+                  :style="`background:'${tag.color_grupo}'`"
+                >
+                  <span @click="verDetalle(tag)">{{ tag.nombre_grupo }}</span>
                   <!--<span @click="verDetalle(tag)" style="font-size:7px;padding-top:0px">{{tag.sucursal}}</span>-->
                 </span>
                 <a
@@ -86,7 +87,12 @@
                 ></a>
               </template>
             </tags-input>
-
+            <small id="emailHelp" class="form-text text-rigth text-muted">
+              <a for="staticEmail" @click="seleccionarPara()" class="">+ </a>
+              <a for="staticEmail" @click="limpiarPara()" class="btn btn-link"
+                >D
+              </a>
+            </small>
             <!--
               <div v-else class="d-flex justify-content-start form-control" >
                  <span v-for="item in contactos" :key="item.id_alumno_familiar">
@@ -95,33 +101,30 @@
               </div>
               -->
           </div>
-          <Button
-            for="staticEmail"
-            @click="seleccionarPara()"
-            class="col-sm-1 btn btn-link"
-            >+
-          </Button>
         </div>
+
         <div class="form-group row">
           <label for="staticEmail" class="col-sm-1 col-form-label"
             >Titulo</label
           >
-          <div class="col-sm-10">
+          <div class="col">
             <input
               type="text"
               class="form-control"
               id="staticEmail"
-              placeholder="titulo"
+              placeholder="Titulo"
               v-model="aviso.titulo"
             />
           </div>
         </div>
         <div class="form-group row">
-          <vue-editor
-            v-model="aviso.aviso"
-            focus
-            placeholder="Escribe tu aviso.."
-          ></vue-editor>
+          <div class="col">
+            <vue-editor
+              v-model="aviso.aviso"
+              focus
+              placeholder="Escribe tu aviso.."
+            ></vue-editor>
+          </div>
         </div>
       </div>
     </div>
@@ -177,218 +180,98 @@
                 id="buscar"
               />
 
-              <ul class="nav nav-justified" id="pills-tab" role="tablist">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    id="pills-todos-tab"
-                    data-toggle="pill"
-                    href="#pills-todos"
-                    role="tab"
-                    aria-controls="pills-todos"
-                    aria-selected="true"
-                    >Todos</a
+              <!-- contenido -->
+
+              <div class="card">
+                <div class="card-bod">
+                  <div
+                    class="d-flex justify-content-end align-items-start"
+                    style="height:12px"
                   >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="pills-sucursal-tab"
-                    data-toggle="pill"
-                    href="#pills-sucursal"
-                    role="tab"
-                    aria-controls="pills-sucursal"
-                    aria-selected="false"
-                    >Sucursal</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="pills-grupos-tab"
-                    data-toggle="pill"
-                    href="#pills-grupos"
-                    role="tab"
-                    aria-controls="pills-grupos"
-                    aria-selected="false"
-                    >Grupos</a
-                  >
-                </li>
-              </ul>
-              <!-- contenido tabs-->
-              <div class="tab-content" id="pills-tabContent">
-                <div
-                  class="tab-pane fade show active"
-                  id="pills-todos"
-                  role="tabpanel"
-                  aria-labelledby="pills-todos-tab"
-                >
-                  <div class="card">
-                    <div class="card-bod">
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-link btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenu2"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        {{
+                          this.sucursalSeleccionada &&
+                            this.sucursalSeleccionada.nombre
+                        }}
+                      </button>
                       <div
-                        class="d-flex justify-content-end align-items-start"
-                        style="height:12px"
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenu2"
                       >
                         <button
-                          class="btn btn-link btn-sm"
+                          v-for="suc in listaSucursales"
+                          :key="suc.id"
+                          class="dropdown-item"
                           type="button"
-                          @click="seleccionarTodos()"
+                          @click="seleccionarSucursal(suc, true)"
                         >
-                          Seleccionar todos
+                          <span>{{ suc.nombre }}</span>
                         </button>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-link btn-sm dropdown-toggle"
-                            type="button"
-                            id="dropdownMenu2"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            Nombre
-                          </button>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenu2"
-                          >
-                            <button class="dropdown-item" type="button">
-                              Grupo
-                            </button>
-                          </div>
-                        </div>
                       </div>
-                      <div class=" divScoll">
+                    </div>
+                    <!--Combo de grupos -->
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-link btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenu2"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        {{
+                          this.grupoSeleccionado &&
+                            this.grupoSeleccionado.nombre
+                        }}
+                      </button>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenu2"
+                      >
                         <span
-                          v-for="item in contactos"
-                          :key="item.id_alumno_familiar"
-                          class="pointer"
+                          v-for="(grupo, index) in listaGrupos"
+                          :key="`${index}`"
                         >
-                          <div
-                            class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
-                            @click="seleccionar(item, 'ADD')"
-                            v-if="!item.seleccionado"
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            v-if="grupo.visible"
+                            @click="seleccionarGrupo(grupo)"
                           >
-                            <div class="col-2 ">
-                              <img
-                                :src="item.foto"
-                                width="50"
-                                height="50"
-                                alt=".."
-                                class="rounded-circle"
-                              />
-                            </div>
-                            <div class="col-10 pl-4 text-left">
-                              <small class="font-weight-bold">{{
-                                item.nombre_familiar
-                              }}</small
-                              ><br />
-                              <small
-                                >{{ item.parentesco }} de
-                                {{ item.nombre_alumno }}</small
-                              ><br />
-                              <small>{{ item.correo }}</small>
-                              <br />
-                              <span
-                                class="badge badge-pill badge-light"
-                                :style="
-                                  `font-size:10px;padding-top:0px;background-color:${
-                                    item.color_sucursal
-                                  }`
-                                "
-                                >{{ item.sucursal }}</span
-                              >
-                              <span
-                                class="badge badge-pill badge-light"
-                                :style="
-                                  `font-size:10px;padding-top:0px;background-color:${
-                                    item.color_grupo
-                                  }`
-                                "
-                                >{{ item.nombre_grupo }}</span
-                              >
-                            </div>
-                          </div>
+                            {{ grupo.nombre }}
+                          </button>
                         </span>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="tab-pane fade show"
-                  id="pills-sucursal"
-                  role="tabpanel"
-                  aria-labelledby="pills-sucursal-tab"
-                >
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="card">
-                        <div class="card-bod">                        
-                          <div class=" divScoll">
-                            <span
-                              v-for="item in listaSucursales"
-                              :key="item.id"
-                              class="pointer"
-                            >
-                              <div
-                                class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
-                                @click="seleccionarSucursal(item)"
-                              >
-                                <div class="col-12 pl-4 text-left">
-                                  <span
-                                    class="badge badge-pill badge-light"
-                                    :style="
-                                      `font-size:10px;padding-top:0px;background-color:${
-                                        item.color
-                                      }`
-                                    "
-                                    >{{ item.nombre }}</span
-                                  >
-                                </div>
-                              </div>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- sucursal fin-->
-                    </div>
+                  <div class=" divScoll">
+                    <span
+                      v-for="item in contactos"
+                      :key="item.id_alumno_familiar"
+                      class="pointer"
+                    >
+                      <tarjeta-contacto
+                        @click="seleccionar(item, 'ADD')"
+                        v-if="!item.seleccionado && item.visible"
+                        :item="item"
+                      />
+                    </span>
                   </div>
-                </div>
-                <div
-                  class="tab-pane fade show"
-                  id="pills-grupos"
-                  role="tabpanel"
-                  aria-labelledby="pills-grupos-tab"
-                >
-                  <div class="card">
-                    <div class="card-body">
-                      <!-- grup -->
-                      <div class=" divScoll">
-                            <span
-                              v-for="item in listaGrupos"
-                              :key="item.id"
-                              class="pointer"
-                            >
-                              <div
-                                class="row  pb-1 pt-1 border d-flex align-items-center contentDivScoll"
-                                @click="seleccionarGrupo(item)"
-                              >
-                                <div class="col-12 pl-4 text-left">
-                                  <span
-                                    class="badge badge-pill badge-light"
-                                    :style="
-                                      `font-size:10px;padding-top:0px;background-color:${
-                                        item.color
-                                      }`
-                                    "
-                                    >{{ item.nombre }}</span
-                                  >
-                                </div>
-                              </div>
-                            </span>
-                          </div>
-                      <!-- fin grupo -->
-                    </div>
-                  </div>
+                  <button
+                    class="btn btn-block btn-primary"
+                    type="button"
+                    @click="seleccionarTodos()"
+                  >
+                    Seleccionar todos
+                  </button>
                 </div>
               </div>
             </div>
@@ -416,50 +299,10 @@
                     :key="item.id_alumno_familiar"
                     class="pointer"
                   >
-                    <div
-                      class="row pb-1 pt-1 border d-flex align-items-center contentDivScoll"
+                    <tarjeta-contacto
                       @click="seleccionar(item, 'REMOVE')"
-                    >
-                      <div class="col-2 ">
-                        <img
-                          :src="item.foto"
-                          width="50"
-                          height="50"
-                          alt=".."
-                          class="rounded-circle"
-                        />
-                      </div>
-                      <div class="col-10 pl-4 text-left">
-                        <small class="font-weight-bold">{{
-                          item.nombre_familiar
-                        }}</small
-                        ><br />
-                        <small
-                          >{{ item.parentesco }} de
-                          {{ item.nombre_alumno }}</small
-                        ><br />
-                        <small>{{ item.correo }}</small>
-                        <br />
-                        <span
-                          class="badge badge-pill badge-light"
-                          :style="
-                            `font-size:10px;padding-top:0px;background-color:${
-                              item.color_sucursal
-                            }`
-                          "
-                          >{{ item.sucursal }}</span
-                        >
-                        <span
-                          class="badge badge-pill badge-light"
-                          :style="
-                            `font-size:10px;padding-top:0px;background-color:${
-                              item.color_grupo
-                            }`
-                          "
-                          >{{ item.nombre_grupo }}</span
-                        >
-                      </div>
-                    </div>
+                      :item="item"
+                    />
                   </span>
                 </div>
               </div>
@@ -542,6 +385,7 @@ import * as moment from "moment";
 import CONSTANTES from "../../helpers/Constantes";
 import { VueEditor, Quill } from "vue2-editor";
 import AvatarAlumno from "../../components_utils/AvatarAlumno";
+import TarjetaContacto from "@/administracion/avisos/fragmentos/TarjetaContacto";
 import VoerroTagsInput from "@voerro/vue-tagsinput";
 import Vue from "vue";
 require("@voerro/vue-tagsinput/dist/style.css");
@@ -557,8 +401,10 @@ export default {
     Popup,
     Loader,
     AvatarAlumno,
+    TarjetaContacto,
     VueEditor,
-    VoerroTagsInput
+    VoerroTagsInput,
+    TarjetaContacto
   },
   data() {
     return {
@@ -580,6 +426,11 @@ export default {
       contactosTags: [],
       listaSucursales: [],
       listaGrupos: [],
+      listaGruposFiltados: [],
+      sucursalSeleccionada: undefined,
+      sucursalDefault: { id: -1, nombre: "Todas las sucursales" },
+      grupoSeleccionado: undefined,
+      grupoDefault: { id: -1, nombre: "Todos los grupos" },
       mostrarLabels: true,
       rowDetalle: null,
       columnas: [
@@ -607,6 +458,9 @@ export default {
   methods: {
     init() {
       this.loader = true;
+      this.sucursalSeleccionada = this.sucursalDefault;
+      this.grupoSeleccionado = this.grupoDefault;
+
       this.get(URL.AVISOS + "/" + this.usuarioSesion.id, result => {
         this.loader = false;
         if (result.body != null) {
@@ -623,32 +477,38 @@ export default {
       this.aviso = new AvisoModel();
       //$("#popup_aviso").modal("show");
     },
-
+    limpiarPara() {
+      this.contactos.forEach(element => {
+        element.seleccionado = false;
+        element.visible = true;
+        this.contactosSeleccionados = [];
+      });
+    },
     seleccionarPara() {
       //this.cargarContactos();
       this.obtenerFiltros();
+
       $("#popup_para").modal("show");
     },
 
     async enviar() {
       console.log("Insertar");
-        let correosPara = "";
-        this.contactos.filter(function(item) {        
-            correosPara+=item.correo;
-        
+      let correosPara = "";
+      this.contactos.filter(function(item) {
+        correosPara += item.correo;
       });
-      
+
       this.aviso.para = correosPara;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
-        return;      
+        return;
       }
       this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
       this.aviso.genero = this.usuarioSesion.id;
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
         if (respuesta.estatus) {
-         // this.init();
+          // this.init();
           //$("#popup_aviso").modal("hide");
           this.$notificacion.info("Aviso ", "Se registró el aviso.");
         } else {
@@ -708,29 +568,31 @@ export default {
           " selec " +
           rowSelect.seleccionado
       );
-
-      //let pos = this.contactosSeleccionados.indexOf(rowSelect) || -1;
-      //rowSelect.seleccionado = !rowSelect.seleccionado;
-
       if (operacion === "ADD") {
         rowSelect.seleccionado = true;
+        rowSelect.visible = false;
         this.contactosSeleccionados.push(rowSelect);
       } else {
         let pos = this.contactosSeleccionados.indexOf(rowSelect);
         rowSelect.seleccionado = false;
+        rowSelect.visible = true;
         this.contactosSeleccionados.splice(pos, 1);
       }
     },
     seleccionarTodos() {
       this.contactos.forEach(element => {
-        element.seleccionado = true;
-        this.contactosSeleccionados.push(element);
+        if (element.visible) {
+          element.seleccionado = true;
+          element.visible = false;
+          this.contactosSeleccionados.push(element);
+        }
       });
     },
     removerTodos() {
       this.contactosSeleccionados = [];
       this.contactos.forEach(element => {
         element.seleccionado = false;
+        element.visible = true;
       });
     },
     verDetalle(row) {
@@ -740,10 +602,12 @@ export default {
     onTagAdded(slug) {
       console.log(`Tag added: ${JSON.stringify(slug)}`);
       slug.seleccionado = true;
+      slug.visible = false;
     },
     onTagRemoved(slug) {
       console.log(`Tag removed: ${slug}`);
       slug.seleccionado = false;
+      slug.visible = true;
     },
     cargarContactos() {
       this.loaderContactos = true;
@@ -766,54 +630,103 @@ export default {
       }
     },
     obtenerFiltros() {
-      let sucursalesFiltradas = [];
-      let gruposFiltrados = [];
-      this.contactos.filter(function(item) {
-        let i = sucursalesFiltradas.findIndex(x => x.nombre == item.sucursal);
-        if (i <= -1) {
-          sucursalesFiltradas.push({
-            id: item.id_sucursal,
-            nombre: item.sucursal,
-            color: item.color_sucursal
-          });
-        }
-      });
-      this.listaSucursales = sucursalesFiltradas;
+      if (this.listaSucursales.length == 0) {
+        let todasSucursales = [];
+        todasSucursales.push(this.sucursalDefault);
 
-      this.contactos.filter(function(item) {
-        let i = gruposFiltrados.findIndex(x => x.nombre == item.nombre_grupo);
-        if (i <= -1) {
-          gruposFiltrados.push({
-            id: item.id_grupo,
-            id_sucursal:item.id_sucursal,
-            nombre: item.nombre_grupo+' '+item.sucursal,
-            color: item.color_grupo
+        this.contactos.filter(function(item) {
+          let i = todasSucursales.findIndex(x => x.id == item.id_sucursal);
+          if (i <= -1) {
+            todasSucursales.push({
+              id: item.id_sucursal,
+              nombre: item.sucursal,
+              color: item.color_sucursal,
+              visible: true
+            });
+          }
+        });
+
+        this.listaSucursales = todasSucursales;
+
+        let todosGrupos = [];
+        todosGrupos.push(this.grupoDefault);
+        this.contactos.filter(function(item) {
+          let i = todosGrupos.findIndex(
+            x => x.id == item.id_grupo && x.id_sucursal == item.id_sucursal
+          );
+          if (i <= -1) {
+            todosGrupos.push({
+              id: item.id_grupo,
+              id_sucursal: item.id_sucursal,
+              nombre: item.nombre_grupo,
+              color: item.color_grupo,
+              visible: false
+            });
+          }
+        });
+        this.listaGrupos = todosGrupos;
+      }
+      this.seleccionarSucursal(this.sucursalDefault, true);
+    },
+    filtrarComboGruposPorSucursal(sucursal) {
+      console.log(sucursal.nombre);
+
+      this.sucursalSeleccionada = sucursal;
+
+      this.listaGrupos.forEach(e => {
+        e.visible = false;
+        if (e.id_sucursal === sucursal.id) {
+          e.visible = true;
+        }
+      });
+    },
+
+    seleccionarSucursal(sucursalSeleccionada, filtrarGrupos) {
+      this.contactos.forEach(element => {
+        element.visible = false;
+        if (
+          (element.id_sucursal === sucursalSeleccionada.id ||
+            sucursalSeleccionada.id == this.sucursalDefault.id) &&
+          !element.seleccionado
+        ) {
+          element.visible = true;
+          //this.contactosSeleccionados.push(element);
+        }
+      });
+      if (filtrarGrupos) {
+        this.filtrarComboGruposPorSucursal(sucursalSeleccionada);
+      }
+      this.seleccionarGrupo(this.grupoDefault);
+    },
+    seleccionarGrupo(grupoSeleccionado) {
+      if (grupoSeleccionado.id != this.grupoSeleccionado.id) {
+        this.grupoSeleccionado = grupoSeleccionado;
+
+        if (grupoSeleccionado.id == -1) {
+          this.contactos.forEach(element => {
+            element.visible = false;
+            if (
+              element.id_sucursal === this.sucursalSeleccionada.id &&
+              !element.seleccionado
+            ) {
+              element.visible = true;
+            }
+          });
+        } else {
+          this.contactos.forEach(element => {
+            element.visible = false;
+            if (
+              element.id_grupo === grupoSeleccionado.id &&
+              element.id_sucursal == grupoSeleccionado.id_sucursal &&
+              !element.seleccionado
+            ) {
+              //element.seleccionado = true;
+              element.visible = true;
+              //this.contactosSeleccionados.push(element);
+            }
           });
         }
-      });
-      this.listaGrupos = gruposFiltrados;
-    },
-    seleccionarSucursal(sucursalSeleccionada) {
-      this.contactos.forEach(element => {
-        if (
-          element.id_sucursal === sucursalSeleccionada.id && 
-          !element.seleccionado
-        ) {
-          element.seleccionado = true;
-          this.contactosSeleccionados.push(element);
-        }
-      });
-    },
-     seleccionarGrupo(grupoSeleccionado) {
-      this.contactos.forEach(element => {
-        if (
-          element.id_grupo === grupoSeleccionado.id && element.id_sucursal == grupoSeleccionado.id_sucursal &&
-          !element.seleccionado
-        ) {
-          element.seleccionado = true;
-          this.contactosSeleccionados.push(element);
-        }
-      });
+      }
     }
   }
 };
