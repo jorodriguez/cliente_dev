@@ -20,7 +20,7 @@ export const validarDatosAviso = (aviso) => {
         return false;      
     }
 
-    if (!aviso.para) {      
+    if (!aviso.para || aviso.para == []) {      
         Vue.prototype.$notificacion.error('Selecciona para', 'Selecciona para quien será el aviso.');
         return false;      
     }

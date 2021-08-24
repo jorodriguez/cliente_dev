@@ -39,7 +39,7 @@
             class="col-sm-1 col-form-label"
             >Para</label
           >
-          <div class="col">
+          <div class="col-10">
             <tags-input
               element-id="tags"
               discard-search-text="Descargar resultados"
@@ -67,14 +67,14 @@
                 <span
                   @click="verDetalle(tag)"
                   class="badge "
-                  :style="`background:'${tag.color_sucursal}'`"
+                  :style="`background-color:'${tag.color_sucursal}'`"
                 >
                   <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>                  
                 </span>
                 <span
                   @click="verDetalle(tag)"
                   class="badge "
-                  :style="`background:'${tag.color_grupo}'`"
+                  :style="`background-color:'${tag.color_grupo}'`"
                 >
                   <span @click="verDetalle(tag)">{{ tag.nombre_grupo }}</span>
                   <!--<span @click="verDetalle(tag)" style="font-size:7px;padding-top:0px">{{tag.sucursal}}</span>-->
@@ -87,12 +87,7 @@
                 ></a>
               </template>
             </tags-input>
-            <small id="emailHelp" class="form-text text-rigth text-muted">
-              <a for="staticEmail" @click="seleccionarPara()" class="">+ </a>
-              <a for="staticEmail" @click="limpiarPara()" class="btn btn-link"
-                >D
-              </a>
-            </small>
+         
             <!--
               <div v-else class="d-flex justify-content-start form-control" >
                  <span v-for="item in contactos" :key="item.id_alumno_familiar">
@@ -100,6 +95,15 @@
                   </span>
               </div>
               -->
+          </div>
+          <div class="col-1 d-flex justify-content-center align-self-center">
+             <small id="emailHelp" class="form-text text-rigth text-muted">
+              <a for="staticEmail" @click="seleccionarPara()" class="pointer p-1 info" ><i class="fa fa-plus" /> </a>
+              <a for="staticEmail" @click="seleccionarPara()" class="pointer p-1 info "><i class="fa fa-trash" /> </a>
+              <!--<a for="staticEmail" @click="limpiarPara()" class="btn btn-link"
+                >D
+              </a>-->
+            </small>
           </div>
         </div>
 
@@ -173,12 +177,12 @@
         <div class="card">
           <div class="card-body row">
             <div class="col-6">
-              <input
+              <!--<input
                 type="text"
                 class="form-control"
                 placeholder="Buscar"
                 id="buscar"
-              />
+              />-->
 
               <!-- contenido -->
 
@@ -278,8 +282,7 @@
 
             <!-- detalle-->
             <div class="col-6">
-              <div class="card">
-                <br /><br />
+              <div class="card">                
                 Selección
                 <div
                   class="d-flex justify-content-end align-items-start"
@@ -493,26 +496,24 @@ export default {
 
     async enviar() {
       console.log("Insertar");
-      let correosPara = "";
-      this.contactos.filter(function(item) {
-        correosPara += item.correo;
-      });
-
-      this.aviso.para = correosPara;
+      let correosPara = [];
+        
+      this.aviso.para = this.contactosSeleccionados;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
         return;
-      }
+      }      
       this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
       this.aviso.genero = this.usuarioSesion.id;
       this.post(URL.AVISOS, this.aviso, result => {
-        let respuesta = result.body;
-        if (respuesta.estatus) {
+        //let respuesta = result.body;
+        
+        if (result.status == 200) {
           // this.init();
           //$("#popup_aviso").modal("hide");
-          this.$notificacion.info("Aviso ", "Se registró el aviso.");
+          this.$notificacion.info("Aviso ", "Se Envió el aviso.");
         } else {
-          this.$notificacion.error("Mensaje", respuesta.mensaje);
+          this.$notificacion.error("Mensaje", result.mensaje);
         }
       });
     },
@@ -526,9 +527,8 @@ export default {
       this.usuario.genero = this.usuarioSesion.id;
 
       this.put(URL.AVISOS, this.aviso, result => {
-        if (result != null) {
-          let respuesta = result.body;
-          if (respuesta.estatus) {
+        if (result != null) {          
+          if (result.status==200) {
             this.$notificacion.info(
               "Modificación de aviso",
               "Se actualizarón los datos del aviso."
@@ -536,7 +536,7 @@ export default {
             this.init();
             $("#popup_aviso").modal("hide");
           } else {
-            this.$notificacion.error("Mensaje", respuesta.mensaje);
+            this.$notificacion.error("Mensaje", result.body.mensaje);
           }
         }
       });
