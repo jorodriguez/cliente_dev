@@ -9,6 +9,7 @@ export class AvisoModel {
         this.nota_interna ="";
         this.etiquetas =  "";
         this.genero = null;       
+        this.enviar = false;       
     }
 
 }
@@ -25,6 +26,7 @@ export class AvisoBuilder {
     setNotaInterna(notaInterna) { this.notaInterna = notaInterna; return this; }
     setEtiquetas(etiquetas) { this.etiquetas = etiquetas; return this; }
     setGenero(genero) { this.genero = genero; return this; }
+    setEnviar(enviar) { this.enviar = enviar; return this; }
     clear() {
         this.setId(0);
         this.setTitulo("");
@@ -33,6 +35,7 @@ export class AvisoBuilder {
         this.setEtiqueta("");
         this.setNotaInterna("");        
         this.setGenero(null);        
+        this.setEnviar(false);        
     }
 
     build() {

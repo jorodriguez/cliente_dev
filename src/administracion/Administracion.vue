@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Administración</h1>
-    <div class="row mt-1" >
-      <div class="col-4" v-for="opc in lista" :key="opc.id">
+    <div class="row mt-1 " >
+      <div class="col-4 mb-3" v-for="opc in lista" :key="opc.id">
         <Card
           titulo=""
           :sub_titulo="opc.nombre"

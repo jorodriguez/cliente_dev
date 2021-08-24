@@ -10,20 +10,16 @@ export const validarDatosAviso = (aviso) => {
     return false;
   } else {
 
-    if (aviso.nombre == '') {
-      Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
-      return false;
-    }
+    if (!aviso.para || aviso.para == '' || aviso.para == null) {      
+      Vue.prototype.$notificacion.error('Selecciona para', 'Selecciona para quien será el aviso.');
+      return false;      
+  }
 
     if (!aviso.titulo) {      
         Vue.prototype.$notificacion.error('Titulo requerido', 'El titulo es requerido.');
         return false;      
     }
-
-    if (!aviso.para || aviso.para == []) {      
-        Vue.prototype.$notificacion.error('Selecciona para', 'Selecciona para quien será el aviso.');
-        return false;      
-    }
+   
 
     if (!aviso.aviso) {      
       Vue.prototype.$notificacion.error('Aviso requerido', 'Tienes que escribir el contenido del aviso.');

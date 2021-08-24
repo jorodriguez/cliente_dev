@@ -8,10 +8,7 @@
         </router-link>
       </div>
       <div class="col-1">
-        <Button
-          type="button"
-          class="btn btn-primary btn-lg"
-          v-on:click="nuevo()"
+        <Button type="button" class="btn btn-light btn-lg" v-on:click="nuevo()"
           >Nuevo</Button
         >
       </div>
@@ -20,11 +17,13 @@
           type="button"
           class="btn btn-primary btn-lg"
           v-on:click="enviar()"
-          >Enviar</Button
-        >
+          :disabled="loadingEnvio"
+          >Enviar
+        </Button>
       </div>
     </div>
     <Loader :loading="loader" />
+    <Loader :loading="loadingEnvio" type="grow" mini="true" />
 
     <div class="card">
       <div class="card-body">
@@ -52,6 +51,7 @@
               :typeahead="true"
               @tag-added="onTagAdded"
               @tag-removed="onTagRemoved"
+              :readonly="loadingEnvio"
             >
               <template v-slot:selected-tag="{ tag, index, removeTag }">
                 <img
@@ -69,7 +69,7 @@
                   class="badge "
                   :style="`background-color:'${tag.color_sucursal}'`"
                 >
-                  <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>                  
+                  <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>
                 </span>
                 <span
                   @click="verDetalle(tag)"
@@ -87,7 +87,7 @@
                 ></a>
               </template>
             </tags-input>
-         
+
             <!--
               <div v-else class="d-flex justify-content-start form-control" >
                  <span v-for="item in contactos" :key="item.id_alumno_familiar">
@@ -97,9 +97,19 @@
               -->
           </div>
           <div class="col-1 d-flex justify-content-center align-self-center">
-             <small id="emailHelp" class="form-text text-rigth text-muted">
-              <a for="staticEmail" @click="seleccionarPara()" class="pointer p-1 info" ><i class="fa fa-plus" /> </a>
-              <a for="staticEmail" @click="seleccionarPara()" class="pointer p-1 info "><i class="fa fa-trash" /> </a>
+            <small id="emailHelp" class="form-text text-rigth text-muted">
+              <a
+                for="staticEmail"
+                @click="seleccionarPara()"
+                class="pointer p-1 info"
+                ><i class="fa fa-plus" />
+              </a>
+              <a
+                for="staticEmail"
+                @click="limpiarPara()"
+                class="pointer p-1 info "
+                ><i class="fa fa-trash" />
+              </a>
               <!--<a for="staticEmail" @click="limpiarPara()" class="btn btn-link"
                 >D
               </a>-->
@@ -118,6 +128,7 @@
               id="staticEmail"
               placeholder="Titulo"
               v-model="aviso.titulo"
+              :readonly="loadingEnvio"
             />
           </div>
         </div>
@@ -126,6 +137,7 @@
             <vue-editor
               v-model="aviso.aviso"
               focus
+              :disabled="loadingEnvio"
               placeholder="Escribe tu aviso.."
             ></vue-editor>
           </div>
@@ -151,7 +163,7 @@
           <vue-good-table
             :columns="columnas"
             :rows="historial"
-            :line-numbers="true"
+            :line-numbers="false"
             :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
             :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
             :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
@@ -159,8 +171,27 @@
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'titulo'">
-                <span>{{ props.row.titulo }} </span>
-                <span class="small">{{ props.row.nota_interna }} </span>
+              <div class="d-flex flex-row-reverse bd-highlight">          
+                <div class="p-2 bd-highlight small"> {{props.row.enviado ? `enviado ${props.row.fecha_envio}`:'No enviado'}} </div>                
+              </div>                
+                <h4>{{ props.row.titulo }}</h4>                
+                <!--<p>
+                  <a
+                    class="btn btn-link"
+                    data-toggle="collapse"
+                    :href="`#collapseAviso_${props.row.id}`"
+                    role="button"
+                    aria-expanded="false"
+                    :aria-controls="`collapseAviso_${props.row.id}`"
+                  >
+                    ver aviso
+                  </a>
+                </p>
+                <div class="collapse" :id="`collapseAviso_${props.row.id}`">
+                  <div class="card card-body">
+                    <span v-html="props.row.aviso"></span>
+                  </div>
+                </div>-->
               </span>
               <span v-else-if="props.column.field == 'botones'"> </span>
               <span v-else>{{ props.formattedRow[props.column.field] }}</span>
@@ -282,7 +313,7 @@
 
             <!-- detalle-->
             <div class="col-6">
-              <div class="card">                
+              <div class="card">
                 Selección
                 <div
                   class="d-flex justify-content-end align-items-start"
@@ -367,6 +398,37 @@
         </div>
       </div>
     </Popup>
+
+    <Popup id="popup_envio" show_button_close="true" size="md">
+      <div slot="header">
+        Envio del aviso
+      </div>
+      <div slot="content">
+        <div class="card">
+          Se detectaron algunos correos rechazados
+          <table>
+            <tbody v-for="(item, index) in correosRechazadosEnvio" :key="index">
+              <tr>
+                <td>{{ item }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </Popup>
+
+    <Popup id="popup_preview" show_button_close="true" size="lg">
+      <div slot="header">
+        preview
+      </div>
+      <div slot="content">
+        <div class="card">
+          
+          </div>        
+        
+      </div>
+    </Popup>
+
   </div>
 </template>
 
@@ -413,6 +475,7 @@ export default {
     return {
       aviso: AvisoModel,
       avisoMemento: AvisoModel,
+      avisoPreview: AvisoModel,
       usuarioSesion: null,
       response: "",
       operacion: "INSERT",
@@ -430,23 +493,26 @@ export default {
       listaSucursales: [],
       listaGrupos: [],
       listaGruposFiltados: [],
+      correosRechazadosEnvio: [],
       sucursalSeleccionada: undefined,
       sucursalDefault: { id: -1, nombre: "Todas las sucursales" },
       grupoSeleccionado: undefined,
       grupoDefault: { id: -1, nombre: "Todos los grupos" },
       mostrarLabels: true,
       rowDetalle: null,
+      loadingEnvio: false,
       columnas: [
         { label: "Id", field: "id", hidden: true },
         { label: "Empresa", field: "empresa", hidden: true },
         { label: "Fecha", field: "fecha", hidden: true },
         { label: "para", field: "para", hidden: true },
         { label: "etiquetas", field: "etiquetas", hidden: true },
-        { label: "titulo", field: "titulo", hidden: true },
+        { label: "", field: "titulo", hidden: false },
         { label: "aviso", field: "aviso", hidden: true },
         { label: "nota_interna", field: "nota_interna", hidden: true },
         { label: "fecha_genero", field: "fecha_genero", hidden: true },
-        { label: "Usuario", field: "usuario_genero", hidden: true }
+        { label: "Usuario", field: "usuario_genero", hidden: true },
+        { label: "", field: "botones", hidden: true }
       ]
     };
   },
@@ -477,6 +543,7 @@ export default {
     nuevo() {
       console.log("Nuevo");
       this.operacion = "INSERT";
+      this.limpiarPara();
       this.aviso = new AvisoModel();
       //$("#popup_aviso").modal("show");
     },
@@ -484,8 +551,8 @@ export default {
       this.contactos.forEach(element => {
         element.seleccionado = false;
         element.visible = true;
-        this.contactosSeleccionados = [];
       });
+      this.contactosSeleccionados = [];
     },
     seleccionarPara() {
       //this.cargarContactos();
@@ -496,22 +563,38 @@ export default {
 
     async enviar() {
       console.log("Insertar");
-      let correosPara = [];
-        
-      this.aviso.para = this.contactosSeleccionados;
+      let arrayPara = [];
+
+      //this.aviso.para = this.contactosSeleccionados;
+      this.contactosSeleccionados.forEach(ele => {
+        arrayPara.push({
+          id_familiar: ele.id_familiar,
+          id_alumno_familiar: ele.id_alumno_familiar,
+          correo: ele.correo
+        });
+      });
+
+      console.log(JSON.stringify(this.aviso.para));
+      this.aviso.para = arrayPara;
+      this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
         return;
-      }      
+      }
       this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
       this.aviso.genero = this.usuarioSesion.id;
+      this.loadingEnvio = true;
       this.post(URL.AVISOS, this.aviso, result => {
-        //let respuesta = result.body;
-        
-        if (result.status == 200) {
-          // this.init();
-          //$("#popup_aviso").modal("hide");
-          this.$notificacion.info("Aviso ", "Se Envió el aviso.");
+        let respuesta = result.body;
+        let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
+        this.loadingEnvio = false;
+        if (informacionEnvio && informacionEnvio.enviado) {
+          this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
+          if (this.correosRechazadosEnvio.length > 0) {
+            $("#popup_envio").modal("show");
+          }
+          this.init();
+          this.$notificacion.info("Aviso ", "Enviado correctamente.");
         } else {
           this.$notificacion.error("Mensaje", result.mensaje);
         }
@@ -527,8 +610,8 @@ export default {
       this.usuario.genero = this.usuarioSesion.id;
 
       this.put(URL.AVISOS, this.aviso, result => {
-        if (result != null) {          
-          if (result.status==200) {
+        if (result != null) {
+          if (result.status == 200) {
             this.$notificacion.info(
               "Modificación de aviso",
               "Se actualizarón los datos del aviso."
@@ -628,6 +711,9 @@ export default {
           }
         );
       }
+    },
+    preview(){
+        
     },
     obtenerFiltros() {
       if (this.listaSucursales.length == 0) {
