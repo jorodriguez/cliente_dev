@@ -1,6 +1,13 @@
 <template>
   <div>
     <h1>Administración</h1>
+    <div class="row">
+      <div class="col-1" v-if="usuarioSesion.permiso_gerente">
+        <router-link to="/ReporteDeudas" class="btn btn-link">
+          <i class="fas fa-arrow-circle-left text-gray"></i>Principal
+        </router-link>
+      </div>
+    </div>  
     <div class="row mt-1 " >
       <div class="col-4 mb-3" v-for="opc in lista" :key="opc.id">
         <Card

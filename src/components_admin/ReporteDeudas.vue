@@ -3,7 +3,13 @@
     <h1>Balances</h1>
 
     <div class="row text-right">
-      <div class="col align-self-end">
+     <div class="col align-self-start">     
+      
+       <router-link
+          to="/Administracion"
+          class="btn btn-link"
+        >Administración</router-link>
+      
         <router-link
           to="/ReporteGastos"
           class="btn btn-outline-danger"

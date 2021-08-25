@@ -22,7 +22,7 @@
       <span
         class="badge badge-pill badge-light"
         :style="
-          `font-size:10px;padding-top:0px;background-color:${
+          `font-size:10px;padding-top:0px;color:${
             item.color_sucursal
           }`
         "
@@ -31,7 +31,7 @@
       <span
         class="badge badge-pill badge-light"
         :style="
-          `font-size:10px;padding-top:0px;background-color:${item.color_grupo}`
+          `font-size:10px;padding-top:0px;color:${item.color_grupo}`
         "
         >{{ item.nombre_grupo }}</span
       >

@@ -1,6 +1,6 @@
 <template>
   <div class="catalogo_alumno">
-    <h1>Avisos ({{ contador }})</h1>
+    <h1>Avisos</h1>
     <div class="row">
       <div class="col-1">
         <router-link to="/Administracion" class="btn btn-secondary btn-lg">
@@ -66,19 +66,20 @@
                 ><br />
                 <span
                   @click="verDetalle(tag)"
-                  class="badge "
-                  :style="`background-color:'${tag.color_sucursal}'`"
+                  class="badge badge-pill badge-light"
+                  :style="`color:${tag.color_sucursal}`"
                 >
                   <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>
                 </span>
                 <span
                   @click="verDetalle(tag)"
-                  class="badge "
-                  :style="`background-color:'${tag.color_grupo}'`"
+                  class="badge badge-pill badge-light"
+                  :style="`color:${tag.color_grupo}`"
                 >
-                  <span @click="verDetalle(tag)">{{ tag.nombre_grupo }}</span>
+                <span   @click="verDetalle(tag)">{{ tag.nombre_grupo }}</span>
                   <!--<span @click="verDetalle(tag)" style="font-size:7px;padding-top:0px">{{tag.sucursal}}</span>-->
                 </span>
+                
                 <a
                   v-show="true"
                   href="#"
@@ -154,7 +155,7 @@
         aria-expanded="false"
         aria-controls="collapseExample"
       >
-        Ver Historial
+        Historial ({{ contador }})
       </a>
     </h4>
     <div class="collapse" id="collapseExample">
@@ -218,7 +219,7 @@
               <!-- contenido -->
 
               <div class="card">
-                <div class="card-bod">
+                <div class="card-body">
                   <div
                     class="d-flex justify-content-end align-items-start"
                     style="height:12px"
@@ -312,20 +313,14 @@
             </div>
 
             <!-- detalle-->
-            <div class="col-6">
+            <div class="col-6">                          
               <div class="card">
-                Selección
-                <div
-                  class="d-flex justify-content-end align-items-start"
-                  style="height:12px"
-                >
-                  <button
-                    class="btn btn-link btn-sm"
-                    type="button"
-                    @click="removerTodos()"
+               <div class="card-body">
+                  <div
+                    class="d-flex justify-content-center align-items-center"
+                    style="height:12px"
                   >
-                    Remover todos
-                  </button>
+                <small>Selección</small>
                 </div>
                 <div class="divScoll">
                   <span
@@ -339,6 +334,14 @@
                     />
                   </span>
                 </div>
+                <button
+                    class="btn btn-warning btn-block"
+                    type="button"
+                    @click="removerTodos()"
+                  >
+                    Remover todos
+                  </button>
+              </div>
               </div>
             </div>
           </div>
@@ -376,7 +379,7 @@
               <small class="text-primary">{{ this.rowDetalle.correo }}</small>
               <br />
               <span
-                class="badge badge-pill badge-light"
+                class="badge badge-pill badge-light text-white"
                 :style="
                   `font-size:10px;padding-top:0px;background-color:${
                     this.rowDetalle.color_sucursal
@@ -385,7 +388,7 @@
                 >{{ this.rowDetalle.sucursal }}</span
               >
               <span
-                class="badge badge-pill badge-light"
+                class="badge badge-pill badge-light text-white"
                 :style="
                   `font-size:10px;padding-top:0px;background-color:${
                     this.rowDetalle.color_grupo
