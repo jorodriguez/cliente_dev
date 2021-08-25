@@ -44,9 +44,9 @@
               discard-search-text="Descargar resultados"
               placeholder="Escribe un nombre o apellido..."
               v-model="contactosSeleccionados"
-              :existing-tags="contactos"
-              id-field="id_alumno_familiar"
-              text-field="nombre_familiar"
+              :existing-tags="contactosTags"
+              id-field="id"
+              text-field="nombre"
               typeahead-style="dropdown"
               :typeahead="true"
               @tag-added="onTagAdded"
@@ -54,15 +54,15 @@
               :readonly="loadingEnvio"
             >
               <template v-slot:selected-tag="{ tag, index, removeTag }">
-                <img
+                <!--<img
                   :src="tag.foto"
                   width="30"
                   height="30"
                   alt=".."
                   class="rounded-circle"
                   @click="verDetalle(tag)"
-                />
-                <span @click="verDetalle(tag)">{{ tag.nombre_familiar }}</span
+                />-->
+                <span @click="verDetalle(tag)">{{ tag.nombre }}</span
                 ><br />
                 <span
                   @click="verDetalle(tag)"
@@ -70,15 +70,7 @@
                   :style="`color:${tag.color_sucursal}`"
                 >
                   <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>
-                </span>
-                <span
-                  @click="verDetalle(tag)"
-                  class="badge badge-pill badge-light"
-                  :style="`color:${tag.color_grupo}`"
-                >
-                <span   @click="verDetalle(tag)">{{ tag.nombre_grupo }}</span>
-                  <!--<span @click="verDetalle(tag)" style="font-size:7px;padding-top:0px">{{tag.sucursal}}</span>-->
-                </span>
+                </span>              
                 
                 <a
                   v-show="true"
@@ -459,6 +451,9 @@ import Vue from "vue";
 require("@voerro/vue-tagsinput/dist/style.css");
 Vue.component("tags-input", VoerroTagsInput);
 
+const TIPO = {TODAS:"TODAS",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
+
+
 export default {
   name: "catalogo-avisos",
   mixins: [operacionesApi],
@@ -706,17 +701,45 @@ export default {
             this.loader = false;
             this.loaderContactos = false;
             if (result.body != null) {
-              this.contactos = result.body || [];
-              /*this.contactos.forEach(element => {
-                this.contactosTags.push({id: element.id_alumno_familiar,name:element.nombre_familiar ,value: element });
-            });*/
+              this.contactos = result.body || [];              
+              this.completarCargaAutocomplete();
             }
           }
         );
-      }
+      }      
+    },
+    completarCargaAutocomplete(){
+       
+        this.obtenerFiltros();       
+
+       this.agregarTag(-1,"Todas mis sucursales",-1,"TODAS",TIPO.TODAS);
+ 
+        //agregar sucursal por sucursal
+        this.listaSucursales.forEach(suc=>{
+             this.agregarTag(suc.id,'@'+suc.nombre,suc.id,"",TIPO.SUCURSAL);
+        });
+        
+        //Agregar grupos        
+        this.listaGrupos.forEach(grupo =>{
+          this.agregarTag(grupo.id,'@'+grupo.nombre +' '+grupo.sucursal,grupo.id_sucursal,grupo.sucursal,TIPO.GRUPO);
+        });
+
+         this.contactos.forEach(ele =>{
+          this.agregarTag(ele.id_alumno_familiar,ele.nombre_familiar,ele.id_sucursal,ele.sucursal,TIPO.CONTACTO);
+        });
+
+    },
+    agregarTag(id,nombre,id_sucursal,sucursal,tipo){
+      this.contactosTags.push({
+            id:id,
+            nombre:nombre,            
+            id_sucursal:id_sucursal,
+            sucursal:sucursal,
+            tipo:tipo
+        });
     },
     preview(){
-        
+
     },
     obtenerFiltros() {
       if (this.listaSucursales.length == 0) {
@@ -739,7 +762,7 @@ export default {
 
         let todosGrupos = [];
         todosGrupos.push(this.grupoDefault);
-        this.contactos.filter(function(item) {
+        this.contactos.filter(function(item) {  
           let i = todosGrupos.findIndex(
             x => x.id == item.id_grupo && x.id_sucursal == item.id_sucursal
           );
@@ -748,6 +771,7 @@ export default {
               id: item.id_grupo,
               id_sucursal: item.id_sucursal,
               nombre: item.nombre_grupo,
+              sucursal: item.sucursal,
               color: item.color_grupo,
               visible: false
             });
