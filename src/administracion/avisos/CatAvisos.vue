@@ -38,11 +38,11 @@
             class="col-sm-1 col-form-label"
             >Para</label
           >
-          <div class="col-10">
+          <div class="col">
             <tags-input
               element-id="tags"
               discard-search-text="Descargar resultados"
-              placeholder="Escribe un nombre o apellido..."
+              placeholder="Escribe un @ para sucursales y grupos ó un nombre "
               v-model="contactosSeleccionados"
               :existing-tags="contactosTags"
               id-field="id"
@@ -50,26 +50,18 @@
               typeahead-style="dropdown"
               :typeahead="true"
               @tag-added="onTagAdded"
-              @tag-removed="onTagRemoved"
+              @tag-removed="onTagRemoved"              
               :readonly="loadingEnvio"
             >
               <template v-slot:selected-tag="{ tag, index, removeTag }">
-                <!--<img
-                  :src="tag.foto"
-                  width="30"
-                  height="30"
-                  alt=".."
-                  class="rounded-circle"
-                  @click="verDetalle(tag)"
-                />-->
                 <span @click="verDetalle(tag)">{{ tag.nombre }}</span
                 ><br />
                 <span
                   @click="verDetalle(tag)"
-                  class="badge badge-pill badge-light"
-                  :style="`color:${tag.color_sucursal}`"
+                  class="text-white "                  
+                  style="font-size:10px;"
                 >
-                  <span @click="verDetalle(tag)">{{ tag.sucursal }}</span>
+                    <i>{{ tag.sucursal }}</i>
                 </span>              
                 
                 <a
@@ -78,6 +70,7 @@
                   class="tags-input-remove"
                   @click.prevent="removeTag(index)"
                 ></a>
+               
               </template>
             </tags-input>
 
@@ -88,26 +81,7 @@
                   </span>
               </div>
               -->
-          </div>
-          <div class="col-1 d-flex justify-content-center align-self-center">
-            <small id="emailHelp" class="form-text text-rigth text-muted">
-              <a
-                for="staticEmail"
-                @click="seleccionarPara()"
-                class="pointer p-1 info"
-                ><i class="fa fa-plus" />
-              </a>
-              <a
-                for="staticEmail"
-                @click="limpiarPara()"
-                class="pointer p-1 info "
-                ><i class="fa fa-trash" />
-              </a>
-              <!--<a for="staticEmail" @click="limpiarPara()" class="btn btn-link"
-                >D
-              </a>-->
-            </small>
-          </div>
+          </div>          
         </div>
 
         <div class="form-group row">
@@ -137,7 +111,7 @@
         </div>
       </div>
     </div>
-
+<!--
     <h4>
       <a
         class="btn btn-link"
@@ -168,23 +142,7 @@
                 <div class="p-2 bd-highlight small"> {{props.row.enviado ? `enviado ${props.row.fecha_envio}`:'No enviado'}} </div>                
               </div>                
                 <h4>{{ props.row.titulo }}</h4>                
-                <!--<p>
-                  <a
-                    class="btn btn-link"
-                    data-toggle="collapse"
-                    :href="`#collapseAviso_${props.row.id}`"
-                    role="button"
-                    aria-expanded="false"
-                    :aria-controls="`collapseAviso_${props.row.id}`"
-                  >
-                    ver aviso
-                  </a>
-                </p>
-                <div class="collapse" :id="`collapseAviso_${props.row.id}`">
-                  <div class="card card-body">
-                    <span v-html="props.row.aviso"></span>
-                  </div>
-                </div>-->
+               
               </span>
               <span v-else-if="props.column.field == 'botones'"> </span>
               <span v-else>{{ props.formattedRow[props.column.field] }}</span>
@@ -193,7 +151,7 @@
         </div>
       </div>
     </div>
-
+-->
     <!-- Para -->
     <Popup id="popup_para" show_button_close="true" size="lg">
       <div slot="header">Directorio</div>
@@ -345,51 +303,23 @@
     <!-- DETALLE -->
     <Popup id="popup_detalle" show_button_close="true" size="md">
       <div slot="header">
-        {{ this.rowDetalle ? this.rowDetalle.nombre_familiar : "" }}
+        {{ this.rowDetalle ? this.rowDetalle.nombre : "" }}
       </div>
       <div slot="content">
         <div class="card">
-          <div v-if="this.rowDetalle" class="card-body row">
-            <div class="col-4 ">
-              <img
-                :src="this.rowDetalle.foto"
-                width="130"
-                height="130"
-                alt=".."
-                class="rounded-circle"
-              />
-            </div>
-            <div class="col-6 pl-4 text-left">
-              <small class="font-weight-bold">{{
-                this.rowDetalle.nombre_familiar
-              }}</small
-              ><br />
-              <small
-                >{{ this.rowDetalle.parentesco }} de
-                {{ this.rowDetalle.nombre_alumno }}</small
-              ><br />
-              <small class="text-primary">{{ this.rowDetalle.correo }}</small>
-              <br />
-              <span
-                class="badge badge-pill badge-light text-white"
-                :style="
-                  `font-size:10px;padding-top:0px;background-color:${
-                    this.rowDetalle.color_sucursal
-                  }`
-                "
-                >{{ this.rowDetalle.sucursal }}</span
-              >
-              <span
-                class="badge badge-pill badge-light text-white"
-                :style="
-                  `font-size:10px;padding-top:0px;background-color:${
-                    this.rowDetalle.color_grupo
-                  }`
-                "
-                >{{ this.rowDetalle.nombre_grupo }}</span
-              >
-            </div>
-          </div>
+            <div class="divScoll">
+                  <span
+                    v-for="item in contactosDetalle"
+                    :key="item.id_alumno_familiar"
+                    class="pointer"
+                  >
+                    <tarjeta-contacto
+                      @click="seleccionar(item, 'REMOVE')"
+                      :item="item"
+                    />
+                  </span>
+                </div>
+          
         </div>
       </div>
     </Popup>
@@ -448,7 +378,8 @@ import AvatarAlumno from "../../components_utils/AvatarAlumno";
 import TarjetaContacto from "@/administracion/avisos/fragmentos/TarjetaContacto";
 import VoerroTagsInput from "@voerro/vue-tagsinput";
 import Vue from "vue";
-require("@voerro/vue-tagsinput/dist/style.css");
+//require("@voerro/vue-tagsinput/dist/style.css");
+require("../../../static/css/styleAutocompleteContactos.css");
 Vue.component("tags-input", VoerroTagsInput);
 
 const TIPO = {TODAS:"TODAS",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
@@ -486,6 +417,7 @@ export default {
       historial: [],
       contactos: [],
       contactosSeleccionados: [],
+      contactosDetalle: [],
       contactosRespaldo: [],
       contactosTags: [],
       listaSucursales: [],
@@ -678,6 +610,28 @@ export default {
     },
     verDetalle(row) {
       this.rowDetalle = row;
+      console.log(JSON.stringify(row));
+      this.contactosDetalle = [];
+     
+      this.contactos.forEach(contacto => {
+          if(row.tipo === TIPO.TODAS ){
+                this.contactosDetalle.push(contacto);
+                console.log("toda");
+          }
+          if(row.tipo === TIPO.SUCURSAL && row.id == contacto.id_sucursal){
+            console.log("SUC");
+            //aqui filtrar todos
+              this.contactosDetalle.push(contacto);
+          }          
+          if(row.tipo === TIPO.GRUPO && row.id == contacto.id_grupo && row.id_sucursal == contacto.id_sucursal){
+            console.log("grupo");
+                 this.contactosDetalle.push(contacto);
+          } 
+          if(row.tipo === TIPO.CONTACTO && row.id == contacto.id_alumno_familiar){
+               this.contactosDetalle.push(contacto);               
+          }
+      });
+      
       $("#popup_detalle").modal("show");
     },
     onTagAdded(slug) {
@@ -712,29 +666,30 @@ export default {
        
         this.obtenerFiltros();       
 
-       this.agregarTag(-1,"Todas mis sucursales",-1,"TODAS",TIPO.TODAS);
+       this.agregarTag(-1,"@Todas mis sucursales",-1,"Todos los miembros",-1,TIPO.TODAS);
  
         //agregar sucursal por sucursal
         this.listaSucursales.forEach(suc=>{
-             this.agregarTag(suc.id,'@'+suc.nombre,suc.id,"",TIPO.SUCURSAL);
+             this.agregarTag(suc.id,'@'+suc.nombre,suc.id,"",-1,TIPO.SUCURSAL);
         });
         
         //Agregar grupos        
         this.listaGrupos.forEach(grupo =>{
-          this.agregarTag(grupo.id,'@'+grupo.nombre +' '+grupo.sucursal,grupo.id_sucursal,grupo.sucursal,TIPO.GRUPO);
+          this.agregarTag(grupo.id,'@'+grupo.nombre +' '+grupo.sucursal,grupo.id_sucursal,"",grupo.id,TIPO.GRUPO);
         });
 
          this.contactos.forEach(ele =>{
-          this.agregarTag(ele.id_alumno_familiar,ele.nombre_familiar,ele.id_sucursal,ele.sucursal,TIPO.CONTACTO);
+          this.agregarTag(ele.id_alumno_familiar,ele.nombre_familiar,ele.id_sucursal,ele.sucursal,ele.id_grupo,TIPO.CONTACTO);
         });
 
     },
-    agregarTag(id,nombre,id_sucursal,sucursal,tipo){
+    agregarTag(id,nombre,id_sucursal,sucursal,id_grupo,tipo){
       this.contactosTags.push({
             id:id,
             nombre:nombre,            
             id_sucursal:id_sucursal,
             sucursal:sucursal,
+            id_grupo:id_grupo,
             tipo:tipo
         });
     },
@@ -744,7 +699,7 @@ export default {
     obtenerFiltros() {
       if (this.listaSucursales.length == 0) {
         let todasSucursales = [];
-        todasSucursales.push(this.sucursalDefault);
+        //todasSucursales.push(this.sucursalDefault);
 
         this.contactos.filter(function(item) {
           let i = todasSucursales.findIndex(x => x.id == item.id_sucursal);
@@ -761,7 +716,7 @@ export default {
         this.listaSucursales = todasSucursales;
 
         let todosGrupos = [];
-        todosGrupos.push(this.grupoDefault);
+        //todosGrupos.push(this.grupoDefault);
         this.contactos.filter(function(item) {  
           let i = todosGrupos.findIndex(
             x => x.id == item.id_grupo && x.id_sucursal == item.id_sucursal
@@ -779,7 +734,7 @@ export default {
         });
         this.listaGrupos = todosGrupos;
       }
-      this.seleccionarSucursal(this.sucursalDefault, true);
+      //this.seleccionarSucursal(this.sucursalDefault, true);
     },
     filtrarComboGruposPorSucursal(sucursal) {
       console.log(sucursal.nombre);
@@ -845,7 +800,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .divScoll {
   margin-top: 10px;
   height: 400px;
@@ -860,4 +815,7 @@ export default {
 .pointer {
   cursor: pointer;
 }
+
+
+
 </style>
