@@ -54,14 +54,14 @@
               :readonly="loadingEnvio"
             >
               <template v-slot:selected-tag="{ tag, index, removeTag }">
-                <span @click="verDetalle(tag)">{{ tag.nombre }}</span
+                <span @click="verDetalle(tag)">{{ tag.nombreMostrar }}</span
                 ><br />
                 <span
                   @click="verDetalle(tag)"
                   class="text-white "                  
-                  style="font-size:10px;"
+                  style="font-size:9px;"
                 >
-                    <i>{{ tag.sucursal }}</i>
+                    <i>{{ tag.descripcion }}</i>
                 </span>              
                 
                 <a
@@ -69,8 +69,7 @@
                   href="#"
                   class="tags-input-remove"
                   @click.prevent="removeTag(index)"
-                ></a>
-               
+                ></a>               
               </template>
             </tags-input>
 
@@ -301,24 +300,21 @@
     </Popup>
 
     <!-- DETALLE -->
-    <Popup id="popup_detalle" show_button_close="true" size="md">
+    <Popup id="popup_detalle" show_button_close="true" size="sm">
       <div slot="header">
-        {{ this.rowDetalle ? this.rowDetalle.nombre : "" }}
+        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar} ${this.rowDetalle.descripcion}` : "" }}
       </div>
       <div slot="content">
-        <div class="card">
-            <div class="divScoll">
+        <div class="card overflow-auto" style="height:300px">            
                   <span
                     v-for="item in contactosDetalle"
-                    :key="item.id_alumno_familiar"
-                    class="pointer"
+                    :key="item.id_alumno_familiar"                                        
                   >
-                    <tarjeta-contacto
-                      @click="seleccionar(item, 'REMOVE')"
+                    <tarjeta-contacto                      
                       :item="item"
+                      
                     />
-                  </span>
-                </div>
+                  </span>            
           
         </div>
       </div>
@@ -382,7 +378,7 @@ import Vue from "vue";
 require("../../../static/css/styleAutocompleteContactos.css");
 Vue.component("tags-input", VoerroTagsInput);
 
-const TIPO = {TODAS:"TODAS",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
+const TIPO = {TODAS_SUCURSALES:"TODAS_SUCURSALES",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
 
 
 export default {
@@ -409,6 +405,7 @@ export default {
       response: "",
       operacion: "INSERT",
       es: es,
+      TIPO:TIPO,
       TABLE_CONFIG: TABLE_CONFIG,
       loader: false,
       loaderContactos: false,
@@ -614,7 +611,7 @@ export default {
       this.contactosDetalle = [];
      
       this.contactos.forEach(contacto => {
-          if(row.tipo === TIPO.TODAS ){
+          if(row.tipo === TIPO.TODAS_SUCURSALES ){
                 this.contactosDetalle.push(contacto);
                 console.log("toda");
           }
@@ -666,29 +663,30 @@ export default {
        
         this.obtenerFiltros();       
 
-       this.agregarTag(-1,"@Todas mis sucursales",-1,"Todos los miembros",-1,TIPO.TODAS);
+       this.agregarTag(-1,"@Todas mis sucursales",-1,"@Todas mis sucursales","",-1,TIPO.TODAS_SUCURSALES);
  
         //agregar sucursal por sucursal
         this.listaSucursales.forEach(suc=>{
-             this.agregarTag(suc.id,'@'+suc.nombre,suc.id,"",-1,TIPO.SUCURSAL);
+             this.agregarTag(suc.id,'@'+suc.nombre,suc.id,suc.nombre,"",-1,TIPO.SUCURSAL);
         });
         
         //Agregar grupos        
         this.listaGrupos.forEach(grupo =>{
-          this.agregarTag(grupo.id,'@'+grupo.nombre +' '+grupo.sucursal,grupo.id_sucursal,"",grupo.id,TIPO.GRUPO);
+          this.agregarTag(grupo.id,'@'+grupo.nombre +' '+grupo.sucursal,grupo.id_sucursal,grupo.nombre,grupo.sucursal,grupo.id,TIPO.GRUPO);
         });
 
          this.contactos.forEach(ele =>{
-          this.agregarTag(ele.id_alumno_familiar,ele.nombre_familiar,ele.id_sucursal,ele.sucursal,ele.id_grupo,TIPO.CONTACTO);
+          this.agregarTag(ele.id_alumno_familiar,ele.nombre_familiar,ele.id_sucursal,ele.nombre_familiar,ele.sucursal,ele.id_grupo,TIPO.CONTACTO);
         });
 
     },
-    agregarTag(id,nombre,id_sucursal,sucursal,id_grupo,tipo){
+    agregarTag(id,nombre,id_sucursal,nombreMostrar,descripcion,id_grupo,tipo){
       this.contactosTags.push({
             id:id,
             nombre:nombre,            
             id_sucursal:id_sucursal,
-            sucursal:sucursal,
+            nombreMostrar:nombreMostrar,
+            descripcion:descripcion,
             id_grupo:id_grupo,
             tipo:tipo
         });
