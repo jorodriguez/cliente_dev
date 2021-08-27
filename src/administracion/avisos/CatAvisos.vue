@@ -8,7 +8,7 @@
         </router-link>
       </div>
       <div class="col-1">
-        <Button type="button" class="btn btn-light btn-lg" v-on:click="nuevo()"
+        <Button type="button" class="btn btn-light btn-lg" v-on:click="iniciarNuevo()"
           >Nuevo</Button
         >
       </div>
@@ -150,159 +150,13 @@
         </div>
       </div>
     </div>
--->
-    <!-- Para -->
-    <Popup id="popup_para" show_button_close="true" size="lg">
-      <div slot="header">Directorio</div>
-      <div slot="content" style="min-height:300px">
-        <div class="card">
-          <div class="card-body row">
-            <div class="col-6">
-              <!--<input
-                type="text"
-                class="form-control"
-                placeholder="Buscar"
-                id="buscar"
-              />-->
-
-              <!-- contenido -->
-
-              <div class="card">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-end align-items-start"
-                    style="height:12px"
-                  >
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-link btn-sm dropdown-toggle"
-                        type="button"
-                        id="dropdownMenu2"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        {{
-                          this.sucursalSeleccionada &&
-                            this.sucursalSeleccionada.nombre
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenu2"
-                      >
-                        <button
-                          v-for="suc in listaSucursales"
-                          :key="suc.id"
-                          class="dropdown-item"
-                          type="button"
-                          @click="seleccionarSucursal(suc, true)"
-                        >
-                          <span>{{ suc.nombre }}</span>
-                        </button>
-                      </div>
-                    </div>
-                    <!--Combo de grupos -->
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-link btn-sm dropdown-toggle"
-                        type="button"
-                        id="dropdownMenu2"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        {{
-                          this.grupoSeleccionado &&
-                            this.grupoSeleccionado.nombre
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenu2"
-                      >
-                        <span
-                          v-for="(grupo, index) in listaGrupos"
-                          :key="`${index}`"
-                        >
-                          <button
-                            class="dropdown-item"
-                            type="button"
-                            v-if="grupo.visible"
-                            @click="seleccionarGrupo(grupo)"
-                          >
-                            {{ grupo.nombre }}
-                          </button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class=" divScoll">
-                    <span
-                      v-for="item in contactos"
-                      :key="item.id_alumno_familiar"
-                      class="pointer"
-                    >
-                      <tarjeta-contacto
-                        @click="seleccionar(item, 'ADD')"
-                        v-if="!item.seleccionado && item.visible"
-                        :item="item"
-                      />
-                    </span>
-                  </div>
-                  <button
-                    class="btn btn-block btn-primary"
-                    type="button"
-                    @click="seleccionarTodos()"
-                  >
-                    Seleccionar todos
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- detalle-->
-            <div class="col-6">                          
-              <div class="card">
-               <div class="card-body">
-                  <div
-                    class="d-flex justify-content-center align-items-center"
-                    style="height:12px"
-                  >
-                <small>Selección</small>
-                </div>
-                <div class="divScoll">
-                  <span
-                    v-for="item in contactosSeleccionados"
-                    :key="item.id_alumno_familiar"
-                    class="pointer"
-                  >
-                    <tarjeta-contacto
-                      @click="seleccionar(item, 'REMOVE')"
-                      :item="item"
-                    />
-                  </span>
-                </div>
-                <button
-                    class="btn btn-warning btn-block"
-                    type="button"
-                    @click="removerTodos()"
-                  >
-                    Remover todos
-                  </button>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="footer"></div>
-    </Popup>
+-->     
 
     <!-- DETALLE -->
     <Popup id="popup_detalle" show_button_close="true" size="sm">
       <div slot="header">
-        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar} ${this.rowDetalle.descripcion}` : "" }}
+        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar}` : "" }}
+        <span class="text-muted">{{ this.rowDetalle ? `${this.rowDetalle.descripcion}` : "" }}</span>
       </div>
       <div slot="content">
         <div class="card overflow-auto" style="height:300px">            
@@ -347,6 +201,27 @@
           
           </div>        
         
+      </div>
+    </Popup>
+
+    <Popup id="popup_nuevo" show_button_close="true" size="md">
+      <div slot="header">
+        Atención
+      </div>
+      <div slot="content">
+        <div class="card">
+            Se han detectado datos escritos, si procedes <strong>perderas estos datos</strong><br/>
+            <span><strong>¿Confirmas que deseas continuar?</strong></span>
+        </div>                
+      </div>
+      <div slot="footer">
+          <button
+                    class="btn btn-primary"
+                    type="button"
+                    @click="nuevo()"
+                  >
+                    Aceptar
+          </button>
       </div>
     </Popup>
 
@@ -421,10 +296,6 @@ export default {
       listaGrupos: [],
       listaGruposFiltados: [],
       correosRechazadosEnvio: [],
-      sucursalSeleccionada: undefined,
-      sucursalDefault: { id: -1, nombre: "Todas las sucursales" },
-      grupoSeleccionado: undefined,
-      grupoDefault: { id: -1, nombre: "Todos los grupos" },
       mostrarLabels: true,
       rowDetalle: null,
       loadingEnvio: false,
@@ -452,18 +323,7 @@ export default {
     this.aviso = new AvisoModel();
   },
   methods: {
-    init() {
-      this.loader = true;
-      this.sucursalSeleccionada = this.sucursalDefault;
-      this.grupoSeleccionado = this.grupoDefault;
-
-      this.get(URL.AVISOS + "/" + this.usuarioSesion.id, result => {
-        this.loader = false;
-        if (result.body != null) {
-          this.historial = result.body || [];
-          this.contador = this.historial.length;
-        }
-      });
+    init() {    
       this.cargarContactos();
       this.nuevo();
     },
@@ -472,7 +332,7 @@ export default {
       this.operacion = "INSERT";
       this.limpiarPara();
       this.aviso = new AvisoModel();
-      //$("#popup_aviso").modal("show");
+      $("#popup_nuevo").modal("hide");      
     },
     limpiarPara() {
       this.contactos.forEach(element => {
@@ -480,6 +340,11 @@ export default {
         element.visible = true;
       });
       this.contactosSeleccionados = [];
+    },
+    iniciarNuevo(){
+      if(this.contactosSeleccionados.length > 0 || this.aviso.titulo || this.aviso.aviso){
+        $("#popup_nuevo").modal("show");
+      }      
     },
     seleccionarPara() {
       //this.cargarContactos();
@@ -491,8 +356,7 @@ export default {
     async enviar() {
       console.log("Insertar");
       let arrayPara = [];
-
-      //this.aviso.para = this.contactosSeleccionados;
+      
       this.contactosSeleccionados.forEach(ele => {
         arrayPara.push({
           id_familiar: ele.id_familiar,
@@ -500,8 +364,7 @@ export default {
           correo: ele.correo
         });
       });
-
-      console.log(JSON.stringify(this.aviso.para));
+     
       this.aviso.para = arrayPara;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
@@ -661,9 +524,11 @@ export default {
     },
     completarCargaAutocomplete(){
        
-        this.obtenerFiltros();       
+      this.obtenerFiltros();       
 
-       this.agregarTag(-1,"@Todas mis sucursales",-1,"@Todas mis sucursales","",-1,TIPO.TODAS_SUCURSALES);
+       const nombresSucursales = this.listaSucursales.map(e=>e.nombre);
+
+       this.agregarTag(-1,"@Todas mis sucursales",-1,"@Todas mis sucursales",`${nombresSucursales}`,-1,TIPO.TODAS_SUCURSALES);
  
         //agregar sucursal por sucursal
         this.listaSucursales.forEach(suc=>{
@@ -731,68 +596,17 @@ export default {
           }
         });
         this.listaGrupos = todosGrupos;
-      }
-      //this.seleccionarSucursal(this.sucursalDefault, true);
-    },
-    filtrarComboGruposPorSucursal(sucursal) {
-      console.log(sucursal.nombre);
-
-      this.sucursalSeleccionada = sucursal;
-
-      this.listaGrupos.forEach(e => {
-        e.visible = false;
-        if (e.id_sucursal === sucursal.id) {
-          e.visible = true;
+      }      
+    }, 
+    cargarHistorial(){
+        this.loader = true;
+         this.get(URL.AVISOS + "/" + this.usuarioSesion.id, result => {
+        this.loader = false;
+        if (result.body != null) {
+          this.historial = result.body || [];
+          this.contador = this.historial.length;
         }
       });
-    },
-
-    seleccionarSucursal(sucursalSeleccionada, filtrarGrupos) {
-      this.contactos.forEach(element => {
-        element.visible = false;
-        if (
-          (element.id_sucursal === sucursalSeleccionada.id ||
-            sucursalSeleccionada.id == this.sucursalDefault.id) &&
-          !element.seleccionado
-        ) {
-          element.visible = true;
-          //this.contactosSeleccionados.push(element);
-        }
-      });
-      if (filtrarGrupos) {
-        this.filtrarComboGruposPorSucursal(sucursalSeleccionada);
-      }
-      this.seleccionarGrupo(this.grupoDefault);
-    },
-    seleccionarGrupo(grupoSeleccionado) {
-      if (grupoSeleccionado.id != this.grupoSeleccionado.id) {
-        this.grupoSeleccionado = grupoSeleccionado;
-
-        if (grupoSeleccionado.id == -1) {
-          this.contactos.forEach(element => {
-            element.visible = false;
-            if (
-              element.id_sucursal === this.sucursalSeleccionada.id &&
-              !element.seleccionado
-            ) {
-              element.visible = true;
-            }
-          });
-        } else {
-          this.contactos.forEach(element => {
-            element.visible = false;
-            if (
-              element.id_grupo === grupoSeleccionado.id &&
-              element.id_sucursal == grupoSeleccionado.id_sucursal &&
-              !element.seleccionado
-            ) {
-              //element.seleccionado = true;
-              element.visible = true;
-              //this.contactosSeleccionados.push(element);
-            }
-          });
-        }
-      }
     }
   }
 };
