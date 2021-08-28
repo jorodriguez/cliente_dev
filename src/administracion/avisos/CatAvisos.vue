@@ -159,6 +159,7 @@
         <span class="text-muted">{{ this.rowDetalle ? `${this.rowDetalle.descripcion}` : "" }}</span>
       </div>
       <div slot="content">
+          <h4>{{contactosDetalle.length}} contactos</h4>
         <div class="card overflow-auto" style="height:300px">            
                   <span
                     v-for="item in contactosDetalle"
@@ -356,15 +357,20 @@ export default {
     async enviar() {
       console.log("Insertar");
       let arrayPara = [];
-      
+      let arraySend = [];
       this.contactosSeleccionados.forEach(ele => {
-        arrayPara.push({
-          id_familiar: ele.id_familiar,
-          id_alumno_familiar: ele.id_alumno_familiar,
-          correo: ele.correo
+        arrayPara.push(this.obtenerContactoPorTipo(ele));
+      });
+
+      arrayPara.forEach(ele => {
+        arraySend.push({
+          id_familiad:ele.id_familiar,
+          id_alumno_familiar:ele.id_alumno_familiar
         });
       });
-     
+      console.log(arraySend);    
+      falta probar
+      
       this.aviso.para = arrayPara;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
@@ -374,6 +380,7 @@ export default {
       this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
       this.aviso.genero = this.usuarioSesion.id;
       this.loadingEnvio = true;
+      return;
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
         let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
@@ -473,7 +480,8 @@ export default {
       console.log(JSON.stringify(row));
       this.contactosDetalle = [];
      
-      this.contactos.forEach(contacto => {
+     this.contactosDetalle = this.obtenerContactoPorTipo(row);
+      /*this.contactos.forEach(contacto => {
           if(row.tipo === TIPO.TODAS_SUCURSALES ){
                 this.contactosDetalle.push(contacto);
                 console.log("toda");
@@ -490,9 +498,31 @@ export default {
           if(row.tipo === TIPO.CONTACTO && row.id == contacto.id_alumno_familiar){
                this.contactosDetalle.push(contacto);               
           }
-      });
-      
+      });      */
       $("#popup_detalle").modal("show");
+    },
+    obtenerContactoPorTipo(tag){
+      let array =[];
+
+      switch (tag.tipo) {
+        case TIPO.TODAS_SUCURSALES:
+              array = this.contactos;
+          break;
+        case TIPO.SUCURSAL:
+          array = this.contactos.filter(ele => ele.id_sucursal == tag.id);          
+          break;
+        case TIPO.GRUPO:
+            array = this.contactos.filter(ele => tag.id == ele.id_grupo && tag.id_sucursal == ele.id_sucursal);
+          break;
+       case TIPO.CONTACTO:
+            array = this.contactos.filter(ele => tag.id == ele.id_alumno_familiar);
+          break;
+        default:
+          break;
+      } 
+
+      return array;
+      
     },
     onTagAdded(slug) {
       console.log(`Tag added: ${JSON.stringify(slug)}`);
