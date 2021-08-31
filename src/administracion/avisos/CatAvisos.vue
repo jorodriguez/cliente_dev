@@ -16,8 +16,7 @@
         <Button
           type="button"
           class="btn btn-primary btn-lg"
-          v-on:click="enviar()"
-          :disabled="loadingEnvio"
+          v-on:click="iniciarEnvio()"          
           >Enviar
         </Button>
       </div>
@@ -160,16 +159,16 @@
       </div>
       <div slot="content">
           <h4>{{contactosDetalle.length}} contactos</h4>
-        <div class="card overflow-auto" style="height:300px">            
+           <div class="card overflow-auto" style="height:300px">            
                   <span
                     v-for="item in contactosDetalle"
                     :key="item.id_alumno_familiar"                                        
                   >
                     <tarjeta-contacto                      
                       :item="item"
-                      
+                      mostrar_sucursal="true"
                     />
-                  </span>            
+                  </span>           
           
         </div>
       </div>
@@ -180,17 +179,77 @@
         Envio del aviso
       </div>
       <div slot="content">
+      
         <div class="card">
           Se detectaron algunos correos rechazados
           <table>
-            <tbody v-for="(item, index) in correosRechazadosEnvio" :key="index">
+            <tbody v-for="(tag, index) in correosRechazadosEnvio" :key="index">
               <tr>
-                <td>{{ item }}</td>
+                <td>
+                 <span>{{ tag.nombreMostrar }}</span><br />
+                <span                  
+                  class="text-white "                  
+                  style="font-size:9px;"
+                >
+                    <i>{{ tag.descripcion }}</i>
+                </span>  
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </Popup>
+
+     <Popup id="popup_confirmar_envio" show_button_close="true" size="md">
+      <div slot="header">
+        Confirmar Envio
+      </div>
+      <div slot="content">
+        <!--<div class="card">
+          <div class="card-body">
+            <span  v-for="(tag, index) in contactosSeleccionados" :key="index">
+               <span>{{ tag.nombreMostrar }}</span><br />
+                <span                  
+                  class="text-white "                  
+                  style="font-size:9px;"
+                >
+                    <i>{{ tag.descripcion }}</i>
+                </span>                             
+            </span>
+          </div>
+      </div>-->
+
+              <h4>{{aviso.para.length}} contactos</h4>                             
+              <!--<h6>
+                  <span v-for="(tag, index) in contactosSeleccionados" :key="index">
+                      <span class="badge badge-info" style="font-size:8px;" v-if="tag.tipo != TIPO.CONTACTO">
+                        {{ tag.nombreMostrar }} {{ tag.descripcion }}
+                      </span>
+                  </span>
+              </h6>-->
+              <div class="card overflow-auto" style="height:300px">            
+                  <span
+                    v-for="item in aviso.para"
+                    :key="item.id_alumno_familiar"                                        
+                  >                  
+                    <tarjeta-contacto                      
+                      :item="item"        
+                      mostrar_sucursal="true"
+                    />
+                 </span> 
+              </div>         
+       </div> 
+      <div slot="footer">
+          <button
+                    class="btn btn-primary"
+                    type="button"
+                    @click="enviar()"
+                    :disabled="loadingEnvio"
+                  >
+                   Enviar
+          </button>
+      </div>     
     </Popup>
 
     <Popup id="popup_preview" show_button_close="true" size="lg">
@@ -353,40 +412,47 @@ export default {
 
       $("#popup_para").modal("show");
     },
-
-    async enviar() {
-      console.log("Insertar");
+    iniciarEnvio() {      
       let arrayPara = [];
       let arraySend = [];
       this.contactosSeleccionados.forEach(ele => {
-        arrayPara.push(this.obtenerContactoPorTipo(ele));
+         let cont = this.obtenerContactoPorTipo(ele);
+         arraySend = arraySend.concat(cont);
       });
-
-      arrayPara.forEach(ele => {
+      console.log(arrayPara);
+      arrayPara.forEach(ele => {        
         arraySend.push({
           id_familiad:ele.id_familiar,
-          id_alumno_familiar:ele.id_alumno_familiar
+          nombre:ele.nombre_familiar,
+          id_alumno_familiar:ele.id_alumno_familiar,
+          correo:ele.correo,
+          id_sucursal:ele.id_sucursal
         });
-      });
-      console.log(arraySend);    
-      falta probar
-      
-      this.aviso.para = arrayPara;
+      });      
+      this.aviso.para = arraySend;
+      this.aviso.etiqueta = this.contactosSeleccionados;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
         return;
       }
-      this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
+
+      $("#popup_confirmar_envio").modal("show");
+    },
+    async enviar() {
+      console.log("Insertar");       
+     
+      this.aviso.id_empresa = this.usuarioSesion.id_empresa;
       this.aviso.genero = this.usuarioSesion.id;
       this.loadingEnvio = true;
-      return;
+      $("#popup_confirmar_envio").modal("hide");      
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
         let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
         this.loadingEnvio = false;
         if (informacionEnvio && informacionEnvio.enviado) {
           this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
+          console.log(this.correosRechazadosEnvio);
           if (this.correosRechazadosEnvio.length > 0) {
             $("#popup_envio").modal("show");
           }
@@ -481,24 +547,7 @@ export default {
       this.contactosDetalle = [];
      
      this.contactosDetalle = this.obtenerContactoPorTipo(row);
-      /*this.contactos.forEach(contacto => {
-          if(row.tipo === TIPO.TODAS_SUCURSALES ){
-                this.contactosDetalle.push(contacto);
-                console.log("toda");
-          }
-          if(row.tipo === TIPO.SUCURSAL && row.id == contacto.id_sucursal){
-            console.log("SUC");
-            //aqui filtrar todos
-              this.contactosDetalle.push(contacto);
-          }          
-          if(row.tipo === TIPO.GRUPO && row.id == contacto.id_grupo && row.id_sucursal == contacto.id_sucursal){
-            console.log("grupo");
-                 this.contactosDetalle.push(contacto);
-          } 
-          if(row.tipo === TIPO.CONTACTO && row.id == contacto.id_alumno_familiar){
-               this.contactosDetalle.push(contacto);               
-          }
-      });      */
+      
       $("#popup_detalle").modal("show");
     },
     obtenerContactoPorTipo(tag){
