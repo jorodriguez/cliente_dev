@@ -99,12 +99,13 @@
         </div>
         <div class="form-group row">
           <div class="col">
-            <vue-editor
+            <!--<vue-editor
               v-model="aviso.aviso"
               focus
               :disabled="loadingEnvio"
               placeholder="Escribe tu aviso.."
-            ></vue-editor>
+            ></vue-editor>-->
+             <ckeditor v-model="aviso.aviso"  ></ckeditor>
           </div>
         </div>
       </div>
@@ -313,6 +314,9 @@ import Vue from "vue";
 require("../../../static/css/styleAutocompleteContactos.css");
 Vue.component("tags-input", VoerroTagsInput);
 
+import CKEditor from 'ckeditor4-vue';
+Vue.use( CKEditor );
+
 const TIPO = {TODAS_SUCURSALES:"TODAS_SUCURSALES",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
 
 
@@ -359,6 +363,15 @@ export default {
       mostrarLabels: true,
       rowDetalle: null,
       loadingEnvio: false,
+      editorConfig: {
+					toolbar: [		            
+						[ 'Styles', 'Format', 'Font', 'FontSize' ],
+						[ 'Bold', 'Italic' ],
+            [ 'paragraph' ,'colors','document'],
+						[ 'Undo', 'Redo' ],
+            						
+					]
+				},
       columnas: [
         { label: "Id", field: "id", hidden: true },
         { label: "Empresa", field: "empresa", hidden: true },
@@ -386,6 +399,7 @@ export default {
     init() {    
       this.cargarContactos();
       this.nuevo();
+      
     },
     nuevo() {
       console.log("Nuevo");
@@ -451,11 +465,11 @@ export default {
         let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
         this.loadingEnvio = false;
         if (informacionEnvio && informacionEnvio.enviado) {
-          this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
+          /*this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
           console.log(this.correosRechazadosEnvio);
           if (this.correosRechazadosEnvio.length > 0) {
             $("#popup_envio").modal("show");
-          }
+          }*/
           this.init();
           this.$notificacion.info("Aviso ", "Enviado correctamente.");
         } else {
