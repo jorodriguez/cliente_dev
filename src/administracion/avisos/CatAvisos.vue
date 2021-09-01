@@ -1,23 +1,27 @@
 <template>
   <div class="catalogo_alumno">
     <h1>Avisos</h1>
-    <div class="row">
-      <div class="col-1">
+    <div class="row ">
+      <div class="col d-flex justify-content-start">
         <router-link to="/Administracion" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
-        </router-link>
-      </div>
-      <div class="col-1">
+        </router-link>      
         <Button type="button" class="btn btn-light btn-lg" v-on:click="iniciarNuevo()"
           >Nuevo</Button
-        >
-      </div>
-      <div class="col-1">
+        >      
         <Button
           type="button"
-          class="btn btn-primary btn-lg"
+          class="btn btn-primary btn-lg"           
           v-on:click="iniciarEnvio()"          
           >Enviar
+        </Button>        
+      </div>
+      <div class="col d-flex justify-content-end">
+       <Button
+          type="button"
+          class="btn btn-link btn-lg"
+          v-on:click="preview()"                    
+          >Previsualizar
         </Button>
       </div>
     </div>
@@ -206,29 +210,10 @@
       <div slot="header">
         Confirmar Envio
       </div>
-      <div slot="content">
-        <!--<div class="card">
-          <div class="card-body">
-            <span  v-for="(tag, index) in contactosSeleccionados" :key="index">
-               <span>{{ tag.nombreMostrar }}</span><br />
-                <span                  
-                  class="text-white "                  
-                  style="font-size:9px;"
-                >
-                    <i>{{ tag.descripcion }}</i>
-                </span>                             
-            </span>
-          </div>
-      </div>-->
+      <div slot="content">      
 
-              <h4>{{aviso.para.length}} contactos</h4>                             
-              <!--<h6>
-                  <span v-for="(tag, index) in contactosSeleccionados" :key="index">
-                      <span class="badge badge-info" style="font-size:8px;" v-if="tag.tipo != TIPO.CONTACTO">
-                        {{ tag.nombreMostrar }} {{ tag.descripcion }}
-                      </span>
-                  </span>
-              </h6>-->
+              <h4>{{aviso.para.length}} contactos</h4>                            
+             
               <div class="card overflow-auto" style="height:300px">            
                   <span
                     v-for="item in aviso.para"
@@ -252,19 +237,7 @@
           </button>
       </div>     
     </Popup>
-
-    <Popup id="popup_preview" show_button_close="true" size="lg">
-      <div slot="header">
-        preview
-      </div>
-      <div slot="content">
-        <div class="card">
-          
-          </div>        
-        
-      </div>
-    </Popup>
-
+   
     <Popup id="popup_nuevo" show_button_close="true" size="md">
       <div slot="header">
         Atención
@@ -283,6 +256,73 @@
                   >
                     Aceptar
           </button>
+      </div>
+    </Popup>
+
+    <Popup id="popup_preview" size="lg" :show_button_close="true">
+      <div slot="header">
+        {{aviso.titulo}}
+      </div>    
+      <div slot="content" style="text-align: left;;color:#000">       
+       <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-toggle="pill"
+                  href="#pills-home"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >Correo</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-toggle="pill"
+                  href="#pills-profile"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"                  
+                >{{aviso.para.length}} Contactos</a>
+              </li>
+                 <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+              >
+                  <span v-if="loadingPreview">Cargando..</span>        
+                 <span v-else v-html="this.pagePreview"></span>
+                 </div>
+                  <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+              >
+              <h4>{{aviso.para.length}} contactos</h4>                            
+             
+              <div class="card overflow-auto" style="height:500px">            
+                  <span
+                    v-for="item in aviso.para"
+                    :key="item.id_alumno_familiar"                                        
+                  >                  
+                    <tarjeta-contacto                      
+                      :item="item"        
+                      mostrar_sucursal="true"
+                    />
+                 </span> 
+              </div>    
+                  </div>
+
+       </ul>
+       
+       
+      </div>
+      <div slot="footer">
+       
       </div>
     </Popup>
 
@@ -363,6 +403,8 @@ export default {
       mostrarLabels: true,
       rowDetalle: null,
       loadingEnvio: false,
+      pagePreview:"",
+      loadingPreview:false,
       editorConfig: {
 					toolbar: [		            
 						[ 'Styles', 'Format', 'Font', 'FontSize' ],
@@ -416,7 +458,7 @@ export default {
       this.contactosSeleccionados = [];
     },
     iniciarNuevo(){
-      if(this.contactosSeleccionados.length > 0 || this.aviso.titulo || this.aviso.aviso){
+      if(this.enProcesoCaptura()){
         $("#popup_nuevo").modal("show");
       }      
     },
@@ -426,14 +468,14 @@ export default {
 
       $("#popup_para").modal("show");
     },
-    iniciarEnvio() {      
+    iniciarEnvio(preview) {      
       let arrayPara = [];
       let arraySend = [];
       this.contactosSeleccionados.forEach(ele => {
          let cont = this.obtenerContactoPorTipo(ele);
          arraySend = arraySend.concat(cont);
       });
-      console.log(arrayPara);
+     
       arrayPara.forEach(ele => {        
         arraySend.push({
           id_familiad:ele.id_familiar,
@@ -448,10 +490,11 @@ export default {
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
-        return;
+        return false;
       }
-
-      $("#popup_confirmar_envio").modal("show");
+      
+      $(preview ? "#popup_preview" :"#popup_confirmar_envio").modal("show");
+      return true;
     },
     async enviar() {
       console.log("Insertar");       
@@ -650,7 +693,21 @@ export default {
         });
     },
     preview(){
-
+        let placeholder="___PLACEHOLDER___";
+        this.loadingPreview = true;
+        //$("#popup_preview").modal("show");
+        if(this.iniciarEnvio(true)){       
+            this.get(URL.AVISOS + "_preview/"+placeholder , result => {        
+            if (result.data != null) {          
+              let html = result.data;          
+              this.pagePreview = `${html}`.replace(placeholder,`${this.aviso.aviso}`); 
+              this.loadingPreview = false;          
+            }
+          });
+      }
+    },
+    enProcesoCaptura(){
+      return this.contactosSeleccionados.length > 0 || this.aviso.titulo || this.aviso.aviso;
     },
     obtenerFiltros() {
       if (this.listaSucursales.length == 0) {
