@@ -314,8 +314,7 @@
                       :item="item"
                       
                     />
-                  </span>            
-          
+                  </span>                      
         </div>
       </div>
     </Popup>
