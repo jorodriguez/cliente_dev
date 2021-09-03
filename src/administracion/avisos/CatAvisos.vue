@@ -1,24 +1,27 @@
 <template>
   <div class="catalogo_alumno">
     <h1>Avisos</h1>
-    <div class="row">
-      <div class="col-1">
+    <div class="row ">
+      <div class="col d-flex justify-content-start">
         <router-link to="/Administracion" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
-        </router-link>
-      </div>
-      <div class="col-1">
-        <Button type="button" class="btn btn-light btn-lg" v-on:click="nuevo()"
+        </router-link>      
+        <Button type="button" class="btn btn-light btn-lg" v-on:click="iniciarNuevo()"
           >Nuevo</Button
-        >
-      </div>
-      <div class="col-1">
+        >      
         <Button
           type="button"
-          class="btn btn-primary btn-lg"
-          v-on:click="enviar()"
-          :disabled="loadingEnvio"
+          class="btn btn-primary btn-lg"           
+          v-on:click="iniciarEnvio()"          
           >Enviar
+        </Button>        
+      </div>
+      <div class="col d-flex justify-content-end">
+       <Button
+          type="button"
+          class="btn btn-link btn-lg"
+          v-on:click="preview()"                    
+          >Previsualizar
         </Button>
       </div>
     </div>
@@ -100,12 +103,13 @@
         </div>
         <div class="form-group row">
           <div class="col">
-            <vue-editor
+            <!--<vue-editor
               v-model="aviso.aviso"
               focus
               :disabled="loadingEnvio"
               placeholder="Escribe tu aviso.."
-            ></vue-editor>
+            ></vue-editor>-->
+             <ckeditor v-model="aviso.aviso"  ></ckeditor>
           </div>
         </div>
       </div>
@@ -150,169 +154,24 @@
         </div>
       </div>
     </div>
--->
-    <!-- Para -->
-    <Popup id="popup_para" show_button_close="true" size="lg">
-      <div slot="header">Directorio</div>
-      <div slot="content" style="min-height:300px">
-        <div class="card">
-          <div class="card-body row">
-            <div class="col-6">
-              <!--<input
-                type="text"
-                class="form-control"
-                placeholder="Buscar"
-                id="buscar"
-              />-->
-
-              <!-- contenido -->
-
-              <div class="card">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-end align-items-start"
-                    style="height:12px"
-                  >
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-link btn-sm dropdown-toggle"
-                        type="button"
-                        id="dropdownMenu2"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        {{
-                          this.sucursalSeleccionada &&
-                            this.sucursalSeleccionada.nombre
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenu2"
-                      >
-                        <button
-                          v-for="suc in listaSucursales"
-                          :key="suc.id"
-                          class="dropdown-item"
-                          type="button"
-                          @click="seleccionarSucursal(suc, true)"
-                        >
-                          <span>{{ suc.nombre }}</span>
-                        </button>
-                      </div>
-                    </div>
-                    <!--Combo de grupos -->
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-link btn-sm dropdown-toggle"
-                        type="button"
-                        id="dropdownMenu2"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        {{
-                          this.grupoSeleccionado &&
-                            this.grupoSeleccionado.nombre
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenu2"
-                      >
-                        <span
-                          v-for="(grupo, index) in listaGrupos"
-                          :key="`${index}`"
-                        >
-                          <button
-                            class="dropdown-item"
-                            type="button"
-                            v-if="grupo.visible"
-                            @click="seleccionarGrupo(grupo)"
-                          >
-                            {{ grupo.nombre }}
-                          </button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class=" divScoll">
-                    <span
-                      v-for="item in contactos"
-                      :key="item.id_alumno_familiar"
-                      class="pointer"
-                    >
-                      <tarjeta-contacto
-                        @click="seleccionar(item, 'ADD')"
-                        v-if="!item.seleccionado && item.visible"
-                        :item="item"
-                      />
-                    </span>
-                  </div>
-                  <button
-                    class="btn btn-block btn-primary"
-                    type="button"
-                    @click="seleccionarTodos()"
-                  >
-                    Seleccionar todos
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- detalle-->
-            <div class="col-6">                          
-              <div class="card">
-               <div class="card-body">
-                  <div
-                    class="d-flex justify-content-center align-items-center"
-                    style="height:12px"
-                  >
-                <small>Selección</small>
-                </div>
-                <div class="divScoll">
-                  <span
-                    v-for="item in contactosSeleccionados"
-                    :key="item.id_alumno_familiar"
-                    class="pointer"
-                  >
-                    <tarjeta-contacto
-                      @click="seleccionar(item, 'REMOVE')"
-                      :item="item"
-                    />
-                  </span>
-                </div>
-                <button
-                    class="btn btn-warning btn-block"
-                    type="button"
-                    @click="removerTodos()"
-                  >
-                    Remover todos
-                  </button>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="footer"></div>
-    </Popup>
+-->     
 
     <!-- DETALLE -->
     <Popup id="popup_detalle" show_button_close="true" size="sm">
       <div slot="header">
-        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar} ${this.rowDetalle.descripcion}` : "" }}
+        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar}` : "" }}
+        <span class="text-muted">{{ this.rowDetalle ? `${this.rowDetalle.descripcion}` : "" }}</span>
       </div>
       <div slot="content">
-        <div class="card overflow-auto" style="height:300px">            
+          <h4>{{contactosDetalle.length}} contactos</h4>
+           <div class="card overflow-auto" style="height:300px">            
                   <span
                     v-for="item in contactosDetalle"
                     :key="item.id_alumno_familiar"                                        
                   >
                     <tarjeta-contacto                      
                       :item="item"
-                      
+                      mostrar_sucursal="true"
                     />
                   </span>                      
         </div>
@@ -324,12 +183,21 @@
         Envio del aviso
       </div>
       <div slot="content">
+      
         <div class="card">
           Se detectaron algunos correos rechazados
           <table>
-            <tbody v-for="(item, index) in correosRechazadosEnvio" :key="index">
+            <tbody v-for="(tag, index) in correosRechazadosEnvio" :key="index">
               <tr>
-                <td>{{ item }}</td>
+                <td>
+                 <span>{{ tag.nombreMostrar }}</span><br />
+                <span                  
+                  class="text-white "                  
+                  style="font-size:9px;"
+                >
+                    <i>{{ tag.descripcion }}</i>
+                </span>  
+                </td>
               </tr>
             </tbody>
           </table>
@@ -337,15 +205,123 @@
       </div>
     </Popup>
 
-    <Popup id="popup_preview" show_button_close="true" size="lg">
+     <Popup id="popup_confirmar_envio" show_button_close="true" size="md">
       <div slot="header">
-        preview
+        Confirmar Envio
+      </div>
+      <div slot="content">      
+
+              <h4>{{aviso.para.length}} contactos</h4>                            
+             
+              <div class="card overflow-auto" style="height:300px">            
+                  <span
+                    v-for="item in aviso.para"
+                    :key="item.id_alumno_familiar"                                        
+                  >                  
+                    <tarjeta-contacto                      
+                      :item="item"        
+                      mostrar_sucursal="true"
+                    />
+                 </span> 
+              </div>         
+       </div> 
+      <div slot="footer">
+          <button
+                    class="btn btn-primary"
+                    type="button"
+                    @click="enviar()"
+                    :disabled="loadingEnvio"
+                  >
+                   Enviar
+          </button>
+      </div>     
+    </Popup>
+   
+    <Popup id="popup_nuevo" show_button_close="true" size="md">
+      <div slot="header">
+        Atención
       </div>
       <div slot="content">
         <div class="card">
-          
-          </div>        
-        
+            Se han detectado datos escritos, si procedes <strong>perderas estos datos</strong><br/>
+            <span><strong>¿Confirmas que deseas continuar?</strong></span>
+        </div>                
+      </div>
+      <div slot="footer">
+          <button
+                    class="btn btn-primary"
+                    type="button"
+                    @click="nuevo()"
+                  >
+                    Aceptar
+          </button>
+      </div>
+    </Popup>
+
+    <Popup id="popup_preview" size="lg" :show_button_close="true">
+      <div slot="header">
+        {{aviso.titulo}}
+      </div>    
+      <div slot="content" style="text-align: left;;color:#000">       
+       <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-toggle="pill"
+                  href="#pills-home"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >Correo</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-toggle="pill"
+                  href="#pills-profile"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"                  
+                >{{aviso.para.length}} Contactos</a>
+              </li>
+                 <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+              >
+                  <span v-if="loadingPreview">Cargando..</span>        
+                 <span v-else v-html="this.pagePreview"></span>
+                 </div>
+                  <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+              >
+              <h4>{{aviso.para.length}} contactos</h4>                            
+             
+              <div class="card overflow-auto" style="height:500px">            
+                  <span
+                    v-for="item in aviso.para"
+                    :key="item.id_alumno_familiar"                                        
+                  >                  
+                    <tarjeta-contacto                      
+                      :item="item"        
+                      mostrar_sucursal="true"
+                    />
+                 </span> 
+              </div>    
+                  </div>
+
+       </ul>
+       
+       
+      </div>
+      <div slot="footer">
+       
       </div>
     </Popup>
 
@@ -376,6 +352,9 @@ import Vue from "vue";
 //require("@voerro/vue-tagsinput/dist/style.css");
 require("../../../static/css/styleAutocompleteContactos.css");
 Vue.component("tags-input", VoerroTagsInput);
+
+import CKEditor from 'ckeditor4-vue';
+Vue.use( CKEditor );
 
 const TIPO = {TODAS_SUCURSALES:"TODAS_SUCURSALES",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
 
@@ -420,13 +399,20 @@ export default {
       listaGrupos: [],
       listaGruposFiltados: [],
       correosRechazadosEnvio: [],
-      sucursalSeleccionada: undefined,
-      sucursalDefault: { id: -1, nombre: "Todas las sucursales" },
-      grupoSeleccionado: undefined,
-      grupoDefault: { id: -1, nombre: "Todos los grupos" },
       mostrarLabels: true,
       rowDetalle: null,
       loadingEnvio: false,
+      pagePreview:"",
+      loadingPreview:false,
+      editorConfig: {
+					toolbar: [		            
+						[ 'Styles', 'Format', 'Font', 'FontSize' ],
+						[ 'Bold', 'Italic' ],
+            [ 'paragraph' ,'colors','document'],
+						[ 'Undo', 'Redo' ],
+            						
+					]
+				},
       columnas: [
         { label: "Id", field: "id", hidden: true },
         { label: "Empresa", field: "empresa", hidden: true },
@@ -451,27 +437,17 @@ export default {
     this.aviso = new AvisoModel();
   },
   methods: {
-    init() {
-      this.loader = true;
-      this.sucursalSeleccionada = this.sucursalDefault;
-      this.grupoSeleccionado = this.grupoDefault;
-
-      this.get(URL.AVISOS + "/" + this.usuarioSesion.id, result => {
-        this.loader = false;
-        if (result.body != null) {
-          this.historial = result.body || [];
-          this.contador = this.historial.length;
-        }
-      });
+    init() {    
       this.cargarContactos();
       this.nuevo();
+      
     },
     nuevo() {
       console.log("Nuevo");
       this.operacion = "INSERT";
       this.limpiarPara();
       this.aviso = new AvisoModel();
-      //$("#popup_aviso").modal("show");
+      $("#popup_nuevo").modal("hide");      
     },
     limpiarPara() {
       this.contactos.forEach(element => {
@@ -480,45 +456,62 @@ export default {
       });
       this.contactosSeleccionados = [];
     },
+    iniciarNuevo(){
+      if(this.enProcesoCaptura()){
+        $("#popup_nuevo").modal("show");
+      }      
+    },
     seleccionarPara() {
       //this.cargarContactos();
       this.obtenerFiltros();
 
       $("#popup_para").modal("show");
     },
-
-    async enviar() {
-      console.log("Insertar");
+    iniciarEnvio(preview) {      
       let arrayPara = [];
-
-      //this.aviso.para = this.contactosSeleccionados;
+      let arraySend = [];
       this.contactosSeleccionados.forEach(ele => {
-        arrayPara.push({
-          id_familiar: ele.id_familiar,
-          id_alumno_familiar: ele.id_alumno_familiar,
-          correo: ele.correo
-        });
+         let cont = this.obtenerContactoPorTipo(ele);
+         arraySend = arraySend.concat(cont);
       });
-
-      console.log(JSON.stringify(this.aviso.para));
-      this.aviso.para = arrayPara;
+     
+      arrayPara.forEach(ele => {        
+        arraySend.push({
+          id_familiad:ele.id_familiar,
+          nombre:ele.nombre_familiar,
+          id_alumno_familiar:ele.id_alumno_familiar,
+          correo:ele.correo,
+          id_sucursal:ele.id_sucursal
+        });
+      });      
+      this.aviso.para = arraySend;
+      this.aviso.etiqueta = this.contactosSeleccionados;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
         console.log("No paso la validacion");
-        return;
+        return false;
       }
-      this.aviso.id_empresa = this.usuarioSesion.co_empresa || 1;
+      
+      $(preview ? "#popup_preview" :"#popup_confirmar_envio").modal("show");
+      return true;
+    },
+    async enviar() {
+      console.log("Insertar");       
+     
+      this.aviso.id_empresa = this.usuarioSesion.id_empresa;
       this.aviso.genero = this.usuarioSesion.id;
       this.loadingEnvio = true;
+      $("#popup_confirmar_envio").modal("hide");      
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
         let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
         this.loadingEnvio = false;
         if (informacionEnvio && informacionEnvio.enviado) {
-          this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
+          /*this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
+          console.log(this.correosRechazadosEnvio);
           if (this.correosRechazadosEnvio.length > 0) {
             $("#popup_envio").modal("show");
-          }
+          }*/
           this.init();
           this.$notificacion.info("Aviso ", "Enviado correctamente.");
         } else {
@@ -609,26 +602,32 @@ export default {
       console.log(JSON.stringify(row));
       this.contactosDetalle = [];
      
-      this.contactos.forEach(contacto => {
-          if(row.tipo === TIPO.TODAS_SUCURSALES ){
-                this.contactosDetalle.push(contacto);
-                console.log("toda");
-          }
-          if(row.tipo === TIPO.SUCURSAL && row.id == contacto.id_sucursal){
-            console.log("SUC");
-            //aqui filtrar todos
-              this.contactosDetalle.push(contacto);
-          }          
-          if(row.tipo === TIPO.GRUPO && row.id == contacto.id_grupo && row.id_sucursal == contacto.id_sucursal){
-            console.log("grupo");
-                 this.contactosDetalle.push(contacto);
-          } 
-          if(row.tipo === TIPO.CONTACTO && row.id == contacto.id_alumno_familiar){
-               this.contactosDetalle.push(contacto);               
-          }
-      });
+     this.contactosDetalle = this.obtenerContactoPorTipo(row);
       
       $("#popup_detalle").modal("show");
+    },
+    obtenerContactoPorTipo(tag){
+      let array =[];
+
+      switch (tag.tipo) {
+        case TIPO.TODAS_SUCURSALES:
+              array = this.contactos;
+          break;
+        case TIPO.SUCURSAL:
+          array = this.contactos.filter(ele => ele.id_sucursal == tag.id);          
+          break;
+        case TIPO.GRUPO:
+            array = this.contactos.filter(ele => tag.id == ele.id_grupo && tag.id_sucursal == ele.id_sucursal);
+          break;
+       case TIPO.CONTACTO:
+            array = this.contactos.filter(ele => tag.id == ele.id_alumno_familiar);
+          break;
+        default:
+          break;
+      } 
+
+      return array;
+      
     },
     onTagAdded(slug) {
       console.log(`Tag added: ${JSON.stringify(slug)}`);
@@ -660,9 +659,11 @@ export default {
     },
     completarCargaAutocomplete(){
        
-        this.obtenerFiltros();       
+      this.obtenerFiltros();       
 
-       this.agregarTag(-1,"@Todas mis sucursales",-1,"@Todas mis sucursales","",-1,TIPO.TODAS_SUCURSALES);
+       const nombresSucursales = this.listaSucursales.map(e=>e.nombre);
+
+       this.agregarTag(-1,"@Todas mis sucursales",-1,"@Todas mis sucursales",`${nombresSucursales}`,-1,TIPO.TODAS_SUCURSALES);
  
         //agregar sucursal por sucursal
         this.listaSucursales.forEach(suc=>{
@@ -691,7 +692,21 @@ export default {
         });
     },
     preview(){
-
+        let placeholder="___PLACEHOLDER___";
+        this.loadingPreview = true;
+        //$("#popup_preview").modal("show");
+        if(this.iniciarEnvio(true)){       
+            this.get(URL.AVISOS + "_preview/"+placeholder , result => {        
+            if (result.data != null) {          
+              let html = result.data;          
+              this.pagePreview = `${html}`.replace(placeholder,`${this.aviso.aviso}`); 
+              this.loadingPreview = false;          
+            }
+          });
+      }
+    },
+    enProcesoCaptura(){
+      return this.contactosSeleccionados.length > 0 || this.aviso.titulo || this.aviso.aviso;
     },
     obtenerFiltros() {
       if (this.listaSucursales.length == 0) {
@@ -730,68 +745,17 @@ export default {
           }
         });
         this.listaGrupos = todosGrupos;
-      }
-      //this.seleccionarSucursal(this.sucursalDefault, true);
-    },
-    filtrarComboGruposPorSucursal(sucursal) {
-      console.log(sucursal.nombre);
-
-      this.sucursalSeleccionada = sucursal;
-
-      this.listaGrupos.forEach(e => {
-        e.visible = false;
-        if (e.id_sucursal === sucursal.id) {
-          e.visible = true;
+      }      
+    }, 
+    cargarHistorial(){
+        this.loader = true;
+         this.get(URL.AVISOS + "/" + this.usuarioSesion.id, result => {
+        this.loader = false;
+        if (result.body != null) {
+          this.historial = result.body || [];
+          this.contador = this.historial.length;
         }
       });
-    },
-
-    seleccionarSucursal(sucursalSeleccionada, filtrarGrupos) {
-      this.contactos.forEach(element => {
-        element.visible = false;
-        if (
-          (element.id_sucursal === sucursalSeleccionada.id ||
-            sucursalSeleccionada.id == this.sucursalDefault.id) &&
-          !element.seleccionado
-        ) {
-          element.visible = true;
-          //this.contactosSeleccionados.push(element);
-        }
-      });
-      if (filtrarGrupos) {
-        this.filtrarComboGruposPorSucursal(sucursalSeleccionada);
-      }
-      this.seleccionarGrupo(this.grupoDefault);
-    },
-    seleccionarGrupo(grupoSeleccionado) {
-      if (grupoSeleccionado.id != this.grupoSeleccionado.id) {
-        this.grupoSeleccionado = grupoSeleccionado;
-
-        if (grupoSeleccionado.id == -1) {
-          this.contactos.forEach(element => {
-            element.visible = false;
-            if (
-              element.id_sucursal === this.sucursalSeleccionada.id &&
-              !element.seleccionado
-            ) {
-              element.visible = true;
-            }
-          });
-        } else {
-          this.contactos.forEach(element => {
-            element.visible = false;
-            if (
-              element.id_grupo === grupoSeleccionado.id &&
-              element.id_sucursal == grupoSeleccionado.id_sucursal &&
-              !element.seleccionado
-            ) {
-              //element.seleccionado = true;
-              element.visible = true;
-              //this.contactosSeleccionados.push(element);
-            }
-          });
-        }
-      }
     }
   }
 };

@@ -21,17 +21,18 @@
       >
       <br v-if="mostrar_sucursal" />      
       <span
-        class="badge  badge-primary"        
+        class="badge  badge-info"        
         style="font-size:10px;"
         v-if="mostrar_sucursal"
         >{{ item.nombre_grupo }}</span
       >
       <span
-        class="badge  badge-info"               
-        v-if="mostrar_sucursal"
+        class="badge  badge-info"        
         style="font-size:10px;"
+        v-if="mostrar_sucursal"
         >{{ item.sucursal }}</span
       >
+      
     </div>
   </div>
 </template>
