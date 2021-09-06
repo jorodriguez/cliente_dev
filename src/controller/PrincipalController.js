@@ -43,7 +43,9 @@ export default {
             uriTempAsistencia: URL.ASISTENCIA_BASE,
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempActividad: URL.ACTIVIDAD_BASE,
-            loaderAsistencia: false
+            loaderAsistencia: false,
+            loaderPorEntregar:false,
+            loaderSalida:false
         };
     },
     /*beforeRouteUpdate(to) {        
@@ -70,12 +72,14 @@ export default {
         console.log("Cargando lista alumno");
         this.loadFunctionAlumnosDentro = function () {
             this.listaRecibidos = [];
+            this.loaderAlumnosPorEntregar = true;
             this.get(
                 this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,                
                 (result) => {
                     this.response = result.data;
                     if (this.response != null) {
                         this.listaAlumnos = this.response;
+                        this.loaderAlumnosPorEntregar=false;
                         this.actualizarComboFiltro();
                         this.filtrarAlumnosPorGrupo(this.grupoDefault);
                     }
@@ -402,6 +406,7 @@ export default {
 
                 console.log("IDS " + lista);
                 console.log("Salida para calculo de horas ",listaCalcularHorasExtras  );
+                this.loaderSalida=true;
                 this.post(
                     this.uriTempAsistencia + "/salidaAlumnos",
                     { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
@@ -410,6 +415,7 @@ export default {
                         console.log("Response " + result.data);
                         if (result.data != null) {
                             this.lista = result.data;
+                            this.loaderSalida=false;
                            // this.mensaje = "Se registro la salida de los alumnos";
                             this.$notificacion.info('Salida de alumno', 'Se registro la salida.');
                             $("#confirmar_salida_modal").modal("hide");

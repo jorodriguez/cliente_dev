@@ -73,8 +73,14 @@
         </div>
       </div>
       <br />
+     
+      <div v-if="loaderAlumnosPorEntregar" class="d-flex justify-content-center">
+            <div class="spinner-border text-info" role="status">
+              <span class="sr-only">Espere...</span>
+            </div>
+      </div>
+      <div class="media">       
 
-      <div class="media">
         <div class="row overflow-auto">
           <div
             id="div_foreach_alumno"
@@ -351,8 +357,8 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button
               type="button"
-              :disabled="this.listaAlumnos == null || this.listaAlumnos == [] || loaderAsistencia"
-              class="btn btn-success"
+              :disabled="this.listaAlumnos == null || this.listaAlumnos == [] || loaderAsistencia || loaderSalida"
+              class="btn btn-success"              
               v-on:click="registrarSalida()"
             >
               Confirmar Salida
