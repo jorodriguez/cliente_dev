@@ -22,6 +22,9 @@ export default {
       grupoSeleccionado: { id: -1, nombre: '' },
       grupoDefault: { id: -1, nombre: 'Todos',color:'gray' },
       response: "",      
+      loaderEntrada:false,
+      loaderPorRecibir:false,
+      loaderPorEntregar:false
     };
   },
   mounted() {
@@ -31,6 +34,7 @@ export default {
     //this.usuarioSesion = this.$session.get("usuario_sesion");
     this.loadFunction = function () {
       console.log("Invocando LoadFuncion");
+      this.loaderPorRecibir = true;
       this.get(
         URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,        
         (result) => {
@@ -39,6 +43,7 @@ export default {
           console.log("Consulta " + this.response);
           if (this.response != null) {
             this.lista = this.response;
+            this.loaderPorRecibir = false;
             this.filtrarAlumnosPorGrupo(this.grupoDefault);
             this.actualizarComboFiltro();
           }
@@ -48,14 +53,12 @@ export default {
 
     //Funcion get alumnos salida
     this.loadFunctionAlumnosSalida = function () {
-      this.listaRecibidos = [];
-
-      this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
-        
+      this.listaRecibidos = [];     
+      this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,        
         (result) => {
           this.response = result.data;
           console.log("Consulta " + this.response);
-          if (this.response != null) {
+          if (this.response != null) {           
             this.listaRecibidos = this.response;
           }
         }
@@ -117,6 +120,7 @@ export default {
           ids.push(elem.id);
         }*/
 
+        this.loaderEntrada = true;
         this.post(
           URL.ASISTENCIA_ENTRADA_ALUMNOS,
           { ids: ids, genero: this.usuarioSesion.id },
@@ -125,12 +129,16 @@ export default {
             this.response = result.data;
             console.log("insertados " + this.response);
             if (this.response != null) {
-              this.lista = this.response;
-              this.$notificacion.info("Registro de entrada", "Se registro la entrada.");              
-              this.loadFunction();
-              this.loadFunctionAlumnosSalida();
-              this.listaSeleccion = [];
-              this.listaSeleccionSalida = [];
+              setTimeout(() => {
+                this.lista = this.response;
+                this.loaderEntrada = false;
+                this.$notificacion.info("Registro de entrada", "Se registro la entrada.");              
+                this.loadFunction();
+                this.loadFunctionAlumnosSalida();
+                this.listaSeleccion = [];
+                this.listaSeleccionSalida = [];  
+              }, 400);
+              
             }
           }
         );
