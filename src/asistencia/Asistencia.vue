@@ -22,8 +22,14 @@
       <button
         type="button"
         class="btn btn-success btn-block"
+        :disabled="loaderEntrada || loaderPorRecibir"
         v-on:click="registrarEntrada()"
-      >Confirmar Entrada</button>
+      > 
+       <span v-if="loaderEntrada">
+           <span  class="spinner-border spinner-border-sm" role="status" aria-hidden="true"/> Registrando entrada...
+       </span>        
+       <span v-else>Confirmar Entrada </span>
+       </button>
     </div>
     <!--<div class="container jumbotron m-1">-->
     <div class="card border" style="background-color:#E9E9E9;">
@@ -78,38 +84,16 @@
       </div>
     </div>
 
-    <div class="card border" style="background-color:#E9E9E9;">
+    <div class="card border" style="background-color:#E9E9E9;">     
       
-      <!--<div class="row">
-        <div class="dropdown">
-          <button
-            class="btn btn-link dropdown-toggle"
-            type="button"
-            id="dropdownMenu2"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >{{grupoSeleccionado.nombre}}</button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button
-              class="dropdown-item"
-              v-on:click="filtrarAlumnosPorGrupo(grupoDefault)"
-              type="button"
-            >{{grupoDefault.nombre}}</button>
-            <button
-              class="dropdown-item"
-              v-for="grupoItem in listaFiltroGrupos"
-              v-bind:key="grupoItem.id"
-              v-on:click="filtrarAlumnosPorGrupo(grupoItem)"
-              type="button"
-            >{{grupoItem.nombre}}</button>
-          </div>
-        </div>
-      </div>
-      -->
       <div class="card-body" style="background-color:#E9E9E9;">
         <!--<p>Seleccione para registrar entrada</p>-->
-        <div class="row">
+        <div v-if="loaderPorRecibir" class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">Espere...</span>
+            </div>
+        </div>
+        <div class="row">          
           <div v-for="item in lista" v-bind:key="item.id">
             <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
               <ItemCapsulaAlumno
@@ -127,11 +111,17 @@
       </div>
     </div>
     <div class="row m-1">
-      <button
+     <button
         type="button"
         class="btn btn-success btn-block"
+        :disabled="loaderEntrada || loaderPorRecibir"
         v-on:click="registrarEntrada()"
-      >Confirmar Entrada</button>
+      > 
+       <span v-if="loaderEntrada">
+           <span  class="spinner-border spinner-border-sm" role="status" aria-hidden="true"/> Registrando entrada...
+       </span>        
+       <span v-else>Confirmar Entrada </span>
+       </button>
     </div>
   </div>
 </template>
