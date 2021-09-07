@@ -13,7 +13,6 @@ const BASE = process.env.URL_API || 'https://magic-stagging-api.herokuapp.com'
 const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 >>>>>>> 637763557b3c83adc4b093744874dd4118fa4d57
 
-//const BASE = process.env.URL_API || 'https://magicintelligence-api.herokuapp.com';
 
 export const BRANCH = "202108-hotfix-parametros";
 
