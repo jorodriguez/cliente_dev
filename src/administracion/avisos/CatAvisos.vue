@@ -470,12 +470,13 @@ export default {
     iniciarEnvio(preview) {      
       let arrayPara = [];
       let arraySend = [];
+
       this.contactosSeleccionados.forEach(ele => {
          let cont = this.obtenerContactoPorTipo(ele);
          arraySend = arraySend.concat(cont);
       });
      
-      arrayPara.forEach(ele => {        
+      /*arrayPara.forEach(ele => {        
         arraySend.push({
           id_familiad:ele.id_familiar,
           nombre:ele.nombre_familiar,
@@ -483,7 +484,7 @@ export default {
           correo:ele.correo,
           id_sucursal:ele.id_sucursal
         });
-      });      
+      }); */     
       this.aviso.para = arraySend;
       this.aviso.etiqueta = this.contactosSeleccionados;
       this.aviso.enviar = true;
