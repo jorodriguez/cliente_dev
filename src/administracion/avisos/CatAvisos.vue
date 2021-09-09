@@ -485,7 +485,7 @@ export default {
           id_sucursal:ele.id_sucursal
         });
       }); */     
-      this.aviso.para = arraySend;
+      this.aviso.para = this.contactosSeleccionados;
       this.aviso.etiqueta = this.contactosSeleccionados;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
@@ -502,6 +502,7 @@ export default {
       this.aviso.id_empresa = this.usuarioSesion.id_empresa;
       this.aviso.genero = this.usuarioSesion.id;
       this.loadingEnvio = true;
+      console.log(this.aviso);      
       $("#popup_confirmar_envio").modal("hide");      
       this.post(URL.AVISOS, this.aviso, result => {
         let respuesta = result.body;
