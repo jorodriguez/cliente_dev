@@ -178,29 +178,26 @@
       </div>
     </Popup>
 
-    <Popup id="popup_envio" show_button_close="true" size="md">
+    <Popup id="popup_informacion_envio" show_button_close="true" size="md">
       <div slot="header">
-        Envio del aviso
+        Información de envio 
       </div>
       <div slot="content">
       
-        <div class="card">
-          Se detectaron algunos correos rechazados
+        <div class="card">          
+          <div class="overflow-hidden">
           <table>
-            <tbody v-for="(tag, index) in correosRechazadosEnvio" :key="index">
+            <tbody v-for="(item, index) in destinatariosEnvio" :key="index">
               <tr>
-                <td>
-                 <span>{{ tag.nombreMostrar }}</span><br />
-                <span                  
-                  class="text-white "                  
-                  style="font-size:9px;"
-                >
-                    <i>{{ tag.descripcion }}</i>
-                </span>  
-                </td>
+                <td><span>{{ item.token ? 'si':'' }}</span></td>
+                <td><span>{{ item.correo }}</span></td>
+                <td><span>{{ item.nombre }}</span></td>
+                <td> {{item.sucrusal}}</td>
+                <td> {{item.grupo}}</td>
               </tr>
             </tbody>
           </table>
+        </div>
         </div>
       </div>
     </Popup>
@@ -356,7 +353,7 @@ Vue.component("tags-input", VoerroTagsInput);
 import CKEditor from 'ckeditor4-vue';
 Vue.use( CKEditor );
 
-const TIPO = {TODAS_SUCURSALES:"TODAS_SUCURSALES",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
+const TIPO = {TODAS_SUCURSALES:1,SUCURSAL:2,GRUPO:3,CONTACTO:4};
 
 
 export default {
@@ -397,8 +394,8 @@ export default {
       contactosTags: [],
       listaSucursales: [],
       listaGrupos: [],
-      listaGruposFiltados: [],
-      correosRechazadosEnvio: [],
+      listaGruposFiltados: [],      
+      destinatariosEnvio:[],
       mostrarLabels: true,
       rowDetalle: null,
       loadingEnvio: false,
@@ -508,12 +505,13 @@ export default {
         let respuesta = result.body;
         let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
         this.loadingEnvio = false;
-        if (informacionEnvio && informacionEnvio.enviado) {
-          /*this.correosRechazadosEnvio = informacionEnvio.mensaje.rejected || [];
-          console.log(this.correosRechazadosEnvio);
-          if (this.correosRechazadosEnvio.length > 0) {
-            $("#popup_envio").modal("show");
-          }*/
+        console.log(JSON.stringify(informacionEnvio));
+        if (informacionEnvio && informacionEnvio.envioCorreo) {
+          this.destinatariosEnvio = informacionEnvio.destinatarios;
+          console.log(this.destinatariosEnvio);
+          if (this.destinatariosEnvio) {
+            $("#popup_informacion_envio").modal("show");
+          }
           this.init();
           this.$notificacion.info("Aviso ", "Enviado correctamente.");
         } else {
@@ -684,13 +682,15 @@ export default {
     },
     agregarTag(id,nombre,id_sucursal,nombreMostrar,descripcion,id_grupo,tipo){
       this.contactosTags.push({
-            id:id,
+            id:id,            
             nombre:nombre,            
+            id_empresa:this.usuarioSesion.id_empresa,
             id_sucursal:id_sucursal,
-            nombreMostrar:nombreMostrar,
-            descripcion:descripcion,
             id_grupo:id_grupo,
-            tipo:tipo
+            nombreMostrar:nombreMostrar,
+            descripcion:descripcion,            
+            tipo:tipo,
+            genero:this.usuarioSesion.id
         });
     },
     preview(){
