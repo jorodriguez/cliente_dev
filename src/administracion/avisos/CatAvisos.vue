@@ -356,7 +356,7 @@ Vue.component("tags-input", VoerroTagsInput);
 import CKEditor from 'ckeditor4-vue';
 Vue.use( CKEditor );
 
-const TIPO = {TODAS_SUCURSALES:"TODAS_SUCURSALES",SUCURSAL:"SUCURSAL",GRUPO:"GRUPO",CONTACTO:"CONTACTO"};
+const TIPO = {TODAS_SUCURSALES:1,SUCURSAL:2,GRUPO:3,CONTACTO:4};
 
 
 export default {
@@ -485,7 +485,17 @@ export default {
           id_sucursal:ele.id_sucursal
         });
       }); */     
-      this.aviso.para = arraySend;
+      /*
+      objeto publicacion
+      id_aviso,
+      id_tipo_publicacion,
+      id_empresa,
+      id_sucursal,
+      id_grupo,
+      id_familiar,
+      genero
+      */
+      this.aviso.para = this.contactosSeleccionados;
       this.aviso.etiqueta = this.contactosSeleccionados;
       this.aviso.enviar = true;
       if (!validarDatosAviso(this.aviso)) {
@@ -683,13 +693,15 @@ export default {
     },
     agregarTag(id,nombre,id_sucursal,nombreMostrar,descripcion,id_grupo,tipo){
       this.contactosTags.push({
-            id:id,
+            id:id,            
             nombre:nombre,            
+            id_empresa:this.usuarioSesion.id_empresa,
             id_sucursal:id_sucursal,
-            nombreMostrar:nombreMostrar,
-            descripcion:descripcion,
             id_grupo:id_grupo,
-            tipo:tipo
+            nombreMostrar:nombreMostrar,
+            descripcion:descripcion,            
+            tipo:tipo,
+            genero:this.usuarioSesion.id
         });
     },
     preview(){
