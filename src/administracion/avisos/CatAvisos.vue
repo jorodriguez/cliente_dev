@@ -178,21 +178,24 @@
       </div>
     </Popup>
 
-    <Popup id="popup_informacion_envio" show_button_close="true" size="md">
+    <Popup id="popup_informacion_envio" show_button_close="true" size="lg">
       <div slot="header">
         Información de envio 
       </div>
       <div slot="content">
-      
+        <h3>{{destinatariosEnvio && destinatariosEnvio.length}} contactos</h3>
         <div class="card">          
-          <div class="overflow-hidden">
-          <table>
+          <div class="overflow-auto" style="height:350px">
+          <table class="table">
             <tbody v-for="(item, index) in destinatariosEnvio" :key="index">
               <tr>
+                <td><span>{{ index }}</span></td>
                 <td><span>{{ item.token ? 'si':'' }}</span></td>
-                <td><span>{{ item.correo }}</span></td>
-                <td><span>{{ item.nombre }}</span></td>
-                <td> {{item.sucrusal}}</td>
+                <td>
+                <span>{{ item.nombre }}</span><br/>
+                <span>                  
+                {{ item.correo }}</span></td>                
+                <td> {{item.sucursal}}</td>
                 <td> {{item.grupo}}</td>
               </tr>
             </tbody>
