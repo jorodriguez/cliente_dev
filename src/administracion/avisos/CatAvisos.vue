@@ -57,7 +57,7 @@
               :readonly="loadingEnvio"
             >
               <template v-slot:selected-tag="{ tag, index, removeTag }">
-                <span @click="verDetalle(tag)">{{ tag.nombreMostrar }}</span
+                <span @click="verDetalle(tag)">{{ tag.nombre_mostrar }}</span
                 ><br />
                 <span
                   @click="verDetalle(tag)"
@@ -159,17 +159,27 @@
     <!-- DETALLE -->
     <Popup id="popup_detalle" show_button_close="true" size="sm">
       <div slot="header">
-        {{ this.rowDetalle ? `${this.rowDetalle.nombreMostrar}` : "" }}
+        {{ this.rowDetalle ? `${this.rowDetalle.nombre_mostrar}` : "" }}
         <span class="text-muted">{{
           this.rowDetalle ? `${this.rowDetalle.descripcion}` : ""
         }}</span>
       </div>
-      <div slot="content">
-        <h4>{{ contactosDetalle.length }} contactos</h4>
-        <div class="card overflow-auto" style="height:300px">
-          <span v-for="item in contactosDetalle" :key="item.id_alumno_familiar">
-            <tarjeta-contacto :item="item" mostrar_sucursal="true" />
-          </span>
+      <div slot="content" v-if="this.rowDetalle">
+        <h4>{{ this.rowDetalle.contador_contactos }} contactos</h4>
+        <div class="overflow-auto" style="height:300px">      
+               
+            <div class="row  pb-1 pt-1 border d-flex align-items-center"  v-for="(item,index) in JSON.parse(this.rowDetalle.contactos)" :key="index"> 
+            <div class="col-1  text-left">
+              <small class="font-weight-bold" style="font-size:15px;">{{ ++index }}</small>
+            </div>
+            <div class="col pl-4 text-left">
+              <small class="font-weight-bold" style="font-size:15px;">{{ item.nombre }}</small
+              ><br />
+              <small class="text-primary h5">{{ item.correo }}</small>
+              <br />      
+            <small class="text-muted">{{ item.celular }}</small >             
+            </div>
+            </div>                             
         </div>
       </div>
     </Popup>
@@ -272,10 +282,24 @@
             </div>
           </div>
            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">            
-            <div class="card overflow-auto" style="height:500px">
-              <span v-for="item in aviso.para" :key="item.id_alumno_familiar">
-                <tarjeta-contacto :item="item" mostrar_sucursal="true" />
-              </span>
+            <div v-if="this.aviso.para" class="card overflow-auto" style="height:500px">
+             <div  class="row  pb-1 pt-1 border d-flex align-items-center"  
+                   v-for="(item,index) in this.contactosSeleccionados" :key="index">    
+                     <div class="row ">
+                    <div class="col">
+                         {{item.nombre}}
+                    </div>
+                     </div>         
+                      <div class="row" v-if="item.contactos">
+                         <span v-html="JSON.parse(item.contactos).map(e=>`${e.nombre} ${e.correo}`)"/>
+                          <!--div class="col"
+                               v-for="(item,index) in JSON.parse(item.contactos).map(e=>`${e.nombre} ${e.correo}`)" :key="index">                              
+                              <span class="badge badge-pill badge-secondary">
+                                  {{item.nombre}}<br/>
+                                  {{item.correo}}                              </span>
+                          </div-->
+                      </div>
+                    </div>   
             </div>
           </div>
          </div>       
@@ -416,19 +440,17 @@ export default {
       }
     },
     seleccionarPara() {
-      //this.cargarContactos();
-      this.obtenerFiltros();
-
+      
       $("#popup_para").modal("show");
     },
     iniciarEnvio(preview) {
       let arrayPara = [];
       let arraySend = [];
-
+/*
       this.contactosSeleccionados.forEach(ele => {
         let cont = this.obtenerContactoPorTipo(ele);
         arraySend = arraySend.concat(cont);
-      });
+      });*/
 
       /*arrayPara.forEach(ele => {        
         arraySend.push({
@@ -502,65 +524,14 @@ export default {
       });
     },
     eliminar() {
-      /*
-      const datosBaja = {
-        ids_
-      }genero = this.usuarioSesion.id;
-      
-      this.put(URL.AVISO + "/" + this.usuario.id,
-        this.datosBaja,
-        (result) => {
-          let respuesta = result.body;
-            if(respuesta.estatus){
-              this.$notificacion.error('Eliminación ', 'Se eliminó el aviso.');
-              $("#popup_baja").modal("hide");
-              this.init();
-            }else{
-              this.$notificacion.error('Mensaje',respuesta.mensaje);
-            }          
-        }
-      );*/
-    },
-    seleccionar(rowSelect, operacion) {
-      console.log(
-        "fila seleccionada " +
-          rowSelect.nombre_alumno +
-          " selec " +
-          rowSelect.seleccionado
-      );
-      if (operacion === "ADD") {
-        rowSelect.seleccionado = true;
-        rowSelect.visible = false;
-        this.contactosSeleccionados.push(rowSelect);
-      } else {
-        let pos = this.contactosSeleccionados.indexOf(rowSelect);
-        rowSelect.seleccionado = false;
-        rowSelect.visible = true;
-        this.contactosSeleccionados.splice(pos, 1);
-      }
-    },
-    seleccionarTodos() {
-      this.contactos.forEach(element => {
-        if (element.visible) {
-          element.seleccionado = true;
-          element.visible = false;
-          this.contactosSeleccionados.push(element);
-        }
-      });
-    },
-    removerTodos() {
-      this.contactosSeleccionados = [];
-      this.contactos.forEach(element => {
-        element.seleccionado = false;
-        element.visible = true;
-      });
+     
     },
     verDetalle(row) {
       this.rowDetalle = row;
       console.log(JSON.stringify(row));
       this.contactosDetalle = [];
 
-      this.contactosDetalle = this.obtenerContactoPorTipo(row);
+      this.contactosDetalle = JSON.parse(this.rowDetalle.contactos) || [];
 
       $("#popup_detalle").modal("show");
     },
@@ -602,8 +573,21 @@ export default {
     },
     cargarContactos() {
       this.loaderContactos = true;
-      if (!this.contactos.length > 0) {
+      //if (!this.contactos.length > 0) {        
         this.get(
+          URL.AVISOS +
+            "/tags/" +this.usuarioSesion.id,
+          result => {
+            this.loader = false;
+            this.loaderContactos = false;
+            if (result.body != null) {
+              //this.contactos = result.body || [];
+              this.contactosTags =result.body || [];
+              //this.completarCargaAutocomplete();
+            }
+          }
+        );
+        /*this.get(
           URL.AVISOS +
             "/contactos/" +
             JSON.stringify(this.usuarioSesion.sucursales),
@@ -615,83 +599,9 @@ export default {
               this.completarCargaAutocomplete();
             }
           }
-        );
-      }
-    },
-    completarCargaAutocomplete() {
-      this.obtenerFiltros();
-
-      const nombresSucursales = this.listaSucursales.map(e => e.nombre);
-
-      this.agregarTag(
-        -1,
-        "@Todas mis sucursales",
-        -1,
-        "@Todas mis sucursales",
-        `${nombresSucursales}`,
-        -1,
-        TIPO.TODAS_SUCURSALES
-      );
-
-      //agregar sucursal por sucursal
-      this.listaSucursales.forEach(suc => {
-        this.agregarTag(
-          suc.id,
-          "@" + suc.nombre,
-          suc.id,
-          suc.nombre,
-          "",
-          -1,
-          TIPO.SUCURSAL
-        );
-      });
-
-      //Agregar grupos
-      this.listaGrupos.forEach(grupo => {
-        this.agregarTag(
-          grupo.id,
-          "@" + grupo.nombre + " " + grupo.sucursal,
-          grupo.id_sucursal,
-          grupo.nombre,
-          grupo.sucursal,
-          grupo.id,
-          TIPO.GRUPO
-        );
-      });
-
-      this.contactos.forEach(ele => {
-        this.agregarTag(
-          ele.id_alumno_familiar,
-          ele.nombre_familiar,
-          ele.id_sucursal,
-          ele.nombre_familiar,
-          ele.sucursal,
-          ele.id_grupo,
-          TIPO.CONTACTO
-        );
-      });
-    },
-    agregarTag(
-      id,
-      nombre,
-      id_sucursal,
-      nombreMostrar,
-      descripcion,
-      id_grupo,
-      tipo
-    ) {
-      this.contactosTags.push({
-        id: id,
-        nombre: nombre,
-        id_empresa: this.usuarioSesion.id_empresa,
-        id_sucursal: id_sucursal,
-        id_grupo: id_grupo,
-        nombreMostrar: nombreMostrar,
-        descripcion: descripcion,
-        tipo: tipo,
-        genero: this.usuarioSesion.id
-      });
-    },
+        );*/
+      //}
+    },   
     preview() {
       let placeholder = "___PLACEHOLDER___";
       this.loadingPreview = true;
@@ -715,45 +625,6 @@ export default {
         this.aviso.titulo ||
         this.aviso.aviso
       );
-    },
-    obtenerFiltros() {
-      if (this.listaSucursales.length == 0) {
-        let todasSucursales = [];
-        //todasSucursales.push(this.sucursalDefault);
-
-        this.contactos.filter(function(item) {
-          let i = todasSucursales.findIndex(x => x.id_sucursal == item.id_sucursal);
-          if (i <= -1) {
-            todasSucursales.push({
-              id: item.id_sucursal,
-              nombre: item.sucursal,
-              color: item.color_sucursal,
-              visible: true
-            });
-          }
-        });
-
-        this.listaSucursales = todasSucursales;
-
-        let todosGrupos = [];
-        //todosGrupos.push(this.grupoDefault);
-        this.contactos.filter(function(item) {
-          let i = todosGrupos.findIndex(
-            x => x.id == item.id_grupo && x.id_sucursal == item.id_sucursal
-          );
-          if (i <= -1) {
-            todosGrupos.push({
-              id: item.id_grupo,
-              id_sucursal: item.id_sucursal,
-              nombre: item.nombre_grupo,
-              sucursal: item.sucursal,
-              color: item.color_grupo,
-              visible: false
-            });
-          }
-        });
-        this.listaGrupos = todosGrupos;
-      }
     },
     cargarHistorial() {
       this.loader = true;
