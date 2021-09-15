@@ -26,7 +26,20 @@
                 this.mostrarLabels = !this.mostrarLabels;
               }" for="staticEmail" class="col-sm-1 col-form-label">Para</label>
                 <div class="col">
-                    <tags-input element-id="tags" discard-search-text="Resultados" placeholder="Escribe un @ para sucursales y grupos ó un nombre " v-model="contactosSeleccionados" :existing-tags="contactosTags" id-field="id" text-field="nombre" typeahead-style="dropdown" :typeahead="true" @tag-added="onTagAdded" @tag-removed="onTagRemoved" :readonly="loadingEnvio">
+                    <tags-input element-id="tags"
+                                discard-search-text="Resultados" 
+                                placeholder="Escribe un @ para sucursales y grupos ó un nombre de familiar" 
+                                v-model="contactosSeleccionados" 
+                                :existing-tags="contactosTags" 
+                                id-field="id" 
+                                text-field="nombre" 
+                                typeahead-style="dropdown" 
+                                :typeahead-max-results="15"
+                                :only-existing-tags="true"                                
+                                :typeahead="true"
+                                 @tag-added="onTagAdded"
+                                  @tag-removed="onTagRemoved" 
+                                  :readonly="loadingEnvio">
                         <template v-slot:selected-tag="{ tag, index, removeTag }" >
                             <i v-if="tag.tipo == TIPO.TODAS_SUCURSALES" class="fa fa-users" style="color:'red' ;font-size:16px;" aria-hidden="true"></i>
                             <i v-else-if="tag.tipo == TIPO.SUCURSAL" class="fa fa-users" style="color:'blue';font-size:16px;" aria-hidden="true"></i>
@@ -466,7 +479,7 @@ export default {
             }); */
 
             this.aviso.para = this.contactosSeleccionados;
-            this.aviso.etiqueta = this.contactosSeleccionados;
+            //this.aviso.etiqueta = this.contactosSeleccionados;
             this.aviso.enviar = true;
             if (!validarDatosAviso(this.aviso)) {
                 console.log("No paso la validacion");
@@ -560,7 +573,9 @@ export default {
         },
         async enviar() {
             console.log("Insertar");
-
+            const listaParaEnvio = this.aviso.para.map(e=> {return {...e,contactos:[]}});
+            this.aviso.para = listaParaEnvio;
+            this.aviso.etiqueta = listaParaEnvio;
             this.aviso.id_empresa = this.usuarioSesion.id_empresa;
             this.aviso.genero = this.usuarioSesion.id;
             this.loadingEnvio = true;
@@ -672,8 +687,8 @@ export default {
                          let listasContactosArray = this.contactosTags.filter(e=> e.tipo == TIPO.CONTACTO);
                          let todosContactos = [];
                          listasContactosArray.forEach(e=>{
-                                    todosContactos = todosContactos.concat( JSON.parse(e.contactos) || []);
-                           });
+                                    todosContactos = todosContactos.concat(JSON.parse(e.contactos) || []);
+                           });                        
                         this.contactosTags.push({id:this.usuarioSesion.id_empresa,
                                                 nombre:'@Todos',
                                                 id_empresa:this.usuarioSesion.id_empresa,
