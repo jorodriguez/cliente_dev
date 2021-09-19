@@ -8,9 +8,9 @@
       ><br />
       <small class="text-primary h5">{{ item.correo }}</small>
       <br />      
-      <small class="text-muted">{{ item.celular }}</small
-      >       
-      
+      <small class="text-muted">{{ item.celular }}</small>             
+      <br/>
+       <i v-if="item.token" class="fa fa-mobile text-primary" aria-hidden="true"></i>
     </div>
   </div>
 </template>

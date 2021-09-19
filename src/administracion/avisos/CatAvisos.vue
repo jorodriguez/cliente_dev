@@ -133,19 +133,24 @@
           this.rowDetalle ? `${this.rowDetalle.descripcion}` : ""
         }}</span>
         </div>
-        <div slot="content" v-if="this.rowDetalle">
-            <h4>{{ this.rowDetalle.contador_contactos }} contactos</h4>
+        <div slot="content" v-if="this.rowDetalle">            
             <div class="overflow-auto" style="height:300px">
 
                 <div class="row  pb-1 pt-1 border d-flex align-items-center" v-for="(item,index) in JSON.parse(this.rowDetalle.contactos)" :key="index">
                     <div class="col-1  text-left">
-                        <small class="font-weight-bold" style="font-size:15px;">{{ ++index }}</small>
+                        <small class="font-weight-bold text-gray" style="font-size:15px;">{{ ++index }}</small>
                     </div>
                     <div class="col pl-4 text-left">
                         <small class="font-weight-bold" style="font-size:15px;">{{ item.nombre }}</small><br />
                         <small class="text-primary h5">{{ item.correo }}</small>
-                        <br />
-                        <small class="text-muted">{{ item.celular }}</small>
+                        <br v-if="item.celular" />
+                        <small v-if="item.celular" class="text-muted">{{ item.celular }}</small>
+                        <br v-if="item.token"/>
+                         <span v-if="item.token" style="font-size:10px;" class="badge  badge-info">
+                            <i  class="fa fa-mobile" aria-hidden="true"></i> 
+                            App
+                         </span>                       
+                        
                     </div>
                 </div>
             </div>
@@ -164,10 +169,12 @@
                         <tbody v-for="(item, index) in destinatariosEnvio" :key="index">
                             <tr>
                                 <td>
-                                    <span>{{ index }}</span>
+                                    <span>{{ ++index }}</span>
                                 </td>
-                                <td>
-                                    <span>{{ item.token ? "si" : "" }}</span>
+                                <td>                                                                        
+                                    <span v-if="item.token" style="font-size:10px;" class="badge  badge-info">
+                                        <i  class="fa fa-mobile" aria-hidden="true"></i>                                     
+                                    </span>  
                                 </td>
                                 <td>
                                     <span>{{ item.nombre }}</span><br />
@@ -460,24 +467,6 @@ export default {
             $("#popup_para").modal("show");
         },
         iniciarEnvio(preview) {
-            let arrayPara = [];
-            let arraySend = [];
-            /*
-                  this.contactosSeleccionados.forEach(ele => {
-                    let cont = this.obtenerContactoPorTipo(ele);
-                    arraySend = arraySend.concat(cont);
-                  });*/
-
-            /*arrayPara.forEach(ele => {        
-              arraySend.push({
-                id_familiad:ele.id_familiar,
-                nombre:ele.nombre_familiar,
-                id_alumno_familiar:ele.id_alumno_familiar,
-                correo:ele.correo,
-                id_sucursal:ele.id_sucursal
-              });
-            }); */
-
             this.aviso.para = this.contactosSeleccionados;
             //this.aviso.etiqueta = this.contactosSeleccionados;
             this.aviso.enviar = true;
@@ -554,9 +543,19 @@ export default {
                                 html += `                            
                                   <div class="col-4 pb-2 text-left">
                                       <div class="media">
-                                        <div class="media-body">
+                                        <div class="media-body border-bottom">
                                           <h6 class="mt-0 mb-1">${con.nombre}</h6>
-                                          <small class="text-primary small" >${con.correo}</small>                                                                
+                                          <small class="text-primary small" >${con.correo}</small>                                                                                                 
+                                          ${con.token ? `
+                                                <br/>
+                                                <span style="font-size:10px;" class="badge  badge-info">
+                                                    <i  class="fa fa-mobile" aria-hidden="true"></i> 
+                                                    App 
+                                                </span> 
+                                                <span style="font-size:10px;" class="text-primary">
+                                                    ${con.celular ? con.celular:""}
+                                                </span>
+                                          `:'<br/><br/>'} 
                                         </div>      
                                       </div>                                        
                                   </div>                                        
