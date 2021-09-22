@@ -7,7 +7,9 @@
                 <i class="fas fa-arrow-circle-left text-gray"></i>
             </router-link>
             <Button type="button" class="btn btn-light btn-lg" v-on:click="iniciarNuevo()">Nuevo</Button>
-            <Button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarEnvio()">Enviar
+            <!--<Button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarEnvio()">Enviar
+            </Button>-->
+            <Button type="button" class="btn btn-primary btn-lg" v-on:click="preview()">Enviar
             </Button>
         </div>
         <div class="col d-flex justify-content-end">
@@ -198,7 +200,7 @@
             <h4>{{ aviso.para.length }} contactos</h4>
 
             <div class="card overflow-auto" style="height:300px">
-                <span v-for="item in aviso.para" :key="item.id_alumno_familiar">
+                <span v-for="item in aviso.para" class="text-left" :key="item.id_alumno_familiar">
                     <tarjeta-contacto :item="item" mostrar_sucursal="true" />
                 </span>
             </div>
@@ -257,7 +259,11 @@
                 </div>
             </div>
         </div>
-        <div slot="footer"></div>
+        <div slot="footer">
+          <button class="btn btn-primary" type="button" @click="enviar()" :disabled="loadingEnvio">
+                Enviar
+            </button>
+        </div>
     </Popup>
 </div>
 </template>
@@ -505,6 +511,7 @@ export default {
             }
 
             $(preview ? "#popup_preview" : "#popup_confirmar_envio").modal("show");
+          //  $("#popup_preview").modal("show");
             return true;
         },
 
@@ -579,16 +586,18 @@ export default {
             this.aviso.genero = this.usuarioSesion.id;
             this.loadingEnvio = true;
             console.log(this.aviso);
-            $("#popup_confirmar_envio").modal("hide");
+            //$("#popup_confirmar_envio").modal("hide");
+            $("#popup_preview").modal("hide");            
             this.post(URL.AVISOS, this.aviso, result => {
                 let respuesta = result.body;
                 let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
                 this.loadingEnvio = false;
                 console.log(JSON.stringify(informacionEnvio));
                 if (informacionEnvio && informacionEnvio.envioCorreo) {
-                    this.destinatariosEnvio = informacionEnvio.destinatarios;
-                    console.log(this.destinatariosEnvio);
+                    this.destinatariosEnvio = informacionEnvio.destinatarios;                    
                     if (this.destinatariosEnvio) {
+                        //console.log(this.destinatariosEnvio);
+                        this.destinatariosEnvio.sort((val, val2) =>  val.nombre - val2.nombre);
                         $("#popup_informacion_envio").modal("show");
                     }
                     this.init();
