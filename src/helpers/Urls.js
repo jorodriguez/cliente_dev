@@ -1,8 +1,8 @@
 import configEnv from '../../config/configEnv';
 
 
-//const BASE = configEnv.BASE || "http://localhost:5000";
-const BASE = process.env.URL_API || 'https://magic-stagging-api.herokuapp.com'
+const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = process.env.URL_API || 'https://magic-stagging-api.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
 
