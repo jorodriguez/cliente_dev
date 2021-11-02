@@ -70,10 +70,10 @@ export default {
             },
             uriTemp: URL.ALUMNOS_BASE,
             uriTempGrupos: URL.GRUPOS_BASE,
-            uriTempFamiliar: URL.FAMILIAR_BASE,
-            uriTempParentesco: URL.PARENTESCO_BASE, // "http://localhost:5000/parentesco",            
-            uriTempServicios: URL.SERVICIOS_BASE, //"http://localhost:5000/servicios",
-            uriTempValoresEsperados: URL.VALORES_ESPERADOS, // "http://localhost:5000/valores_esperados",
+           // uriTempFamiliar: URL.FAMILIAR_BASE,
+            //uriTempParentesco: URL.PARENTESCO_BASE, // "http://localhost:5000/parentesco",            
+           // uriTempServicios: URL.SERVICIOS_BASE, //"http://localhost:5000/servicios",
+            //uriTempValoresEsperados: URL.VALORES_ESPERADOS, // "http://localhost:5000/valores_esperados",
             uriTempDatosFacturacion: URL.DATOS_FACTURADOS, // "http://localhost:5000/datos_facturacion",            
             uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
             response: "",
@@ -81,10 +81,9 @@ export default {
             // sesion: {},
             loadAlumnoFuncion: null,
             loadFamiliaresFuncion: null,
-            loadCatalogoParentescoFuncion: null,
-            loadValoresEsperadosFunction: null,
+            //loadCatalogoParentescoFuncion: null,
+           // loadValoresEsperadosFunction: null,
             loadCatalogoFunction: null,
-            loadServiciosFunction: null,
             mensajeToast: null,
             initFamiliar: null,
             operacion: "",
@@ -130,135 +129,6 @@ export default {
                 this.display = false;
                 console.log("No se recibe ningun id de alumno ");
             } else {
-                console.log("this.uriTemp  " + this.uriTemp);
-
-                /*this.loadAlumnoFuncion = () => {
-                    this.get(
-                        URL.ALUMNOS_BASE + "/id/" + this.id,
-                        (result) => {
-                            this.alumno = result.data;
-                            if (this.alumno.formato_inscripcion == null)
-                                this.alumno.formato_inscripcion = {};
-
-                            if (this.alumno.co_datos_facturacion != null) {
-                                this.datos_facturacion = this.alumno.datos_facturacion;
-                            }
-                        }
-                    );
-                };
-
-                this.loadFamiliaresFuncion = () => {
-
-                    this.get(
-                        this.uriTempFamiliar + "/" + this.id,
-
-                        (result) => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaFamiliares = this.response;
-                            }
-                        }
-                    );
-                };
-*/
-                // Parentesco         
-                this.loadCatalogoParentescoFuncion = () => {
-                    this.get(
-                        this.uriTempParentesco + "/" + this.id,
-
-                        (result) => {
-                            this.response = result.data;
-                            console.log(" ======>>> " + JSON.stringify(this.response));
-                            if (this.response != null) {
-                                this.listaParentesco = this.response;
-                            }
-                        }
-                    );
-                };
-
-
-                //traer sevicios            
-                this.loadServiciosFunction = () => {
-
-                    this.get(
-                        this.uriTempServicios,
-
-                        (result) => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaServicios = this.response;
-                                console.log("Servicios " + this.listaServicios);
-                            }
-                        }
-                    );
-                };
-
-
-                this.loadValoresEsperadosFunction = (id_formato) => {
-                    this.get(
-                        this.uriTempValoresEsperados + "/" + id_formato,
-
-                        (result) => {
-                            this.response = result.data;
-                            if (this.response != null) {
-                                this.listaValoresEsperados = this.response;
-
-                                console.log("Valores esperados " + this.listaValoresEsperados);
-                            }
-                        }
-                    );
-                };
-
-                //grupos
-                /*this.loadFunctionGrupos = function () {
-
-                    this.get(
-                        this.uriTempGrupos,
-
-                        (result) => {
-                            this.response = result.data;
-                            console.log("Grupos " + this.response);
-                            if (this.response != null) {
-                                this.listaGrupos = this.response;
-                            }
-                        }
-                    );
-                };*/
-
-                 //generoAlumno
-                 /*this.loadCatalogoGeneroAlumno = function () {
-
-                    this.get(
-                        URL.GENERO_ALUMNO,
-                        (result) => {
-                            this.response = result.data;
-                            console.log("Genero alumno " + this.response);
-                            if (this.response != null) {
-                                this.listaGeneroAlumno = this.response;
-                            }
-                        }
-                    );
-                };*/
-
-                this.loadFunctionPosiblesFamiliares = function (id_parentesco, apellidos_alumno, id_sucursal) {
-                    this.get(
-                        this.uriTempFamiliar + "/" + id_parentesco + "/" + apellidos_alumno + "/" + id_sucursal,
-
-                        (result) => {
-                            this.response = result.data;
-                            console.log("Posibles padres " + this.response);
-                            if (this.response != null) {
-                                this.listaPosiblesPadres = this.response;
-                                console.log(JSON.stringify(this.listaPosiblesPadres));
-                            }
-                        }
-                    );
-                };
-               // this.loadAlumnoFuncion();
-               // this.loadFamiliaresFuncion();
-                //this.loadFunctionGrupos();
-               // this.loadCatalogoGeneroAlumno();
-
                 //async version
                 await this.cargarInformacionAlumno();
                 await this.cargarInformacionFamiliares();
@@ -267,24 +137,36 @@ export default {
 
         },
         async cargarInformacionAlumno(){
-            console.log("cargar informacion alumno");
-            this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.id}`);
-            if (this.alumno.formato_inscripcion == null)
+            console.log("cargar informacion alumno "+URL.ALUMNOS_BASE);
+            this.alumno = await this.getAsync(URL.ALUMNOS_BASE+"/id/"+this.id);
+            if ( this.alumno && this.alumno.formato_inscripcion == null)
             this.alumno.formato_inscripcion = {};
 
-           if (this.alumno.co_datos_facturacion != null) {
+           if (this.alumno && this.alumno.co_datos_facturacion != null) {
             this.datos_facturacion = this.alumno.datos_facturacion;
            }
         },
-        async cargarInformacionFamiliares(){
-            
-            this.listaFamiliares = await this.getAsync(`${URL.FAMILIAR_BASE}/${this.id}`);
-          
+        async cargarInformacionFamiliares(){            
+            this.listaFamiliares = await this.getAsync(`${URL.FAMILIAR_BASE}/${this.id}`);          
         },
         async cargarCatalogos(){
             this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}`);
             this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);           
         },
+        async cargarCatalogoParentesco(){
+            this.listaParentesco  = await this.getAsync(`${URL.PARENTESCO_BASE}/${this.id}`);
+        },
+        async cargarCatalogoServicios(){
+            this.listaServicios = await this.getAsync(`${URL.SERVICIOS_BASE}`);
+        },
+        async cargarValoresEsperados(idFormato){
+            this.listaValoresEsperados = await this.getAsync(`${URL.VALORES_ESPERADOS}/${idFormato}`);
+        },
+        async cargarPosiblesFamiliares(idParentesco, apellidosAlumno, idSucursal){
+            this.listaPosiblesPadres = await this.getAsync(`${URL.FAMILIAR_BASE}/${idParentesco}/${apellidosAlumno}/${idSucursal}`);
+           
+        },
+        
         //FIXME : pasar al servicio
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
@@ -295,9 +177,7 @@ export default {
             }
 
             this.alumno.genero = this.usuarioSesion.id;            
-            /*this.alumno.foto = (!this.alumno.foto || this.alumno.foto === '' || this.alumno.foto == null) ?
-                                 this.getFoto():
-                                 this.alumno.foto;*/
+            
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
             this.put(
@@ -359,14 +239,14 @@ export default {
             this.mensaje = '';
             this.familiarRelacionado = null;
             this.co_parentesco_seleccionado = { id: -1, cat_genero: -1 };
-            this.loadCatalogoParentescoFuncion();
+           
+           this.cargarCatalogoParentesco();
         },
         seleccionarParentesco() {
-            this.loadFunctionPosiblesFamiliares(
-                this.co_parentesco_seleccionado.id,
+            
+            this.cargarPosiblesFamiliares(this.co_parentesco_seleccionado.id,
                 this.alumno.apellidos,
-                this.usuarioSesion.co_sucursal
-            );
+                this.usuarioSesion.co_sucursal);
 
         },
         seleccionarFamiliarParaRelacion() {
@@ -376,10 +256,11 @@ export default {
             this.familiar.fecha_nacimiento = this.familiarRelacionado ? this.familiarRelacionado.fecha_nacimiento : null;
             this.familiar.correo = this.familiarRelacionado ? this.familiarRelacionado.correo : '';
         },
-        seleccionarFamiliar(item, operacion) {
+        async seleccionarFamiliar(item, operacion) {
             this.familiar = item;
-            this.operacion = operacion;
-            this.loadCatalogoParentescoFuncion();
+            this.operacion = operacion;            
+            this.cargarCatalogoParentesco();
+           
         },
         seleccionarFamiliarResetClave(item) {
             this.familiar = item;
@@ -600,8 +481,8 @@ export default {
             console.log("Inscripcion Tab load");
 
             if (this.listaServicios.length == 0) {
-                console.log("Carga de lista");
-                this.loadServiciosFunction();
+                console.log("Carga de lista");              
+                this.cargarCatalogoServicios();
             }
         },
         cargarTabInstitucion() {
@@ -610,7 +491,8 @@ export default {
 
                 console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
-                this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
+                // this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
+                this.cargarValoresEsperados(this.alumno.formato_inscripcion.id);
 
             }
         },

@@ -2,12 +2,27 @@
   <div class="cat_alumno">
     <h1>Alumnos ({{ lista != [] ? lista.length:0}})</h1>
     <small>{{usuarioSesion.nombre_sucursal}}</small>
-    <div class="text-left">
+    <div class="row">
+        <div class="col-auto mr-auto">
+        <router-link to="/principal" class="btn btn-secondary btn-lg">
+         <i class="fas fa-arrow-circle-left text-gray"></i>
+       </router-link>
+         <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
+        </div>
+      <div class="col-auto">
+      <router-link to="/ReactivarAlumno" class="btn btn-outline-danger btn-lg">
+         <i class="fas fa-arrow-circle-left text-gray"></i> Reactivar alumno
+       </router-link>
+      </div>
+
+      </div>
+
+    <!--<div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
       <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
-    </div>
+    </div>-->
     <br />
     <!--<form>-->
     <div

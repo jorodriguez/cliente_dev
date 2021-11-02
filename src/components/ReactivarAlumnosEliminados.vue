@@ -1,12 +1,12 @@
 <template>
-  <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length:0}})</h1>
+  <div class="reactivar_alumnos">
+    <h1>Reacivar Alumnos</h1>
     <small>{{usuarioSesion.nombre_sucursal}}</small>
     <div class="text-left">
-      <router-link to="/principal" class="btn btn-secondary btn-lg">
+      <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
-      <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
+      
     </div>
     <br />
     <!--<form>--> 
@@ -64,7 +64,7 @@
                 >
                   {{ row.nombre }}
                   <span v-if="row.mostrar_nombre_carino">({{row.nombre_carino}})</span>
-                  <span class="text-danger">{{row.adeuda ? '*':''}}</span>
+                  <span class="text-danger">{{row.motivo_eliminacion}}</span>
                 </button>
               </td>
               <td class="hidden-xs">{{ row.apellidos }}</td>
@@ -113,7 +113,65 @@
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js" >
+<script >
+import URL from "../helpers/Urls";
+import { operacionesApi } from "../helpers/OperacionesApi";
+import { getUsuarioSesion } from '../helpers/Sesion';
+
+export default {
+  name: "cat_alumnos_eliminados",
+  components: {
+    
+  },
+  mixins: [operacionesApi],
+  data() {
+    return {
+      response: "",
+      usuarioSesion: {},
+      criterioNombre: "",
+      lista: [],
+      listaRespaldo: [],
+      eliminados:true,
+    
+    };
+  },
+  mounted() {
+    console.log("##### iniciando catalogo alumno eliminados ####");
+
+    this.usuarioSesion = getUsuarioSesion();
+    this.cargarAlumnosEliminados();
+  
+  },
+  methods: {
+    verPerfil(rowSelect) {
+      console.log("fila seleccionada " + rowSelect.nombre);
+      this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
+    },
+   async cargarAlumnosEliminados(){
+    this.lista = await this.getAsync(`${URL.ALUMNOS_BASE}/${this.usuarioSesion.co_sucursal}/eliminados/true`);
+    //this.listaRespaldo = this.response;
+    },
+    
+    buscarPorNombre() {
+      console.log("Buscar por nombre " + this.criterioNombre);
+      if (this.criterioNombre == '') {
+        this.lista = this.listaRespaldo;
+      } else {
+
+        this.lista = this.listaRespaldo
+          .filter(
+            e =>
+              e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+
+
+          );
+
+      }
+    },
+    
+  }
+};
 </script>
 
 <style scoped>
