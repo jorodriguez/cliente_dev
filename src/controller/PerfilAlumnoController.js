@@ -125,16 +125,16 @@ export default {
         };
     },
     methods: {
-        init() {
+        async init() {
             if (this.id == undefined) {
                 this.display = false;
                 console.log("No se recibe ningun id de alumno ");
             } else {
                 console.log("this.uriTemp  " + this.uriTemp);
 
-                this.loadAlumnoFuncion = () => {
+                /*this.loadAlumnoFuncion = () => {
                     this.get(
-                        this.uriTemp + "/id/" + this.id,
+                        URL.ALUMNOS_BASE + "/id/" + this.id,
                         (result) => {
                             this.alumno = result.data;
                             if (this.alumno.formato_inscripcion == null)
@@ -160,7 +160,7 @@ export default {
                         }
                     );
                 };
-
+*/
                 // Parentesco         
                 this.loadCatalogoParentescoFuncion = () => {
                     this.get(
@@ -210,7 +210,7 @@ export default {
                 };
 
                 //grupos
-                this.loadFunctionGrupos = function () {
+                /*this.loadFunctionGrupos = function () {
 
                     this.get(
                         this.uriTempGrupos,
@@ -223,10 +223,10 @@ export default {
                             }
                         }
                     );
-                };
+                };*/
 
                  //generoAlumno
-                 this.loadCatalogoGeneroAlumno = function () {
+                 /*this.loadCatalogoGeneroAlumno = function () {
 
                     this.get(
                         URL.GENERO_ALUMNO,
@@ -238,9 +238,7 @@ export default {
                             }
                         }
                     );
-                };
-
-
+                };*/
 
                 this.loadFunctionPosiblesFamiliares = function (id_parentesco, apellidos_alumno, id_sucursal) {
                     this.get(
@@ -256,12 +254,36 @@ export default {
                         }
                     );
                 };
-                this.loadAlumnoFuncion();
-                this.loadFamiliaresFuncion();
-                this.loadFunctionGrupos();
-                this.loadCatalogoGeneroAlumno();
+               // this.loadAlumnoFuncion();
+               // this.loadFamiliaresFuncion();
+                //this.loadFunctionGrupos();
+               // this.loadCatalogoGeneroAlumno();
+
+                //async version
+                await this.cargarInformacionAlumno();
+                await this.cargarInformacionFamiliares();
+                await this.cargarCatalogos();
             }
 
+        },
+        async cargarInformacionAlumno(){
+            console.log("cargar informacion alumno");
+            this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.id}`);
+            if (this.alumno.formato_inscripcion == null)
+            this.alumno.formato_inscripcion = {};
+
+           if (this.alumno.co_datos_facturacion != null) {
+            this.datos_facturacion = this.alumno.datos_facturacion;
+           }
+        },
+        async cargarInformacionFamiliares(){
+            
+            this.listaFamiliares = await this.getAsync(`${URL.FAMILIAR_BASE}/${this.id}`);
+          
+        },
+        async cargarCatalogos(){
+            this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}`);
+            this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);           
         },
         //FIXME : pasar al servicio
         modificar() {
