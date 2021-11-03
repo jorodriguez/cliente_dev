@@ -11,16 +11,6 @@
                   </div>
 
       <!--  notificaciones -->
-      <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  
-                </div>              
-      </div> 
-      
-  
 
       <div class="nav-item dropdown">
         <a

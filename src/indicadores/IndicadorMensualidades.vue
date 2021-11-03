@@ -1,5 +1,5 @@
 <template>
-  <div v-if="sucItem.existen_mensualidades_vencidas">    
+  <div v-if="sucItem.existen_mensualidades_vencidas && sucItem.existen_mensualidades_vencidas != null">    
     <a
      :key="usuarioSesion.co_sucursal"      
       class="nav-link pr-0"
