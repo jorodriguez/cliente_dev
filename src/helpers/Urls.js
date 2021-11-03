@@ -5,8 +5,7 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://magic-stagging-api.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
-
-export const BRANCH = "202108-aviso-f1";
+export const BRANCH = "202110-hotfix-reactivar-alumno";
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';

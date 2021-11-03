@@ -24,6 +24,7 @@ import SubirFotoAlumno from '@/components/SubirFotoAlumno'
 import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
 import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
 import CatAvisos from '../administracion/avisos/CatAvisos';
+import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados';
 
 import VueSession from 'vue-session'
 
@@ -66,7 +67,8 @@ const router = new Router({
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
         { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
         { path: '/Avisos', name: 'Avisos', component: CatAvisos, meta: { requiresAuth: true, validar: true }},
-
+        { path: '/ReactivarAlumno', name: 'ReactivarAlumno', component: ReactivarAlumnosEliminados, meta: { requiresAuth: true, validar: false } },
+        
         { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true, validar: false } },
         { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true, validar: false } },
         { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, validar: false } },

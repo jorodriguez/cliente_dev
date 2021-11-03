@@ -1,5 +1,7 @@
 
 import {getToken} from '../helpers/Sesion';
+import axios from "axios";
+
 
 const get = function (url, handler) {
   console.log("== TOKEN INTERNO "+getToken());
@@ -21,6 +23,19 @@ const get = function (url, handler) {
       });
 };
 
+const getAsync = async url => {
+  try {    
+    const response = await axios.get(url, {
+      headers: { "x-access-token": getToken() }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log("Revisando la sesion " + JSON.stringify(error));
+    lanzarAvisoExpiracionSesion(error);
+  }
+};
+
 const post = function (url, params, handler) {
   this.$http
     .post(
@@ -37,6 +52,18 @@ const post = function (url, params, handler) {
       });
 }
 
+const postAsync = async (url, params) => {
+  try {
+    const response = await axios.post(url, params, {
+      headers: { "x-access-token": getToken() }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log("Revisando la sesion " + JSON.stringify(error));
+    lanzarAvisoExpiracionSesion(error);
+  }
+};
 
 const put = function (url, params, handler) {
 
@@ -55,6 +82,18 @@ const put = function (url, params, handler) {
       });
 };
 
+const putAsync = async (url, params) => {
+  try {
+    const response = await axios.put(url, params, {
+      headers: { "x-access-token": getToken() }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log("Revisando la sesion " + JSON.stringify(error));
+    lanzarAvisoExpiracionSesion(error);
+  }
+};
 
 const remove = function (url, handler) {
   
@@ -77,6 +116,19 @@ const remove = function (url, handler) {
       });
 };
 
+const removeAsync = async (url) => {
+  try {
+    const response = await axios.delete(url, {
+      headers: { "x-access-token": getToken() }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log("Revisando la sesion " + JSON.stringify(error));
+    lanzarAvisoExpiracionSesion(error);
+  }
+};
+
 const lanzarAvisoExpiracionSesion = function (error) {
   console.log("lanzar aviso");
   let mensaje = "";
@@ -96,35 +148,13 @@ const lanzarAvisoExpiracionSesion = function (error) {
   $("#popup_expiracion_sesion").modal("show");
 };
 
-const promesaGet = (url, token) => this.$http.get(url, { headers: { "x-access-token": token } });
-
-const promesaPost = function (url, params, token) {
-  return this.$http.post(url, params, {
-    headers: {
-      "x-access-token": token
-    }
-  });
-};
-
-const promesaPut = function (url, params, token) {
-  return this.$http.put(url, params, {
-    headers: {
-      "x-access-token": token
-    }
-  });
-};
-
-const promesaRemove = function (url, params, token) {
-  return this.$http.delete(url, params, {
-    headers: {
-      "x-access-token": token
-    }
-  });
-};
-
 const operacionesApi = {
   methods: {
-    get, post, put, remove
+    get, post, put, remove,
+    getAsync,
+    postAsync,
+    putAsync,
+    removeAsync
   }  
 };
 
