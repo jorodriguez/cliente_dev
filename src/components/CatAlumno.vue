@@ -1,21 +1,29 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length:0}})</h1>
-    <small>{{usuarioSesion.nombre_sucursal}}</small>
+    <h1>Alumnos ({{ lista != [] ? lista.length : 0 }})</h1>
+    <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
-        <div class="col-auto mr-auto">
+      <div class="col-auto mr-auto">
         <router-link to="/principal" class="btn btn-secondary btn-lg">
-         <i class="fas fa-arrow-circle-left text-gray"></i>
-       </router-link>
-         <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
-        </div>
+          <i class="fas fa-arrow-circle-left text-gray"></i>
+        </router-link>
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          v-on:click="nuevo()"
+        >
+          Nuevo
+        </button>
+      </div>
       <div class="col-auto">
-      <router-link to="/ReactivarAlumno" class="btn btn-outline-danger btn-lg">
-         <i class="fas fa-arrow-circle-left text-gray"></i> Reactivar alumno
-       </router-link>
+        <router-link
+          to="/ReactivarAlumno"
+          class="btn btn-outline-danger btn-lg"
+        >
+          Reactivar alumno
+        </router-link>
       </div>
-
-      </div>
+    </div>
 
     <!--<div class="text-left">
       <router-link to="/principal" class="btn btn-secondary btn-lg">
@@ -37,7 +45,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Registro de Alumno</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -83,20 +96,26 @@
                 input-class="form-control"
                 :format="'yyyy-MM-dd'"
                 :bootstrap-styling="true"
-                :language="es"                
+                :language="es"
                 required
-              ></datepicker>                   
+              ></datepicker>
               <label>
                 Sexo
                 <span class="text-danger">*</span>
               </label>
-              <select v-model="input.cat_genero" class="form-control" placeholder="Grupo" required>
+              <select
+                v-model="input.cat_genero"
+                class="form-control"
+                placeholder="Grupo"
+                required
+              >
                 <option
                   id="selectGeneroAlumno"
                   v-for="genero in listaGeneroAlumno"
                   v-bind:value="genero.id"
                   v-bind:key="genero.id"
-                >{{ genero.nombre }}</option>
+                  >{{ genero.nombre }}</option
+                >
               </select>
               <!--
                 <select
@@ -123,12 +142,18 @@
                 Grupo
                 <span class="text-danger">*</span>
               </label>
-              <select v-model="input.co_grupo" class="form-control" placeholder="Grupo" required>
+              <select
+                v-model="input.co_grupo"
+                class="form-control"
+                placeholder="Grupo"
+                required
+              >
                 <option
                   v-for="grupo in listaGrupos"
                   v-bind:value="grupo.id"
                   v-bind:key="grupo.id"
-                >{{ grupo.nombre }}</option>
+                  >{{ grupo.nombre }}</option
+                >
               </select>
 
               <div class="row">
@@ -237,17 +262,32 @@
                 ></datepicker>
               </div>
               <label>Nota</label>
-              <input type="text" v-model="input.nota" class="form-control" placeholder="Nota" />
+              <input
+                type="text"
+                v-model="input.nota"
+                class="form-control"
+                placeholder="Nota"
+              />
             </div>
           </div>
           <div class="modal-footer">
             <div v-if="operacion == 'INSERT'">
-              <button class="btn btn-lg btn-primary" v-on:click="guardar()">Guardar</button>
+              <button class="btn btn-lg btn-primary" v-on:click="guardar()">
+                Guardar
+              </button>
             </div>
             <div v-else-if="operacion == 'UPDATE'">
-              <button class="btn btn-lg btn-primary" v-on:click="modificar()">Modificar</button>
+              <button class="btn btn-lg btn-primary" v-on:click="modificar()">
+                Modificar
+              </button>
             </div>
-            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button
+              type="button"
+              class="btn btn-lg btn-secondary"
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
           </div>
         </div>
       </div>
@@ -268,17 +308,37 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Confirmar</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="exampleModalLongTitle">Confirmar baja del alumno</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <p>
-              ¿Confirma que desea dar de baja al alumno?
-              <br />
-              <strong>{{input.nombre}} {{input.apellidos}}</strong>
-            </p>
+          <div class="modal-body">            
+                <h4><strong>{{ input.nombre }} {{ input.apellidos }}</strong></h4>
+                <div class="form-group text-left">
+                    <label for="fecha_baja">Fecha de baja</label>
+                    <datepicker
+                      name="fecha_baja"
+                      v-model="fechaBaja"
+                      input-class="form-control"
+                      :format="'yyyy-MM-dd'"
+                      :bootstrap-styling="true"
+                      :language="es"                      
+                  ></datepicker>
+                </div>             
+                <div class="form-group">
+                  <textarea 
+                        v-model="observacionesBaja"
+                        class="form-control" 
+                        placeholder="Observaciones"
+                        rows="3">
+                  </textarea>            
+               </div>                  
           </div>
           <div class="modal-footer">
             <button
@@ -286,8 +346,16 @@
               class="btn btn-danger"
               v-on:click="eliminar()"
               data-dismiss="modal"
-            >Dar de Baja</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            >
+              Dar de Baja
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </div>
@@ -306,7 +374,11 @@
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" v-on:click="buscarPorNombre()">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              v-on:click="buscarPorNombre()"
+            >
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -321,10 +393,13 @@
               <th>Grupo</th>
               <th>Hora de Entrada</th>
               <th>Hora de Salida</th>
-              <th></th>              
+              <th></th>
             </thead>
             <tr v-for="row in lista" :key="row.id">
-              <td class="text-right" style="padding-left:2px;padding-right:2px;">
+              <td
+                class="text-right"
+                style="padding-left:2px;padding-right:2px;"
+              >
                 <!--src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"-->
                 <img
                   :src="row.foto"
@@ -345,16 +420,19 @@
                   v-on:click="verPerfil(row)"
                 >
                   {{ row.nombre }}
-                  <span v-if="row.mostrar_nombre_carino">({{row.nombre_carino}})</span>
-                  <span class="text-danger">{{row.adeuda ? '*':''}}</span>
+                  <span v-if="row.mostrar_nombre_carino"
+                    >({{ row.nombre_carino }})</span
+                  >
+                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
                 </button>
               </td>
               <td class="hidden-xs">{{ row.apellidos }}</td>
               <td>
                 <span
-                  :style="row.color ? 'background-color:'+row.color:'' "
+                  :style="row.color ? 'background-color:' + row.color : ''"
                   class="badge badge-info text-wrap"
-                >{{ row.nombre_grupo }}</span>
+                  >{{ row.nombre_grupo }}</span
+                >
               </td>
               <td>{{ row.hora_entrada }}</td>
               <td>{{ row.hora_salida }}</td>
@@ -379,7 +457,7 @@
                     </button>
                     <button
                       class="dropdown-item text-danger"
-                      v-on:click="select(row,'DELETE')"
+                      v-on:click="select(row, 'DELETE')"
                       title="Dar de baja el alumno."
                     >
                       <i class="fas fa-user-minus"></i> Iniciar Baja
@@ -389,14 +467,25 @@
               </td>
             </tr>
           </table>
+         <!-- Mensajes para la busqueda y carga-->
+          <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
+            <p class="text-muted ">Ningún resultado</p>
+          </div>
+          <div
+            v-if="criterioNombre == '' && lista.length == 0 && !loader"
+            class="mx-auto"
+          >
+            <p class="text-muted ">Oprime ENTER para listar todo</p>
+          </div>
+          <div v-if="loader" class="mx-auto">
+            <Loader :loading="loader" :mini="true" />
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js" >
-</script>
+<script src="../controller/CatAlumnoController.js"></script>
 
-<style scoped>
-</style>
+<style scoped></style>

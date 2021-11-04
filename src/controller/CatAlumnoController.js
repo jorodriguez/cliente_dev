@@ -5,12 +5,14 @@ import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { en, es } from 'vuejs-datepicker/dist/locale'
 import { getUsuarioSesion } from '../helpers/Sesion';
+import Loader from '../components_utils/Loader';
 import moment from 'moment'
+
 
 export default {
   name: "Alumno",
   components: {
-    Datepicker
+    Datepicker,Loader
   },
   mixins: [operacionesApi],
   data() {
@@ -31,6 +33,8 @@ export default {
       mensaje: "",
       es: es,
       disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
+      fechaBaja:new Date(),
+      observacionesBaja:""
     };
   },
   mounted() {
@@ -40,6 +44,7 @@ export default {
 
     console.log("Cargando lista alumno");
     this.loadFunction = function () {
+      this.loader = true;
       this.get(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
 
         (result) => {
@@ -48,6 +53,7 @@ export default {
           if (this.response != null) {
             this.lista = this.response;
             this.listaRespaldo = this.response;
+            this.loader = false;
           }
         });
     };
@@ -173,9 +179,14 @@ export default {
     },
     eliminar() {
       console.log("Modificar el id " + this.input.id);
+      const params = {
+        fechaBaja:this.fechaBaja,
+        observaciones:this.observacionesBaja,
+        genero:this.usuarioSesion.id
+      }
 
-      this.remove(URL.ALUMNOS_BASE + "/" + this.input.id,
-
+      this.put(URL.ALUMNOS_BASE + "/baja/" + this.input.id,
+        params,
         (result) => {
           console.log(" " + result.data);
           if (result.data != null) {

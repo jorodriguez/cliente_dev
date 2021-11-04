@@ -1,6 +1,6 @@
 <template>
   <div class="reactivar_alumnos">
-    <h1>Reacivar Alumnos</h1>
+    <h1>Alumnos eliminados</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="text-left">
       <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
@@ -9,7 +9,6 @@
     </div>
     <br />
     <!--<form>-->
-
     <div class="card">
       <div class="card-body">
         <div class="input-group mb-3">
@@ -32,47 +31,123 @@
             </button>
           </div>
         </div>
-      <div class="row " >
-      
-        <div class="col-3  " v-for="row in lista" :key="row.id">
-          <div class="card border border-secondary " >           
-            <img class="card-img-top rounded-circle"  :src="row.foto" alt="Card image cap" />
-            <div class="card-body">
-              <h5 class="card-title">{{ row.nombre }}
-               <span v-if="row.mostrar_nombre_carino"
-                  >({{ row.nombre_carino }})</span>
-              </h5>              
-              <p class="card-text small">
-                {{ row.apellidos }}
-              </p>              
-              <p
+
+        <div class="row ">
+          <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
+            <p class="text-muted ">Ningún resultado</p>
+          </div>
+          <div
+            v-if="criterioNombre == '' && lista.length == 0 && !loader"
+            class="mx-auto"
+          >
+            <p class="text-muted ">Oprime ENTER para listar todo</p>
+          </div>
+          <div v-if="loader" class="mx-auto">
+            <Loader :loading="loader" :mini="true" />
+          </div>
+          <!-- configuracion correcta para todos los dispositivos-->
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
+            v-for="row in lista"
+            :key="row.id"
+          >
+            <div class="card border border-secondary">
+              <img
+                class="card-img-top rounded-circle mx-auto"
+                style="width:100px"
+                :src="row.foto"
+                alt="Foto"
+              />
+              <div class="card-body">
+                <h5 class="card-text">
+                  {{ row.nombre }}
+                  <span v-if="row.mostrar_nombre_carino"
+                    >({{ row.nombre_carino }})</span
+                  >
+                </h5>
+                <h5 class="card-text small">
+                  {{ row.apellidos }}
+                </h5>
+                <h5
                   :style="row.color ? 'background-color:' + row.color : ''"
                   class="badge badge-info text-wrap"
-                  >{{ row.nombre_grupo }}
-              </p>
-              <p>{{row.hora_entrada}}</p>
-              <p>{{row.hora_salida}}</p>
-            </div>
-            <!--<ul class="list-group list-group-flush">
-              <li class="list-group-item"> 
-              <span
-                  :style="row.color ? 'background-color:' + row.color : ''"
-                  class="badge badge-info text-wrap"
-                  >{{ row.nombre_grupo }}
-                </span></li>
-              <li class="list-group-item">{{row.hora_entrada}}</li>
-              <li class="list-group-item">{{row.hora_salida}}</li>
-            </ul>-->
-            <div class="card-footer">        
-              <button type="button" class="btn btn-outline-danger btn-block">Activar</button>    
-              <!--<a href="#" class="card-link text-danger">Reactivar</a>   -->
+                >
+                  {{ row.nombre_grupo }}
+                </h5>
+                <h5 class="card-text small">
+                  {{ row.fecha_baja_format ? "Baja" : "-" }}
+                  <span class="text-red">{{ row.fecha_baja_format }}</span>
+                </h5>
+                <!--<h6>{{row.hora_entrada}}</h6>
+              <h6>{{row.hora_salida}}</h6>-->
+                <button
+                  type="button"
+                  @click="seleccionarAlumno(row)"
+                  class="btn btn-outline-primary btn-block btn-sm"
+                >
+                  Activar
+                </button>
+              </div>
             </div>
           </div>
         </div>
-     
-      </div>
       </div>
     </div>
+
+    <!-- Reactivar alumno -->
+
+    <Popup id="popup_iniciar_activacion" :show_button_close="true">
+      <div slot="header">¿Confirma que desea dar activar la cuenta?</div>
+      <div slot="content">
+        <div class="card">
+          <div class="card-body">
+            <div class="media ">
+              <img
+                class="rounded-circle mr-2"
+                style="width:140px"
+                :src="alumnoSelecionado.foto"
+                alt="foto"
+              />
+              <div class="media-body text-left">
+                <h4 class="mt-0">
+                  <strong
+                    >{{ alumnoSelecionado.nombre }}
+                    {{ alumnoSelecionado.apellidos }}</strong
+                  >
+                </h4>
+                <p class="text-sm ">
+                  <strong
+                    >Entrada: {{ alumnoSelecionado.hora_entrada }} Salida:
+                    {{ alumnoSelecionado.hora_salida }}</strong
+                  >
+                </p>
+                <p class="text-sm">
+                  Fecha de Baja :
+                  <span class="text-red">{{
+                    alumnoSelecionado.fecha_baja_format
+                  }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="form-check text-right">
+            <input
+              type="checkbox"
+              v-model="verPerfil"
+              class="form-check-input"
+            />
+            <label class="form-check-label text-sm" for="invalidCheck">
+              Ver el perfil después de activar
+            </label>
+          </div>
+        </div>
+      </div>
+      <div slot="footer">
+        <button class="btn btn-primary" v-on:click="reactivarAlumno()">
+          {{loaderActivacion ? 'Activando..':'Confirmar' }} 
+        </button>
+      </div>
+    </Popup>
   </div>
 </template>
 
@@ -80,19 +155,24 @@
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
+import Loader from "../components_utils/Loader";
+import Popup from "../controller/Popup";
 
 export default {
   name: "cat_alumnos_eliminados",
-  components: {},
+  components: { Loader, Popup },
   mixins: [operacionesApi],
   data() {
     return {
-      response: "",
+      alumnoSelecionado: {},
       usuarioSesion: {},
       criterioNombre: "",
       lista: [],
       listaRespaldo: [],
-      eliminados: true
+      loader: false,
+      loaderActivacion: false,
+      eliminados: true,
+      verPerfil: true
     };
   },
   mounted() {
@@ -102,15 +182,21 @@ export default {
     this.cargarAlumnosEliminados();
   },
   methods: {
-    verPerfil(rowSelect) {
-      console.log("fila seleccionada " + rowSelect.nombre);
-      this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
+    enrutarPerfil() {
+      this.$router.push({
+        name: "PerfilAlumno",
+        params: { id: this.alumnoSelecionado.id }
+      });
     },
     async cargarAlumnosEliminados() {
+      this.loader = true;
+      this.criterioNombre='';
       this.lista = await this.getAsync(
         `${URL.ALUMNOS_BASE}/${this.usuarioSesion.co_sucursal}/eliminados/true`
       );
-      //this.listaRespaldo = this.response;
+      //this.listaRespaldo = [...this.lista]; //Object.assign({},this.lista);
+      this.listaRespaldo = Object.assign([], this.lista);
+      this.loader = false;
     },
 
     buscarPorNombre() {
@@ -129,6 +215,29 @@ export default {
                   .includes(this.criterioNombre.toUpperCase())
               : false)
         );
+      }
+    },
+    seleccionarAlumno(alumno) {
+      this.alumnoSelecionado = alumno;
+      console.log(this.alumnoSelecionado);
+      $("#popup_iniciar_activacion").modal("show");
+    },
+    async reactivarAlumno() {
+      this.loaderActivacion = true;
+      const result = await this.putAsync(
+        `${URL.ALUMNOS_BASE}/activar/${this.alumnoSelecionado.id}`,
+        { genero: this.usuarioSesion.id }
+      );
+      if (this.verPerfil) {
+        setTimeout(() => {
+          this.loaderActivacion = false;
+          $("#popup_iniciar_activacion").modal("hide");
+          this.enrutarPerfil();
+        }, 1000);
+      } else {
+        this.loaderActivacion = false;
+        $("#popup_iniciar_activacion").modal("hide");
+        await this.cargarAlumnosEliminados();
       }
     }
   }
