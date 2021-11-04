@@ -27,6 +27,7 @@ export default {
     console.log("BRANCH " + BRANCH);    
     this.$session.clear();
     this.$root.$emit('LOGOUT', CONSTANTES.LOGOUT);
+    console.log("ENV" + process.env);    
 
   },
   methods: {
