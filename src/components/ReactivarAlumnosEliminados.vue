@@ -55,6 +55,7 @@
               <img
                 class="card-img-top rounded-circle mx-auto"
                 style="width:100px"
+                @click="seleccionarAlumno(row)"
                 :src="row.foto"
                 alt="Foto"
               />

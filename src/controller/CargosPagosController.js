@@ -51,7 +51,7 @@ export default {
       listaPagosCargo: [],
       listaFormasPago: [],
       listaMesesAdeuda: [],
-      loadFunctionCargosAlumno: null,
+      //loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
       loadFunctionMesesAdeuda: null,
@@ -256,7 +256,8 @@ export default {
             this.seleccionTodos = false;
             $("#modal_cargo").modal("hide");
             this.listaMesesAdeuda = [];
-            this.loadFunctionCargosAlumno();
+          //  this.loadFunctionCargosAlumno();
+            this.cargarCargos();
             this.loadFunctionActualizarCargoGeneral();
           }
         }
@@ -495,7 +496,8 @@ export default {
                 console.log("" + result.data);
                 this.$notificacion.warn("Se agregó el pago ", "");
                 this.seleccionTodos = false;
-                this.loadFunctionCargosAlumno();
+                //this.loadFunctionCargosAlumno();
+                this.cargarCargos();
                 this.loadFunctionActualizarCargoGeneral();
                 this.listaCargosAlumnosSeleccionados=[];
                 $("#modal_pago").modal("hide");
@@ -562,7 +564,8 @@ export default {
             if (result.data != null) {
               this.$notificacion.info("Se elimino correctamente", "");
               this.seleccionTodos = false;
-              this.loadFunctionCargosAlumno();
+             // this.loadFunctionCargosAlumno();
+             this.cargarCargos();
               this.loadFunctionActualizarCargoGeneral();
               this.loadFunctionMesesAdeuda();
               $("#eliminarCargoAlumno").modal("hide");

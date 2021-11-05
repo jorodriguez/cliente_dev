@@ -104,6 +104,19 @@
       </tbody>
     </table>
 
+      <div class="text-center">
+              <div v-if="loaderCargos" class="spinner-border text-info"  role="status">
+                <span class="sr-only"></span>
+              </div> 
+          </div>
+ 
+          <button        
+            class="btn  btn-link  border btn-block"
+            :disabled="loaderCargos"            
+            @click="cargarTodosCargos()"
+            >Ver todos los cargos</button>
+
+
     <!-- MODAL PARA AGREGAR CARGO -->
 
     <Popup id="modal_cargo" show_button_close="true">
@@ -488,18 +501,7 @@
             </tbody>
           </table>
  
-          <div class="text-center">
-              <div v-if="loaderCargos" class="spinner-border text-info"  role="status">
-                <span class="sr-only"></span>
-              </div> 
-          </div>
- 
-          <button            
-            class="btn btn-link btn-block"
-            :disabled="loaderCargos"            
-            @click="cargarTodosCargos()"
-            >Ver todos los cargos</button>
-
+        
         </div>
       </div>
     </Popup>
@@ -527,7 +529,6 @@
 </template>
 
 <script src="../controller/CargosPagosController.js"></script>
-
 
 <style scoped>
 .tachado {
