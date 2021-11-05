@@ -118,7 +118,7 @@ const URL = {
     PAGOS_REGISTRAR : PAGOS_BASE + '/registrar',
     CARGOS_BASE : CARGOS_BASE,
     CARGO_REGISTRAR : CARGOS_BASE + '/registrar',
-    MESES_ADEUDA : CARGOS_BASE + '/meses_adeuda/',  //id_alumno
+    MESES_ADEUDA : CARGOS_BASE + '_meses_adeuda/',  //id_alumno
     REENVIAR_COMPROBANTE: PAGOS_BASE+'/reenviar_comprobante',
 
     MENSUALIDAD_VENCE_SEMANA_ACTUAL : REPORTE_MENSUALIDAD_BASE + '/vence_semana_actual/',//id_sucursal
