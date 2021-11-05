@@ -487,6 +487,19 @@
               </tr>
             </tbody>
           </table>
+ 
+          <div class="text-center">
+              <div v-if="loaderCargos" class="spinner-border text-info"  role="status">
+                <span class="sr-only"></span>
+              </div> 
+          </div>
+ 
+          <button            
+            class="btn btn-link btn-block"
+            :disabled="loaderCargos"            
+            @click="cargarTodosCargos()"
+            >Ver todos los cargos</button>
+
         </div>
       </div>
     </Popup>

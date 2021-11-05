@@ -57,31 +57,20 @@ export default {
       loadFunctionMesesAdeuda: null,
       motivo_eliminacion: "",
       loader_reenvio:false,
-      mensaje_reenvio:""
+      mensaje_reenvio:"",
+      limite:"20",            
+      loaderCargos:false
     };
   },
   mounted() {
     console.log("iniciando el componente de pagos y cargos ");
 
     this.usuarioSesion = getUsuarioSesion();
-    this.loadFunctionCargosAlumno = function () {
-      this.get(
-        URL.CARGOS_BASE + "/" + this.idalumno,
-
-        (result) => {
-          if (result.data != null) {
-            this.listaCargosAlumnos = result.data;
-          }
-        }
-      );
-    };
-
-    //Catalogos de cargos
+     //Catalogos de cargos
     this.loadFunctionCatCargos = function () {
       this.listaCargos = [];
       this.get(
         URL.CARGOS_BASE,
-
         (result) => {
           console.log("Consulta del catalogo de cargos" + result.data);
           if (result.data != null) {
@@ -98,7 +87,6 @@ export default {
 
         this.get(
           URL.FORMAS_PAGO_BASE,
-
           result => {
             console.log("Consulta del catalogo de formas pago" + result.data);
             if (result.data != null) {
@@ -131,16 +119,26 @@ export default {
       this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
     }
 
-    this.loadFunctionCargosAlumno();
+    this.cargarCargos();
 
   },
   watch: {
     idalumno: function (newId, oldId) {
       console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);
-      this.loadFunctionCargosAlumno();
+      //this.loadFunctionCargosAlumno();
+      this.cargarCargos();
     }
   },
   methods: {
+    async cargarCargos(){
+      this.loaderCargos = true;
+      this.listaCargosAlumnos = await this.getAsync(URL.CARGOS_BASE + "/" + this.idalumno+"/"+this.limite);             
+      this.loaderCargos = false;      
+    },
+    async cargarTodosCargos(){
+      this.limite = " all ";
+      await this.cargarCargos();
+    },
     async iniciarAgregarCargo() {
       console.log("iniciar agregar cargo ");
       this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false, seleccionar_fecha: false };
