@@ -147,11 +147,12 @@
                 <label for="inputGasto">Gasto</label>
                 <input
                   id="inputGasto"
-                  type="text"
+                  type="number"
                   v-model="gasto.gasto"
                   class="form-control"
                   placeholder="Gasto"
                 />
+                <div class="text-xs text-muted">ejemplo : 1.50</div>
               </div>
 
               <div class="form-group">

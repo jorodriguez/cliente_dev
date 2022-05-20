@@ -1238,7 +1238,7 @@
         </div>
       </div>
 
-      <div class="text-info">{{mensaje}}</div>
+      
     </div>
 
     <!-- EN CASO DE NO ENVIAR EL ID -->

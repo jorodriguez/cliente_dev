@@ -388,11 +388,10 @@
           <table class="table">
             <thead>
               <th></th>
-              <th>Nombre</th>
-              <th class="hidden-xs">Apellidos</th>
+              <th class="text-left">Nombre</th>              
               <th>Grupo</th>
-              <th>Hora de Entrada</th>
-              <th>Hora de Salida</th>
+              <th>Entrada/salida</th>              
+              <th>Adeudo</th>
               <th></th>
             </thead>
             <tr v-for="row in lista" :key="row.id">
@@ -413,20 +412,25 @@
                 />
               </td>
               <td class="text-left" style="padding-left:0px;">
-                <button
-                  type="button"
-                  class="btn btn-link"
+                <span                  
+                  class="text-blue text-left pointer ml-2"
                   title="Ver el perfil del alumno"
                   v-on:click="verPerfil(row)"
                 >
-                  {{ row.nombre }}
+                  <span class="font-weight-bold">{{ row.nombre }}</span>
                   <span v-if="row.mostrar_nombre_carino"
                     >({{ row.nombre_carino }})</span
                   >
-                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
-                </button>
-              </td>
-              <td class="hidden-xs">{{ row.apellidos }}</td>
+                  <!--<span class="text-danger">{{ row.adeuda ? `Adeuda $${formatPrice(row.total_adeudo)}` : "" }}</span>-->
+                  <span class="text-danger">{{ row.adeuda ? `*` : "" }}</span>
+                  <br/><span class="font-weight-normal hidden-xs ml-2 text-gray">{{ row.apellidos }}</span>                   
+                  <br/><span class="font-weight-normal hidden-xs ml-2 text-dark">${{ formatPrice(row.costo_colegiatura) }} <span class="font-weight-normal hidden-xs text-gray">colegiatura</span></span>                                     
+                  <!--<br v-if="row.adeuda" /><span v-if="row.adeuda" class="font-weight-bold ml-2 text-danger">${{ formatPrice(row.total_adeudo) }} <span class="font-weight-normal ">Adeuda</span></span>                                     -->
+                  <br/>
+                  <span v-if="row.hoy_cumpleanos" class="font-weight-normal hidden-xs ml-2" style="color:#D12693"> <i class="fa fa-birthday-cake " ></i> Cumpleaños hoy 🎉</span> 
+                  <span v-else-if="row.mes_cumpleanos" class="font-weight-normal hidden-xs ml-2" style="color:#D12693" ><i class="fa fa-birthday-cake" ></i> Mes de Cumpleaños</span> 
+                </span>
+              </td>              
               <td>
                 <span
                   :style="row.color ? 'background-color:' + row.color : ''"
@@ -434,8 +438,11 @@
                   >{{ row.nombre_grupo }}</span
                 >
               </td>
-              <td>{{ row.hora_entrada }}</td>
-              <td>{{ row.hora_salida }}</td>
+              <td>{{ row.hora_entrada_format }} - {{row.hora_salida_format}} </td>              
+              <td class="text-center ">
+                 <span v-if="row.adeuda" class="text-danger font-weight-bold pointer"  v-on:click="verPerfil(row)" >${{ formatPrice(row.total_adeudo) }}</span> 
+                 <i v-else class="fa fa-check text-green" />
+              </td>
               <td>
                 <div class="btn-group" v-if="!row.adeuda">
                   <button

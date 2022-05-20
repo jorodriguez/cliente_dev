@@ -72,6 +72,7 @@ export default {
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempDatosFacturacion: URL.DATOS_FACTURADOS, // "http://localhost:5000/datos_facturacion",            
             uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
+            uriTempFamiliar:URL.FAMILIAR_BASE,
             response: "",
             mensaje: "",           
             loadAlumnoFuncion: null,
@@ -314,7 +315,8 @@ export default {
                         if (respuesta.estatus) {
                             $("#modal_familiar").modal("hide");
 
-                            this.loadFamiliaresFuncion();
+                            //this.loadFamiliaresFuncion();
+                            this.cargarInformacionFamiliares();
                         }
                     }
                 }
@@ -350,7 +352,8 @@ export default {
                         if (result.data.estatus) {
                             //this.mensaje = this.response.mensaje;
                             this.$notificacion.info('Información', this.response.mensaje);
-                            this.loadFamiliaresFuncion();
+                            //this.loadFamiliaresFuncion();
+                            this.cargarInformacionFamiliares();
                             $("#modal_familiar").modal("hide");
                         }
                     }
@@ -376,7 +379,8 @@ export default {
                         } else {
                             // this.mensaje = "Se actualizaron los datos de familiar.";
                             this.$notificacion.info('Modificación del registro', 'Se actualizaron los datos de familiar.');
-                            this.loadFamiliaresFuncion();
+                            //this.loadFamiliaresFuncion();
+                            this.cargarInformacionFamiliares();
                             $("#modal_eliminar_familiar").modal("hide");
                         }
                     }
@@ -493,7 +497,8 @@ export default {
             console.log("Familiares Tab load");
             if (this.listaFamiliares.length == 0) {
                 console.log("Carga de lista de familiares");
-                this.loadFamiliaresFuncion();
+                //this.loadFamiliaresFuncion();
+                this.cargarInformacionFamiliares();
             }
         },
         iniciarCapturaFechaPago() {

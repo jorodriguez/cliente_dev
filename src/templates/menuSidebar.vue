@@ -164,7 +164,7 @@
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">
             <a class="nav-link" href="#">
-              <i class="ni ni-send text-dark"></i> V.0.2
+              <i class="ni ni-send text-dark"></i> V.0.3
             </a>
           </li>
         </ul>
