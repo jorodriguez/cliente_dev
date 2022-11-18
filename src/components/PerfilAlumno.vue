@@ -368,15 +368,7 @@
                         Fecha de Nacimiento
                         <span class="text-danger">*</span>
                       </label>
-                      <!--<input
-                    id="inputFechaNacimientoAlumno"
-                    type="date"
-                    pattern="yyyy-MM-dd"
-                    v-model="alumno.fecha_nacimiento"                    
-                    class="form-control"
-                    placeholder="F. Nacimiento"
-                    required
-                      >-->
+                    
                       <datepicker
                         id="inputFechaNacimientoAlumno"
                         v-model="alumno.fecha_nacimiento"
@@ -404,18 +396,7 @@
                           v-bind:key="genero.id"
                         >{{ genero.nombre }}</option>
                       </select>
-<!--
-                      <select
-                        id="inputSexo"
-                        v-model="alumno.sexo"
-                        class="form-control"
-                        placeholder="Sexo"
-                        required
-                      >
-                        <option value="Niño" selected>Niño</option>
-                        <option value="Niña">Niña</option>
-                      </select>
-                      -->
+
                     </div>
 
                     <div class="form-group">
@@ -449,7 +430,8 @@
                       </select>
                     </div>
 
-                    <div class="row">
+                    <div class="row"
+                          v-if="alumno.cat_tipo_cobranza == 1">
                       <div class="col col-md-6">
                         <div class="form-group">
                           <label for="inputHoraEntrada">
@@ -505,6 +487,10 @@
                         Costo Inscripción
                         <span class="text-danger">*</span>
                       </label>
+                       <div class="input-group ">
+                         <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
                       <input
                         id="inputCostoInscripcion"
                         type="number"
@@ -515,12 +501,17 @@
                         required
                       >
                     </div>
+                    </div>
 
                     <div class="form-group">
                       <label for="inputCostoColegiatura">
-                        Costo Colegiatura
+                         Colegiatura
                         <span class="text-danger">*</span>
                       </label>
+                        <div class="input-group ">
+                         <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
                       <input
                         id="inputCostoColegiatura"
                         type="number"
@@ -529,26 +520,27 @@
                         placeholder="Costo Colegiatura"
                         min="0"
                         required
-                      >
+                      >        
+                        </div>              
                     </div>
-                    <!--
-                    <div class="form-group">
-                      <label for="inputFechaLimitePago">
-                        Fecha Pago 
-                        <span class="text-danger">*</span>
-                      </label>
-                       <datepicker
-                        id="inputFechaLimitePagoColegiatura"
-                        v-model="alumno.fecha_limite_pago_mensualidad"
-                        @click.native="iniciarCapturaFechaPago()"
-                        input-class="form-control"
-                        :bootstrap-styling="true"                        
-                         disabled 
-                        :language="es"                        
-                      >
-                      </datepicker>                     
-                      
-                    </div>  -->                  
+                    
+                      <span v-if="alumno.cat_tipo_cobranza == 2">
+            <label >
+              Horas en el mes
+              <span class="text-danger">*</span>
+            </label>
+
+            <input
+              type="number"
+              v-model="alumno.tiempo_hora"
+              class="form-control"
+              placeholder="Horas"
+              min="0"
+              required
+            />
+            </span>
+
+                                 
 
                     <div class="form-group">
                       <label for="inputNota">Nota</label>

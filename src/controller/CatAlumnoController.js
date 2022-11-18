@@ -48,6 +48,8 @@ export default {
 
         this.cargarCatalogoAlumno();
 
+        this.getInfoTipoInscripcionSucursal();
+
     },
     methods: {
         async nuevo() {
@@ -71,7 +73,8 @@ export default {
                 costo_inscripcion: "",
                 costo_colegiatura: "",
                 minutos_gracia: "",
-                tiempo_horas: 0,
+                cat_tipo_cobranza: -1,
+                tiempo_hora: 20,
                 fecha_inscripcion: null,
                 fecha_limite_pago: null,
                 foto: "",
@@ -80,14 +83,14 @@ export default {
             this.generoAlumno = { id: -1, nombre: "", foto: "" },
                 await this.cargarListaGrupos();
             await this.cargarListaGenero();
-            await this.getInfoTipoInscripcionSucursal();
             $("#modal_alumno").modal("show");
         },
         guardar() {
             console.log("Insertar");
 
+            this.input.cat_tipo_cobranza = this.tipoInscripcionSucursal.cat_tipo_cobranza;
+
             if (!validacionDatosAlumno(this.input)) {
-                //if(!validacionDatosAlumno(this.input)){
                 console.log("No paso la validacion");
                 return;
             }
@@ -106,7 +109,7 @@ export default {
                     console.log("this.response " + this.response);
                     //this.mensaje = "Se agregó el alumno";
                     this.$notificacion.info('Registro de alumno', 'Se registró el alumno.');
-                    this.loadFunction();
+                    this.cargarCatalogoAlumno();
                     $("#modal_alumno").modal("hide");
                 }
             );

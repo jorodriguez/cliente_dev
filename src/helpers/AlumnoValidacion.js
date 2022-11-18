@@ -69,17 +69,17 @@ export const validacionDatosAlumno = (alumno) => {
         }
 
         if (alumno.cat_tipo_cobranza == Constantes.ID_TIPO_COBRANZA_HORAS) {
-            if (!alumno.tiempo_horas) {
+            if (!alumno.tiempo_hora) {
                 Vue.prototype.$notificacion.error(
-                    "Escribe el costo de la inscripción",
-                    "El valor de costo de inscripción es requedido."
+                    "Escribe el tiempo en horas",
+                    "El valor de horas correspondientes a la colegiatura."
                 );
                 return false;
             }
         }
 
 
-        if (!alumno.costo_inscripcion) {
+        if (alumno.costo_inscripcion == '' || alumno.costo_inscripcion == null) {
             Vue.prototype.$notificacion.error(
                 "Escribe el costo de la inscripción",
                 "El valor de costo de inscripción es requedido."

@@ -204,24 +204,6 @@
               required
             ></datepicker>
 
-                      <label>
-              {{ tipoInscripcionSucursal.etiqueta_inscripcion }}
-              <span class="text-danger">*</span>
-            </label>
-            <div class="input-group ">
-              <div class="input-group-prepend">
-                <span class="input-group-text">$</span>
-              </div>
-              <input
-                type="number"
-                v-model="input.costo_colegiatura"
-                class="form-control"
-                placeholder="Costo Colegiatura"
-                min="0"
-                required
-              />
-            </div>
-
             <label>
               Costo Inscripción
               <span class="text-danger">*</span>
@@ -240,19 +222,41 @@
             />
             </div>
 
-            <label>
+             <label>
+              {{ tipoInscripcionSucursal.etiqueta_inscripcion }}
+              <span class="text-danger">*</span>
+            </label>
+            <div class="input-group ">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                v-model="input.costo_colegiatura"
+                class="form-control"
+                placeholder="Costo Colegiatura"
+                min="0"
+                required
+              />
+            </div>
+
+            
+
+            <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2">
+            <label >
               Horas en el mes
               <span class="text-danger">*</span>
             </label>
 
             <input
               type="number"
-              v-model="input.tiempo_horas"
+              v-model="input.tiempo_hora"
               class="form-control"
               placeholder="Horas"
               min="0"
               required
             />
+            </span>
 
 
             <div class="form-group">
@@ -402,7 +406,7 @@
               <th></th>
               <th class="text-left">Nombre</th>
               <th>Grupo</th>
-              <th>Entrada/salida</th>
+              <th>{{`${tipoInscripcionSucursal.cat_tipo_cobranza == 1 ?  'Entrada/Salida':'Horas usadas'}`}} </th>
               <th>Adeudo</th>
               <th></th>
             </thead>
@@ -439,13 +443,16 @@
                     class="font-weight-normal hidden-xs ml-2 text-gray"
                     >{{ row.apellidos }}</span
                   >
-                  <br /><span
+                  <br />
+                  <span
                     class="font-weight-normal hidden-xs ml-2 text-dark"
                     >${{ formatPrice(row.costo_colegiatura) }}
                     <span class="font-weight-normal hidden-xs text-gray"
-                      >colegiatura</span
-                    ></span
-                  >
+                      >Colegiatura</span>
+                      <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2">
+                         por {{row.tiempo_hora}} horas
+                      </span>
+                    </span>
                   <!--<br v-if="row.adeuda" /><span v-if="row.adeuda" class="font-weight-bold ml-2 text-danger">${{ formatPrice(row.total_adeudo) }} <span class="font-weight-normal ">Adeuda</span></span>                                     -->
                   <br />
                   <span
@@ -471,7 +478,12 @@
                 >
               </td>
               <td>
-                {{ row.hora_entrada_format }} - {{ row.hora_salida_format }}
+                <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1">
+                  {{ row.hora_entrada_format }} - {{ row.hora_salida_format }}
+                </span>
+                <span v-else-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2">
+                    {{row.tiempo_usado}}/{{row.tiempo_saldo}}
+                </span>
               </td>
               <td class="text-center ">
                 <span
