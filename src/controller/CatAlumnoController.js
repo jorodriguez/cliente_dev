@@ -222,7 +222,7 @@ export default {
         },
         async cargarListaGrupos() {
 
-            let res = await this.getAsync(URL.GRUPOS_BASE);
+            let res = await this.getAsync(URL.GRUPOS_BASE + "/" + this.usuarioSesion.co_sucursal);
 
             this.listaGrupos = res;
         },

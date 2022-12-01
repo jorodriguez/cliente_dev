@@ -1,4 +1,3 @@
-
 import Datepicker from 'vuejs-datepicker';
 import { es } from 'vuejs-datepicker/dist/locale';
 import CargosPagos from '../components/CargosPago.vue';
@@ -40,11 +39,11 @@ export default {
                 fecha_nacimiento: null,
                 correo: "",
                 genero: 0
-            },            
+            },
             listaFamiliares: [],
             metadatos: Utils,
             listaGrupos: [],
-            listaGeneroAlumno:[],
+            listaGeneroAlumno: [],
             listaParentesco: [],
             listaServicios: [],
             listaValoresEsperados: [],
@@ -72,11 +71,11 @@ export default {
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempDatosFacturacion: URL.DATOS_FACTURADOS, // "http://localhost:5000/datos_facturacion",            
             uriTempResetClaveFamiliar: URL.RESET_PASSWORD, // "http://localhost:5000/reset_password",
-            uriTempFamiliar:URL.FAMILIAR_BASE,
+            uriTempFamiliar: URL.FAMILIAR_BASE,
             response: "",
-            mensaje: "",           
+            mensaje: "",
             loadAlumnoFuncion: null,
-            loadFamiliaresFuncion: null,            
+            loadFamiliaresFuncion: null,
             loadCatalogoFunction: null,
             mensajeToast: null,
             initFamiliar: null,
@@ -130,48 +129,48 @@ export default {
             }
 
         },
-        async cargarInformacionAlumno(){
-            console.log("cargar informacion alumno "+URL.ALUMNOS_BASE);
-            this.alumno = await this.getAsync(URL.ALUMNOS_BASE+"/id/"+this.id);
-            if ( this.alumno && this.alumno.formato_inscripcion == null)
-            this.alumno.formato_inscripcion = {};
+        async cargarInformacionAlumno() {
+            console.log("cargar informacion alumno " + URL.ALUMNOS_BASE);
+            this.alumno = await this.getAsync(URL.ALUMNOS_BASE + "/id/" + this.id);
+            if (this.alumno && this.alumno.formato_inscripcion == null)
+                this.alumno.formato_inscripcion = {};
 
-           if (this.alumno && this.alumno.co_datos_facturacion != null) {
-            this.datos_facturacion = this.alumno.datos_facturacion;
-           }
+            if (this.alumno && this.alumno.co_datos_facturacion != null) {
+                this.datos_facturacion = this.alumno.datos_facturacion;
+            }
         },
-        async cargarInformacionFamiliares(){            
-            this.listaFamiliares = await this.getAsync(`${URL.FAMILIAR_BASE}/${this.id}`);          
+        async cargarInformacionFamiliares() {
+            this.listaFamiliares = await this.getAsync(`${URL.FAMILIAR_BASE}/${this.id}`);
         },
-        async cargarCatalogos(){
-            this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}`);
-            this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);           
+        async cargarCatalogos() {
+            this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}/${this.usuarioSesion.co_sucursal}`);
+            this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
         },
-        async cargarCatalogoParentesco(){
-            this.listaParentesco  = await this.getAsync(`${URL.PARENTESCO_BASE}/${this.id}`);
+        async cargarCatalogoParentesco() {
+            this.listaParentesco = await this.getAsync(`${URL.PARENTESCO_BASE}/${this.id}`);
         },
-        async cargarCatalogoServicios(){
+        async cargarCatalogoServicios() {
             this.listaServicios = await this.getAsync(`${URL.SERVICIOS_BASE}`);
         },
-        async cargarValoresEsperados(idFormato){
+        async cargarValoresEsperados(idFormato) {
             this.listaValoresEsperados = await this.getAsync(`${URL.VALORES_ESPERADOS}/${idFormato}`);
         },
-        async cargarPosiblesFamiliares(idParentesco, apellidosAlumno, idSucursal){
+        async cargarPosiblesFamiliares(idParentesco, apellidosAlumno, idSucursal) {
             this.listaPosiblesPadres = await this.getAsync(`${URL.FAMILIAR_BASE}/${idParentesco}/${apellidosAlumno}/${idSucursal}`);
-           
+
         },
-        
+
         //FIXME : pasar al servicio
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
-           
+
             if (!validacionDatosAlumno(this.alumno)) {
                 console.log("No paso la validacion ");
                 return;
             }
 
-            this.alumno.genero = this.usuarioSesion.id;            
-            
+            this.alumno.genero = this.usuarioSesion.id;
+
             this.alumno.formato_inscripcion.valores_esperados = this.listaValoresEsperados;
 
             this.put(
@@ -233,11 +232,11 @@ export default {
             this.mensaje = '';
             this.familiarRelacionado = null;
             this.co_parentesco_seleccionado = { id: -1, cat_genero: -1 };
-           
-           this.cargarCatalogoParentesco();
+
+            this.cargarCatalogoParentesco();
         },
         seleccionarParentesco() {
-            
+
             this.cargarPosiblesFamiliares(this.co_parentesco_seleccionado.id,
                 this.alumno.apellidos,
                 this.usuarioSesion.co_sucursal);
@@ -252,9 +251,9 @@ export default {
         },
         async seleccionarFamiliar(item, operacion) {
             this.familiar = item;
-            this.operacion = operacion;            
+            this.operacion = operacion;
             this.cargarCatalogoParentesco();
-           
+
         },
         seleccionarFamiliarResetClave(item) {
             this.familiar = item;
@@ -289,7 +288,7 @@ export default {
                 return;
             }
 
-            if(!validacionCorreo(this.familiar.correo)){
+            if (!validacionCorreo(this.familiar.correo)) {
                 this.$notificacion.error('Formato de Correo', 'Escribe un correo válido');
                 return;
             }
@@ -337,7 +336,7 @@ export default {
             }
             this.familiar.genero = this.usuarioSesion.id;
 
-            if(!validacionCorreo(this.familiar.correo)){
+            if (!validacionCorreo(this.familiar.correo)) {
                 this.$notificacion.error('Formato de Correo', 'Escribe un correo válido');
                 return;
             }
@@ -390,18 +389,18 @@ export default {
         },
         guardarDatosFacturacion() {
             if (
-                this.datos_facturacion.rfc == ""
-                || this.datos_facturacion.razon_social == ""
-                || this.datos_facturacion.curp == ""
-                || this.datos_facturacion.calle == ""
-                || this.datos_facturacion.numero_exterior == ""
-                || this.datos_facturacion.colonia == ""
-                || this.datos_facturacion.ciudad == ""
-                || this.datos_facturacion.municipio == ""
-                || this.datos_facturacion.estado == ""
-                || this.datos_facturacion.codigo_postal == ""
-                || this.datos_facturacion.telefono_contacto == ""
-                || this.datos_facturacion.correo_contacto == ""
+                this.datos_facturacion.rfc == "" ||
+                this.datos_facturacion.razon_social == "" ||
+                this.datos_facturacion.curp == "" ||
+                this.datos_facturacion.calle == "" ||
+                this.datos_facturacion.numero_exterior == "" ||
+                this.datos_facturacion.colonia == "" ||
+                this.datos_facturacion.ciudad == "" ||
+                this.datos_facturacion.municipio == "" ||
+                this.datos_facturacion.estado == "" ||
+                this.datos_facturacion.codigo_postal == "" ||
+                this.datos_facturacion.telefono_contacto == "" ||
+                this.datos_facturacion.correo_contacto == ""
             ) {
                 //this.mensaje = "Escribe los valores requeridos.";
                 this.$notificacion.warn('Escribe los valores', 'Escribe los valores requeridos.');
@@ -455,8 +454,7 @@ export default {
         habilitarDesabilitarDatosFacturacion() {
 
             this.put(
-                this.uriTempDatosFacturacion,
-                { id_alumno: this.id, factura: this.alumno.factura, genero: this.usuarioSesion.id },
+                this.uriTempDatosFacturacion, { id_alumno: this.id, factura: this.alumno.factura, genero: this.usuarioSesion.id },
 
                 (result) => {
                     this.response = result.data;
@@ -478,18 +476,17 @@ export default {
             console.log("Inscripcion Tab load");
 
             if (this.listaServicios.length == 0) {
-                console.log("Carga de lista");              
+                console.log("Carga de lista");
                 this.cargarCatalogoServicios();
             }
         },
-        cargarTabInstitucion() {
+        async cargarTabInstitucion() {
             console.log("Institucion Tab load");
             if (this.listaValoresEsperados.length == 0) {
 
                 console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
-                // this.loadValoresEsperadosFunction(this.alumno.formato_inscripcion.id);
-                this.cargarValoresEsperados(this.alumno.formato_inscripcion.id);
+                await this.cargarValoresEsperados(this.alumno.formato_inscripcion.id);
 
             }
         },
@@ -509,13 +506,13 @@ export default {
             this.alumno.fecha_limite_pago_mensualidad = this.fecha_memento;
             $("#popup_captura_fecha_pago").modal("hide");
         },
-        getFoto(){        
-            let elemento = this.listaGeneroAlumno.find(e=>e.id == this.alumno.cat_genero);
-            return elemento.foto;    
+        getFoto() {
+            let elemento = this.listaGeneroAlumno.find(e => e.id == this.alumno.cat_genero);
+            return elemento.foto;
         },
-        subirFotoPerfil(id){
+        subirFotoPerfil(id) {
 
             this.$router.push({ name: "SubirFotoAlumno", params: { id: id } });
         }
     }
-};  
+};
