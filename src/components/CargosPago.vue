@@ -195,7 +195,7 @@
             maxlength="3"
           />
         </div>
-      {{cargo}}
+            
         <div class="form-group" v-if="cargo.cat_cargo.id != -1">
           <label for="inputMonto">
             Monto $
@@ -213,7 +213,7 @@
             maxlength="6"
           />
         </div>      
-        <div class="form-group" v-if="cargo.cat_cargo.id != -1 && alumno.cat_tipo_cobranza == 2 &&  cargo.suma_tiempo_saldo">
+        <div class="form-group" v-if="cargo.cat_cargo.id != -1 && alumno.cat_tipo_cobranza == 2 &&  cargo.cat_cargo.suma_tiempo_saldo">
           <label for="inputMonto">
             Tiempo (Horas)
             <span class="text-danger">*</span>

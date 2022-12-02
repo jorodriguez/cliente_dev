@@ -158,6 +158,8 @@ export default {
                 this.cargo.cantidad = 1;
             }
             this.cargo.monto = this.cargo.cat_cargo.precio;
+            this.cargo.suma_tiempo_saldo = this.cargo.suma_tiempo_saldo;
+
             this.calcularTotalCargo();
 
             switch (this.cargo.cat_cargo.id) {
