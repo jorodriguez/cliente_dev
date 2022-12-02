@@ -213,6 +213,7 @@
             maxlength="6"
           />
         </div>      
+        
         <div class="form-group" v-if="cargo.cat_cargo.id != -1 && alumno.cat_tipo_cobranza == 2 &&  cargo.cat_cargo.suma_tiempo_saldo">
           <label for="inputMonto">
             Tiempo (Horas)
