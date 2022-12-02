@@ -22,7 +22,7 @@ export default {
         return {
             cargo: {
                 cantidad: 1,
-                cat_cargo: { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false },
+                cat_cargo: { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false, tiempo_horas: 0 },
                 total_cargo: 0
             },
             pago: {
@@ -67,19 +67,6 @@ export default {
         console.log("iniciando el componente de pagos y cargos ");
 
         this.usuarioSesion = getUsuarioSesion();
-        //Catalogos de cargos
-        /*this.loadFunctionCatCargos = function() {
-            this.listaCargos = [];
-            this.get(
-                URL.CARGOS_BASE,
-                (result) => {
-                    console.log("Consulta del catalogo de cargos" + result.data);
-                    if (result.data != null) {
-                        this.listaCargos = result.data;
-                    }
-                }
-            );
-        };*/
 
         this.loadFunctionCatFormasPago = function() {
             this.listaFormasPago = [];
@@ -134,6 +121,7 @@ export default {
         async cargarCargos() {
             this.loaderCargos = true;
             this.listaCargosAlumnos = await this.getAsync(URL.CARGOS_BASE + "/" + this.idalumno + "/" + this.limite);
+            await this.cargarDatosAlumno();
             this.loaderCargos = false;
         },
         async cargarTodosCargos() {
@@ -143,17 +131,21 @@ export default {
         async cargarCatalogoCargos() {
             this.listaCargos = await this.getAsync(URL.CARGOS_BASE + "/" + this.usuarioSesion.co_sucursal);
         },
+        async cargarDatosAlumno() {
+            this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.idalumno}`);
+        },
         async iniciarAgregarCargo() {
             console.log("iniciar agregar cargo ");
             this.cargo.cat_cargo = { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false, seleccionar_fecha: false };
             this.cargo.cantidad = 1;
             this.cargo.monto = 1;
             this.cargo.nota = '';
+            this.cargo.tiempo_horas = 0;
             this.cargo.fecha_cargo = undefined;
             this.mensaje = "";
             this.cargo.total_cargo = 0;
 
-            this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.idalumno}`);
+            await this.cargarDatosAlumno();
 
             await this.cargarCatalogoCargos();
             //Cargar colegiatura e inscripcion del alumno seleccionado y asignarla al monto al cambiar el cargo
@@ -168,9 +160,23 @@ export default {
             this.cargo.monto = this.cargo.cat_cargo.precio;
             this.calcularTotalCargo();
 
-            let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
+            switch (this.cargo.cat_cargo.id) {
+                case CONSTANTES.ID_CARGO_MENSUALIDAD:
+                    this.cargo.monto = this.alumno.costo_colegiatura;
+                    this.cargo.tiempo_horas = this.alumno.tiempo_hora;
+                    if (this.listaMesesAdeuda.length == 0) {
+                        this.loadFunctionMesesAdeuda();
+                    }
+                    break;
+                case CONSTANTES.ID_CARGO_INCRIPCION:
+                    this.cargo.monto = this.alumno.costo_inscripcion;
+                    break;
+
+            }
+
+            //let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
             //cargar mensualidades si se selecciono la mensualidad
-            if (this.cargo.cat_cargo.id == id_cargo_mes) {
+            /*if (this.cargo.cat_cargo.id == id_cargo_mes) {
                 this.cargo.monto = this.alumno.costo_colegiatura;
                 if (this.listaMesesAdeuda.length == 0) {
                     this.loadFunctionMesesAdeuda();
@@ -179,7 +185,7 @@ export default {
                 if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION) {
                     this.cargo.monto = this.alumno.costo_inscripcion;
                 }
-            }
+            }*/
         },
         onChangeMensualidad() {
             if (this.cargo.mes_seleccionado.cargo_registrado) {

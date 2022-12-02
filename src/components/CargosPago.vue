@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-
+    
     <table class="table">
       <thead>
         <th>
@@ -45,6 +45,7 @@
         </th>
         <th>Fecha</th>
         <th>Concepto</th>
+        <th v-if="alumno.cat_tipo_cobranza == 2" >Tiempo</th>
         <th>Adeuda</th>
         <th>Desc.</th>
         <th>Pagado</th>
@@ -75,8 +76,13 @@
                  {{row.nota}}
                </div>              
             </span>
-            </a>
-           
+            </a>           
+          </td>
+          <td v-if="alumno.cat_tipo_cobranza == 2" >
+            <strong v-if="row.tiempo_horas > 0 " >
+              <!--<span class="text-gray">+<span class="font-weight-bold text-dark">{{row.tiempo_horas}}</span> <span class="font-weight-normal">hora</span> </span>-->
+              <span class=" badge badge-info"> <i class="fa fa-timer"></i> {{row.tiempo_horas}} {{row.tiempo_horas == 1 ? 'hora':'horas'}}</span> 
+            </strong>
           </td>
           <td>
             <strong>
@@ -121,7 +127,7 @@
 
     <Popup id="modal_cargo" show_button_close="true">
       <div slot="header">Agregar Cargo para {{alumno ? alumno.nombre :''}}</div>
-      <div slot="content">
+      <div slot="content">      
         <div class="form-group">
           <label for="selectTipoCargo">
             Cargo
@@ -189,7 +195,7 @@
             maxlength="3"
           />
         </div>
-
+      {{cargo}}
         <div class="form-group" v-if="cargo.cat_cargo.id != -1">
           <label for="inputMonto">
             Monto $
@@ -206,7 +212,23 @@
             @change="calcularTotalCargo()"
             maxlength="6"
           />
+        </div>      
+        <div class="form-group" v-if="cargo.cat_cargo.id != -1 && alumno.cat_tipo_cobranza == 2 &&  cargo.suma_tiempo_saldo">
+          <label for="inputMonto">
+            Tiempo (Horas)
+            <span class="text-danger">*</span>
+          </label>
+          <input
+            id="inputHoras"
+            type="number"
+            v-model="cargo.tiempo_horas"
+            class="form-control"            
+            placeholder="Horas"
+            min="1"            
+            maxlength="6"
+          />
         </div>
+
         <div class="form-group">
           <label for="inputNota">Nota</label>
           <input
