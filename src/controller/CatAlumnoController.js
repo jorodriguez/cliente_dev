@@ -29,8 +29,6 @@ export default {
             listaGeneroAlumno: [],
             listaRespaldo: [],
             listaGrupos: [],
-            loadFunction: null,
-            loadFunctionGrupos: null,
             mensaje: "",
             es: es,
             disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
@@ -132,7 +130,7 @@ export default {
                         console.log("" + this.response);
                         //this.mensaje = "Se modificó el alumno";
                         this.$notificacion.info('Modificación de alumno', 'Se actualizarón los datos del alumno.');
-                        this.loadFunction();
+                        this.cargarCatalogoAlumno();
                         $("#modal_alumno").modal("hide");
                     }
                 }
@@ -154,7 +152,7 @@ export default {
                     if (result.data != null) {
                         console.log("" + result.data);
                         this.$notificacion.error('Registro de Baja de alumno', 'Se registro la baja del alumno ' + this.input.nombre + '.');
-                        this.loadFunction();
+                        this.cargarCatalogoAlumno();
                     }
                 }
             );

@@ -7,8 +7,10 @@ export default {
     name: "balance-alumno",
     mixins: [operacionesApi],
     template: `
-      <span class="h2 text-danger"> 
-        {{ balanceAlumno.total_adeudo }} <span class="font-weight-normal text-gray" v-if="balanceAlumno.cat_tipo_cobranza == 1"> ({{balanceAlumno.tiempo_usado}}/{{balanceAlumno.tiempo_saldo}} hrs)</span>
+      <span :class="h2"> 
+        {{ balanceAlumno.total_adeudo }} 
+        <br/>
+        <span class="font-weight-normal text-gray" v-if="balanceAlumno.cat_tipo_cobranza == 2"> ({{balanceAlumno.tiempo_usado}}/{{balanceAlumno.tiempo_saldo}} hrs)</span>
         <br/>
         <small class="text-muted text-xs" v-if="mostrarfecha">Paga {{balanceAlumno.fecha_limite_pago_mensualidad}}</small>
       </span>

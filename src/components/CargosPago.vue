@@ -87,6 +87,8 @@
             <strong v-if="row.tiempo_horas > 0 " >
               <!--<span class="text-gray">+<span class="font-weight-bold text-dark">{{row.tiempo_horas}}</span> <span class="font-weight-normal">hora</span> </span>-->
               <span class=" badge badge-info"> <i class="fa fa-timer"></i> {{row.tiempo_horas}} {{row.tiempo_horas == 1 ? 'hora':'horas'}}</span> 
+              <small v-if="row.tiempo_saldo_aplicado " class="text-gray"> <i class="fa fa-check"></i> Aplicado</small>
+              <small v-if="!row.tiempo_saldo_aplicado && row.pagado" class="text-danger"><i class="fa fa-warning-circle"></i>No Aplicado</small>
             </strong>
           </td>
           <td>
