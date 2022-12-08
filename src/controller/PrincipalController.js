@@ -1,4 +1,3 @@
-
 import SesionHelper from "../helpers/SesionHelper";
 import ActividadModel from "../models/ActividadModel";
 import { truncateSync } from "fs";
@@ -7,17 +6,17 @@ import Vue from "vue";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
-import {getUsuarioSesion,clearSesion} from '../helpers/Sesion';
+import { getUsuarioSesion, clearSesion } from '../helpers/Sesion';
 
 export default {
     name: "Principal",
     mixins: [operacionesApi],
-    components:{
-        ItemCapsulaAlumno        
+    components: {
+        ItemCapsulaAlumno
     },
     data() {
         return {
-            usuarioSesion: {},          
+            usuarioSesion: {},
             response: "",
             listaAlumnos: [],
             listaAlumnosSeleccionados: [],
@@ -44,8 +43,9 @@ export default {
             uriTempGrupos: URL.GRUPOS_BASE,
             uriTempActividad: URL.ACTIVIDAD_BASE,
             loaderAsistencia: false,
-            loaderPorEntregar:false,
-            loaderSalida:false
+            loaderPorEntregar: false,
+            loaderSalida: false,
+            tipoInscripcionSucursal: {}
         };
     },
     /*beforeRouteUpdate(to) {        
@@ -57,43 +57,45 @@ export default {
         }
         
     }, */
-    mounted() {
+    async mounted() {
         console.log("#### iniciando  el Bienvenida ###");
         this.usuarioSesion = getUsuarioSesion();
 
-        this.$root.$on('CAMBIO_SUCURSAL', (text) => { 
+        this.$root.$on('CAMBIO_SUCURSAL', (text) => {
             console.log("CAMBIO_SUCURSAL en pantalla principal");
-                 let message = text;
-                  this.usuarioSesion = getUsuarioSesion();
-                   this.init();
+            let message = text;
+            this.usuarioSesion = getUsuarioSesion();
+            this.init();
         })
-       
+
 
         console.log("Cargando lista alumno");
-        this.loadFunctionAlumnosDentro = function () {
+
+
+        /*this.loadFunctionAlumnosDentro = function() {
             this.listaRecibidos = [];
             this.loaderAlumnosPorEntregar = true;
             this.get(
-                this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,                
+                this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal,
                 (result) => {
                     this.response = result.data;
                     if (this.response != null) {
                         this.listaAlumnos = this.response;
-                        this.loaderAlumnosPorEntregar=false;
+                        this.loaderAlumnosPorEntregar = false;
                         this.actualizarComboFiltro();
                         this.filtrarAlumnosPorGrupo(this.grupoDefault);
                     }
                 }
             );
-        };
-        
-        this.loadFunctionAlumnosParaSalir = function (listaIdsAsistenciasSalida, handler) {
+        };*/
 
-            this.get(
-                URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,                
-                handler
-            );
-        };
+        /*  this.loadFunctionAlumnosParaSalir = function(listaIdsAsistenciasSalida, handler) {
+
+              this.get(
+                  URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida,
+                  handler
+              );
+          };*/
 
         //toast
         this.mensajeToast = mensaje => {
@@ -102,7 +104,7 @@ export default {
         };
 
         //funcion de limpiado de actividad
-        this.limpiarFormularioActividad = function () {
+        this.limpiarFormularioActividad = function() {
             $("#combo_actividad_principal").prop("selectedIndex", -1);
             $("#combo_sub_actividad").prop("selectedIndex", -1);
             $("#combo_tipo_actividad").prop("selectedIndex", -1);
@@ -118,10 +120,11 @@ export default {
         };
 
         //actividades
+        this.listaActividades = await this.getAsync(this.uriTempActividad + "/catalogo_actividad");
 
-        this.get(
+        /*this.get(
             this.uriTempActividad + "/catalogo_actividad",
-            
+
             (result) => {
                 this.response = result.data;
                 console.log("Consulta de actividades" + this.response);
@@ -132,8 +135,9 @@ export default {
                 }
             },
         );
+        */
         ///c
-        this.validacion = function () {
+        this.validacion = function() {
             if (
                 this.actividadSelecionada.tipo_actividad !== null &&
                 this.actividad.tipo_actividad === -1
@@ -155,7 +159,7 @@ export default {
 
         this.actualizarComboFiltro = () => {
             var resArr = [];
-            this.listaAlumnos.filter(function (item) {
+            this.listaAlumnos.filter(function(item) {
                 var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
                 if (i <= -1) {
                     resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo });
@@ -205,17 +209,31 @@ export default {
         };
 
         this.existeSeleccionAlumno = () => {
-            return this.listaAlumnos.some(function (e) {
+            return this.listaAlumnos.some(function(e) {
                 return e.seleccionado;
             });
         }
 
-        this.loadFunctionAlumnosDentro();
+        await this.loadFunctionAlumnosDentro();
+        await this.cargarInfoTipoInscripcionSucursal();
+
+
         //this.validacion();
-    },    
+    },
     methods: {
-        init(){
+        init() {
             this.loadFunctionAlumnosDentro();
+        },
+        async loadFunctionAlumnosDentro() {
+            this.loaderAlumnosPorEntregar = true;
+            this.listaAlumnos = await this.getAsync(this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal);
+            this.actualizarComboFiltro();
+            this.filtrarAlumnosPorGrupo(this.grupoDefault);
+            this.loaderAlumnosPorEntregar = false;
+        },
+        async cargarInfoTipoInscripcionSucursal() {
+            let res = await this.getAsync(`${URL.SUCURSAL}/${ this.usuarioSesion.co_sucursal}`);
+            this.tipoInscripcionSucursal = res;
         },
         toggleSelectAlumno(itemSelected) {
             if (!itemSelected.seleccionado) {
@@ -240,7 +258,7 @@ export default {
                 this.limpiarFormularioActividad();
                 $("#modal_actividad").modal("show");
             } else {
-               // this.mensajeToast("Seleccione al menos un alumno");
+                // this.mensajeToast("Seleccione al menos un alumno");
                 this.$notificacion.warn('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
             }
             console.log("init registro actividad");
@@ -255,7 +273,7 @@ export default {
 
             if (!existeSeleccion) {
                 console.log("Seleccione al menos un alumno");
-              
+
                 this.$notificacion.warn('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
                 return;
             }
@@ -289,7 +307,7 @@ export default {
             this.post(
                 this.uriTempActividad + "/registrar",
                 this.actividad,
-                
+
                 (result) => {
                     this.response = result.data;
                     console.log("Actividades insertadas " + this.response);
@@ -313,8 +331,8 @@ export default {
         signout() {
             console.log("Signout ");
             //this.$session.clear();
-              clearSesion();
-            this.$root.$emit('LOGOUT','LOGOUT');            
+            clearSesion();
+            this.$root.$emit('LOGOUT', 'LOGOUT');
             this.$router.push("/");
         },
         filtrarAlumnosPorGrupo(grupoItem) {
@@ -350,7 +368,7 @@ export default {
             this.toggleSeleccionarTodosVisibles();
         },
 
-        iniciarRegistrarSalida() {
+        async iniciarRegistrarSalida() {
             var existeSeleccion = this.existeSeleccionAlumno();
             if (existeSeleccion) {
                 this.loaderAsistencia = true;
@@ -360,15 +378,21 @@ export default {
                 console.log(" === > " + idsAsistencias);
 
                 $("#confirmar_salida_modal").modal("show");
-                this.loadFunctionAlumnosParaSalir(idsAsistencias,
+
+                this.listaAlumnosSeleccionadosCalculoHoraExtra = await this.getAsync(URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida);
+
+                this.loaderAsistencia = false;
+
+                /*this.loadFunctionAlumnosParaSalir(idsAsistencias,
                     (result) => {
                         if (result.data != null) {
                             this.listaAlumnosSeleccionadosCalculoHoraExtra = result.data;
                             this.loaderAsistencia = false;
                         }
                     });
+                    */
             } else {
-               // this.mensajeToast("Seleccione al menos un alumno de la lista");
+                // this.mensajeToast("Seleccione al menos un alumno de la lista");
                 this.$notificacion.error('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
             }
 
@@ -393,7 +417,7 @@ export default {
                 }
 
                 if (existeSeleccionCalculoHorasExtras) {
-            
+
                     for (var i = 0; i < this.listaAlumnosSeleccionadosCalculoHoraExtra.length; i++) {
                         var elem = this.listaAlumnosSeleccionadosCalculoHoraExtra[i];
                         if (elem.seleccionado) {
@@ -405,18 +429,17 @@ export default {
                 //existeSeleccionCalculoHorasExtras
 
                 console.log("IDS " + lista);
-                console.log("Salida para calculo de horas ",listaCalcularHorasExtras  );
-                this.loaderSalida=true;
+                console.log("Salida para calculo de horas ", listaCalcularHorasExtras);
+                this.loaderSalida = true;
                 this.post(
-                    this.uriTempAsistencia + "/salidaAlumnos",
-                    { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
-                    
+                    this.uriTempAsistencia + "/salidaAlumnos", { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
+
                     (result) => {
                         console.log("Response " + result.data);
                         if (result.data != null) {
                             this.lista = result.data;
-                            this.loaderSalida=false;
-                           // this.mensaje = "Se registro la salida de los alumnos";
+                            this.loaderSalida = false;
+                            // this.mensaje = "Se registro la salida de los alumnos";
                             this.$notificacion.info('Salida de alumno', 'Se registro la salida.');
                             $("#confirmar_salida_modal").modal("hide");
                             this.loadFunctionAlumnosDentro();
@@ -441,7 +464,7 @@ export default {
 
 
 function verificarExisteSeleccion(lista) {
-    return lista.some(function (e) {
+    return lista.some(function(e) {
         return e.seleccionado;
     });
 }

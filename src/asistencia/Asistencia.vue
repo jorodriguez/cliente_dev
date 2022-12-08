@@ -46,17 +46,19 @@
               :foto="item.foto"
               :color="item.color"
               :seleccion="removeToList"
-              :value="item"
+              :value="item"              
             >
               <span slot="cuerpo">
-                <button
-                  type="button"
-                  class="btn btn-link btn-xs text-white"
-                  v-on:click="removeToList(item)"
-                >                
-                  <span class="badge badge-pill badge-danger">x</span>
-                </button>
-              </span>
+                    <span v-if="item.cat_tipo_cobranza == 2">
+                      <small>
+                        <i class="fas fa-clock"></i>
+                      </small>
+                        <span >{{item.tiempo_saldo}} {{item.tiempo_saldo == 1 ? 'hr':'hrs'}} </span>                  
+                    </span>                  
+
+                    <span class="badge badge-pill badge-danger">x</span>
+               </span>
+
             </ItemCapsulaAlumno>
           </div>
         </div>
@@ -93,7 +95,9 @@
               <span class="sr-only">Espere...</span>
             </div>
         </div>
-        <div class="row">          
+        <div class="row">                 
+        
+       
           <div v-for="item in lista" v-bind:key="item.id">
             <div v-if="item.visible" class="d-flex align-content-center flex-wrap">
               <ItemCapsulaAlumno
@@ -103,11 +107,19 @@
                 :seleccion="addToList"
                 :value="item"
               >
-                <span slot="cuerpo"></span>
+                <span slot="cuerpo">                    
+                    <span v-if="item.cat_tipo_cobranza == 2">
+                      <small>
+                        <i class="fas fa-clock"></i>
+                      </small>
+                        <span >{{item.tiempo_saldo}} {{item.tiempo_saldo == 1 ? 'hr':'hrs'}} </span>                  
+                    </span>
+                </span>
               </ItemCapsulaAlumno>
             </div>
-          </div>
+          </div>      
         </div>
+        
       </div>
     </div>
     <div class="row m-1">

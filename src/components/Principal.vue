@@ -82,8 +82,9 @@
       <div class="media">       
 
         <div class="row overflow-auto">
+         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1">
           <div
-            id="div_foreach_alumno"
+            
             v-for="alumnoItem in listaAlumnos"
             v-bind:key="alumnoItem.id"
             class="d-flex align-content-center flex-wrap"
@@ -95,10 +96,10 @@
               :color="alumnoItem.color"
               :seleccion="toggleSelectAlumno"
               :value="alumnoItem"
+              :seleccionado="alumnoItem.seleccionado"
             >
               <span slot="cuerpo">
-                <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
-                <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
+                <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>                
                 <span
                   v-if="alumnoItem.calcular_tiempo_extra"                  
                   class="badge badge-pill badge-warning text-wrap"
@@ -112,29 +113,53 @@
                   {{alumnoItem.tiempo_extra.minutes}}
                   <span class="text-muted">min</span>
                 </span>
+                <!--<i v-if="alumnoItem.seleccionado" class=""></i>-->
               </span>
-            </ItemCapsulaAlumno>
-            <!--
-            <small class="badge badge-pill badge-info" v-if="alumnoItem.visible">
-              <img :src="alumnoItem.foto" width="35" height="35" alt="..." class="rounded-circle" />
-              <i v-on:click="toggleSelectAlumno(alumnoItem)">{{alumnoItem.nombre_alumno}}</i>
-              <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>
-              <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-danger"></i>
-              <span
-                v-if="alumnoItem.calcular_tiempo_extra"
-                class="badge badge-pill badge-warning text-wrap"
-                style="width: 2rem;"
-              >
-                <small>
-                  <i class="fas fa-plus"></i>
-                </small>
-                <span>{{alumnoItem.tiempo_extra.hours > 0 ? alumnoItem.tiempo_extra.hours:''}}</span>
-                <span class="text-muted">{{alumnoItem.tiempo_extra.hours > 0 ? 'h':''}}</span>
-                {{alumnoItem.tiempo_extra.minutes}}
-                <span class="text-muted">min</span>
+              <span slot="texto_ayuda">
+
               </span>
-            </small>-->
+              <span slot="icono_seleccionado">
+                  <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-white"></i>
+              </span>
+            </ItemCapsulaAlumno>      
           </div>
+         </span>
+         
+
+         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2">
+          <div
+            
+            v-for="alumnoItem in listaAlumnos"
+            v-bind:key="alumnoItem.id"
+            class="d-flex align-content-center flex-wrap"
+          >
+            <ItemCapsulaAlumno
+              v-if="alumnoItem.visible"
+              :texto="alumnoItem.nombre_alumno"
+              :foto="alumnoItem.foto"
+              :color="alumnoItem.color"
+              :seleccion="toggleSelectAlumno"
+              :value="alumnoItem"
+            >
+              <span slot="cuerpo">
+                  <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>                                                                                   
+                  <span><i class="fa fa-clock text-white"></i></span>                                                    
+              </span>
+              <span slot="texto_ayuda" >
+                    <i class="fa fa-warning "></i> {{alumnoItem.tiempo_usado}}
+                    <span v-if="alumnoItem.tiempo_restante <= 0" class="font-weight-normal text-lowercase">
+                        <!--Tiempo Expirado {{alumnoItem.tiempo_restante}}-->
+                        Tiempo Expirado {{alumnoItem.tiempo_restante_hora}} h                       
+                   </span>
+              </span>
+              <span slot="icono_seleccionado">
+                  <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-white"></i>                
+              </span>
+            </ItemCapsulaAlumno>                  
+          </div>
+
+           </span>
+
         </div>
       </div>
     </div>

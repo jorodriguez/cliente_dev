@@ -1,224 +1,252 @@
-
 import Vue from "vue";
 import AlumnoModel from "../models/AlumnoModel";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import ItemCapsulaAlumno from "../components_utils/ItemCapsulaAlumno";
-import {getUsuarioSesion} from '../helpers/Sesion';
+import { getUsuarioSesion } from '../helpers/Sesion';
 
 export default {
-  name: "Asistencia",
-  mixins: [operacionesApi],
-  components:{ItemCapsulaAlumno},
-  data() {
-    return {
-      usuarioSesion: {},      
-      item: AlumnoModel,
-      lista: [],
-      listaSeleccion: [],
-      listaRecibidos: [],
-      listaSeleccionSalida: [],
-      listaFiltroGrupos: [],
-      grupoSeleccionado: { id: -1, nombre: '' },
-      grupoDefault: { id: -1, nombre: 'Todos',color:'gray' },
-      response: "",      
-      loaderEntrada:false,
-      loaderPorRecibir:false,
-      loaderPorEntregar:false
-    };
-  },
-  mounted() {
-    console.log("iniciando el componente de asistencia ");
-  
-    this.usuarioSesion = getUsuarioSesion();
-    //this.usuarioSesion = this.$session.get("usuario_sesion");
-    this.loadFunction = function () {
-      console.log("Invocando LoadFuncion");
-      this.loaderPorRecibir = true;
-      this.get(
-        URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,        
-        (result) => {
-          console.log("resultado "+JSON.stringify(result))
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;
-            this.loaderPorRecibir = false;
+    name: "Asistencia",
+    mixins: [operacionesApi],
+    components: { ItemCapsulaAlumno },
+    data() {
+        return {
+            usuarioSesion: {},
+            item: AlumnoModel,
+            lista: [],
+            listaSeleccion: [],
+            listaRecibidos: [],
+            listaSeleccionSalida: [],
+            listaFiltroGrupos: [],
+            grupoSeleccionado: { id: -1, nombre: '' },
+            grupoDefault: { id: -1, nombre: 'Todos', color: 'gray' },
+            response: "",
+            tipoInscripcionSucursal: {},
+            loaderEntrada: false,
+            loaderPorRecibir: false,
+            loaderPorEntregar: false
+        };
+    },
+    async mounted() {
+        console.log("iniciando el componente de asistencia ");
+
+        this.usuarioSesion = getUsuarioSesion();
+
+
+
+
+        /*  this.loadFunction = function() {
+              console.log("Invocando LoadFuncion");
+              this.loaderPorRecibir = true;
+              this.get(
+                  URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal,
+                  (result) => {
+                      console.log("resultado " + JSON.stringify(result))
+                      this.response = result.data;
+                      console.log("Consulta " + this.response);
+                      if (this.response != null) {
+                          this.lista = this.response;
+                          this.loaderPorRecibir = false;
+                          this.filtrarAlumnosPorGrupo(this.grupoDefault);
+                          this.actualizarComboFiltro();
+                      }
+                  });
+
+          };*/
+
+
+        this.listaRecibidos = await this.getAsync(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal)
+        this.tipoInscripcionSucursal = await this.cargarInfoTipoInscripcionSucursal();
+
+        //Funcion get alumnos salida
+        /*this.loadFunctionAlumnosSalida = function() {
+            this.listaRecibidos = [];
+            this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,
+                (result) => {
+                    this.response = result.data;
+                    console.log("Consulta " + this.response);
+                    if (this.response != null) {
+                        this.listaRecibidos = this.response;
+                    }
+                }
+            );
+        };
+
+        this.actualizarComboFiltro = () => {
+            var resArr = [];
+            this.lista.filter(function(item) {
+                var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
+                if (i <= -1) {
+                    resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo, color: item.color });
+                }
+                return null;
+            });
+            this.listaFiltroGrupos = resArr;
+            console.log("Grupos filtrados " + JSON.stringify(this.listaFiltroGrupos));
+        };*/
+
+        //this.loadFunction();
+        //this.loadFunctionAlumnosSalida();
+
+    },
+    methods: {
+        async loadFunction() {
+            this.loaderPorRecibir = true;
+            this.lista = await this.getAsync(URL.ASISTENCIA_POR_RECIBIR + this.usuarioSesion.co_sucursal);
             this.filtrarAlumnosPorGrupo(this.grupoDefault);
             this.actualizarComboFiltro();
-          }
-        });
+            this.loaderPorRecibir = false;
+        },
+        actualizarComboFiltro() {
+            const resArr = [];
+            this.lista.filter(function(item) {
+                var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
+                if (i <= -1) {
+                    resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo, color: item.color });
+                }
+                return null;
+            });
+            this.listaFiltroGrupos = resArr;
+            console.log("Grupos filtrados " + JSON.stringify(this.listaFiltroGrupos));
+        },
+        async cargarInfoTipoInscripcionSucursal() {
+            let res = await this.getAsync(`${URL.SUCURSAL}/${ this.usuarioSesion.co_sucursal}`);
+            this.tipoInscripcionSucursal = res;
+        },
+        addToList(itemSelected) {
+            console.log("Add ");
+            this.listaSeleccion.push(itemSelected);
+            var pos = this.lista.indexOf(itemSelected);
+            var elementoEliminado = this.lista.splice(pos, 1);
+        },
+        removeToList(itemSelected) {
+            console.log("Remove " + itemSelected.nombre);
 
-    };
+            var pos = this.listaSeleccion.indexOf(itemSelected);
 
-    //Funcion get alumnos salida
-    this.loadFunctionAlumnosSalida = function () {
-      this.listaRecibidos = [];     
-      this.get(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal,        
-        (result) => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {           
-            this.listaRecibidos = this.response;
-          }
-        }
-      );
+            var elemento = this.listaSeleccion[pos];
 
-    };
+            console.log("esta en la pos " + pos + " el elemento " + elemento.nombre);
+            this.lista.push(elemento);
 
-    this.actualizarComboFiltro = () => {
-      var resArr = [];
-      this.lista.filter(function (item) {
-        var i = resArr.findIndex(x => x.nombre == item.nombre_grupo);
-        if (i <= -1) {
-          resArr.push({ id: item.co_grupo, nombre: item.nombre_grupo,color:item.color });
-        }
-        return null;
-      });
-      this.listaFiltroGrupos = resArr;
-      console.log("Grupos filtrados " + JSON.stringify(this.listaFiltroGrupos));
-    };
+            this.listaSeleccion.splice(pos, 1);
 
-    this.loadFunction();
-    this.loadFunctionAlumnosSalida();
-  },
-  methods: {
-    addToList(itemSelected) {
-      console.log("Add ");
-      this.listaSeleccion.push(itemSelected);
-      var pos = this.lista.indexOf(itemSelected);
-      var elementoEliminado = this.lista.splice(pos, 1);      
-    },
-    removeToList(itemSelected) {
-      console.log("Remove " + itemSelected.nombre);
+            this.filtrarAlumnosPorGrupo(this.grupoSeleccionado);
+        },
+        registrarEntrada() {
+            console.log("registrando entrada");
+            if (this.listaSeleccion.length > 0) {
+                var ids = [];
 
-      var pos = this.listaSeleccion.indexOf(itemSelected);
+                //Sin duplicados
+                let listaSet = new Set(this.listaSeleccion);
 
-      var elemento = this.listaSeleccion[pos];
+                for (let elem of listaSet.values()) {
+                    ids.push(elem.id);
+                }
 
-      console.log("esta en la pos " + pos + " el elemento " + elemento.nombre);
-      this.lista.push(elemento);
+                /*for (var i = 0; i < this.listaSeleccion.length; i++) {
+                  var elem = this.listaSeleccion[i];
+                  ids.push(elem.id);
+                }*/
 
-      this.listaSeleccion.splice(pos, 1);
+                this.loaderEntrada = true;
+                this.post(
+                    URL.ASISTENCIA_ENTRADA_ALUMNOS, { ids: ids, genero: this.usuarioSesion.id },
 
-      this.filtrarAlumnosPorGrupo(this.grupoSeleccionado);
-    },
-    registrarEntrada() {
-      console.log("registrando entrada");
-      if (this.listaSeleccion.length > 0) {
-        var ids = [];
+                    (result) => {
+                        this.response = result.data;
+                        console.log("insertados " + this.response);
+                        if (this.response != null) {
+                            setTimeout(() => {
+                                this.lista = this.response;
+                                this.loaderEntrada = false;
+                                this.$notificacion.info("Registro de entrada", "Se registro la entrada.");
+                                this.loadFunction();
+                                this.loadFunctionAlumnosSalida();
+                                this.listaSeleccion = [];
+                                this.listaSeleccionSalida = [];
+                            }, 400);
 
-        //Sin duplicados
-        let listaSet = new Set(this.listaSeleccion);
-        
-        for (let elem of listaSet.values()) {        
-          ids.push(elem.id);
-        }
+                        }
+                    }
+                );
 
-        /*for (var i = 0; i < this.listaSeleccion.length; i++) {
-          var elem = this.listaSeleccion[i];
-          ids.push(elem.id);
-        }*/
-
-        this.loaderEntrada = true;
-        this.post(
-          URL.ASISTENCIA_ENTRADA_ALUMNOS,
-          { ids: ids, genero: this.usuarioSesion.id },
-          
-          (result) => {
-            this.response = result.data;
-            console.log("insertados " + this.response);
-            if (this.response != null) {
-              setTimeout(() => {
-                this.lista = this.response;
-                this.loaderEntrada = false;
-                this.$notificacion.info("Registro de entrada", "Se registro la entrada.");              
-                this.loadFunction();
-                this.loadFunctionAlumnosSalida();
-                this.listaSeleccion = [];
-                this.listaSeleccionSalida = [];  
-              }, 400);
-              
+            } else {
+                this.$notificacion.warn("Seleccione al menos un alumno", "");
             }
-          }
-        );
+        },
+        addToListSalida(itemSelected) {
+            this.listaSeleccionSalida.push(itemSelected);
+            var pos = this.listaRecibidos.indexOf(itemSelected);
+            var elementoEliminado = this.listaRecibidos.splice(pos, 1);
+        },
+        removeToListSalida(itemSelected) {
+            console.log("Remove en lista de salida" + itemSelected.nombre);
 
-      } else {        
-        this.$notificacion.warn("Seleccione al menos un alumno", "");              
-      }
-    },
-    addToListSalida(itemSelected) {
-      this.listaSeleccionSalida.push(itemSelected);
-      var pos = this.listaRecibidos.indexOf(itemSelected);
-      var elementoEliminado = this.listaRecibidos.splice(pos, 1);      
-    },
-    removeToListSalida(itemSelected) {
-      console.log("Remove en lista de salida" + itemSelected.nombre);
+            var pos = this.listaSeleccionSalida.indexOf(itemSelected);
 
-      var pos = this.listaSeleccionSalida.indexOf(itemSelected);
+            var elemento = this.listaSeleccionSalida[pos];
 
-      var elemento = this.listaSeleccionSalida[pos];
+            console.log("esta en la pos " + pos + " el elemento " + elemento.nombre);
+            this.listaRecibidos.push(elemento);
 
-      console.log("esta en la pos " + pos + " el elemento " + elemento.nombre);
-      this.listaRecibidos.push(elemento);
+            this.listaSeleccionSalida.splice(pos, 1);
+        },
+        registrarSalida() {
+            console.log("Registrar salida");
 
-      this.listaSeleccionSalida.splice(pos, 1);
-    },
-    registrarSalida() {
-      console.log("Registrar salida");
+            if (this.listaSeleccionSalida.length > 0) {
+                var listaSalida = [];
 
-      if (this.listaSeleccionSalida.length > 0) {
-        var listaSalida = [];
+                for (var i = 0; i < this.listaSeleccionSalida.length; i++) {
+                    var elem = this.listaSeleccionSalida[i];
+                    listaSalida.push({ id: elem.id, calcular_horas_extra: elem.calcular_horas_extra });
+                }
 
-        for (var i = 0; i < this.listaSeleccionSalida.length; i++) {
-          var elem = this.listaSeleccionSalida[i];
-          listaSalida.push({ id: elem.id, calcular_horas_extra: elem.calcular_horas_extra });
-        }
+                this.post(
+                    URL.ASISTENCIA_SALIDA_ALUMNOS, { listaSalida: listaSalida, genero: this.usuarioSesion.id },
 
-        this.post(
-          URL.ASISTENCIA_SALIDA_ALUMNOS,
-          { listaSalida: listaSalida, genero: this.usuarioSesion.id },
-          
-          (result) => {
-            this.response = result.data;
-            if (this.response != null) {
-              this.lista = this.response;              
-              this.$notificacion.info("Registro de salida", "Se registro la salida de los alumnos.");              
-              console.log("Se registro la salida");
-              this.loadFunction();
-              this.loadFunctionAlumnosSalida();
-              this.listaSeleccionSalida = [];
-              this.listaSeleccion = [];
+                    (result) => {
+                        this.response = result.data;
+                        if (this.response != null) {
+                            this.lista = this.response;
+                            this.$notificacion.info("Registro de salida", "Se registro la salida de los alumnos.");
+                            console.log("Se registro la salida");
+                            this.loadFunction();
+                            this.loadFunctionAlumnosSalida();
+                            this.listaSeleccionSalida = [];
+                            this.listaSeleccion = [];
+                        }
+                    }
+                );
+            } else {
+                this.$notificacion.warn("Seleccione al menos un alumno", "");
             }
-          }
-        );
-      } else {        
-        this.$notificacion.warn("Seleccione al menos un alumno", "");              
-      }
-    },
-    filtrarAlumnosPorGrupo(grupoItem) {
-      console.log("Grupo selecionado " + JSON.stringify(grupoItem));
+        },
+        filtrarAlumnosPorGrupo(grupoItem) {
+            console.log("Grupo selecionado " + JSON.stringify(grupoItem));
 
-      this.grupoSeleccionado = grupoItem;
+            this.grupoSeleccionado = grupoItem;
 
-      if (this.grupoSeleccionado.id == -1) {
-        console.log("sinfiltro");
-        if(this.lista != null && this.lista != undefined && this.lista != []){
-          this.lista.forEach(element => {
-            element.visible = true;
-          });
-        }        
-      } else {
-        console.log("Filtrar por grupo " + grupoItem.nombre);
-        this.lista.forEach(element => {
-          if (element.co_grupo == grupoItem.id) {
-            element.visible = true;
-          } else {
-            element.visible = false;
-          }
-        });
+            if (this.grupoSeleccionado.id == -1) {
+                console.log("sinfiltro");
+                if (this.lista != null && this.lista != undefined && this.lista != []) {
+                    this.lista.forEach(element => {
+                        element.visible = true;
+                    });
+                }
+            } else {
+                console.log("Filtrar por grupo " + grupoItem.nombre);
+                this.lista.forEach(element => {
+                    if (element.co_grupo == grupoItem.id) {
+                        element.visible = true;
+                    } else {
+                        element.visible = false;
+                    }
+                });
 
-      }
-    },
-  }
+            }
+        },
+    }
 };
