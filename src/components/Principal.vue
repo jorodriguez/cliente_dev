@@ -82,12 +82,11 @@
       <div class="media">       
 
         <div class="row overflow-auto">
-         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1">
+         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1" class="d-flex align-content-center flex-wrap">
           <div
             
             v-for="alumnoItem in listaAlumnos"
-            v-bind:key="alumnoItem.id"
-            class="d-flex align-content-center flex-wrap"
+            v-bind:key="alumnoItem.id"            
           >
             <ItemCapsulaAlumno
               v-if="alumnoItem.visible"
@@ -126,12 +125,11 @@
          </span>
          
 
-         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2">
+         <span v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 2" class="d-flex align-content-center flex-wrap">
           <div
             
             v-for="alumnoItem in listaAlumnos"
-            v-bind:key="alumnoItem.id"
-            class="d-flex align-content-center flex-wrap"
+            v-bind:key="alumnoItem.id"            
           >
             <ItemCapsulaAlumno
               v-if="alumnoItem.visible"
@@ -139,21 +137,20 @@
               :foto="alumnoItem.foto"
               :color="alumnoItem.color"
               :seleccion="toggleSelectAlumno"
-              :value="alumnoItem"
+              :value="alumnoItem"              
             >
               <span slot="cuerpo">
                   <i v-bind:id="alumnoItem.id+'_selection_alumno'" is_alumno></i>                                                                                   
-                  <span><i class="fa fa-clock text-white"></i></span>                                                    
+                  <span><i class="fa fa-clock text-gray"></i></span>                                                    
               </span>
               <span slot="texto_ayuda" >
-                    <i class="fa fa-warning "></i> {{alumnoItem.tiempo_usado}}
-                    <span v-if="alumnoItem.tiempo_restante <= 0" class="font-weight-normal text-lowercase">
-                        <!--Tiempo Expirado {{alumnoItem.tiempo_restante}}-->
-                        Tiempo Expirado {{alumnoItem.tiempo_restante_hora}} h                       
+                    <span class="font-weight-normal text-lowercase"><i class="fa fa-warning "></i>{{alumnoItem.tiempo_usado}} h</span>
+                    <span v-if="alumnoItem.adeuda_tiempo " class="font-weight-normal text-lowercase">                        
+                        <span class="badge badge-pill  " style="border: 2px solid #F8B153;"> Tiempo Expirado {{alumnoItem.tiempo_adeuda}} h</span>
                    </span>
               </span>
               <span slot="icono_seleccionado">
-                  <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-white"></i>                
+                  <i v-if="alumnoItem.seleccionado" class="fas fa-check-circle text-white "></i>                
               </span>
             </ItemCapsulaAlumno>                  
           </div>
@@ -297,7 +294,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="container jumbotron m-1 scroll-div">
+
+            <div v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1" class="container jumbotron m-1 scroll-div">
               <div class="media">
                 <div class="row">
                   <div
@@ -321,32 +319,34 @@
               </div>
             </div>
 
-            <h6>
+            <h3 v-if="tipoInscripcionSucursal.cat_tipo_cobranza == 1">
               <small>
                 <span
                   class="badge badge-pill badge-warning"
                 >{{listaAlumnosSeleccionadosCalculoHoraExtra ? listaAlumnosSeleccionadosCalculoHoraExtra.length:0 }}</span> Alumnos con horas extras
               </small>
-            </h6>
+            </h3>
             <div class="container m-3 scroll-horas-extra-div">
               <div v-if="loaderAsistencia" class="spinner-border text-primary" role="status">
                 <span class="sr-only">Cargando...</span>
               </div>
               <table class="table">
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td>
+                  <td class="p-0"></td>
+                  <td class="p-0"></td>
+                  <td class="p-0">
                     <small>Aplicar Cargos</small>
                   </td>
                 </tr>
-                <tr
+                
+                <tr                  
                   v-for="alumnoItem in listaAlumnosSeleccionadosCalculoHoraExtra"
                   v-bind:key="alumnoItem.id"
                 >
-                  <td><span style="text-transform: uppercase;">{{alumnoItem.nombre_alumno}}</span> </td>
-                  <td>
-                    <div class="badge badge-pill badge-warning" style="font-size:12px;">
+                  <td class="text-left"><span style="text-transform: uppercase;">{{alumnoItem.nombre_alumno}}</span> </td>
+                  <td class="p-1">
+                    
+                    <div v-if="alumnoItem.cat_tipo_cobranza == 1" class="badge badge-pill badge-warning" style="font-size:12px;">
                       <small>
                         <i class="fas fa-plus"></i>
                       </small>
@@ -360,9 +360,33 @@
                         style="font-size:12px;"
                       >min</span>
                     </div>
+
+                    <table v-if="alumnoItem.cat_tipo_cobranza == 2" class="table ">                                              
+                        <tr>
+                          <td class="p-0 text-left">Estancia de hoy</td>
+                          <td class="p-0 text-right">{{alumnoItem.tiempo_usado}} hrs</td>
+                        </tr>
+                        <tr>
+                          <td class="p-0 text-left">Entro: {{alumnoItem.hora_entrada_format}}</td>
+
+                          <td class="p-0 text-right">Salida: {{alumnoItem.hora_salida_format ? alumnoItem.hora_salida_format:alumnoItem.hora_actual_format }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-0 text-left">Horas del mes</td>
+                            <td class="p-0 text-right">{{alumnoItem.tiempo_saldo}} hrs </td>
+                        </tr>
+                        <tr>
+                          <td class="p-0 text-left">Tiempo expirado por cobrar</td>
+                          <td class="p-0 text-right font-weight-bold"> 
+                                <span  class="text-danger" v-if="alumnoItem.adeuda_tiempo">{{alumnoItem.tiempo_adeuda}} hrs</span>
+                                <span v-else><i class="fa fa-check text-green"></i> ninguno</span>
+                          </td>
+                        </tr>
+                    </table>
+
                   </td>
                   <td>
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch text-center">
                       <input
                         :id="alumnoItem.id"
                         v-model="alumnoItem.seleccionado"
@@ -375,6 +399,7 @@
                     </div>
                   </td>
                 </tr>
+
               </table>
             </div>
           </div>
@@ -437,7 +462,7 @@
 
 .scroll-horas-extra-div {
   width: 100%;
-  height: 200px;
+  height: 300px;
   overflow-y: scroll;
 }
 

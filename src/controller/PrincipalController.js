@@ -215,7 +215,6 @@ export default {
         }
 
         await this.loadFunctionAlumnosDentro();
-        await this.cargarInfoTipoInscripcionSucursal();
 
 
         //this.validacion();
@@ -227,6 +226,7 @@ export default {
         async loadFunctionAlumnosDentro() {
             this.loaderAlumnosPorEntregar = true;
             this.listaAlumnos = await this.getAsync(this.uriTempAsistencia + "/alumnos_recibidos/" + this.usuarioSesion.co_sucursal);
+            await this.cargarInfoTipoInscripcionSucursal();
             this.actualizarComboFiltro();
             this.filtrarAlumnosPorGrupo(this.grupoDefault);
             this.loaderAlumnosPorEntregar = false;
@@ -369,7 +369,7 @@ export default {
         },
 
         async iniciarRegistrarSalida() {
-            var existeSeleccion = this.existeSeleccionAlumno();
+            const existeSeleccion = this.existeSeleccionAlumno();
             if (existeSeleccion) {
                 this.loaderAsistencia = true;
                 const idsAsistencias = this.listaAlumnos
@@ -379,18 +379,10 @@ export default {
 
                 $("#confirmar_salida_modal").modal("show");
 
-                this.listaAlumnosSeleccionadosCalculoHoraExtra = await this.getAsync(URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + listaIdsAsistenciasSalida);
+                this.listaAlumnosSeleccionadosCalculoHoraExtra = await this.getAsync(URL.ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA + idsAsistencias);
 
                 this.loaderAsistencia = false;
 
-                /*this.loadFunctionAlumnosParaSalir(idsAsistencias,
-                    (result) => {
-                        if (result.data != null) {
-                            this.listaAlumnosSeleccionadosCalculoHoraExtra = result.data;
-                            this.loaderAsistencia = false;
-                        }
-                    });
-                    */
             } else {
                 // this.mensajeToast("Seleccione al menos un alumno de la lista");
                 this.$notificacion.error('Seleccione al menos un alumno', 'Seleccione al menos un alumno de la lista.');
@@ -400,13 +392,12 @@ export default {
         registrarSalida() {
             console.log("Registrar salida");
 
-            var existeSeleccion = this.existeSeleccionAlumno();
-            console.log("seleccion " + existeSeleccion);
+            const existeSeleccion = this.existeSeleccionAlumno();
 
-            var existeSeleccionCalculoHorasExtras = verificarExisteSeleccion(this.listaAlumnosSeleccionadosCalculoHoraExtra);
+            const existeSeleccionCalculoHorasExtras = verificarExisteSeleccion(this.listaAlumnosSeleccionadosCalculoHoraExtra);
 
             if (existeSeleccion) {
-                var lista = [];
+                let lista = [];
                 let listaCalcularHorasExtras = [];
 
                 for (var i = 0; i < this.listaAlumnos.length; i++) {
