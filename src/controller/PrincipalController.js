@@ -423,7 +423,7 @@ export default {
                 console.log("Salida para calculo de horas ", listaCalcularHorasExtras);
                 this.loaderSalida = true;
                 this.post(
-                    this.uriTempAsistencia + "/salidaAlumnos", { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, genero: this.usuarioSesion.id },
+                    this.uriTempAsistencia + "/salidaAlumnos", { listaSalida: lista, listaCalcularHorasExtras: listaCalcularHorasExtras, id_sucursal: this.usuarioSesion.co_sucursal, genero: this.usuarioSesion.id },
 
                     (result) => {
                         console.log("Response " + result.data);
