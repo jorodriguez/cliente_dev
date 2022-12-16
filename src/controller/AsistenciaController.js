@@ -54,8 +54,10 @@ export default {
 
           };*/
 
+        await this.loadFunction();
 
-        this.listaRecibidos = await this.getAsync(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal)
+        await this.loadFunctionAlumnosSalida();
+
         this.tipoInscripcionSucursal = await this.cargarInfoTipoInscripcionSucursal();
 
         //Funcion get alumnos salida
@@ -96,6 +98,9 @@ export default {
             this.filtrarAlumnosPorGrupo(this.grupoDefault);
             this.actualizarComboFiltro();
             this.loaderPorRecibir = false;
+        },
+        async loadFunctionAlumnosSalida() {
+            this.listaRecibidos = await this.getAsync(URL.ASISTENCIA_RECIBIDOS + this.usuarioSesion.co_sucursal)
         },
         actualizarComboFiltro() {
             const resArr = [];

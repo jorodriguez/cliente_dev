@@ -87,7 +87,7 @@ const URL = {
     LOGIN: BASE + '/auth/login',
     ASISTENCIA_BASE: ASISTENCIA_BASE,
     ASISTENCIA_POR_RECIBIR: ASISTENCIA_BASE + '/alumnos_por_recibidos/', //param sucursal
-    ASISTENCIA_RECIBIDOS: ASISTENCIA_BASE + '/alumnos_recibidos/', //param sucursal
+    ASISTENCIA_RECIBIDOS: ASISTENCIA_BASE + '/alumnos_recibidos/', //param sucursalalumnos_recibidos
     ASISTENCIA_ENTRADA_ALUMNOS: ASISTENCIA_BASE + '/entradaAlumnos',
     ASISTENCIA_SALIDA_ALUMNOS: ASISTENCIA_BASE + '/salidaAlumnos',
     ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA: ASISTENCIA_BASE + '/salidaAlumnos/alumno_tiempo_extra/', //parametro lista asistencias
