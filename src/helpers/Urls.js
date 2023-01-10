@@ -6,7 +6,7 @@ import configEnv from '../../config/configEnv';
 const BASE = process.env.URL_API || 'https://api-develop.herokuapp.com'
     //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
-export const BRANCH = "2205-columna-adeuda-alumno";
+export const BRANCH = "2301-cobranza-horas";
 
 const ASISTENCIA_BASE = BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE = BASE + '/asistencia_usuarios';
