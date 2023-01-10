@@ -54,8 +54,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body text-left">
-            tipo {{ tipoInscripcionSucursal.cat_tipo_cobranza }}
+          <div class="modal-body text-left">            
             <label>Nombre<span class="text-danger">*</span></label>
             <input
               type="text"
