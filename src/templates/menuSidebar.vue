@@ -19,9 +19,10 @@
       </button>
       <!-- Brand -->
       <router-link to="/Principal" class="navbar-brand pt-0">
-         <img src="../assets/magic.png" class="rounded-lg"  width="90" height="150" />
-        <!--<img src="../assets/magic.jpeg" class="rounded-lg" width="150" height="150" />-->
-      </router-link>
+        <!-- <img src="../assets/magic.png" class="rounded-lg"  width="90" height="150" />-->
+        <img :src="`${usuarioSesion.logo}`" class="rounded-lg"  width="90" height="150" alt="logo" />        
+      </router-link>      
+      
 
       <!-- User -->
       <ul class="nav align-items-center d-md-none">
@@ -84,7 +85,9 @@
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
               <div class="col-6 collapse-brand">
-              <img src="../assets/magic.png" class="rounded-lg" width="90" height="100" />
+              <!--<img src="../assets/magic.png" class="rounded-lg" width="90" height="100" />-->
+              <img :src="`${usuarioSesion.logo}`" class="rounded-lg"  width="90" height="150" />        
+              {{usuarioSesion.logo}}
             </div>
             <div class="col-6 collapse-close">
               <button
@@ -102,6 +105,7 @@
             </div>
           </div>
         </div>
+        
         <!-- Form -->
         <!--
         <form class="mt-4 mb-3 d-md-none">
@@ -189,8 +193,12 @@ export default {
   mounted() {
     console.log("iniciando el template de menu");
     this.usuarioSesion = getUsuarioSesion();
-
     this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
+    
+    this.$root.$on('CAMBIO_SUCURSAL', (text) => {                        
+            this.usuarioSesion = getUsuarioSesion();
+            this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;            
+    });    
     
   },
   methods: {
