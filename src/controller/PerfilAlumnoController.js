@@ -482,11 +482,13 @@ export default {
         },
         async cargarTabInstitucion() {
             console.log("Institucion Tab load");
-            if (this.listaValoresEsperados.length == 0) {
+            if (this.listaValoresEsperados.length == 0 ) {
 
                 console.log("Preparando alumno como insticucion " + JSON.stringify(this.alumno));
 
-                await this.cargarValoresEsperados(this.alumno.formato_inscripcion.id);
+                if(!this.alumno.formato_inscripcion){
+                    await this.cargarValoresEsperados(this.alumno.formato_inscripcion.id);
+                }
 
             }
         },
