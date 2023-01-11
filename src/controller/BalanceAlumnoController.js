@@ -7,14 +7,13 @@ export default {
     name: "balance-alumno",
     mixins: [operacionesApi],
     template: `
-      <span :class="h2"> 
+      <span :class="h1"> 
         {{ balanceAlumno.total_adeudo }} 
         <br/>
-        <span class="font-weight-normal text-gray" v-if="balanceAlumno.cat_tipo_cobranza == 2"> ({{balanceAlumno.tiempo_usado}}/{{balanceAlumno.tiempo_saldo}} hrs)</span>
+        <span class="font-weight-normal text-gray" v-if="balanceAlumno.cat_tipo_cobranza == 2"> {{balanceAlumno.tiempo_saldo}} hrs disp.</span>
         <br/>
         <small class="text-muted text-xs" v-if="mostrarfecha">Paga {{balanceAlumno.fecha_limite_pago_mensualidad}}</small>
-      </span>
-      
+      </span>      
       `,
     props: ['idalumno', 'mostrarfecha'],
     data() {
