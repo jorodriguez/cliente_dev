@@ -1,8 +1,8 @@
 <template>
   <div id="id_tabla_cargos">
-     <div class="row d-flex justify-content-end">
+     <!--<div class="row d-flex justify-content-end">
         <small class="text-warning"> <i class="fa fa-info-circle"/> Debes realizar el pago para aplicar las horas</small>
-    </div>
+      </div>-->
     <p
       v-if="requiere_factura"
       class="text-right text-success small"
