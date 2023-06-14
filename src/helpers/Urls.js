@@ -6,7 +6,7 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-develop.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
-export const BRANCH = "2301-cobranza-horas";
+export const BRANCH = "2306-aviso | | reactivación de opción de aviso";
 
 const ASISTENCIA_BASE = BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE = BASE + '/asistencia_usuarios';

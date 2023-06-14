@@ -588,7 +588,29 @@ export default {
             console.log(this.aviso);
             //$("#popup_confirmar_envio").modal("hide");
             $("#popup_preview").modal("hide");            
-            this.post(URL.AVISOS, this.aviso, result => {
+
+            const informacionEnvio = await this.postAsync(URL.AVISOS, this.aviso);
+
+            console.log("======================");
+            console.log(informacionEnvio);
+            
+            this.loadingEnvio = false;
+           
+            if (informacionEnvio && informacionEnvio.envioCorreo) {
+                    this.destinatariosEnvio = informacionEnvio.destinatarios;                    
+                    if (this.destinatariosEnvio) {                        
+                        this.destinatariosEnvio.sort((val, val2) =>  val.nombre - val2.nombre);
+                        $("#popup_informacion_envio").modal("show");
+                    }
+                    this.init();
+                    this.$notificacion.info("Aviso ", "Enviado correctamente.");
+                } else {
+                    this.$notificacion.error("Mensaje", result.mensaje);
+                }
+
+            
+            
+            /*this.post(URL.AVISOS, this.aviso, result => {
                 let respuesta = result.body;
                 let informacionEnvio = respuesta ? respuesta.informacionEnvio : null;
                 this.loadingEnvio = false;
@@ -606,6 +628,7 @@ export default {
                     this.$notificacion.error("Mensaje", result.mensaje);
                 }
             });
+            */
         },
 
         modificar() {
