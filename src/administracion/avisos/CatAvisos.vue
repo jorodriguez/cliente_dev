@@ -9,7 +9,8 @@
             <Button type="button" class="btn btn-light btn-lg" v-on:click="iniciarNuevo()">Nuevo</Button>
             <!--<Button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarEnvio()">Enviar
             </Button>-->
-            <Button type="button" class="btn btn-primary btn-lg" v-on:click="preview()">Enviar
+            <Button type="button" class="btn btn-primary btn-lg" :disabled="loadingEnvio"  v-on:click="preview()">
+Enviar 
             </Button>
         </div>
         <div class="col d-flex justify-content-end">
@@ -35,20 +36,21 @@
                                 :existing-tags="contactosTags" 
                                 id-field="id" 
                                 text-field="nombre" 
-                                typeahead-style="dropdown" 
+                                typeahead-style="dropdown"                                 
                                 :typeahead-max-results="15"
                                 :only-existing-tags="true"                                
                                 :typeahead="true"
-                                 @tag-added="onTagAdded"
-                                  @tag-removed="onTagRemoved" 
-                                  :readonly="loadingEnvio">
+                                @tag-added="onTagAdded"
+                                @tag-removed="onTagRemoved" 
+                                :disabled="loadingEnvio"
+                                :readonly="loadingEnvio">
                         <template v-slot:selected-tag="{ tag, index, removeTag }" >
-                            <i v-if="tag.tipo == TIPO.TODAS_SUCURSALES" class="fa fa-users" style="color:'red' ;font-size:16px;" aria-hidden="true"></i>
-                            <i v-else-if="tag.tipo == TIPO.SUCURSAL" class="fa fa-users" style="color:'blue';font-size:16px;" aria-hidden="true"></i>
-                            <i v-else-if="tag.tipo == TIPO.GRUPO" class="fa fa-users" style="color:'yellow';font-size:16px;" aria-hidden="true"></i>
-                            <i v-else-if="tag.tipo == TIPO.CONTACTO" class="fa fa-user" style="color:'gray';font-size:16px;" aria-hidden="true"></i>
-                            <span @click="verDetalle(tag)">{{ tag.nombre_mostrar }}</span><br />
-                            <span @click="verDetalle(tag)" :class="`estilo-tag-${tag.tipo}`">
+                            <i v-if="tag.tipo == TIPO.TODAS_SUCURSALES" class="fa fa-users" :style="`color:${loadingEnvio ? 'gray':'red'}; font-size:16px;`" aria-hidden="true"></i>
+                            <i v-else-if="tag.tipo == TIPO.SUCURSAL" class="fa fa-users" :style="`color:${loadingEnvio ? 'gray':'blue'}; font-size:16px;`" aria-hidden="true"></i>
+                            <i v-else-if="tag.tipo == TIPO.GRUPO" class="fa fa-users" :style="`color:${loadingEnvio ? 'gray':'yellow'};font-size:16px;`" aria-hidden="true"></i>
+                            <i v-else-if="tag.tipo == TIPO.CONTACTO" class="fa fa-user" style="`color:${loadingEnvio ? 'gray':'gray'};font-size:16px;`" aria-hidden="true"></i>
+                            <span @click="verDetalle(tag)" style="cursor:pointer" >{{ tag.nombre_mostrar }}</span><br />
+                            <span @click="verDetalle(tag)" style="cursor:pointer" :class="`estilo-tag-${tag.tipo}`">
                                 <i style="padding-top:2px;">{{ tag.descripcion }}</i>
                             </span>
                           
@@ -69,18 +71,23 @@
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-1 col-form-label">Titulo</label>
                 <div class="col">
-                    <input type="text" class="form-control" id="staticEmail" placeholder="Titulo" v-model="aviso.titulo" :readonly="loadingEnvio" />
+                    <input type="text" class="form-control" :disabled="loadingEnvio" id="staticEmail" placeholder="Titulo" v-model="aviso.titulo" :readonly="loadingEnvio" />
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col">
-                    <!--<vue-editor
-              v-model="aviso.aviso"
-              focus
-              :disabled="loadingEnvio"
-              placeholder="Escribe tu aviso.."
-            ></vue-editor>-->
-                    <ckeditor v-model="aviso.aviso"></ckeditor>
+                    <vue-editor
+                        v-model="aviso.aviso"
+                        focus
+                        :style="`background-color:${loadingEnvio ? 'gray':'white'}`"
+                        :disabled="loadingEnvio"
+                        placeholder="Escribe tu aviso.."
+                        ></vue-editor>
+                    <!--<ckeditor v-model="aviso.aviso" :config="editorConfig"  ></ckeditor>-->
+           <!--         <div class="quill-editor">
+    <slot name="toolbar"></slot>
+    <div ref="editor"></div>
+  </div>-->
                 </div>
             </div>
         </div>
@@ -128,7 +135,49 @@
 -->
 
     <!-- DETALLE -->
-    <Popup id="popup_detalle" show_button_close="true" size="sm">
+  <div id="popup_detalle" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">                    
+            {{ this.rowDetalle ? `${this.rowDetalle.nombre_mostrar} ` : "" }}
+                    <span class="text-muted">{{
+                        this.rowDetalle ? ` ${this.rowDetalle.descripcion}` : ""          
+                }}</span>                        
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" v-if="this.rowDetalle">            
+            <div class="card card-body">
+            <div class="overflow-auto" style="height:350px" >
+                <div :class="`row hover  pb-1 pt-1 border d-flex align-items-center ${(index % 2 == 0) ? 'bg-light':''}`" v-for="(item,index) in JSON.parse(this.rowDetalle.contactos)" :key="index" >
+                    <div :class="`col-2  text-center `">
+                        <small class="font-weight-bold text-gray" style="font-size:15px;">{{ ++index }}</small>
+                    </div>
+                    <div class="col pl-4 text-left">
+                        <small class="font-weight-normal" style="font-size:15px;">{{ item.nombre }}</small><br />
+                        <small class="text-gray h5">{{ item.correo }}</small>
+                        <br v-if="item.celular" />
+                        <small v-if="item.celular" class="text-muted">{{ item.celular }}</small>
+                        <br v-if="item.token"/>
+                         <span v-if="item.token" style="font-size:10px;" class="badge  badge-info">
+                            <i  class="fa fa-mobile" aria-hidden="true"></i> 
+                            App
+                         </span>                                               
+                    </div>
+                </div>
+                </div>
+            
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!--<Popup id="popup_detalle" show_button_close="true" size="sm">
         <div slot="header">
             {{ this.rowDetalle ? `${this.rowDetalle.nombre_mostrar}` : "" }}
             <span class="text-muted">{{
@@ -136,10 +185,9 @@
         }}</span>
         </div>
         <div slot="content" v-if="this.rowDetalle">            
-            <div class="overflow-auto" style="height:300px">
-
-                <div class="row  pb-1 pt-1 border d-flex align-items-center" v-for="(item,index) in JSON.parse(this.rowDetalle.contactos)" :key="index">
-                    <div class="col-1  text-left">
+            <div class="overflow-auto" style="height:350px" >
+                <div :class="`row  pb-1 pt-1 border d-flex align-items-center ${(index % 2 == 0) ? 'bg-light':''}`" v-for="(item,index) in JSON.parse(this.rowDetalle.contactos)" :key="index" >
+                    <div :class="`col-1  text-left `">
                         <small class="font-weight-bold text-gray" style="font-size:15px;">{{ ++index }}</small>
                     </div>
                     <div class="col pl-4 text-left">
@@ -157,39 +205,65 @@
                 </div>
             </div>
         </div>
-    </Popup>
+    </Popup>-->
 
-    <Popup id="popup_informacion_envio" show_button_close="true" size="lg">
+
+    <Popup id="popup_informacion_envio"  size="sm">
         <div slot="header">
             Información de envio
         </div>
         <div slot="content">
-            <h3>{{ destinatariosEnvio && destinatariosEnvio.length }} contactos</h3>
-            <div class="card">
-                <div class="overflow-auto" style="height:350px">
-                    <table class="table">
+
+             <span v-if="loadingEnvio">
+                 <img src="../../assets/mail-send.gif" class="rounded-lg" width="235" height="110" />
+            </span>
+
+            <span v-if="mostrarEnvioCorrecto">
+                <img src="../../assets/done.gif" class="rounded-lg" width="235" height="110" />
+            </span>
+
+            <span v-if="mostrarErrorEnvio" class="alert alert-danger">
+                Sucedió un error al intentar enviar el correo, contacta el equipo de desarrollo.
+            </span>
+
+
+            <div class="row d-flex justify-content-center " v-if="mostrarEnvioCorrecto">
+                <a v-if="mostrarEnvioCorrecto" class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <h5>Enviado a {{ destinatariosEnvio && destinatariosEnvio.length }} contacto{{ destinatariosEnvio && destinatariosEnvio.length > 1 ? 's':'' }}</h5>
+                </a>            
+            <div class="collapse w-100" id="collapseExample">
+            <div class="card ">
+                <div class="overflow-auto" style="height:250px;">
+                    <table class="table table-striped text-left ">
                         <tbody v-for="(item, index) in destinatariosEnvio" :key="index">
                             <tr>
-                                <td>
+                                <td style="width:20px">
                                     <span>{{ ++index }}</span>
                                 </td>
-                                <td>                                                                        
+                                <!--<td>                                                                        
                                     <span v-if="item.token" style="font-size:10px;" class="badge  badge-info">
                                         <i  class="fa fa-mobile" aria-hidden="true"></i>                                     
                                     </span>  
-                                </td>
+                                </td>-->
                                 <td>
                                     <span>{{ item.nombre }}</span><br />
                                     <span> {{ item.correo }}</span>
                                 </td>
-                                <td>{{ item.sucursal }}</td>
-                                <td>{{ item.grupo }}</td>
+                                <!--<td>{{ item.sucursal }}</td>
+                                <td>{{ item.grupo }}</td>-->
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                </div>
+            </div>
             </div>
         </div>
+          <div slot="footer">
+            <button class="btn btn-link btn-block" type="button" @click="cerrarPopupEnvio" >
+                Cerrar
+            </button>
+          </div>
     </Popup>
 
     <Popup id="popup_confirmar_envio" show_button_close="true" size="md">
@@ -303,6 +377,7 @@ import {
     VueEditor,
     Quill
 } from "vue2-editor";
+
 import AvatarAlumno from "../../components_utils/AvatarAlumno";
 import TarjetaContacto from "@/administracion/avisos/fragmentos/TarjetaContacto";
 import VoerroTagsInput from "@voerro/vue-tagsinput";
@@ -311,8 +386,8 @@ import Vue from "vue";
 require("../../../static/css/styleAutocompleteContactos.css");
 Vue.component("tags-input", VoerroTagsInput);
 
-import CKEditor from "ckeditor4-vue";
-Vue.use(CKEditor);
+//import CKEditor from "ckeditor4-vue";
+//Vue.use(CKEditor);
 
 const TIPO = {
     TODAS_SUCURSALES: 1,
@@ -369,15 +444,18 @@ export default {
             loadingEnvio: false,
             pagePreview: "",
             loadingPreview: false,
-            tableContactosPreview: "",
+            tableContactosPreview: "",            
             editorConfig: {
-                toolbar: [
+                /*toolbar: [
                     ["Styles", "Format", "Font", "FontSize"],
                     ["Bold", "Italic"],
                     ["paragraph", "colors", "document"],
                     ["Undo", "Redo"]
-                ]
+                ],*/
+                easyimage_toolbar:[ 'EasyImageAlignLeft', 'EasyImageAlignCenter', 'EasyImageAlignRight' ]
             },
+            mostrarErrorEnvio:false,
+            mostrarEnvioCorrecto:false,
             columnas: [{
                     label: "Id",
                     field: "id",
@@ -443,6 +521,7 @@ export default {
 
         this.init();
         this.aviso = new AvisoModel();
+      
     },
     methods: {
         init() {
@@ -577,6 +656,9 @@ export default {
                             html += '</div></div>';
         return html;
         },
+        cerrarPopupEnvio(){
+            $("#popup_informacion_envio").modal("hide");
+        },
         async enviar() {
             console.log("Insertar");
             const listaParaEnvio = this.aviso.para.map(e=> {return {...e,contactos:[]}});
@@ -586,26 +668,43 @@ export default {
             this.aviso.genero = this.usuarioSesion.id;
             this.loadingEnvio = true;
             console.log(this.aviso);
+            this.mostrarEnvioCorrecto = false;
+            this.mostrarErrorEnvio = false;
+
             //$("#popup_confirmar_envio").modal("hide");
             $("#popup_preview").modal("hide");            
+            $("#popup_informacion_envio").modal("show");
 
-            const informacionEnvio = await this.postAsync(URL.AVISOS, this.aviso);
+            const result = await this.postAsync(URL.AVISOS, this.aviso);
 
             console.log("======================");
-            console.log(informacionEnvio);
+            console.log(JSON.stringify(result));
             
             this.loadingEnvio = false;
            
+           const informacionEnvio = result.informacionEnvio || {};
+
+           
+
+           if(informacionEnvio.error){
+               this.$notificacion.error("Mensaje","Hubó un error al enviar el aviso");
+               this.mostrarErrorEnvio = true;
+               return;
+           }
+
             if (informacionEnvio && informacionEnvio.envioCorreo) {
                     this.destinatariosEnvio = informacionEnvio.destinatarios;                    
                     if (this.destinatariosEnvio) {                        
                         this.destinatariosEnvio.sort((val, val2) =>  val.nombre - val2.nombre);
-                        $("#popup_informacion_envio").modal("show");
+                        //$("#popup_informacion_envio").modal("show");
+                        this.mostrarEnvioCorrecto = true;
                     }
                     this.init();
                     this.$notificacion.info("Aviso ", "Enviado correctamente.");
                 } else {
-                    this.$notificacion.error("Mensaje", result.mensaje);
+                    console.log(JSON.stringify(result));
+                    this.mostrarErrorEnvio = true;
+                    this.$notificacion.error("Mensaje","Hubó un error al enviar el aviso");
                 }
 
             
@@ -749,6 +848,7 @@ export default {
             );*/
             //}
         },
+        
         preview() {
             let placeholder = "___PLACEHOLDER___";
             this.loadingPreview = true;
