@@ -1,6 +1,6 @@
 <template>
   <div id="id_tabla_cargos">
-     <div class="row d-flex justify-content-end">
+     <div class="row d-flex justify-content-end" v-if="alumno.cat_tipo_cobranza == 2" >
         <small class="text-warning"> <i class="fa fa-info-circle"/> Debes realizar el pago para aplicar las horas</small>
     </div>
     <p
