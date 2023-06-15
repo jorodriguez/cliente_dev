@@ -2,9 +2,9 @@ import configEnv from '../../config/configEnv';
 
 
 
-const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-develop.herokuapp.com'
-//const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
+const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 
 export const BRANCH = "2306-aviso | | reactivación de opción de aviso";
 
